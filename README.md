@@ -6,10 +6,14 @@ with kicad StepUp it is possible to align the 3d-viewer and the 3d PCB and modul
 The only requirements, different from the actual way of using kicad is to substitute Wings3D with FreeCAD
 and, obviously, populate the 3D models with STEP lib...
 
-The repo will have model starting from a FreeCAD project modeled in mm with a standar origin and orientation
+The repo will have models starting from a FreeCAD project modeled in mm with a standar origin and orientation
+
                                             -----> STEP model exported (union of parts)
+                                            
                                             -----> VRML model exported (scaled 1/2.54)
+                                            
 If you would like to share your models, I'll be happy to add these to the 3D repo!!! :)
 
 thank you for any suggestion and feedback,
+
 Maurice
