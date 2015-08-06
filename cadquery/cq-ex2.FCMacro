@@ -1,0 +1,132 @@
+# -*- coding: utf8 -*-
+# This is a FreeCAD & cadquery script for generating
+# Chip capacitors models in STEP & VRML format.
+#
+# Dimensions are from DS document.
+# Maurice easyw@launchpad
+
+
+import FreeCAD, Draft, FreeCADGui
+import Idf
+import ImportGui
+
+from Gui.Command import *
+
+#Gui.SendMsgToActiveView("Run")
+Gui.activateWorkbench("CadQueryWorkbench")
+import FreeCADGui as Gui
+
+import cadquery
+from Helpers import show
+
+#close the example
+App.setActiveDocument("Ex000_Introduction")
+App.ActiveDocument=App.getDocument("Ex000_Introduction")
+Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
+App.closeDocument("Ex000_Introduction")
+
+#Getting the main window will allow us to start setting things up the way we want
+mw = FreeCADGui.getMainWindow()
+
+#Adjust the docks as usual
+dockWidgets = mw.findChildren(QtGui.QDockWidget)
+for widget in dockWidgets:
+    if (widget.objectName() == "Report view") or (widget.objectName() == "Python console") or (widget.objectName() == "Combo View"):
+        widget.setVisible(True)
+    if (widget.objectName()=="cqCodeView"):
+        widget.setVisible(False)
+
+
+##
+### Parametric Values
+##
+ModelName = "c_1206_base_model"
+# Setup parameters related to the chip component body
+L=3.05  #pkg Body Length
+W=1.52  #pkg Body Width
+H=1.06  #pkg Height
+
+color=(0.67,0.33,0.00)
+
+
+
+Newdoc = FreeCAD.newDocument(ModelName)
+App.setActiveDocument(ModelName)
+Gui.ActiveDocument=Gui.getDocument(ModelName)
+
+
+# The dimensions of the box. These can be modified rather than changing the
+# object's code directly.
+
+# Create a 3D box based on the dimension variables above
+result = cadquery.Workplane("XY").box(L, W, H)
+
+# Render the solid
+show(result)
+
+
+# Create list of objects, starting with object names
+objs=[]
+doc = FreeCAD.ActiveDocument
+FreeCAD.ActiveDocument.Label=ModelName
+i=0
+for obj in doc.Objects:
+    # do what you want to automate
+    objs.append(App.ActiveDocument.getObject(obj.Name))
+    obj.Label=ModelName
+
+Gui.ActiveDocument.getObject(obj.Name).ShapeColor = color
+
+#moving to plane Z
+FreeCAD.getDocument(ModelName).getObject(obj.Name).Placement = App.Placement(App.Vector(0,0,H/2),App.Rotation(App.Vector(0,0,1),0))
+Gui.SendMsgToActiveView("ViewFit")
+
+## Export to STEP
+StepFileName='.//'+doc.Label+'.step'
+import ImportGui
+ImportGui.export(objs,StepFileName)
+
+## Export to VRML scaled 1/2.54
+VrmlFileName='.//'+doc.Label+'.wrl'
+
+App.ActiveDocument.addObject('Part::Feature','Vrml_model').Shape=objs[0].Shape
+App.ActiveDocument.ActiveObject.Label='Vrml_model'
+Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.getDocument(doc.Name).getObject(objs[0].Name).ShapeColor
+Gui.ActiveDocument.ActiveObject.LineColor=Gui.getDocument(doc.Name).getObject(objs[0].Name).LineColor
+Gui.ActiveDocument.ActiveObject.PointColor=Gui.getDocument(doc.Name).getObject(objs[0].Name).PointColor
+Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.getDocument(doc.Name).getObject(objs[0].Name).DiffuseColor
+App.ActiveDocument.recompute()
+newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
+#scale to export vrml  start
+Draft.scale(newObj,delta=App.Vector(0.3937001,0.3937001,0.3937001),center=App.Vector(0,0,0),legacy=True)
+
+App.activeDocument().recompute()
+#we need to remove object to export only scaled model
+FreeCAD.getDocument(doc.Name).removeObject(objs[0].Name)
+__objs__=[]
+__objs__.append(FreeCAD.getDocument(doc.Name).getObject("Vrml_model"))
+App.Gui.export(__objs__,VrmlFileName)
+App.activeDocument().recompute()
+
+#restoring step module
+import ImportGui
+ImportGui.insert(StepFileName,doc.Name)
+
+FreeCAD.Console.PrintMessage(App.ActiveDocument.ActiveObject.Label+" exported and scaled to Vrml\r\n")
+del __objs__
+
+## Save to disk in native format
+App.ActiveDocument=None
+Gui.ActiveDocument=None
+App.setActiveDocument(doc.Name)
+App.ActiveDocument=App.getDocument(doc.Name)
+Gui.ActiveDocument=Gui.getDocument(doc.Name)
+
+App.getDocument(doc.Name).saveAs('.//'+doc.Label+'.FCStd')
+App.ActiveDocument.recompute()
+
+App.getDocument(doc.Name).Label = doc.Name
+Gui.SendMsgToActiveView("Save")
+App.getDocument(doc.Name).save()
+
+del objs
