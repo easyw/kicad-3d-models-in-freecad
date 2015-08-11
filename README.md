@@ -9,11 +9,17 @@ and, obviously, populate the 3D models with STEP lib...
 The repo will have models starting from a FreeCAD project modeled in mm with a standar origin and orientation
 
                                             -----> STEP model exported (union of parts)
-                                            
+
                                             -----> VRML model exported (scaled 1/2.54)
-                                            
+
 If you would like to share your models, I'll be happy to add these to the 3D repo!!! :)
 
 thank you for any suggestion and feedback,
 
 Maurice
+
+Risk disclaimer
+---------------
+
+*USE 3D CAD DATA AT YOUR OWN RISK +
+DO NOT RELY UPON ANY INFORMATION FOUND HERE WITHOUT INDEPENDENT VERIFICATION.*
