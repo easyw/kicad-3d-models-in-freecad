@@ -3,6 +3,6 @@ taskkill -im freecad.exe /f
 echo cadquery-freecad-module required
 @echo ON
 cd %~p0
-start "" "c:\FreeCAD\bin\freecad" make_gw_export_fc.py AKA
+start "" "c:\FreeCAD\bin\freecad" make_dip_export_fc.py DIP08
 
 ::pause

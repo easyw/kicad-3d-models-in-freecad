@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-                                                      *
-#* This are a FreeCAD & cadquery tools                                      *
+#* These are a FreeCAD & cadquery tools                                      *
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
 #* cad tools functions                                                      *
@@ -24,7 +24,11 @@
 #*                                                                          *
 #****************************************************************************
 
+__title__ = "CadQuery exporting and fusion libs"
+__author__ = "maurice"
+__Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
+___ver___ = "1.1 09/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -42,7 +46,8 @@ def close_CQ_Example(App, Gui):
     App.ActiveDocument=App.getDocument("Ex000_Introduction")
     Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
     App.closeDocument("Ex000_Introduction")
-
+    FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
+    
     #Getting the main window will allow us to start setting things up the way we want
     mw = FreeCADGui.getMainWindow()
 
@@ -53,7 +58,8 @@ def close_CQ_Example(App, Gui):
             widget.setVisible(True)
         if (widget.objectName()=="cqCodeView"):
             widget.setVisible(False)
-
+    FreeCAD.Console.PrintMessage('Dock adjusted\r\n')
+    
     return 0
 
 
@@ -121,6 +127,8 @@ def Color_Objects(Gui,obj,color):
     Gui.ActiveDocument.getObject(obj.Name).LineColor = color
     Gui.ActiveDocument.getObject(obj.Name).PointColor = color
     Gui.ActiveDocument.getObject(obj.Name).DiffuseColor = color
+    FreeCAD.Console.PrintMessage(obj.Name)
+    FreeCAD.Console.PrintMessage(' objName\r\n')
     #obj.Label=ModelName
 
     return 0
@@ -245,6 +253,7 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     outdir=os.path.dirname(os.path.realpath(__file__))+dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     FCName=outdir+'/'+modelName+'.FCStd'
+    FreeCAD.Console.PrintMessage('\r\n'+FCName+'\r\n')
     App.getDocument(doc.Name).saveAs(FCName)
     App.ActiveDocument.recompute()
 
