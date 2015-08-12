@@ -3,7 +3,7 @@ STEP AP214 and VRML FreeCAD script generator
 :Author:    Maurice
 :Email:     https://launchpad.net/~easyw
 :Date:      August 2015
-:Revision:  1.2
+:Revision:  1.3
 :website: https://github.com/easyw/kicad-3d-models-in-freecad/
 :docname: README.txt
 
@@ -12,7 +12,7 @@ link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
 is a place to find STEP AP214 3D models and VRML kicad 3D models
 under *''cadquery'' DIR*, there are some nice scripts that can generate +
 *STEP and VRML parametric models* for +
-*GullWings ICs, DIP ICS, pin-strip headers*
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers*
 
 All the STEP and VRML models can be used with kicad new stable release (August 2015)
 and are ready to be used with Kicad StepUp script +
@@ -32,7 +32,7 @@ link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
 is a place to find STEP AP214 3D models and VRML kicad 3D models; +
 under *''cadquery'' DIR*, there are some nice scripts that can generate +
 *STEP and VRML parametric models* for +
-*GullWings ICs, DIP ICS, pin-strip headers* ready to go for *kicad StepUp script*
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers* ready to go for *kicad StepUp script*
 
 The parametric scripts are derived from CadQuery scripts for generating QFP, DIP and pinHeaders
 models in X3D format. +
@@ -73,7 +73,7 @@ credits
 author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
 FreeCAD & cadquery tools: +
-libraries to export generated models in STEP & VRML format.                        *
+libraries to export generated models in STEP & VRML format +
 - cad tools functions +
 Copyright (c) 2015 *Maurice* link:https://launchpad.net/~easyw[] +
 

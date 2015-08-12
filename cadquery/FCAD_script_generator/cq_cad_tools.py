@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.1 09/08/2015"
+___ver___ = "1.2 12/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -182,8 +182,7 @@ def exportSTEP(doc,modelName, dir):
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
-    # objs=GetListOfObjects(FreeCAD, doc)
-    objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
+    objs=GetListOfObjects(FreeCAD, doc)
     import ImportGui
     FreeCAD.Console.PrintMessage('\r\n'+StepFileName)
     # FreeCAD.Console.PrintMessage(objs)
@@ -206,8 +205,8 @@ def exportVRML(doc,modelName,scale,dir):
     VrmlFileName=outdir+'/'+modelName+'.wrl'
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
-    # objs=GetListOfObjects(FreeCAD, doc)
-    objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
+    objs=GetListOfObjects(FreeCAD, doc)
+    #objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
     FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model').Shape=objs[0].Shape
     FreeCAD.ActiveDocument.ActiveObject.Label='Vrml_model'
     FreeCADGui.ActiveDocument.ActiveObject.ShapeColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).ShapeColor
@@ -218,7 +217,7 @@ def exportVRML(doc,modelName,scale,dir):
     newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
     #scale to export vrml  start
     Draft.scale(newObj,delta=FreeCAD.Vector(scale,scale,scale),center=FreeCAD.Vector(0,0,0),legacy=True)
-
+    
     FreeCAD.activeDocument().recompute()
     #we need to remove object to export only scaled model
     FreeCAD.getDocument(doc.Name).removeObject(objs[0].Name)
