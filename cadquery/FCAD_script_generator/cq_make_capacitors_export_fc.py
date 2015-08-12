@@ -124,23 +124,6 @@ def make_chip(params):
     return (case, pins)
     
 
-#this workplane is centered at x=0.5,y=0.5, the center of the upper face
-## s = cq.Workplane("XY").box(1,1,1)
-##
-## v=s.center(-2,-2) # move the center to the corner
-## #FreeCAD.Console.PrintMessage(v)
-##
-## s=s.translate((-5,-10,-15))
-##
-## # Render the solid
-## #show(s)
-## show(s)
-
-## import ImportGui
-## ImportGui.insert(u"C:/Cad/Progetti_K/FreeCAD-models/scripts/3D-models/CadQuery/reference-block.step","c_1206_base_model")
-## Gui.SendMsgToActiveView("ViewFit")
-
-
 
 # The dimensions of the box. These can be modified rather than changing the
 # object's code directly.
