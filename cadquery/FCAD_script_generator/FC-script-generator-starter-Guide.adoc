@@ -40,8 +40,8 @@ author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
 
 ## requirements ## +
-link:https://github.com/jmwright/cadquery-freecad-module/[] +
-link:http://freecadweb.org/[]
+link:https://github.com/jmwright/cadquery-freecad-module/[] version 0.18 or later +
+link:http://freecadweb.org/[] version 0.15 or later
 
 **********************************************************************
 
