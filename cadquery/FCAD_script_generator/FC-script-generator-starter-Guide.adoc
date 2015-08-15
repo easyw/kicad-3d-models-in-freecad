@@ -46,7 +46,6 @@ link:http://freecadweb.org/[] version 0.15 or later +
         work in progress for Linux
 
 **********************************************************************
-
 Running the scripts
 -------------------
 
@@ -62,12 +61,10 @@ modelName and parameters are described in: +
 3. cq_params_gw_ssop.py file for defining SSOP mechanical data +
 4. cq_params_gw_tssop.py file for defining TSSOP mechanical data +
 5. cq_params_gw_sot.py file for defining SOT mechanical data +
-
 all data in parameter files are collected from components data sheets +
 ##the script will generate STEP and VRML parametric models##
-ready to be used with kicad StepUp script
+ready to be used with kicad StepUp script 
 
-<<<
 
 credits
 -------
