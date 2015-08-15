@@ -48,7 +48,7 @@ __title__ = "make GullWings ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make GullWings ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.1 11/08/2015"
+___ver___ = "1.3.3 15/08/2015"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -60,10 +60,40 @@ import sys, os
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
-from Gui.Command import *
+
 
 outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+#checking requirements
+#######################################################################
+FreeCAD.Console.PrintMessage("FC Version \r\n")
+FreeCAD.Console.PrintMessage(FreeCAD.Version())
+FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+if int(FC_majorV) <= 0:
+    if int(FC_minorV) < 15:
+        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+
+# FreeCAD.Console.PrintMessage(all_params_soic)
+FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+if os.path.exists(file_path_cq):
+    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+else:
+    msg="missing CadQuery Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+#######################################################################
+
+# CadQuery Gui
+from Gui.Command import *
 
 # Import cad_tools
 import cq_cad_tools
@@ -116,8 +146,6 @@ all_params.update(all_params_sot)
 
 # all_params = dict(all_params1.items() | all_params2.items())
 
-# FreeCAD.Console.PrintMessage(all_params_soic)
-
 def make_gw(params):
 
     c  = params.c
@@ -130,7 +158,7 @@ def make_gw(params):
     R1  = params.R1
     R2  = params.R2
     S  = params.S
-    L  = params.L
+# automatically calculated    L  = params.L
     D1  = params.D1
     E1  = params.E1
     E   = params.E
@@ -150,13 +178,19 @@ def make_gw(params):
 
     # calculated dimensions for body
     # checking pin lenght compared to overall width
-    d=(E-E1 -2*(S+L) -2*c)
-    if (d > 0):
-        S=S+d/2
-        FreeCAD.Console.PrintMessage('\r\nincreasing pin lenght\r\n')
-    if (d < 0):
-        S=S-d/2
-        FreeCAD.Console.PrintMessage('\r\ntrimming pin lenght\r\n')
+    # d=(E-E1 -2*(S+L)-2*(R1))
+    L=(E-E1-2*(S+R1))/2
+    FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
+
+    ## d=(E-E1 -2*(S+L)-2*(R1))
+    ## FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+';d='+str(d)+'\r\n')
+    ## #if (d > 0):
+    ## if (d > c/10):  #tolerance
+    ##     L=L+d/2
+    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\nincreasing pin lenght\r\n')
+    ## if (d < -c/10):  #tolerance
+    ##     L=L+d/2
+    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
     A = A1 + A2
     A2_t = (A2-c)/2 # body top part height
     A2_b = A2_t     # body bottom part height

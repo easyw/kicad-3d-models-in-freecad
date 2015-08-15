@@ -47,10 +47,10 @@ __title__ = "make pin header 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make pin header 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.4 11/08/2015"
+___ver___ = "1.4.1 14/08/2015"
 
 
-#sleep ### NB il modello presenta errori di geometria 
+#sleep ### NB il modello presenta errori di geometria
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -62,6 +62,36 @@ import sys, os
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+
+#checking requirements
+#######################################################################
+FreeCAD.Console.PrintMessage("FC Version \r\n")
+FreeCAD.Console.PrintMessage(FreeCAD.Version())
+FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+if int(FC_majorV) <= 0:
+    if int(FC_minorV) < 15:
+        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+
+# FreeCAD.Console.PrintMessage(all_params_soic)
+FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+if os.path.exists(file_path_cq):
+    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+else:
+    msg="missing CadQuery Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+#######################################################################
+
+
 from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__))
@@ -148,7 +178,7 @@ def make_pinheader(npins):
     for i in range(1,npins):
         pins = pins.union(pin.translate((sep*i,0,0)))
     pins = pins.translate((-npins*sep/2+sep/2,0,0))
-    
+
     return (base, pins)
 
 ## def shapeToMesh(shape, color):
@@ -179,9 +209,9 @@ def make_all():
     ## p = Pool()
     ## p.map(make_one, list(range(1,40+1)))  maui TBD
 
-    
+
 def build_and_save(i):
-    
+
     ModelName='pinstrip_p254_'+str(i)+'x1'
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
@@ -219,19 +249,19 @@ def build_and_save(i):
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, ModelName,out_dir)
     #display BBox
-    
+
     FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
     #import ImportGui
     #ImportGui.insert(u"C:/Cad/Progetti_K/FreeCAD-models/scripts/3D-models/CadQuery/reference-block.step","mypin")
-    
+
     Gui.SendMsgToActiveView("ViewFit")
     Gui.activeDocument().activeView().viewAxometric()
-        
-    return 0    
+
+    return 0
 # when run from command line
 if __name__ == "__main__":
     # make_all() maui TBD
-    
+
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 # maui     run()
 
@@ -247,9 +277,9 @@ if __name__ == "__main__":
     else:
         build_and_save(int(model_to_build))
 
-    
-    
-    
+
+
+
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":

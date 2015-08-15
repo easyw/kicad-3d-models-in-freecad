@@ -49,7 +49,7 @@ __title__ = "make chip capacitors 3D models"
 __author__ = "maurice"
 __Comment__ = 'make chip capacitos 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3 12/08/2015"
+___ver___ = "1.3.1 14/08/2015"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -61,6 +61,36 @@ import sys, os
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+
+#checking requirements
+#######################################################################
+FreeCAD.Console.PrintMessage("FC Version \r\n")
+FreeCAD.Console.PrintMessage(FreeCAD.Version())
+FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+if int(FC_majorV) <= 0:
+    if int(FC_minorV) < 15:
+        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+
+# FreeCAD.Console.PrintMessage(all_params_soic)
+FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+if os.path.exists(file_path_cq):
+    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+else:
+    msg="missing CadQuery Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+#######################################################################
+
+
 from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__))
@@ -109,7 +139,7 @@ def make_chip(params):
     # translate the object
     case=case.translate((0,0,T/2)).rotate((0,0,0), (0,0,1), 0)
     top = cq.Workplane("XY").box(L-2*pb, W, 2*pt)
-    top = top.edges("|X").fillet(ef)
+    # top = top.edges("|X").fillet(ef)
     top=top.translate((0,0,T-pt)).rotate((0,0,0), (0,0,1), 0)
 
 

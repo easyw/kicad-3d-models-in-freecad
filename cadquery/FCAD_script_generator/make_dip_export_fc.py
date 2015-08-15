@@ -5,7 +5,7 @@
 #
 # from https://bitbucket.org/hyOzd/freecad-macros
 # author hyOzd
-# This is a 
+# This is a
 # Dimensions are from Microchips Packaging Specification document:
 # DS00000049BY. Body drawing is the same as QFP generator#
 
@@ -49,7 +49,7 @@ __title__ = "make DIP ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make DIP ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3 09/08/2015"
+___ver___ = "1.3.3 14/08/2015"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -61,6 +61,33 @@ import sys, os
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+#checking requirements
+#######################################################################
+FreeCAD.Console.PrintMessage("FC Version \r\n")
+FreeCAD.Console.PrintMessage(FreeCAD.Version())
+FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+if int(FC_majorV) <= 0:
+    if int(FC_minorV) < 15:
+        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+
+# FreeCAD.Console.PrintMessage(all_params_soic)
+FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+if os.path.exists(file_path_cq):
+    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+else:
+    msg="missing CadQuery Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+#######################################################################
 from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__))
@@ -106,7 +133,7 @@ Params = namedtuple("Params", [
 
     'npins',  # number of pins
     'modelName', #modelName
-    'rotation' #rotation if required    
+    'rotation' #rotation if required
 ])
 
 def make_params(D, npins, modelName, rotation):
@@ -198,7 +225,7 @@ all_params = {
 
         npins = 64,  # total number of pins
         modelName = 'dip_64_75',  # Model Name
-        rotation = 0    # rotation if required        
+        rotation = 0    # rotation if required
     ),
 }
 
@@ -360,21 +387,21 @@ def make_one(variant, filename):
 
 def run():
     ## # get variant names from command line
-    
+
     return
     ## if len(sys.argv) < 2:
     ##     print("No variant name is given!")
     ##     return
-    ## 
+    ##
     ## if sys.argv[1] == "all":
     ##     variants = all_params.keys()
     ## else:
     ##     variants = sys.argv[1:]
-    ## 
+    ##
     ## outdir = os.path.abspath("./generated_dip/")
     ## if not os.path.exists(outdir):
     ##     os.makedirs(outdir)
-    ## 
+    ##
     ## for variant in variants:
     ##     if not variant in all_params:
     ##         print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
@@ -395,7 +422,7 @@ if __name__ == "temp.module":
     ## color_attr=pins_color+(0,)
     ## #FreeCAD.Console.PrintMessage(color_attr)
     ## show(pins, color_attr)
-    ## 
+    ##
     ## show(case, (80, 80, 80, 0))
     ## show(pins)
 
@@ -455,8 +482,8 @@ if __name__ == "__main__":
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
-        
+
         FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        
-    
+
+
         ## run()
