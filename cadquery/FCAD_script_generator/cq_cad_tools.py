@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2 12/08/2015"
+___ver___ = "1.2.2 16/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -47,7 +47,7 @@ def close_CQ_Example(App, Gui):
     Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
     App.closeDocument("Ex000_Introduction")
     FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
-    
+
     #Getting the main window will allow us to start setting things up the way we want
     mw = FreeCADGui.getMainWindow()
 
@@ -59,7 +59,7 @@ def close_CQ_Example(App, Gui):
         if (widget.objectName()=="cqCodeView"):
             widget.setVisible(False)
     FreeCAD.Console.PrintMessage('Dock adjusted\r\n')
-    
+
     return 0
 
 
@@ -178,7 +178,8 @@ def exportSTEP(doc,modelName, dir):
     ## Export to STEP
     ## Get cwd
 
-    outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    outdir=dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
@@ -200,7 +201,8 @@ def exportVRML(doc,modelName,scale,dir):
 
     ## Export to VRML scaled 1/2.54
     #VrmlFileName='.//'+doc.Label+'.wrl'
-    outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    outdir=dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     VrmlFileName=outdir+'/'+modelName+'.wrl'
     StepFileName=outdir+'/'+modelName+'.step'
@@ -217,7 +219,7 @@ def exportVRML(doc,modelName,scale,dir):
     newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
     #scale to export vrml  start
     Draft.scale(newObj,delta=FreeCAD.Vector(scale,scale,scale),center=FreeCAD.Vector(0,0,0),legacy=True)
-    
+
     FreeCAD.activeDocument().recompute()
     #we need to remove object to export only scaled model
     FreeCAD.getDocument(doc.Name).removeObject(objs[0].Name)
@@ -249,7 +251,8 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     App.ActiveDocument=App.getDocument(doc.Name)
     Gui.ActiveDocument=Gui.getDocument(doc.Name)
 
-    outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
+    outdir=dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     FCName=outdir+'/'+modelName+'.FCStd'
     FreeCAD.Console.PrintMessage('\r\n'+FCName+'\r\n')

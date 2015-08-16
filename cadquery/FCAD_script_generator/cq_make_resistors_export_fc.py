@@ -223,10 +223,11 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
-        out_dir=destination_dir
+        script_dir=os.path.dirname(os.path.realpath(__file__))
+        out_dir=script_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
+            #out_dir="./generated_qfp/"
         # export STEP model
         exportSTEP(doc,ModelName,out_dir)
 

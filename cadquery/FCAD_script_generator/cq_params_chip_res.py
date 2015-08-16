@@ -17,7 +17,7 @@ from collections import namedtuple
 top_color = (25, 25, 25)  # black
 case_color = (255, 255, 255)  # white
 pins_color = (230, 230, 230)
-destination_dir="./generated_res/"
+destination_dir="/generated_res"
 
 ### Parametric Values
 ##

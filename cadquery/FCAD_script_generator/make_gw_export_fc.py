@@ -48,7 +48,7 @@ __title__ = "make GullWings ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make GullWings ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.3 15/08/2015"
+___ver___ = "1.3.4 16/08/2015"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -201,6 +201,11 @@ def make_gw(params):
     D1_t2 = D1_t1-2*tan(radians(the))*A2_t # top part upper width
     E1_t2 = E1_t1-2*tan(radians(the))*A2_t # top part upper length
 
+    # FreeCAD.Console.PrintMessage('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
+    # FreeCAD.Console.PrintMessage('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
+    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
+    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
+    # sleep
     if ef!=0:
         case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
              workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
@@ -357,7 +362,9 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
-        out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
+        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
+        script_dir=os.path.dirname(os.path.realpath(__file__))
+        out_dir=script_dir+destination_dir+all_params[variant].dest_dir_prefix+'/'
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"

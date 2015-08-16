@@ -15,7 +15,7 @@ from collections import namedtuple
 #case_color = (139, 69, 19)  #  saddle brown
 case_color = (139, 119, 101)  # peach puff 4
 pins_color = (230, 230, 230)
-destination_dir="./generated_cap/"
+destination_dir="/generated_cap"
 
 ### Parametric Values
 ##

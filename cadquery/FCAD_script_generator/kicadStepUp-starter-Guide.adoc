@@ -1,0 +1,178 @@
+Kicad StepUp starter Guide
+==========================
+:Author:    Maurice
+:Email:     https://launchpad.net/~easyw
+:Author Initials: MEW
+:Date:      August 2015
+:Revision:  1.3.1
+:website: http://sourceforge.net/projects/kicadstepup/
+:docname: readme-kicadStepUp.adoc
+
+kicad StepUp: a new approach to export kicad board and modules in STEP AP214 (with colors).
+With kicad StepUp it is possible to export the 3D board and modules in STEP
+for MCAD interchange and create the 3D wrl libraries. +
+
+link:http://sourceforge.net/projects/kicadstepup/[kicadStepUp at sourceforge] +
+link:http://bazaar.launchpad.net/~easyw/kicad-stepup/trunk/files/[kicadStepUp at lauchpad] +
+link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
+
+<<<
+
+.OverView
+**********************************************************************
+to run the demo:
+
+in Linux:
+change dir to the folder in which you have extracted the demo +
++./launch-kicad_StepUp-demo.sh+
+
+in windows:
+change dir to the folder in which you have extracted the demo +
++launch-kicad_StepUp-demo.bat+
+
+the demo comes with a kicad project, along with all needed STEP and wrl modules, just to be used just out of the box +
+(*NB* use the script from inside the dir) +
+to see the kicad board, change dir to the folder in which you have extracted the demo +
+*in windows:* +
+ +launch-kicad-demo-project.bat+ +
+*in linux:* +
+ +./launch-kicad-demo-project.bat+ +
+
+*requirements:*
+kicad 2015 stable or latest dev release, freecad 0.15
+**********************************************************************
+
+Introduction
+------------
+Kicad StepUp allows the user to modeling the 3D modules starting from FreeCAD
+(instead of using Wings3D), creating models in STEP AP214 and rendering the
+pcb board and components in native STEP AP214.
+
+Designing in kicad native 3d-viewer will produce a fully aligned STEP version
+with the same view of kicad 3d render. +
+Now you will have the two words with the same appearance; one can design in kicad EDA and transfer the artwork to MCAD (FreeCAD) smoothly
+
+*WYSIWYG from EDA to MCAD*
+
+<<<
+
+*WYSIWYG from EDA to MCAD*
+
+.kicad StepUp in Kicad 3d-viewer
+image::images/hackrf-one-stepup-kicad-3d-viewer.png[]
+
+.kicad StepUp in MCAD Catia
+image::images/hackrf-one-stepup-catia-assembly.png[]
+
+<<<
+
+Basic How To '(using kicad StepUp the easiest way)'
+---------------------------------------------------
+
+*(not changing the way you use kicad)*
+
+*1.* just copy the STEP 3d models in the same folder in which there are your wrl 3d models and
+   use the same name of the wrl model name (e.g. r_0603.wrl => r_0603.step) +
+*2.* go to your board folder and copy the script kicad_StepUp.FCMacro and the config file ksu-config.cfg
+   inside that folder, edit the config file ksu-config.cfg with e.g. notepad changing your model prefix to your KISYS3DMOD path +
+*3.* export from kicad pcbnew the IDF model of the board +
+*4.* run the script from command line or from a bash/batch file +
+    <path to Freecad executable file>/freecad <kicad_pcb_name.emn> ksu-config.cfg kicad_StepUp.FCMacro +
+    '(e.g. freecad mypcb.emn ksu-config.cfg kicad_StepUp.FCMacro)' +
+*just watch the script assembly your 3D board with 3D models :)*
+
+How To '(using kicad StepUp the best way)'
+------------------------------------------
+
+*(getting the best from STEP models)*
+
+*1.* just copy the STEP 3d models in the same folder in which there are your wrl 3d models +
+*2.* export the STEP models, scaled 1/2.54 to wrl with the same name of the STEP model
+(e.g. r_0603.wrl => r_0603.step); in this way your 3D board in kicad pcbnew 3d-viewer and in FreeCAD workbench will look perfectly aligned +
+*3.* go to your board folder and copy the script kicad_StepUp.FCMacro and the config file ksu-config.cfg
+   inside that folder, edit the config file ksu-config.cfg with e.g. notepad changing your model prefix to your KISYS3DMOD path +
+*4.* export from kicad pcbnew the IDF model of the board +
+*5.* run the script from command line or from a bash/batch file +
+    <path to Freecad executable file>/freecad <kicad_pcb_name.emn> ksu-config.cfg kicad_StepUp.FCMacro +
+    '(e.g. freecad mypcb.emn ksu-config.cfg kicad_StepUp.FCMacro)' +
+*just watch the script assembly your 3D board with 3D models :)*
+
+<<<
+
+Create your own Library
+----------------------
+
+The way to build a STEP models library to be easily used by the script is:
+
+- start modeling your 3d object in scale 1:1 in mm
+(which is the way in which mechanical stuff are used to be)
+- convert your model to STEP in scale 1:1
+- assure that your STEP module *is fused to just one solid object*
+- convert the model to wrl in scale 1/2.54 (0.3937001)
+(which is the scale used by kicad 3d-viewer or maintain 1:1 scale in exporting and apply
+the scale 1/2.54 to the wrl model in 3d-viewer)
+- use the same name to wrl and STEP model
+- put the STEP model and VRML model in the same place
+- check if your vrml model is aligned to the kicad pcb footprint in pcbnew 3d-viewer
+- launch the script and check if the FreeCAD model and the kicad 3D viewer are aligned
+- in case of misalignment just verify your model
+
+TIP: Tip. +
+*import* the link:https://raw.githubusercontent.com/easyw/kicad-3d-models-in-freecad/master/reference-block.step[reference block] in your FC doc
+beside the model you are designing to check the correct orientation +
+(*NB Import Ctrl+I*, 'not Open Ctrl+O')
+
+.reference block imported
+image::images/reference-block-imported.jpg[]
+
+*Note:* here link:http://forum.freecadweb.org/viewtopic.php?t=8451#p69489[FreeCAD forum fusion howto] some tips to fuse correctly objects in FreeCAD
+
+STEP AP214 and VRML FreeCAD scripted repository ready to kicad StepUp
+---------------------------------------------------------------------
+link:https://github.com/easyw/kicad-3d-models-in-freecad[repository of 3D STEP models:] +
+there is a repository of many electronic components *STEP AP214* models, with a nice script to build parametric models for
+'SOIC, SSOP, TSSOP, SOT, QFP' ICs, DIP ICs, Chip Resistors, Chip Capacitors, Pin Headers just compiling a parametric text file with dimensions from component data sheet
+
+'more is coming ...'
+
+credits
+-------
+
+'kicad StepUp' script author is {author} link:https://launchpad.net/~easyw/[easyw@launchpad] +
+Guide Doc Version is {revision}
+
+link:http://www.kicad-pcb.org/display/KICAD/KiCad+EDA+Software+Suite[kicad EDA] +
+- IDF export for kicad (Cirilo Bernardo)
+
+link:http://freecadweb.org/[FreeCAD]
+
+IDF import for FreeCAD +
+- Milos Koutny (milos.koutny@gmail.com)
+
+link:https://github.com/jmwright/cadquery-freecad-module[CadQuery FC module] +
+- CadQuery FreeCAD module +
+
+link:https://bitbucket.org/hyOzd/freecad-macros[hyOzd freecad macros] +
+- hyOzd parametric script
+
+FreeCAD-PCB +
+- marmni <marmni@onet.eu>
+
+[[copyright]]
+*Copyright*
+-----------
+
+This document '{docname}' and kicad StepUp scripts are Copyright © 2015 by {Author}. You may distribute it and/or modify it under the terms of either
+the GNU General Public License  (http://www.gnu.org/licenses/gpl.html),
+version 3 or later, or the Creative Commons Attribution License
+(http://creativecommons.org/licenses/by/3.0/), version 3.0 or later.
+
+All trademarks within this guide belong to their legitimate owners.
+
+<<<
+
+Risk disclaimer
+---------------
+
+*USE 3D CAD DATA AT YOUR OWN RISK +
+DO NOT RELY UPON ANY INFORMATION FOUND HERE WITHOUT INDEPENDENT VERIFICATION.*

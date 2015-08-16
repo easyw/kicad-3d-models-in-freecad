@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="./generated_gw/"
+destination_dir="/generated_gw/"
 # destination_dir="./"
 
 case_color = (50, 50, 50)
