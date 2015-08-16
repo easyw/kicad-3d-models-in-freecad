@@ -3,7 +3,7 @@ STEP AP214 and VRML FreeCAD script generator
 :Author:    Maurice
 :Email:     https://launchpad.net/~easyw
 :Date:      August 2015
-:Revision:  1.2
+:Revision:  1.3.1
 :website: https://github.com/easyw/kicad-3d-models-in-freecad/
 :docname: README.txt
 
@@ -12,7 +12,7 @@ link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
 is a place to find STEP AP214 3D models and VRML kicad 3D models
 under *''cadquery'' DIR*, there are some nice scripts that can generate +
 *STEP and VRML parametric models* for +
-*GullWings ICs, DIP ICS, pin-strip headers*
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers*
 
 All the STEP and VRML models can be used with kicad new stable release (August 2015)
 and are ready to be used with Kicad StepUp script +
@@ -32,7 +32,7 @@ link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
 is a place to find STEP AP214 3D models and VRML kicad 3D models; +
 under *''cadquery'' DIR*, there are some nice scripts that can generate +
 *STEP and VRML parametric models* for +
-*GullWings ICs, DIP ICS, pin-strip headers* ready to go for *kicad StepUp script*
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers* ready to go for *kicad StepUp script*
 
 The parametric scripts are derived from CadQuery scripts for generating QFP, DIP and pinHeaders
 models in X3D format. +
@@ -40,19 +40,21 @@ author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
 
 ## requirements ## +
-link:https://github.com/jmwright/cadquery-freecad-module/[] +
-link:http://freecadweb.org/[]
+link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] +
+link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
 
 **********************************************************************
-
 Running the scripts
 -------------------
 
-to run the script just do: +
-freecad make_gw_export_fc.py modelName +
-examples: +
-- c:\freecad\bin\freecad make_gw_export_fc.py SOIC_8 +
-- c:\freecad\bin\freecad make_gw_export_fc.py all
+to run the script just move to the scripts dir and do: +
+freecad ./make_gw_export_fc.py modelName +
+examples in win: +
++c:\freecad\bin\freecad make_gw_export_fc.py SOIC_8+ +
++c:\freecad\bin\freecad make_gw_export_fc.py all+ +
+in linux: +
++freecad ./make_gw_export_fc.py SOIC_8+ +
++freecad ./make_gw_export_fc.py all+
 
 modelName and parameters are described in: +
 1. cq_params_gw_soic.py file for defining SOIC mechanical data +
@@ -60,12 +62,17 @@ modelName and parameters are described in: +
 3. cq_params_gw_ssop.py file for defining SSOP mechanical data +
 4. cq_params_gw_tssop.py file for defining TSSOP mechanical data +
 5. cq_params_gw_sot.py file for defining SOT mechanical data +
-
+6. cq_params_chip_cap.py file for defining chip capacitors mechanical data +
+7. cq_params_chip_res.py file for defining chip resistors mechanical data +
 all data in parameter files are collected from components data sheets +
 ##the script will generate STEP and VRML parametric models##
-ready to be used with kicad StepUp script
+ready to be used with kicad StepUp script 
 
-<<<
+[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD. 
+If you do, run the following command line from a terminal to fix this issue. +
++sudo apt-get install python-pyside.qtnetwork+
+
+
 
 credits
 -------
@@ -73,7 +80,7 @@ credits
 author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
 FreeCAD & cadquery tools: +
-libraries to export generated models in STEP & VRML format.                        *
+libraries to export generated models in STEP & VRML format +
 - cad tools functions +
 Copyright (c) 2015 *Maurice* link:https://launchpad.net/~easyw[] +
 
