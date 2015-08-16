@@ -104,18 +104,18 @@ Create your own Library
 
 The way to build a STEP models library to be easily used by the script is:
 
-- start modeling your 3d object in scale 1:1 in mm
-(which is the way in which mechanical stuff are used to be)
-- convert your model to STEP in scale 1:1
-- assure that your STEP module *is fused to just one solid object*
-- convert the model to wrl in scale 1/2.54 (0.3937001)
+1. start modeling your 3d object in scale 1:1 in mm
+(which is the way in which mechanical stuff are used to be) +
+2. convert your model to STEP in scale 1:1 +
+3. assure that your STEP module *is fused to just one solid object* +
+4. convert the model to wrl in scale 1/2.54 (0.3937001) +
 (which is the scale used by kicad 3d-viewer or maintain 1:1 scale in exporting and apply
-the scale 1/2.54 to the wrl model in 3d-viewer)
-- use the same name to wrl and STEP model
-- put the STEP model and VRML model in the same place
-- check if your vrml model is aligned to the kicad pcb footprint in pcbnew 3d-viewer
-- launch the script and check if the FreeCAD model and the kicad 3D viewer are aligned
-- in case of misalignment just verify your model
+the scale 1/2.54 to the wrl model in 3d-viewer) +
+5. use the same name to wrl and STEP model +
+6. put the STEP model and VRML model in the same place +
+7. check if your vrml model is aligned to the kicad pcb footprint in pcbnew 3d-viewer +
+8. launch the script and check if the FreeCAD model and the kicad 3D viewer are aligned +
+9. in case of misalignment just verify your model +
 
 TIP: Tip. +
 *import* the link:https://raw.githubusercontent.com/easyw/kicad-3d-models-in-freecad/master/reference-block.step[reference block] in your FC doc
@@ -131,9 +131,11 @@ STEP AP214 and VRML FreeCAD scripted repository ready to kicad StepUp
 ---------------------------------------------------------------------
 link:https://github.com/easyw/kicad-3d-models-in-freecad[repository of 3D STEP models:] +
 there is a repository of many electronic components *STEP AP214* models, with a nice script to build parametric models for
-'SOIC, SSOP, TSSOP, SOT, QFP' ICs, DIP ICs, Chip Resistors, Chip Capacitors, Pin Headers just compiling a parametric text file with dimensions from component data sheet
-
+'SOIC, SSOP, TSSOP, SOT, QFP' ICs, DIP ICs, Chip Resistors, Chip Capacitors, Pin Headers just compiling a parametric text file with dimensions from component data sheet +
+link:https://github.com/easyw/kicad-3d-models-in-freecad/tree/master/cadquery/FCAD_script_generator[3D-script-generator and 3D models] +
 'more is coming ...'
+
+<<<
 
 credits
 -------
@@ -149,7 +151,7 @@ link:http://freecadweb.org/[FreeCAD]
 IDF import for FreeCAD +
 - Milos Koutny (milos.koutny@gmail.com)
 
-link:https://github.com/jmwright/cadquery-freecad-module[CadQuery FC module] +
+link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] +
 - CadQuery FreeCAD module +
 
 link:https://bitbucket.org/hyOzd/freecad-macros[hyOzd freecad macros] +
