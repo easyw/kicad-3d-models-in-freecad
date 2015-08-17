@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.2 16/08/2015"
+___ver___ = "1.2.3 16/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -91,12 +91,25 @@ def FuseObjs_wColors(App, Gui,
     Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
     App.ActiveDocument.recompute()
 
+    ## ## TBD refine Shape to reduce size maui
+    ## App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape.removeSplitter()
+    ## App.ActiveDocument.ActiveObject.Label=App.ActiveDocument.Fusion.Label
+    ## Gui.ActiveDocument.Fusion.hide()
+    ## 
+    ## Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
+    ## Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
+    ## Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
+    ## Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
+    ## App.ActiveDocument.recompute()
+    ## App.ActiveDocument.ActiveObject.Label=docName
+    ####################################################### 
     # Remove the part1 part2 objects
     App.getDocument(docName).removeObject(part1)
     App.getDocument(docName).removeObject(part2)
 
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
+    ## App.getDocument(docName).removeObject("Fusion001")
 
     return 0
 
