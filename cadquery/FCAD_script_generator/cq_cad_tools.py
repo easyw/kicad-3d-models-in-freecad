@@ -95,20 +95,59 @@ def FuseObjs_wColors(App, Gui,
     ## App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape.removeSplitter()
     ## App.ActiveDocument.ActiveObject.Label=App.ActiveDocument.Fusion.Label
     ## Gui.ActiveDocument.Fusion.hide()
-    ## 
+    ##
     ## Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
     ## Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
     ## Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
     ## Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
     ## App.ActiveDocument.recompute()
     ## App.ActiveDocument.ActiveObject.Label=docName
-    ####################################################### 
+    #######################################################
     # Remove the part1 part2 objects
     App.getDocument(docName).removeObject(part1)
     App.getDocument(docName).removeObject(part2)
 
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
+    ## App.getDocument(docName).removeObject("Fusion001")
+
+    return 0
+
+###################################################################
+# CutObjs_wColors()  maui
+#	Function to fuse two objects together.
+###################################################################
+def CutObjs_wColors(App, Gui,
+                           docName, part1, part2):
+
+    # Fuse two objects
+    App.ActiveDocument=None
+    Gui.ActiveDocument=None
+    App.setActiveDocument(docName)
+    App.ActiveDocument=App.getDocument(docName)
+    Gui.ActiveDocument=Gui.getDocument(docName)
+    #Gui.activateWorkbench("PartWorkbench")
+    obj1=App.ActiveDocument.getObject(part1)
+    obj2=App.ActiveDocument.getObject(part2)
+    App.activeDocument().addObject("Part::Cut","Cut")
+
+    App.activeDocument().Cut.Base = obj1
+    App.activeDocument().Cut.Tool = obj2
+    #Gui.activeDocument().getObject(objs[0].Name).Visibility=False
+    #Gui.activeDocument().getObject(objs[2].Name).Visibility=False
+    #Gui.ActiveDocument.Cut.ShapeColor=Gui.ActiveDocument.Shape0_0403661773302.ShapeColor
+    #Gui.ActiveDocument.Cut.DisplayMode=Gui.ActiveDocument.Shape0_0403661773302.DisplayMode
+    App.ActiveDocument.recompute()
+
+    ### App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
+    App.ActiveDocument.ActiveObject.Label=docName
+
+    # Remove the part1 part2 objects
+    App.getDocument(docName).removeObject(part1)
+    App.getDocument(docName).removeObject(part2)
+
+    # Remove the fusion itself
+    #App.getDocument(docName).removeObject("Fusion")
     ## App.getDocument(docName).removeObject("Fusion001")
 
     return 0

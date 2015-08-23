@@ -48,7 +48,8 @@ __title__ = "make GullWings ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make GullWings ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.4 16/08/2015"
+___ver___ = "1.3.7 20/08/2015"
+
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -101,7 +102,8 @@ import cq_cad_tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -152,6 +154,7 @@ def make_gw(params):
     the  = params.the
     tb_s  = params.tb_s
     ef  = params.ef
+    cc1 = params.cc1
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
@@ -206,31 +209,117 @@ def make_gw(params):
     # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
     # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
     # sleep
-    if ef!=0:
-        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-             workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-             rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-             loft(ruled=True).faces(">Z").fillet(ef)
-    else:
-        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-             workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-             rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-             loft(ruled=True).faces(">Z")
+    ## if ef!=0:
+    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+    ##          loft(ruled=True).faces(">Z").fillet(ef)
+    ## else:
+    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+    ##          loft(ruled=True).faces(">Z")
+    ##
+    ## # fillet the corners
+    ## if ef!=0:
+    ##     BS = cq.selectors.BoxSelector
+    ##     case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
 
-    # fillet the corners
-    if ef!=0:
-        BS = cq.selectors.BoxSelector
-        case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
-        case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
-        case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-        case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
+    ## cc1 = 0.25 #0.45 chamfer of the 1st pin corner
+    ## cc = 0.25  # chamfer of the other corners
+
+    # calculate chamfers
+    totpinwidthx = (npx-1)*e+b # total width of all pins on the X side
+    totpinwidthy = (npy-1)*e+b # total width of all pins on the Y side
+
+    if cc1!=0:
+        cc1 = abs(min((D1-totpinwidthx)/2., (E1-totpinwidthy)/2.,cc1) - 0.5*tb_s)
+        cc1 = min(cc1, max_cc1)
+    # cc = cc1/2.
+    cc=cc1
+
+    def crect(wp, rw, rh, cv1, cv):
+        """
+        Creates a rectangle with chamfered corners.
+        wp: workplane object
+        rw: rectangle width
+        rh: rectangle height
+        cv1: chamfer value for 1st corner (lower left)
+        cv: chamfer value for other corners
+        """
+        points = [
+            (-rw/2., -rh/2.+cv1),
+            (-rw/2., rh/2.-cv),
+            (-rw/2.+cv, rh/2.),
+            (rw/2.-cv, rh/2.),
+            (rw/2., rh/2.-cv),
+            (rw/2., -rh/2.+cv),
+            (rw/2.-cv, -rh/2.),
+            (-rw/2.+cv1, -rh/2.),
+            (-rw/2., -rh/2.+cv1)
+        ]
+        return wp.polyline(points)
+
+    if cc1!=0:
+        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1)
+        case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
+        case = case.pushPoints([(0,0)]).workplane(offset=A2_b)
+        case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
+        case = case.pushPoints([(0,0)]).workplane(offset=c)
+        case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
+        case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
+        case = case.pushPoints([(0,0)]).workplane(offset=A2_t)
+        cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
+        case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
+        if ef!=0:
+            case = case.loft(ruled=True).faces(">Z").fillet(ef)
+        else:
+            case = case.loft(ruled=True).faces(">Z")
+    else:
+        if ef!=0:
+            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+                loft(ruled=True).faces(">Z").fillet(ef)
+        else:
+            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+                loft(ruled=True).faces(">Z")
+        # fillet the corners
+        if ef!=0:
+            BS = cq.selectors.BoxSelector
+            case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
+            case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
+            case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
+            case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
 
     # first pin indicator is created with a spherical pocket
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-    sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
-             sphere(sphere_r)
-    case = case.cut(sphere)
+    
+    
+    # Revolve a cylinder from a rectangle
+    # Switch comments around in this section to try the revolve operation with different parameters
+    ##cylinder =
+    #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
+    pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length, False).revolve(angle_degrees)
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5))
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5, -5),(-5, 5))
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5),(-5,5), False)
+    
+    ## color_attr=(255,255,255,0)
+    ## show(pinmark, color_attr)
+    ##sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
+    ##         sphere(sphere_r)
+    # color_attr=(255,255,255,0)
+    # show(sphere, color_attr)
+    #case = case.cut(sphere)
+
 
     # calculated dimensions for pin
     R1_o = R1+c # pin upper corner, outer radius
@@ -259,20 +348,22 @@ def make_gw(params):
     # create top, bottom side pins
     first_pos = -(npx-1)*e/2
     for i in range(npx):
-        pin = bpin.translate((first_pos+i*e, 0, 0))
-        pins.append(pin)
-        pin = bpin.translate((first_pos+i*e, 0, 0)).\
-              rotate((0,0,0), (0,0,1), 180)
-        pins.append(pin)
+        if i not in excluded_pins_xmirror:
+            pin = bpin.translate((first_pos+i*e, 0, 0))
+            pins.append(pin)
+        if i not in excluded_pins_x:
+            pin = bpin.translate((first_pos+i*e, 0, 0)).\
+                rotate((0,0,0), (0,0,1), 180)
+            pins.append(pin)
 
     # create right, left side pins
     first_pos = -(npy-1)*e/2
     for i in range(npy):
         pin = bpin.translate((first_pos+i*e, (D1-E1)/2, 0)).\
-              rotate((0,0,0), (0,0,1), 90)
+            rotate((0,0,0), (0,0,1), 90)
         pins.append(pin)
         pin = bpin.translate((first_pos+i*e, (D1-E1)/2, 0)).\
-              rotate((0,0,0), (0,0,1), 270)
+            rotate((0,0,0), (0,0,1), 270)
         pins.append(pin)
 
     # create exposed thermal pad if requested
@@ -288,7 +379,7 @@ def make_gw(params):
     # extract pins from case
     case = case.cut(pins)
 
-    return (case, pins)
+    return (case, pins, pinmark)
 
 
 def run():  # unused
@@ -335,6 +426,15 @@ if __name__ == "__main__":
         variants = [model_to_build]
 
     for variant in variants:
+        if variant == 'SOT23_3' or variant == 'SC70_3':
+            excluded_pins_x=(1,) ##used to build sot23-3; sc70 (asimmetrical pins, no pinmark)
+            excluded_pins_xmirror=(0,2,)
+            place_pinMark=False ##used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+        else:
+            excluded_pins_x=() ##no pin excluded
+            excluded_pins_xmirror=() ##no pin excluded
+            place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+        
         FreeCAD.Console.PrintMessage('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
@@ -343,14 +443,33 @@ if __name__ == "__main__":
         Newdoc = FreeCAD.newDocument(ModelName)
         App.setActiveDocument(ModelName)
         Gui.ActiveDocument=Gui.getDocument(ModelName)
-        case, pins = make_gw(all_params[variant])
+        case, pins, pinmark = make_gw(all_params[variant])
 
         color_attr=case_color+(0,)
         show(case, color_attr)
         color_attr=pins_color+(0,)
         show(pins, color_attr)
+        color_attr=mark_color+(0,)
+        show(pinmark, color_attr)
 
         doc = FreeCAD.ActiveDocument
+        objs=GetListOfObjects(FreeCAD, doc)
+        ## objs[0].Label='body'
+        ## objs[1].Label='pins'
+        ## objs[2].Label='mark'
+        ###
+        ## print objs[0].Name, objs[1].Name, objs[2].Name
+
+        ## sleep
+        if place_pinMark==True:
+            CutObjs_wColors(FreeCAD, FreeCADGui,
+                           doc.Name, objs[0].Name, objs[2].Name)
+        else:
+            #removing pinMark
+            App.getDocument(doc.Name).removeObject(objs[2].Name)
+        ###
+        #sleep
+        del objs
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui,
                         doc.Name, objs[0].Name, objs[1].Name)

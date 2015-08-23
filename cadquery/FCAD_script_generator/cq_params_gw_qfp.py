@@ -33,7 +33,8 @@ all_params_qfp = {
         fp_r = 0.5,     # first pin indicator radius
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
-        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        ef = 0, #0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 4.0,       # body length
         E1 = 4.0,       # body width
         E = 5.8,        # body overall width  E=E1+2*(S+L+c)
@@ -60,6 +61,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 7.0,       # body length
         E1 = 7.0,       # body width
         E = 8.8,        # body overall width  E=E1+2*(S+L+c)
@@ -86,6 +88,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 20.0,       # body length
         E1 = 20.0,       # body width
         E = 21.8,        # body overall width  E=E1+2*(S+L+c)
@@ -112,6 +115,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 10.0,       # body length
         E1 = 10.0,       # body width
         E = 11.8,        # body overall width  E=E1+2*(S+L+c)
@@ -138,6 +142,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 10.0,       # body length
         E1 = 10.0,       # body width
         E = 11.8,        # body overall width  E=E1+2*(S+L+c)
@@ -164,6 +169,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 10.0,       # body length
         E1 = 10.0,       # body width
         E = 11.8,        # body overall width  E=E1+2*(S+L+c)
@@ -190,6 +196,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 12.0,       # body length
         E1 = 12.0,       # body width
         E = 13.8,        # body overall width  E=E1+2*(S+L+c)
@@ -216,6 +223,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 12.0,       # body length
         E1 = 12.0,       # body width
         E = 13.8,        # body overall width  E=E1+2*(S+L+c)
@@ -242,6 +250,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 14.0,       # body length
         E1 = 14.0,       # body width
         E = 15.8,        # body overall width  E=E1+2*(S+L+c)
@@ -268,6 +277,7 @@ all_params_qfp = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.45, #0.45 chamfer of the 1st pin corner
         D1 = 10.0,       # body length
         E1 = 10.0,       # body width
         E = 12.0,        # body overall width  E=E1+2*(S+L+c)

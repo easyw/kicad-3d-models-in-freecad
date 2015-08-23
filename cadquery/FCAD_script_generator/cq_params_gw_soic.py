@@ -15,8 +15,15 @@ from collections import namedtuple
 destination_dir="/generated_gw/"
 # destination_dir="./"
 
-case_color = (50, 50, 50)
-pins_color = (230, 230, 230)
+case_color = (26, 26, 26)
+#case_color = (50, 50, 50)
+#pins_color = (230, 230, 230)
+pins_color = (205,205,192)
+#mark_color = (255,255,255) #white
+#mark_color = (255,250,250) #snow
+#mark_color = (255,255,240) #ivory
+mark_color = (248,248,255) #ghost white
+max_cc1 = 1     # maximum size for 1st pin corner chamfer
 
 Params = namedtuple("Params", [
     'the',  # body angle in degrees
@@ -30,6 +37,7 @@ Params = namedtuple("Params", [
     'fp_d', # first pin indicator distance from edge
     'fp_z', # first pin indicator depth
     'ef',   # fillet of edges
+    'cc1',  # chamfer of the 1st pin corner
 
     'D1',   # body lenght
     'E1',   # body width
@@ -57,10 +65,11 @@ all_params_soic = {
         R2 = 0.1,       # pin lower corner, inner radius
         S = 0.30,       # pin top flat part length (excluding corner arc)
 #        L = 0.65,       # pin bottom flat part length (including corner arc)
-        fp_r = 0.5,     # first pin indicator radius
-        fp_d = 0.2,     # first pin indicator distance from edge
-        fp_z = 0.1,     # first pin indicator depth
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.05,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 4.9,       # body length
         E1 = 3.9,       # body width
         E = 6.0,        # body overall width
@@ -87,6 +96,7 @@ all_params_soic = {
          fp_d = 0.2,     # first pin indicator distance from edge
          fp_z = 0.1,     # first pin indicator depth
          ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+         cc1 = 0.25, #0.45 chamfer of the 1st pin corner
          D1 = 9.9,       # body length
          E1 = 3.9,       # body width
          E = 6.0,        # body overall width
@@ -113,6 +123,7 @@ all_params_soic = {
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 10.30,       # body length
         E1 = 7.5,       # body width
         E = 10.30,        # body overall width
