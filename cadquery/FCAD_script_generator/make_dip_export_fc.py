@@ -360,8 +360,8 @@ def make_dip(params):
     ##     case = case.edges(BS((D/2.,E1/2.,A-ti_d-0.001), (-D/2.,-E1/2.,A+0.1)))
 
     # add first pin indicator
-    case = case.faces(">Z").workplane().center(D_t2/2.-fp_r-fp_t,E1_t2/2.-fp_r-fp_t).\
-           hole(fp_r*2, fp_d)
+    ## maui case = case.faces(">Z").workplane().center(D_t2/2.-fp_r-fp_t,E1_t2/2.-fp_r-fp_t).\
+    ## maui        hole(fp_r*2, fp_d)
 
     # extract pins from the case
     case = case.cut(pins)

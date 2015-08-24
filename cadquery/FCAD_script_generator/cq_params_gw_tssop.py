@@ -34,6 +34,7 @@ all_params_tssop = {
         fp_d = 0.25,     # first pin indicator distance from edge
         fp_z = 0.15,     # first pin indicator depth
         ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 5.0,       # body length
         E1 = 4.4,       # body width
         E = 6.4,        # body overall width  E=E1+2*(S+L+c)

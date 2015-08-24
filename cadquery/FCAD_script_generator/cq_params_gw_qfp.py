@@ -265,6 +265,33 @@ all_params_qfp = {
         rotation = 0, # rotation if required
         dest_dir_prefix = 'qfp'
         ),
+    'MCP100': Params( # 14x14, 0.5 pitch, 100 pins, 1.0mm height  LQFP100 p05 microchip maui
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.45, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 14.0,       # body width
+        E = 16.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.20,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 25,  # number of pins along X axis (width)
+        npy = 25,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'qfp100_14x14_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
     'MCP64': Params( # 10x10, 0.5 pitch, 64 pins, 1.2mm height  LQFP64 p05 microchip maui
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
@@ -282,7 +309,7 @@ all_params_qfp = {
         E1 = 10.0,       # body width
         E = 12.0,        # body overall width  E=E1+2*(S+L+c)
         A1 = 0.1,  # body-board separation  maui to check
-        A2 = 1.2,  # body height
+        A2 = 1.1,  # body height
         b = 0.20,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         npx = 16,  # number of pins along X axis (width)
