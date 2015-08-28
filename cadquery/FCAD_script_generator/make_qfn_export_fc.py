@@ -126,11 +126,11 @@ def make_qfn(params):
 
     c  = params.c
     ef  = params.ef
-#    cc1 = params.cc1
+    cce = params.cce
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
-    K  = params.K
+#    K  = params.K
     L  = params.L
     D  = params.D
     E   = params.E
@@ -256,10 +256,10 @@ def make_qfn(params):
     #case = case.cut(sphere)
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
-    
+
     #show(case)
     #show(pinmark)
-    
+
     # calculated dimensions for pin
     #R1_o = R1+c # pin upper corner, outer radius
     #R2_o = R2+c # pin lower corner, outer radius
@@ -267,15 +267,29 @@ def make_qfn(params):
     # Create a pin object at the center of top side.
         #threePointArc((L+K/sqrt(2), b/2-K*(1-1/sqrt(2))),
         #              (L+K, b/2-K)). \
-    bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
-        moveTo(-b/2, 0). \
-        lineTo(-b/2, -L). \
-        lineTo(b/2, -L). \
-        lineTo(b/2, 0). \
-        close().extrude(c)
+    bpin1 = cq.Workplane("XY"). \
+        moveTo(b, 0). \
+        lineTo(b, L-b/2). \
+        threePointArc((b/2,L),(0, L-b/2)). \
+        lineTo(0, 0). \
+        close().extrude(c).translate((b/2,E/2,A1/2))
+    bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
+    #bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
+    #    moveTo(-b/2, 0). \
+    #    lineTo(-b/2, -L+K). \
+    #    threePointArc((-L,0),(b/2, -L+K)). \
+    #    lineTo(b/2, 0). \
+    #    close().extrude(c)
+    ##bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
+    ##    moveTo(-b/2, 0). \
+    ##    lineTo(-b/2, -L). \
+    ##    lineTo(b/2, -L). \
+    ##    lineTo(b/2, 0). \
+    ##    close().extrude(c)
         #close().extrude(c).translate((-b/2,0,0))
-    #show(bpin)
-    
+    #show(bpin1)
+    #show (bpin)
+    #
     #sleep
     pins = []
     # create top, bottom side pins
@@ -301,7 +315,15 @@ def make_qfn(params):
 
     # create exposed thermal pad if requested
     if params.epad:
-        pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+        #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+        epad = cq.Workplane("XY", (0,0,A1/2)). \
+        moveTo(-D2/2+cce, -E2/2). \
+        lineTo(D2/2, -E2/2). \
+        lineTo(D2/2, E2/2). \
+        lineTo(-D2/2, E2/2). \
+        lineTo(-D2/2, -E2/2+cce). \
+        close().extrude(A1+A1/10)
+        pins.append(epad)
 
     # merge all pins to a single object
     merged_pins = pins[0]
@@ -309,6 +331,8 @@ def make_qfn(params):
         merged_pins = merged_pins.union(p)
     pins = merged_pins
 
+    #show(pins)
+    #sleep
     # extract pins from case
     case = case.cut(pins)
 
