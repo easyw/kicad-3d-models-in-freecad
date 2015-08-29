@@ -4,7 +4,7 @@ Kicad StepUp starter Guide
 :Email:     https://launchpad.net/~easyw
 :Author Initials: MEW
 :Date:      August 2015
-:Revision:  1.3.1
+:Revision:  1.3.2
 :website: http://sourceforge.net/projects/kicadstepup/
 :docname: readme-kicadStepUp.adoc
 
@@ -75,7 +75,7 @@ Basic How To '(using kicad StepUp the easiest way)'
    use the same name of the wrl model name (e.g. r_0603.wrl => r_0603.step) +
 *2.* go to your board folder and copy the script kicad_StepUp.FCMacro and the config file ksu-config.cfg
    inside that folder, edit the config file ksu-config.cfg with e.g. notepad changing your model prefix to your KISYS3DMOD path +
-*3.* export from kicad pcbnew the IDF model of the board +
+*3.* export from kicad pcbnew the IDF model of the board *NB* export at *Xref=0;Yref=0* +
 *4.* run the script from command line or from a bash/batch file +
     <path to Freecad executable file>/freecad <kicad_pcb_name.emn> ksu-config.cfg kicad_StepUp.FCMacro +
     '(e.g. freecad mypcb.emn ksu-config.cfg kicad_StepUp.FCMacro)' +
@@ -91,7 +91,7 @@ How To '(using kicad StepUp the best way)'
 (e.g. r_0603.wrl => r_0603.step); in this way your 3D board in kicad pcbnew 3d-viewer and in FreeCAD workbench will look perfectly aligned +
 *3.* go to your board folder and copy the script kicad_StepUp.FCMacro and the config file ksu-config.cfg
    inside that folder, edit the config file ksu-config.cfg with e.g. notepad changing your model prefix to your KISYS3DMOD path +
-*4.* export from kicad pcbnew the IDF model of the board +
+*4.* export from kicad pcbnew the IDF model of the board *NB* export at *Xref=0;Yref=0* +
 *5.* run the script from command line or from a bash/batch file +
     <path to Freecad executable file>/freecad <kicad_pcb_name.emn> ksu-config.cfg kicad_StepUp.FCMacro +
     '(e.g. freecad mypcb.emn ksu-config.cfg kicad_StepUp.FCMacro)' +
@@ -115,7 +115,10 @@ the scale 1/2.54 to the wrl model in 3d-viewer) +
 6. put the STEP model and VRML model in the same place +
 7. check if your vrml model is aligned to the kicad pcb footprint in pcbnew 3d-viewer +
 8. launch the script and check if the FreeCAD model and the kicad 3D viewer are aligned +
-9. in case of misalignment just verify your model +
+9. in case of misalignment just verify your model; +
+use the *'move-rotate-scale.FCMacro'* to easily align the 3D model to the footprint +
+
+<<<
 
 TIP: Tip. +
 *import* the link:https://raw.githubusercontent.com/easyw/kicad-3d-models-in-freecad/master/reference-block.step[reference block] in your FC doc
@@ -125,17 +128,45 @@ beside the model you are designing to check the correct orientation +
 .reference block imported
 image::images/reference-block-imported.jpg[]
 
+<<<
+
+TIP: Tip. +
+use the *'move-rotate-scale.FCMacro'* to easily align the 3D model to the reference block
+(then it will be aligned to the footprint) +
+the macro can be launched with: +
+ +./launch-kicad_StepUp-Move-Rotate-Scale.sh+ +
+ or with +
+ +launch-kicad_StepUp-Move-Rotate-Scale.bat+ +
+ or just open the macro in FreeCAD and run it
+
+.move rotate and scale Macro
+image::images/Rotate-Move-Scale-model.png[]
+
+.move rotate and scale Macro: 3D model aligned
+image::images/Rotate-Move-Scale-aligned-model.png[]
+
 *Note:* here link:http://forum.freecadweb.org/viewtopic.php?t=8451#p69489[FreeCAD forum fusion howto] some tips to fuse correctly objects in FreeCAD
 
 STEP AP214 and VRML FreeCAD scripted repository ready to kicad StepUp
 ---------------------------------------------------------------------
 link:https://github.com/easyw/kicad-3d-models-in-freecad[repository of 3D STEP models:] +
-there is a repository of many electronic components *STEP AP214* models, with a nice script to build parametric models for
-'SOIC, SSOP, TSSOP, SOT, QFP' ICs, DIP ICs, Chip Resistors, Chip Capacitors, Pin Headers just compiling a parametric text file with dimensions from component data sheet +
+there is a repository of many electronic components *STEP AP214* and *VRML* models,
+with a nice script to build parametric models for +
+'SOIC, SSOP, TSSOP, SOT, QFP, QFN' ICs, 'DIP' ICs, 'Chip Resistors, Chip Capacitors, Pin Headers' +
+just compiling a parametric text file with dimensions from component data sheet +
 link:https://github.com/easyw/kicad-3d-models-in-freecad/tree/master/cadquery/FCAD_script_generator[3D-script-generator and 3D models] +
 'more is coming ...'
 
 <<<
+
+List of files
+-------------
+
+kicad_StepUp.FCMacro = 'kicad StepUp' script  +
+ksu-config.cfg = configuration file +
+kicad_StepUp_vrml_export.FCMacro = STEP to scaled VRML script +
+move-rotate-scale.FCMacro = Move, Rotate, Scale script to easily manage manufacturers STEP modules +
+kicadStepUp-starter-Guide.pdf = 'kicad StepUp' starter Guide
 
 credits
 -------
@@ -160,18 +191,21 @@ link:https://bitbucket.org/hyOzd/freecad-macros[hyOzd freecad macros] +
 FreeCAD-PCB +
 - marmni <marmni@onet.eu>
 
+<<<
+
 [[copyright]]
 *Copyright*
 -----------
 
-This document '{docname}' and kicad StepUp scripts are Copyright © 2015 by {Author}. You may distribute it and/or modify it under the terms of either
-the GNU General Public License  (http://www.gnu.org/licenses/gpl.html),
-version 3 or later, or the Creative Commons Attribution License
-(http://creativecommons.org/licenses/by/3.0/), version 3.0 or later.
+This document '{docname}' and kicad StepUp scripts are Copyright © 2015 by {Author}.
+Kicad STEPUP (TM) is a TradeMark and cannot be freely useable. +
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation to ensure cooperation with the community
+in the case of network server software; for detail see the LICENCE text file. +
+http://www.gnu.org/licenses/agpl-3.0.en.html
 
 All trademarks within this guide belong to their legitimate owners.
-
-<<<
 
 Risk disclaimer
 ---------------

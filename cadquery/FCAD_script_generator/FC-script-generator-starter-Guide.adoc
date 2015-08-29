@@ -29,19 +29,19 @@ link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
 **********************************************************************
 this repository +
 link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
-is a place to find STEP AP214 3D models and VRML kicad 3D models; +
+is a place to find *STEP AP214 3D models and VRML kicad 3D models*; +
 under *''cadquery'' DIR*, there are some nice scripts that can generate +
 *STEP and VRML parametric models* for +
-*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers* ready to go for *kicad StepUp script*
-
+*SOIC, SSOP, TSSOP, SOT, QFP ... (GullWings in general), QFN ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers* ready to go for *kicad StepUp script* +
+and *ready to go* 3D STEP and VRML models. +
 The parametric scripts are derived from CadQuery scripts for generating QFP, DIP and pinHeaders
 models in X3D format. +
-author *hyOzd* +
-author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
+author hyOzd +
+author site:  bitbucket.org/hyOzd/freecad-macros/
 
 ## requirements ## +
-link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] +
-link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
+link:https://github.com/jmwright/cadquery-freecad-module/archive/v0.2.0.zip/[CadQuery module] version 0.20 or later +
+link:http://freecadweb.org/[FreeCAD] version 0.15 or later (use only STABLE versions)
 
 **********************************************************************
 Running the scripts
@@ -66,29 +66,37 @@ modelName and parameters are described in: +
 7. cq_params_chip_res.py file for defining chip resistors mechanical data +
 all data in parameter files are collected from components data sheets +
 ##the script will generate STEP and VRML parametric models##
-ready to be used with kicad StepUp script 
+ready to be used with kicad StepUp script
 
-[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD. 
+[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD.
 If you do, run the following command line from a terminal to fix this issue. +
 +sudo apt-get install python-pyside.qtnetwork+
 
+[CAUTION]
+====
+For Debian users, because of some lib issues, FreeCAD fusion may result with monocrome objects
+link:http://www.freecadweb.org/wiki/index.php?title=Download#Development_Versions[FreeCAD in Debian] +
+to build your models you may consider to run FreeCAD in Lubuntu under virtualbox in Debian systems
+====
 
 
 credits
 -------
 
-author *hyOzd* +
-author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
+Author and Copyright (c) 2015 *Maurice* link:https://launchpad.net/~easyw[] +
 FreeCAD & cadquery tools: +
 libraries to export generated models in STEP & VRML format +
 - cad tools functions +
-Copyright (c) 2015 *Maurice* link:https://launchpad.net/~easyw[] +
+- routines to build modules +
+
+author 'hyOzd' +
+basic freecad macros - author site:  bitbucket.org/hyOzd/freecad-macros/ +
 
 [[copyright]]
 Copyright
 ---------
 
-This document '{docname}' and all the materials and files at the repository are +
+This document '{docname}' and all the materials and files at the repository are
 Copyrighted © 2015 by {Author}. +
 You may distribute it and/or modify it under the terms of either
 the GNU General Public License  (http://www.gnu.org/licenses/gpl.html),
