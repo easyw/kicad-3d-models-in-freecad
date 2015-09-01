@@ -272,7 +272,8 @@ def make_qfn(params):
         lineTo(b, L-b/2). \
         threePointArc((b/2,L),(0, L-b/2)). \
         lineTo(0, 0). \
-        close().extrude(c).translate((b/2,E/2,A1/2))
+        close().extrude(c).translate((b/2,E/2,0))
+        #close().extrude(c).translate((b/2,E/2,A1/2))
     bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
     #bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
     #    moveTo(-b/2, 0). \
