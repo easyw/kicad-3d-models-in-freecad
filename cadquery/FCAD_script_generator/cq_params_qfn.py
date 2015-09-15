@@ -72,6 +72,50 @@ all_params_qfn = {
         rotation = 0, # rotation if required
         dest_dir_prefix = ''
         ),
+    'QFN24': Params( # 4.15x4.15, 0.5 pitch, 24 pins, 1.0mm height  QFN24 p05 texas
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.35,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 4.15,       # body overall length
+        E = 4.15,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 6,  # number of pins along X axis (width)
+        npy = 6,  # number of pins along y axis (length)
+        epad = (2.45,2.45), # e Pad #epad = None, # e Pad
+        modelName = 'qfn24_415x415_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN32': Params( # 5x5, 0.5 pitch, 32 pins, 1.0mm height  QFN32 p05 ATMEL
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
+        D = 5.0,       # body overall length
+        E = 5.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.3,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 8,  # number of pins along X axis (width)
+        npy = 8,  # number of pins along y axis (length)
+        epad = (3.6,3.6), # e Pad #epad = None, # e Pad
+        modelName = 'qfn32_5x5_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
     'QFN44': Params( # 8x8, 0.65 pitch, 44 pins, 1.0mm height  QFN44 p065 microchip
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges

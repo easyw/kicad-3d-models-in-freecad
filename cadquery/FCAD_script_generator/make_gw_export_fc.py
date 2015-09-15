@@ -440,6 +440,10 @@ if __name__ == "__main__":
             excluded_pins_x=(1,) ##used to build sot23-3; sc70 (asimmetrical pins, no pinmark)
             excluded_pins_xmirror=(0,2,)
             place_pinMark=False ##used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+        elif variant == 'SOT23_5':
+            excluded_pins_x=() ##used to build sot23-3; sc70 (asimmetrical pins, no pinmark)
+            excluded_pins_xmirror=(1,)
+            place_pinMark=False ##used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
         else:
             excluded_pins_x=() ##no pin excluded
             excluded_pins_xmirror=() ##no pin excluded
