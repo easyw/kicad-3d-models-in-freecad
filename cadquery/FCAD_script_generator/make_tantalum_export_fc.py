@@ -146,8 +146,8 @@ def make_tantalum(params):
     dtop = (H-ppH) * tan(ma_rad)
     dbot = (ppH-T) * tan(ma_rad)
     
-    case_base = cq.Workplane(cq.Plane.XY()).workplane(offset=0).rect(G, E). \
-                workplane(offset=T).rect(G,E). \
+    case_base = cq.Workplane(cq.Plane.XY()).workplane(offset=0).rect(E, G). \
+                workplane(offset=T).rect(E,G). \
                 loft(ruled=True)
 
     case = cq.Workplane(cq.Plane.XY()).workplane(offset=T).rect(W-dbot, Lb-dbot). \
@@ -173,6 +173,7 @@ def make_tantalum(params):
     # Color body SandyBrown
     #color_attr=(244,164,96,0)
     #show(case, color_attr)
+    #sleep
     
     # Create a pin object at the center of top side.
         #threePointArc((L+K/sqrt(2), b/2-K*(1-1/sqrt(2))),

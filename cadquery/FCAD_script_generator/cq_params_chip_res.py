@@ -80,7 +80,19 @@ all_params = {
         pt = 0.03,   # pin thickness
 
         ef = 0.025, # fillet of edges
-        modelName = 'r_1206_h078',  # Model Name
+        modelName = 'r_1206_h055',  # Model Name
         rotation = 0   # rotation
     ),
+    "2010_h084" : Params(
+        L = 5.33,  # package length
+        W = 2.54,  # package width
+        T = 0.84,  # package height
+
+        pb = 0.51,  # pin band
+        pt = 0.04,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'r_2010_h084',  # Model Name
+        rotation = 0   # rotation
+    ),    
 }
