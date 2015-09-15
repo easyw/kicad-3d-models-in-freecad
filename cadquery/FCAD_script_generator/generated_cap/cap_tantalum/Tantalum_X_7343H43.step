@@ -4,7 +4,7 @@ FILE_DESCRIPTION(('FreeCAD Model'),'2;1');
 FILE_NAME(
 'C:\\Cad\\Progetti_K\\FreeCAD-models\\scripts\\3D-models\\CadQuery\\
 version9d/generated_cap/cap_tantalum//Tantalum_X_7343H43.step',
-  '2015-09-08T23:36:56',('Author'),(''),
+  '2015-09-15T09:25:19',('Author'),('Robit'),
   'Open CASCADE STEP processor 6.8','FreeCAD','Unknown');
 FILE_SCHEMA(('AUTOMOTIVE_DESIGN_CC2 { 1 2 10303 214 -1 1 5 4 }'));
 ENDSEC;
