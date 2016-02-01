@@ -51,7 +51,7 @@ def say(msg):
 Mesh = namedtuple('Mesh', ['points', 'faces', 'color', 'transp'])
 
 def shapeToMesh(shape, color, transp, scale=None):
-    mesh_deviation=1
+    mesh_deviation=0.01 #the smaller the best quality, 1 coarse
     mesh_data = shape.tessellate(mesh_deviation)
     points = mesh_data[0]
     if scale != None:
@@ -170,7 +170,7 @@ def go_export():
         msg+="a (multi)selected Part or fused Part to VRML optimized to Kicad and compatible with Blender "
         msg+="the size of VRML is much smaller compared to the one exported from FC Gui "
         msg+="and the loading/rendering time is also smaller\n"
-        ,sg+="change mesh deviation to increase quality of VRML"
+        msg+="change mesh deviation to increase quality of VRML"
         say(msg)
     else:
         objs = []
