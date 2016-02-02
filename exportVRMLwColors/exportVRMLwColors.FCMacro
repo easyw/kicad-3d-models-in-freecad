@@ -19,6 +19,9 @@
 # along with expVrmlColor.FCMacro.  If not, see
 # <http://www.gnu.org/licenses/>.
 
+## to do
+#  export material properties to vrml
+
 ## export VRML from FreeCAD is a python macro that will export simplified VRML of 
 ## a (multi)selected Part or fused Part to VRML optimized to Kicad and compatible with Blender
 ## the size of VRML is much smaller compared to the one exported from FC Gui
@@ -146,11 +149,9 @@ def export(componentObjs, fullfilePathName, scale=None):
             #say(color_vector[indexColor])
             singleFace=shape1.Faces[index]
             if(applyDiffuse):
-                #say("qui")
                 #say(color_vector[indexColor])
                 meshes.append(shapeToMesh(singleFace, color_vector[indexColor], transparency[i], scale))
             else:
-                #say("qui2")
                 #say(single_color[0])
                 meshes.append(shapeToMesh(singleFace, single_color[0], transparency[i], scale))
             indexColor=indexColor+1
