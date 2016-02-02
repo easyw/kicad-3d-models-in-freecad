@@ -51,7 +51,7 @@ def say(msg):
 Mesh = namedtuple('Mesh', ['points', 'faces', 'color', 'transp'])
 
 def shapeToMesh(shape, color, transp, scale=None):
-    mesh_deviation=0.01 #the smaller the best quality, 1 coarse
+    mesh_deviation=0.03 #the smaller the best quality, 1 coarse; 0.03 good compromise :)
     mesh_data = shape.tessellate(mesh_deviation)
     points = mesh_data[0]
     if scale != None:
