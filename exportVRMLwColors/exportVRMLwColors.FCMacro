@@ -25,6 +25,9 @@
 ## and the loading/rendering time is smaller too
 ## change mesh deviation to increase quality of VRML
 
+## to do 
+#  export material properties to vrml
+
 ___version___=1.9
 
 import FreeCAD,FreeCADGui,Part,Mesh
