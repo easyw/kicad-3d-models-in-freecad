@@ -50,6 +50,98 @@ Params = namedtuple("Params", [
 ])
 
 all_params_qfn = {
+    'DFN833': Params( # 3x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
+        #Example - http://cds.linear.com/docs/en/datasheet/2875f.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.7 - 0.25,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 3.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.75,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.38,1.65), # e Pad #epad = None, # e Pad
+        modelName = 'dfn8_3x3_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DFN823': Params( # 2x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
+        #Example - http://cds.linear.com/docs/en/datasheet/4365fa.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.7 - 0.25,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 2.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.75,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.2,0.61), # e Pad #epad = None, # e Pad
+        modelName = 'dfn8_2x3_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DFN865': Params( # 6x5, 1.27mm pitch, 8 pins, 1.0mm height  DFN
+        #Example - https://www.everspin.com/file/217/download
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.7 - 0.25,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 5.0,       # body overall length
+        E = 6.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 1,  # body height
+        b = 0.4,  # pin width
+        e = 1.27,  # pin (center-to-center) distance
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2,2), # e Pad #epad = None, # e Pad
+        modelName = 'dfn8_6x5_p127', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DFN1023': Params( # 2x3, 0.5mm pitch, 10 pins, 0.75mm height  DFN
+        #Example - http://www.ti.com.cn/general/cn/docs/lit/getliterature.tsp?genericPartNumber=tps62177&fileType=pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.3 - 0.15,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 2.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.75,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.4,0.84), # e Pad #epad = None, # e Pad
+        modelName = 'dfn10_2x3_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
     'QFN16': Params( # 3x3, 0.5 pitch, 16 pins, 1.0mm height  QFN16 p05 microchip
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
@@ -91,6 +183,28 @@ all_params_qfn = {
         npy = 6,  # number of pins along y axis (length)
         epad = (2.45,2.45), # e Pad #epad = None, # e Pad
         modelName = 'qfn24_415x415_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN28': Params( # 6x6, 0.65 pitch, 28 pins, 0.9mm height
+        c = 0.02,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 6,       # body overall length
+        E = 6,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.38,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 7,  # number of pins along X axis (width)
+        npy = 7,  # number of pins along y axis (length)
+        epad = (3.7,3.7), # e Pad #epad = None, # e Pad
+        modelName = 'qfn28_6x6_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
