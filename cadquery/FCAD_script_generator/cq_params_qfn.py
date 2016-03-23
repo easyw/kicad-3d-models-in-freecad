@@ -50,7 +50,30 @@ Params = namedtuple("Params", [
 ])
 
 all_params_qfn = {
-    'DFN833': Params( # 3x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
+    'DFN622': Params( # 2x2, 0.65 pitch, 6 pins, 0.75mm height  DFN (DD / LTC)
+        #Example - http://www.onsemi.com/pub_link/Collateral/NCP308-D.PDF
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.3,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 2.0,       # body overall length
+        E = 2.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.75,  # body height
+        b = 0.3,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 3,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (1.6,1.0), # e Pad #epad = None, # e Pad
+        modelName = 'dfn6_2x2_p065', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DFN8-33-50': Params( # 3x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
         #Example - http://cds.linear.com/docs/en/datasheet/2875f.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
@@ -70,6 +93,30 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
         modelName = 'dfn8_3x3_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+
+    'DFN8-33-65': Params( # 3x3, 0.65 pitch, 8 pins, 1.0mm height  DFN (DD / LTC)
+        #Example - http://www.st.com/web/en/resource/technical/document/datasheet/CD00001508.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 3.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 1.0,  # body height
+        b = 0.25,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.5,1.5), # e Pad #epad = None, # e Pad
+        modelName = 'dfn8_3x3_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -135,7 +182,7 @@ all_params_qfn = {
         A2 = 0.75,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
-        npx = 4,  # number of pins along X axis (width)
+        npx = 5,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,0.84), # e Pad #epad = None, # e Pad
         modelName = 'dfn10_2x3_p05', #modelName
@@ -161,7 +208,7 @@ all_params_qfn = {
         npy = 4,  # number of pins along y axis (length)
         epad = (1.7,1.7), # e Pad #epad = None, # e Pad
         modelName = 'qfn16_3x3_p05', #modelName
-        rotation = 0, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
     'QFN24': Params( # 4.15x4.15, 0.5 pitch, 24 pins, 1.0mm height  QFN24 p05 texas
@@ -186,8 +233,8 @@ all_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'QFN28': Params( # 6x6, 0.65 pitch, 28 pins, 0.9mm height
-        c = 0.02,        # pin thickness, body center part height
+    'QFN28': Params( # 6x6, 0.65 pitch, 28 pins, 0.9mm height QFN28 Microchip
+        c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.4,        # pin top flat part length (including fillet radius)
         fp_r = 0.35,     # first pin indicator radius
@@ -249,7 +296,7 @@ all_params_qfn = {
         npy = 11,  # number of pins along y axis (length)
         epad = (6.45,6.45), # e Pad #epad = None, # e Pad
         modelName = 'qfn44_8x8_p065', #modelName
-        rotation = 0, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
     'QFN64': Params( # 9x9, 0.5 pitch, 64 pins, 0.9mm height  QFN64 p05 microchip
@@ -271,7 +318,7 @@ all_params_qfn = {
         npy = 16,  # number of pins along y axis (length)
         epad = (4.7,4.7), # e Pad #epad = None, # e Pad
         modelName = 'qfn64_9x9_p05', #modelName
-        rotation = 0, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
 }
