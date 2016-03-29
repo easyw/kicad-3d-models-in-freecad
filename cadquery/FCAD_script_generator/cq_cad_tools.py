@@ -34,6 +34,16 @@ import FreeCAD, Draft, FreeCADGui
 import ImportGui
 from Gui.Command import *
 
+#helper funcs for displaying messages in FreeCAD
+def say(*arg):
+    FreeCAD.Console.PrintMessage(" ".join(map(str,arg)) + "\r\n")
+    
+def sayw(*arg):
+    FreeCAD.Console.PrintWarning(" ".join(map(str,arg)) + "\r\n")
+    
+def saye(*arg):
+    FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+
 ###################################################################
 # close_CQ_Example()  maui
 #	Function to close CQ Example and restore "
