@@ -72,63 +72,12 @@ def close_CQ_Example(App, Gui):
 
     return 0
 
-
 ###################################################################
 # FuseObjs_wColors()  maui
 #	Function to fuse two objects together.
 ###################################################################
-def FuseObjs_wColors(App, Gui,
-                           docName, part1, part2):
-
-    # Fuse two objects
-    App.ActiveDocument=None
-    Gui.ActiveDocument=None
-    App.setActiveDocument(docName)
-    App.ActiveDocument=App.getDocument(docName)
-    Gui.ActiveDocument=Gui.getDocument(docName)
-    App.activeDocument().addObject("Part::MultiFuse","Fusion")
-    App.activeDocument().Fusion.Shapes = [App.ActiveDocument.getObject(part1), App.ActiveDocument.getObject(part2)]
-    Gui.ActiveDocument.Fusion.ShapeColor=Gui.ActiveDocument.getObject(part1).ShapeColor
-    Gui.ActiveDocument.Fusion.DisplayMode=Gui.ActiveDocument.getObject(part1).DisplayMode
-    App.ActiveDocument.recompute()
-
-    App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
-    App.ActiveDocument.ActiveObject.Label=docName
-
-    Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
-    Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
-    Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
-    Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
-    App.ActiveDocument.recompute()
-
-    ## ## TBD refine Shape to reduce size maui
-    ## App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape.removeSplitter()
-    ## App.ActiveDocument.ActiveObject.Label=App.ActiveDocument.Fusion.Label
-    ## Gui.ActiveDocument.Fusion.hide()
-    ##
-    ## Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
-    ## Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
-    ## Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
-    ## Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
-    ## App.ActiveDocument.recompute()
-    ## App.ActiveDocument.ActiveObject.Label=docName
-    #######################################################
-    # Remove the part1 part2 objects
-    App.getDocument(docName).removeObject(part1)
-    App.getDocument(docName).removeObject(part2)
-
-    # Remove the fusion itself
-    App.getDocument(docName).removeObject("Fusion")
-    ## App.getDocument(docName).removeObject("Fusion001")
-
-    return 0
-
-###################################################################
-# FuseObjs_wColors_naming()  maui
-#	Function to fuse two objects together.
-###################################################################
 def FuseObjs_wColors_naming(App, Gui,
-                           docName, part1, part2, name):
+                           docName, part1, part2, name=None):
 
     # Fuse two objects
     App.ActiveDocument=None
@@ -143,6 +92,10 @@ def FuseObjs_wColors_naming(App, Gui,
     App.ActiveDocument.recompute()
 
     App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
+    
+    if not name:
+        name = docName
+        
     App.ActiveDocument.ActiveObject.Label=name
 
     Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
