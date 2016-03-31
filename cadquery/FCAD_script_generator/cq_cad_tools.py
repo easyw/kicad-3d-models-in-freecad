@@ -256,14 +256,17 @@ def GetListOfObjects(App, docName):
 ###################################################################
 def Color_Objects(Gui,obj,color):
 
-    FreeCAD.Console.PrintMessage(obj.Name+'\r\n')
-    Gui.ActiveDocument.getObject(obj.Name).ShapeColor = color
-    Gui.ActiveDocument.getObject(obj.Name).LineColor = color
-    Gui.ActiveDocument.getObject(obj.Name).PointColor = color
-    Gui.ActiveDocument.getObject(obj.Name).DiffuseColor = color
-    FreeCAD.Console.PrintMessage(obj.Name)
-    FreeCAD.Console.PrintMessage(' objName\r\n')
-    #obj.Label=ModelName
+    say('Coloring:',gbj.Name)
+    
+    gObj = getGuiObject(obj.Name)
+    
+    if not gObj:
+        return 0
+    
+    gObj.ShapeColor = color
+    gObj.LineColor = color
+    gObj.PointColor = color
+    gObj.DiffuseColor = color
 
     return 0
 
