@@ -43,6 +43,29 @@ def sayw(*arg):
     
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+    
+#Find a GUI object (within the active document) (or return None if it does not exist)
+def getGuiObject(objName):
+    if type(objName) is not str:
+        sayw("getGuiObject - 'objName' must be a string")
+    try:
+        return FreeCADGui.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCADGui.ActiveDocument has no object named",objName)
+    except:
+        sayw("Error in getGuiObject()")
+    return None
+    
+#Find an APP object (within the active document) (or return None if it does not exist)
+def getAppObject(objName):
+    if type(objName) is not str:
+        sayw("getAppObject - 'objName' must be a string")
+    try:
+        return FreeCAD.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCAD.Activedocument has no object named",objName)
+    except:
+        sayw("Error in getAppObject()")
 
 ###################################################################
 # close_CQ_Example()  maui
