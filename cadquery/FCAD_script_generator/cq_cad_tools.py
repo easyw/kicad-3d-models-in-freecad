@@ -66,6 +66,24 @@ def getAppObject(objName):
         sayw("FreeCAD.Activedocument has no object named",objName)
     except:
         sayw("Error in getAppObject()")
+        
+#pass the names of two objects
+#copy the colors of obj1 (master) to obj2 (slave)
+def copyColors(obj1Name, obj2Name):
+    
+    obj1 = getGuiObject(obj1Name)
+    obj2 = getGuiObject(obj2Name)
+    
+    #couldn't get object references
+    if not obj1 or not obj2:
+        sayw("copyColors() - could not find objects!")
+        return
+        
+    #copy the color info across
+    obj2.ShapeColor = obj1.ShapeColor
+    obj2.LineColor = obj1.LineColor
+    obj2.PointColor = obj1.PointColor
+    obj2.DiffuseColor = obj1.DiffuseColor
 
 ###################################################################
 # close_CQ_Example()  maui
