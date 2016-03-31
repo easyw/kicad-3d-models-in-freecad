@@ -245,9 +245,8 @@ def GetListOfObjects(App, docName):
     objs=[]
     for obj in docName.Objects:
         # do what you want to automate
-        objs.append(App.ActiveDocument.getObject(obj.Name))
-        FreeCAD.Console.PrintMessage(obj.Name)
-        FreeCAD.Console.PrintMessage(' objName\r\n')
+        objs.append(getAppObject(obj.Name))
+        say(obj.Name)
 
     return objs
 
