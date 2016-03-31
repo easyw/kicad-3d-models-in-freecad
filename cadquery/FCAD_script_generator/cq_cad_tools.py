@@ -364,14 +364,14 @@ def exportVRML(doc,modelName,scale,dir):
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
     objs=GetListOfObjects(FreeCAD, doc)
-    #objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
-    FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model').Shape=objs[0].Shape
-    FreeCAD.ActiveDocument.ActiveObject.Label='Vrml_model'
-    FreeCADGui.ActiveDocument.ActiveObject.ShapeColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).ShapeColor
-    FreeCADGui.ActiveDocument.ActiveObject.LineColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).LineColor
-    FreeCADGui.ActiveDocument.ActiveObject.PointColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).PointColor
-    FreeCADGui.ActiveDocument.ActiveObject.DiffuseColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).DiffuseColor
-    FreeCAD.ActiveDocument.recompute()
+
+    vrml = FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model')
+    vrml.Shape=objs[0].Shape
+    vrml.Label='Vrml_model'
+    
+    #copy colors across
+    copyColors(objs[0].Name, vrml.Name)
+    
     newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
     #scale to export vrml  start
     Draft.scale(newObj,delta=FreeCAD.Vector(scale,scale,scale),center=FreeCAD.Vector(0,0,0),legacy=True)
