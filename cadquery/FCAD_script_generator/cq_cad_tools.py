@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.3 16/08/2015"
+___ver___ = "1.2.3 16/08/2015" 
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
