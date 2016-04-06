@@ -4,12 +4,19 @@
 # creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)
 # useful messages on Report view
 #
+# Copyright (c) 2015 Maurice easyw@katamail.com
+# Copyright (c) 2015 Hasan Yavuz Özderya
+# Copyright Nico
+# this is a part of kicad StepUp tools; please refer to kicad StepUp tools 
+# for the full licence
+# 
+#
  
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "1.9.2d test Materials"
-__date__    = "06/03/2016"
+__version__ = "1.9.2e test Materials"
+__date__    = "21/03/2016"
  
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
 __Web__ = "http://www.freecadweb.org/"
@@ -246,14 +253,23 @@ transparency 0.10
 shininess 0.125
 }"""
 
+led_white="""material DEF LED-WHITE Material {
+ambientIntensity 0.494
+diffuseColor 0.895 0.891 0.813
+specularColor 0.047 0.055 0.109
+emissiveColor 0.0 0.0 0.0
+transparency 0.10
+shininess 0.125
+}"""
+
 material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
                            "grey body","dark grey body","brown body","light brown body","blue body",\
                            "green body","orange body","red_body","pink body","yellow body","white body","light brown label",\
-                           "led red","led green","led blue"]
+                           "led red","led green","led blue", "led white"]
 material_properties=[as_is,metal_grey_pins,gold_pins,black_body,resistor_black_body,\
                      grey_body,dark_grey_body,brown_body,light_brown_body,blue_body,\
                      green_body,orange_body,red_body,pink_body,yellow_body,white_body,light_brown_label,\
-                     led_red,led_green,led_blue]
+                     led_red,led_green,led_blue,led_white]
  
 def say(msg):
     FreeCAD.Console.PrintMessage(msg)
@@ -281,7 +297,7 @@ class Ui_Dialog(object):
         self.buttonBox.setObjectName("buttonBox")
         self.comboBox = QtGui.QComboBox(Dialog)
         self.comboBox.setGeometry(QtCore.QRect(180, 40, 191, 22))
-        self.comboBox.setMaxVisibleItems(20)
+        self.comboBox.setMaxVisibleItems(25)
         self.comboBox.setObjectName("comboBox")
         self.label = QtGui.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(180, 20, 53, 16))
