@@ -15,8 +15,8 @@
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "1.9.2e test Materials"
-__date__    = "21/03/2016"
+__version__ = "1.9.3 test Materials"
+__date__    = "07/04/2016"
  
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
 __Web__ = "http://www.freecadweb.org/"
@@ -56,6 +56,7 @@ from PySide import QtGui, QtCore
 from collections import namedtuple
 import sys, os
 from os.path import expanduser
+import re
  
 #clearing previous messages
 mw=Gui.getMainWindow()
@@ -63,6 +64,21 @@ c=mw.findChild(QtGui.QPlainTextEdit, "Python console")
 c.clear()
 r=mw.findChild(QtGui.QTextEdit, "Report view")
 r.clear()
+
+def say(msg):
+    FreeCAD.Console.PrintMessage(msg)
+    FreeCAD.Console.PrintMessage('\n')
+
+def clear_console():
+    #clearing previous messages
+    mw=FreeCADGui.getMainWindow()
+    c=mw.findChild(QtGui.QPlainTextEdit, "Python console")
+    c.clear()
+    r=mw.findChild(QtGui.QTextEdit, "Report view")
+    r.clear()
+
+#if not Mod_ENABLED:
+clear_console()
 
 #color_list=[];index_color=0
 
@@ -83,184 +99,184 @@ Materials=True
 as_is=""
 
 metal_grey_pins="""material DEF PIN-01 Material {
-ambientIntensity 0.271
-diffuseColor 0.824 0.820 0.781
-specularColor 0.328 0.258 0.172
-emissiveColor 0.0 0.0 0.0
-shininess 0.70
-transparency 0.0
-}"""
+        ambientIntensity 0.271
+        diffuseColor 0.824 0.820 0.781
+        specularColor 0.328 0.258 0.172
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.70
+        transparency 0.0
+        }"""
 
 gold_pins="""material DEF PIN-02 Material {
-ambientIntensity 0.379
-diffuseColor 0.859 0.738 0.496
-specularColor 0.137 0.145 0.184
-emissiveColor 0.0 0.0 0.0
-shininess 0.40
-transparency 0.0
-}"""
+        ambientIntensity 0.379
+        diffuseColor 0.859 0.738 0.496
+        specularColor 0.137 0.145 0.184
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.40
+        transparency 0.0
+        }"""
 
 black_body="""material DEF IC-BODY-EPOXY-04 Material {
-ambientIntensity 0.293
-diffuseColor 0.148 0.145 0.145
-specularColor 0.180 0.168 0.160
-emissiveColor 0.0 0.0 0.0
-shininess 0.35
-transparency 0.0
-}"""
+        ambientIntensity 0.293
+        diffuseColor 0.148 0.145 0.145
+        specularColor 0.180 0.168 0.160
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.35
+        transparency 0.0
+        }"""
 
 resistor_black_body="""material DEF RES-SMD-01 Material {
-diffuseColor 0.082 0.086 0.094
-emissiveColor 0.000 0.000 0.000
-specularColor 0.066 0.063 0.063
-ambientIntensity 0.638
-transparency 0.0
-shininess 0.3
-}"""
+        diffuseColor 0.082 0.086 0.094
+        emissiveColor 0.000 0.000 0.000
+        specularColor 0.066 0.063 0.063
+        ambientIntensity 0.638
+        transparency 0.0
+        shininess 0.3
+        }"""
 
 dark_grey_body="""material DEF CAP-CERAMIC-05 Material {
-ambientIntensity 0.179
-diffuseColor 0.273 0.273 0.273
-specularColor 0.203 0.188 0.176
-emissiveColor 0.0 0.0 0.0
-shininess 0.15
-transparency 0.0
-}"""
+        ambientIntensity 0.179
+        diffuseColor 0.273 0.273 0.273
+        specularColor 0.203 0.188 0.176
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.15
+        transparency 0.0
+        }"""
 
 grey_body="""material DEF IC-BODY-EPOXY-01 Material {
-ambientIntensity 0.117
-diffuseColor 0.250 0.262 0.281
-specularColor 0.316 0.281 0.176
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.117
+        diffuseColor 0.250 0.262 0.281
+        specularColor 0.316 0.281 0.176
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 brown_body="""material DEF CAP-CERAMIC-06 Material {
-ambientIntensity 0.453
-diffuseColor 0.379 0.270 0.215
-specularColor 0.223 0.223 0.223
-emissiveColor 0.0 0.0 0.0
-shininess 0.15
-transparency 0.0
-}"""
+        ambientIntensity 0.453
+        diffuseColor 0.379 0.270 0.215
+        specularColor 0.223 0.223 0.223
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.15
+        transparency 0.0
+        }"""
 
 light_brown_body="""material DEF RES-THT-01 Material {
-ambientIntensity 0.149
-diffuseColor 0.883 0.711 0.492
-specularColor 0.043 0.121 0.281
-emissiveColor 0.0 0.0 0.0
-shininess 0.40
-transparency 0.0
-}"""
+        ambientIntensity 0.149
+        diffuseColor 0.883 0.711 0.492
+        specularColor 0.043 0.121 0.281
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.40
+        transparency 0.0
+        }"""
 
 blue_body="""material DEF PLASTIC-BLUE-01 Material {
-ambientIntensity 0.565
-diffuseColor 0.137 0.402 0.727
-specularColor 0.359 0.379 0.270
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.565
+        diffuseColor 0.137 0.402 0.727
+        specularColor 0.359 0.379 0.270
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 green_body="""material DEF PLASTIC-GREEN-01 Material {
-ambientIntensity 0.315
-diffuseColor 0.340 0.680 0.445
-specularColor 0.176 0.105 0.195
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.315
+        diffuseColor 0.340 0.680 0.445
+        specularColor 0.176 0.105 0.195
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 orange_body="""material DEF PLASTIC-ORANGE-01 Material {
-ambientIntensity 0.284
-diffuseColor 0.809 0.426 0.148
-specularColor 0.039 0.102 0.145
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.284
+        diffuseColor 0.809 0.426 0.148
+        specularColor 0.039 0.102 0.145
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 red_body="""material DEF RED-BODY Material {
-ambientIntensity 0.683
-diffuseColor 0.700 0.100 0.050
-emissiveColor 0.000 0.000 0.000
-specularColor 0.300 0.400 0.150
-transparency 0.0
-shininess 0.25
-}"""
+        ambientIntensity 0.683
+        diffuseColor 0.700 0.100 0.050
+        emissiveColor 0.000 0.000 0.000
+        specularColor 0.300 0.400 0.150
+        transparency 0.0
+        shininess 0.25
+        }"""
 
 pink_body="""material DEF CAP-CERAMIC-02 Material {
-ambientIntensity 0.683
-diffuseColor 0.578 0.336 0.352
-specularColor 0.105 0.273 0.270
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.683
+        diffuseColor 0.578 0.336 0.352
+        specularColor 0.105 0.273 0.270
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 yellow_body="""material DEF PLASTIC-YELLOW-01 Material {
-ambientIntensity 0.522
-diffuseColor 0.832 0.680 0.066
-specularColor 0.160 0.203 0.320
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.522
+        diffuseColor 0.832 0.680 0.066
+        specularColor 0.160 0.203 0.320
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 white_body="""material DEF PLASTIC-WHITE-01 Material {
-ambientIntensity 0.494
-diffuseColor 0.895 0.891 0.813
-specularColor 0.047 0.055 0.109
-emissiveColor 0.0 0.0 0.0
-shininess 0.25
-transparency 0.0
-}"""
+        ambientIntensity 0.494
+        diffuseColor 0.895 0.891 0.813
+        specularColor 0.047 0.055 0.109
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.25
+        transparency 0.0
+        }"""
 
 light_brown_label="""material DEF IC-LABEL-01 Material {
-ambientIntensity 0.082
-diffuseColor 0.691 0.664 0.598
-specularColor 0.000 0.000 0.000
-emissiveColor 0.0 0.0 0.0
-shininess 0.01
-transparency 0.0
-}"""
+        ambientIntensity 0.082
+        diffuseColor 0.691 0.664 0.598
+        specularColor 0.000 0.000 0.000
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.01
+        transparency 0.0
+        }"""
 
 led_red="""material DEF LED-RED Material {
-ambientIntensity 0.789
-diffuseColor 0.700 0.100 0.050
-emissiveColor 0.000 0.000 0.000
-specularColor 0.300 0.400 0.150
-transparency 0.10
-shininess 0.125
-}"""
+        ambientIntensity 0.789
+        diffuseColor 0.700 0.100 0.050
+        emissiveColor 0.000 0.000 0.000
+        specularColor 0.300 0.400 0.150
+        transparency 0.10
+        shininess 0.125
+        }"""
 
 led_green="""material DEF LED-GREEN Material {
-ambientIntensity 0.789
-diffuseColor 0.400 0.700 0.150
-emissiveColor 0.000 0.000 0.000
-specularColor 0.600 0.300 0.100
-transparency 0.10
-shininess 0.05
-}"""
+        ambientIntensity 0.789
+        diffuseColor 0.400 0.700 0.150
+        emissiveColor 0.000 0.000 0.000
+        specularColor 0.600 0.300 0.100
+        transparency 0.10
+        shininess 0.05
+        }"""
 
 led_blue="""material DEF LED-BLUE Material {
-ambientIntensity 0.789
-diffuseColor 0.100 0.250 0.700
-emissiveColor 0.000 0.000 0.000
-specularColor 0.500 0.600 0.300
-transparency 0.10
-shininess 0.125
-}"""
+        ambientIntensity 0.789
+        diffuseColor 0.100 0.250 0.700
+        emissiveColor 0.000 0.000 0.000
+        specularColor 0.500 0.600 0.300
+        transparency 0.10
+        shininess 0.125
+        }"""
 
 led_white="""material DEF LED-WHITE Material {
-ambientIntensity 0.494
-diffuseColor 0.895 0.891 0.813
-specularColor 0.047 0.055 0.109
-emissiveColor 0.0 0.0 0.0
-transparency 0.10
-shininess 0.125
-}"""
+        ambientIntensity 0.494
+        diffuseColor 0.895 0.891 0.813
+        specularColor 0.047 0.055 0.109
+        emissiveColor 0.0 0.0 0.0
+        transparency 0.10
+        shininess 0.125
+        }"""
 
 material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
                            "grey body","dark grey body","brown body","light brown body","blue body",\
@@ -271,20 +287,21 @@ material_properties=[as_is,metal_grey_pins,gold_pins,black_body,resistor_black_b
                      green_body,orange_body,red_body,pink_body,yellow_body,white_body,light_brown_label,\
                      led_red,led_green,led_blue,led_white]
  
-def say(msg):
-    FreeCAD.Console.PrintMessage(msg)
-    FreeCAD.Console.PrintMessage('\n')
+material_definitions=""
+for mat in material_properties[1:]:
+    material_definitions+="Shape {\n    appearance Appearance {"+mat+"\n    }\n}\n"
 
-def clear_console():
-    #clearing previous messages
-    mw=FreeCADGui.getMainWindow()
-    c=mw.findChild(QtGui.QPlainTextEdit, "Python console")
-    c.clear()
-    r=mw.findChild(QtGui.QTextEdit, "Report view")
-    r.clear()
+material_ids=[]
+material_ids.append("")
 
-#if not Mod_ENABLED:
-clear_console()
+for mat in material_properties[1:]:
+    m = re.search('DEF\s(.+?)\sMaterial', mat)
+    if m:
+        found = m.group(1)
+        #say(found)
+        material_ids.append(found)
+#say(material_ids)    
+#say (material_definitions)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -459,7 +476,8 @@ def exportVRML(objects, filepath):
     global ui
     with open(filepath, 'w') as f:
         # write the standard VRML header
-        f.write("#VRML V2.0 utf8\n\n")
+        f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
+        f.write(material_definitions)
         color_list=[]
         color_list_mat=[]
         index_color=-1
@@ -515,7 +533,8 @@ def exportVRML(objects, filepath):
             else:
                 material_index=material_properties_names.index(color_list_mat[col_index])
                 #say(material_properties[material_index])
-                f.write("appearance Appearance{"+material_properties[material_index]+"}}\n")
+                #f.write("appearance Appearance{"+material_properties[material_index]+"}}\n")
+                f.write("appearance Appearance{material USE "+material_ids[material_index]+" }}\n")
         say(filepath+' written')
 ###
 def comboBox_Changed(text_combo):
@@ -527,9 +546,10 @@ def comboBox_Changed(text_combo):
     if len(mat_prop)>1:
         say(mat_prop[2])
         color_rgb=mat_prop[2].split(' ')
-        say(color_rgb[1]+" "+color_rgb[2]+" "+color_rgb[3])
+        say (color_rgb)
+        say(color_rgb[9]+" "+color_rgb[10]+" "+color_rgb[11])
         pal = QtGui.QPalette()
-        bgc = QtGui.QColor(float(color_rgb[1])*255,float(color_rgb[2])*255, float(color_rgb[3])*255)
+        bgc = QtGui.QColor(float(color_rgb[9])*255,float(color_rgb[10])*255, float(color_rgb[11])*255)
         pal.setColor(QtGui.QPalette.Base, bgc)
         ui.plainTextEdit_2.viewport().setPalette(pal)
                 
