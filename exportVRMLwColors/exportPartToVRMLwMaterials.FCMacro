@@ -408,7 +408,8 @@ def exportVRML(objects, filepath):
             #f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
             f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
             f.write("]\n}") # closes Coordinate
-
+            #shape_col=(1.0, 0.0, 0.0)#, 0.0)
+            f.write("}\n") # closes points
 
             #say(color_list_mat[col_index])
             if not isinstance(obj.color,basestring):
