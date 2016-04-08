@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
- 
+
 # PartToVRML.FCMacro
 # creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)
 # useful messages on Report view
 #
 # Copyright (c) 2015 Maurice easyw@katamail.com
-# Copyright (c) 2015 Hasan Yavuz Özderya
+# Copyright (c) 2015 Hasan Yavuz ï¿½zderya
 # Copyright Nico
-# this is a part of kicad StepUp tools; please refer to kicad StepUp tools 
+# this is a part of kicad StepUp tools; please refer to kicad StepUp tools
 # for the full licence
-# 
 #
- 
+#
+
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
 __version__ = "1.9.3 test Materials"
 __date__    = "07/04/2016"
- 
+
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
 __Web__ = "http://www.freecadweb.org/"
 __Wiki__ = "http://www.freecadweb.org/wiki/index.php?title=Macro_PartToVRML"
@@ -26,7 +26,7 @@ __IconW__  = "C:/Users/User Name/AppData/Roaming/FreeCAD/Macro_PartToVRML.png"
 __Help__ = "start the macro and follow the instructions"
 __Status__ = "stable"
 __Requires__ = "Freecad"
- 
+
 # FreeCAD VRML python exporter is free software: you can redistribute it
 # and/or modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation, either version 3 of
@@ -40,16 +40,16 @@ __Requires__ = "Freecad"
 # You should have received a copy of the GNU General Public License
 # along with expVrmlColor.FCMacro.  If not, see
 # <http://www.gnu.org/licenses/>.
- 
-## export VRML from FreeCAD is a python macro that will export simplified VRML of 
+
+## export VRML from FreeCAD is a python macro that will export simplified VRML of
 ## a (multi)selected Part or fused Part to VRML optimized to Kicad and compatible with Blender
 ## the size of VRML is much smaller compared to the one exported from FC Gui
 ## and the loading/rendering time is smaller too
 ## change mesh deviation to increase quality of VRML
- 
-## to do 
+
+## to do
 #  export material properties to vrml
- 
+
 import FreeCAD,FreeCADGui,Part,Mesh
 #import PySide
 from PySide import QtGui, QtCore
@@ -57,7 +57,7 @@ from collections import namedtuple
 import sys, os
 from os.path import expanduser
 import re
- 
+
 #clearing previous messages
 mw=Gui.getMainWindow()
 c=mw.findChild(QtGui.QPlainTextEdit, "Python console")
@@ -286,7 +286,7 @@ material_properties=[as_is,metal_grey_pins,gold_pins,black_body,resistor_black_b
                      grey_body,dark_grey_body,brown_body,light_brown_body,blue_body,\
                      green_body,orange_body,red_body,pink_body,yellow_body,white_body,light_brown_label,\
                      led_red,led_green,led_blue,led_white]
- 
+
 material_definitions=""
 for mat in material_properties[1:]:
     material_definitions+="Shape {\n    appearance Appearance {"+mat+"\n    }\n}\n"
@@ -300,7 +300,7 @@ for mat in material_properties[1:]:
         found = m.group(1)
         #say(found)
         material_ids.append(found)
-#say(material_ids)    
+#say(material_ids)
 #say (material_definitions)
 
 class Ui_Dialog(object):
@@ -359,7 +359,7 @@ class Ui_Dialog(object):
         self.label_4.setText(QtGui.QApplication.translate("Dialog", "Note: set Material will unmatch colors between wrl and STEP ", None, QtGui.QApplication.UnicodeUTF8))
 
 #####################################
-# Function infoDialog 
+# Function infoDialog
 #####################################
 def infoDialog(msg):
     #QtGui.qFreeCAD.setOverrideCursor(QtCore.Qt.WaitCursor)
@@ -368,13 +368,14 @@ def infoDialog(msg):
     diag.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
     diag.exec_()
     QtGui.qApp.restoreOverrideCursor()
-    
+
 
 # points: [Vector, Vector, ...]
 # faces: [(pi, pi, pi), ], pi: point index
 # color: (Red, Green, Blue), values range from 0 to 1.0
 Mesh = namedtuple('Mesh', ['points', 'faces', 'color', 'transp'])
- 
+exportObject = namedtuple('exportObject', ['freecad_object', 'shape_color', 'face_colors'])
+
 def shapeToMesh(shape, color, transp, scale=None):
     mesh_deviation=0.03 #the smaller the best quality, 1 coarse; 0.03 good compromise :)
     mesh_data = shape.tessellate(mesh_deviation)
@@ -385,12 +386,12 @@ def shapeToMesh(shape, color, transp, scale=None):
                 faces = mesh_data[1],
                 color = color, transp=transp)
     return newMesh
- 
+
 def exportVRML(objects, filepath):
     """Export given list of Mesh objects to a VRML file.
- 
+
     `Mesh` structure is defined at root."""
-    
+
     #material_list=["as is","metal pins","gold pins","black body","dark brown body","brown body","grey body","green body","white body","black label","white label"]
     #material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
     #                       "grey body","dark grey body","brown body","light brown body","blue body",\
@@ -402,14 +403,7 @@ def exportVRML(objects, filepath):
         # write the standard VRML header
         f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
         f.write(material_definitions)
-        color_list=[]
-        color_list_mat=[]
-        index_color=-1
-        Dialog = QtGui.QDialog()
-        ui = Ui_Dialog()
-        ui.setupUi(Dialog)
-        ui.comboBox.addItems(material_properties_names)
-        material="as is"
+
         for obj in objects:
             f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
             # write coordinate indexes for each face
@@ -425,26 +419,7 @@ def exportVRML(objects, filepath):
             #say(obj.color)
             shape_col=obj.color[:-1] #remove last item
             #say(shape_col)
-            if shape_col not in color_list:
-                pal = QtGui.QPalette()
-                bgc = QtGui.QColor(shape_col[0]*255,shape_col[1]*255, shape_col[2]*255)
-                pal.setColor(QtGui.QPalette.Base, bgc)
-                ui.plainTextEdit.viewport().setPalette(pal)
-                #ui.comboBox.clear()
-                color_list.append(shape_col)
-                index_color=index_color+1
-                say(color_list)
-                #ui.comboBox.addItems(color_list)
-                if Materials:
-                    reply=Dialog.exec_()
-                    #Dialog.exec_()
-                    say(reply)
-                    if reply==1:
-                        material=str(ui.comboBox.currentText())
-                    else:
-                        material="as is"
-                color_list_mat.append(material)
-                say(material)
+
             #else:
             #say("searching")
             col_index=color_list.index(shape_col)
@@ -476,16 +451,16 @@ def comboBox_Changed(text_combo):
         bgc = QtGui.QColor(float(color_rgb[9])*255,float(color_rgb[10])*255, float(color_rgb[11])*255)
         pal.setColor(QtGui.QPalette.Base, bgc)
         ui.plainTextEdit_2.viewport().setPalette(pal)
-                
+
 ###
 def export(componentObjs, fullfilePathName, scale=None):
     """ Exports given ComponentModel object using FreeCAD.
- 
+
     `componentObjs` : a ComponentObjs list
     `fullfilePathName` : name of the FC file, extension is important
- 
+
     """
- 
+
     exp_name=componentObjs[0].Label
     path, fname = os.path.split(fullfilePathName)
     fname=os.path.splitext(fname)[0]
@@ -493,7 +468,7 @@ def export(componentObjs, fullfilePathName, scale=None):
         filename=path+os.sep+exp_name+'.wrl'
     else:
         filename=path+os.sep+exp_name+'_1_1.wrl'
-    say(filename)    
+    say(filename)
     color=[]
     Diffuse_color=[]
     transparency=[]
@@ -542,11 +517,11 @@ def export(componentObjs, fullfilePathName, scale=None):
             #meshes.append(shapeToMesh(face, Diffuse_color[i], transparency[i], scale))
         color_vector=[]
         indexColor=0;
-        i=i+1            
+        i=i+1
     exportVRML(meshes, filename)
     return
 ###
- 
+
 def go_export():
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
@@ -558,16 +533,48 @@ def go_export():
         msg+="change mesh deviation to increase quality of VRML"
         say(msg)
     else:
+        global ui
+        know_material_substitutions={}
+        Dialog = QtGui.QDialog()
+        ui = Ui_Dialog()
+        ui.setupUi(Dialog)
+        ui.comboBox.addItems(material_properties_names)
+        material="as is"
+
+
         objs = []
         for obj in sel:
-                objs.append(obj)
-                #say(obj.Label)
-                #say(obj.Name)
+            freecad_object = Gui.ActiveDocument.getObject(obj.Name)
+            face_colors = []
+            for color in freecad_object.DiffuseColor:
+                color = color[:-1]
+                say(color)
+                if color not in know_material_substitutions:
+                    pal = QtGui.QPalette()
+                    bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
+                    pal.setColor(QtGui.QPalette.Base, bgc)
+                    ui.plainTextEdit.viewport().setPalette(pal)
+                    #ui.comboBox.addItems(color_list)
+                    if Materials:
+                        reply=Dialog.exec_()
+                        #Dialog.exec_()
+                        say(reply)
+                        if reply==1:
+                            material=str(ui.comboBox.currentText())
+                        else:
+                            #material="as is"
+                            material=color
+                    know_material_substitutions.update({color:material})
+                    say(material)
+                    face_colors.append(material)
+                else:
+                    face_colors.append(know_material_substitutions[color])
+            objs.append(exportObject(freecad_object=obj, shape_color=face_colors[0], face_colors=face_colors))
         say(fullFilePathName)
-        #say(objs)
+        say(objs)
         #export(objs, fullFilePathName, scale=None)
-        export(objs, fullFilePathName, 0.3937)
- 
+        #export(objs, fullFilePathName, 0.3937)
+
 doc = FreeCAD.ActiveDocument
 if doc!=None:
     fullFilePathName=doc.FileName
