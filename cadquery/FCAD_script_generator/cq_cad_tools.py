@@ -222,9 +222,8 @@ def GetListOfObjects(App, docName):
     objs=[]
     for obj in docName.Objects:
         # do what you want to automate
-        objs.append(App.ActiveDocument.getObject(obj.Name))
-        FreeCAD.Console.PrintMessage(obj.Name)
-        FreeCAD.Console.PrintMessage(' objName\r\n')
+        objs.append(getAppObject(obj.Name))
+        say(obj.Name)
 
     return objs
 
@@ -234,14 +233,17 @@ def GetListOfObjects(App, docName):
 ###################################################################
 def Color_Objects(Gui,obj,color):
 
-    FreeCAD.Console.PrintMessage(obj.Name+'\r\n')
-    Gui.ActiveDocument.getObject(obj.Name).ShapeColor = color
-    Gui.ActiveDocument.getObject(obj.Name).LineColor = color
-    Gui.ActiveDocument.getObject(obj.Name).PointColor = color
-    Gui.ActiveDocument.getObject(obj.Name).DiffuseColor = color
-    FreeCAD.Console.PrintMessage(obj.Name)
-    FreeCAD.Console.PrintMessage(' objName\r\n')
-    #obj.Label=ModelName
+    say('Coloring:',gbj.Name)
+    
+    gObj = getGuiObject(obj.Name)
+    
+    if not gObj:
+        return 0
+    
+    gObj.ShapeColor = color
+    gObj.LineColor = color
+    gObj.PointColor = color
+    gObj.DiffuseColor = color
 
     return 0
 
@@ -321,14 +323,14 @@ def exportVRML(doc,modelName,scale,dir):
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
     objs=GetListOfObjects(FreeCAD, doc)
-    #objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
-    FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model').Shape=objs[0].Shape
-    FreeCAD.ActiveDocument.ActiveObject.Label='Vrml_model'
-    FreeCADGui.ActiveDocument.ActiveObject.ShapeColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).ShapeColor
-    FreeCADGui.ActiveDocument.ActiveObject.LineColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).LineColor
-    FreeCADGui.ActiveDocument.ActiveObject.PointColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).PointColor
-    FreeCADGui.ActiveDocument.ActiveObject.DiffuseColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).DiffuseColor
-    FreeCAD.ActiveDocument.recompute()
+
+    vrml = FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model')
+    vrml.Shape=objs[0].Shape
+    vrml.Label='Vrml_model'
+    
+    #copy colors across
+    copyColors(objs[0].Name, vrml.Name)
+    
     newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
     #scale to export vrml  start
     Draft.scale(newObj,delta=FreeCAD.Vector(scale,scale,scale),center=FreeCAD.Vector(0,0,0),legacy=True)
@@ -377,3 +379,45 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     App.getDocument(doc.Name).save()
 
     return 0
+    
+#Find a GUI object (within the active document) (or return None if it does not exist)
+def getGuiObject(objName):
+    if type(objName) is not str:
+        sayw("getGuiObject - 'objName' must be a string")
+    try:
+        return FreeCADGui.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCADGui.ActiveDocument has no object named",objName)
+    except:
+        sayw("Error in getGuiObject()")
+    return None
+    
+#Find an APP object (within the active document) (or return None if it does not exist)
+def getAppObject(objName):
+    if type(objName) is not str:
+        sayw("getAppObject - 'objName' must be a string")
+    try:
+        return FreeCAD.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCAD.Activedocument has no object named",objName)
+    except:
+        sayw("Error in getAppObject()")
+        
+#pass the names of two objects
+#copy the colors of obj1 (master) to obj2 (slave)
+def copyColors(obj1Name, obj2Name):
+    
+    obj1 = getGuiObject(obj1Name)
+    obj2 = getGuiObject(obj2Name)
+    
+    #couldn't get object references
+    if not obj1 or not obj2:
+        sayw("copyColors() - could not find objects!")
+        return
+        
+    #copy the color info across
+    obj2.ShapeColor = obj1.ShapeColor
+    obj2.LineColor = obj1.LineColor
+    obj2.PointColor = obj1.PointColor
+    obj2.DiffuseColor = obj1.DiffuseColor
+    
