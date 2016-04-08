@@ -372,8 +372,9 @@ def infoDialog(msg):
 
 # points: [Vector, Vector, ...]
 # faces: [(pi, pi, pi), ], pi: point index
-# color: (Red, Green, Blue), values range from 0 to 1.0
+# color: (Red, Green, Blue), values range from 0 to 1.0 or color name as defined within this document.
 Mesh = namedtuple('Mesh', ['points', 'faces', 'color', 'transp'])
+#object name: I get an error for freecad_object.Transparency so i use App.getObject('name')
 exportObject = namedtuple('exportObject', ['freecad_object', 'shape_color', 'face_colors'])
 
 def shapeToMesh(shape, color, transp, scale=None):
@@ -392,13 +393,6 @@ def exportVRML(objects, filepath):
 
     `Mesh` structure is defined at root."""
 
-    #material_list=["as is","metal pins","gold pins","black body","dark brown body","brown body","grey body","green body","white body","black label","white label"]
-    #material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
-    #                       "grey body","dark grey body","brown body","light brown body","blue body",\
-    #                       "green body","orange body","pink body","yellow body","white body","light brown label",\
-    #                       "led red","led green","led blue"]
-    #global color_list_mat, col_index
-    global ui
     with open(filepath, 'w') as f:
         # write the standard VRML header
         f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
@@ -414,17 +408,10 @@ def exportVRML(objects, filepath):
             #f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
             f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
             f.write("]\n}") # closes Coordinate
-            #shape_col=(1.0, 0.0, 0.0)#, 0.0)
-            f.write("}\n") # closes points
-            #say(obj.color)
-            shape_col=obj.color[:-1] #remove last item
-            #say(shape_col)
 
-            #else:
-            #say("searching")
-            col_index=color_list.index(shape_col)
+
             #say(color_list_mat[col_index])
-            if not Materials or color_list_mat[col_index]=="as is":
+            if not Materials or obj.color=="as is":
                 shape_transparency=obj.transp
                 f.write("appearance Appearance{material Material{diffuseColor %f %f %f\n" % shape_col)
                 f.write("transparency %f}}" % shape_transparency)
@@ -453,15 +440,15 @@ def comboBox_Changed(text_combo):
         ui.plainTextEdit_2.viewport().setPalette(pal)
 
 ###
-def export(componentObjs, fullfilePathName, scale=None):
+def export(export_objects, fullfilePathName, scale=None):
     """ Exports given ComponentModel object using FreeCAD.
 
     `componentObjs` : a ComponentObjs list
     `fullfilePathName` : name of the FC file, extension is important
 
     """
-
-    exp_name=componentObjs[0].Label
+    #Gui.ActiveDocument.getObject(obj.Name)
+    exp_name=export_objects[0].freecad_object.Label
     path, fname = os.path.split(fullfilePathName)
     fname=os.path.splitext(fname)[0]
     if scale != None:
@@ -469,60 +456,35 @@ def export(componentObjs, fullfilePathName, scale=None):
     else:
         filename=path+os.sep+exp_name+'_1_1.wrl'
     say(filename)
-    color=[]
-    Diffuse_color=[]
-    transparency=[]
-    for obj in componentObjs:
-        say(obj.Label)
-        color.append(Gui.ActiveDocument.getObject(obj.Name).ShapeColor)
-        transparency.append(Gui.ActiveDocument.getObject(obj.Name).Transparency/100.0)
-        #say("color")
-        #say(Gui.ActiveDocument.getObject(obj.Name).DiffuseColor)
-        Diffuse_color.append(Gui.ActiveDocument.getObject(obj.Name).DiffuseColor)
-    i=0
     meshes=[]
-    #say("diffuse color")
-    #say(Diffuse_color)
-    indexColor=0;
-    color_vector=[]
     applyDiffuse=0
-    for obj in componentObjs:
-        shape1=obj.Shape
-        single_color=Diffuse_color[i];
-        #check lenght color
-        #say("len color")
-        #say(len(single_color))
-        #colors less then faces
-        if(len(single_color)!=len(shape1.Faces)):
-            applyDiffuse=0;
-            #copy color to all faces
-        #else copy singolar colors for faces
+    for exp_obj in export_objects:
+        gui_obj = Gui.ActiveDocument.getObject(exp_obj.freecad_object.Name)
+        color=exp_obj.shape_color
+        if color is None:
+            color = gui_obj.ShapeColor
+            color = color [:-1]
+
+        transparency=gui_obj.Transparency/100.0
+        shape1=exp_obj.freecad_object.Shape
+
+        if(exp_obj.face_colors is None or len(exp_obj.face_colors) != len(shape1.Faces)):
+            applyDiffuse=0 #use shape color for all faces
         else:
-            applyDiffuse=1;
-            for color in single_color:
-                color_vector.append(color)
-        #say("color_vector")
-        #say(color_vector)
-        for index in range(len(shape1.Faces)):
-            #say("color x")
-            #say(color_vector[indexColor])
-            singleFace=shape1.Faces[index]
-            if(applyDiffuse):
-                #say(color_vector[indexColor])
-                meshes.append(shapeToMesh(singleFace, color_vector[indexColor], transparency[i], scale))
+            applyDiffuse=1
+
+        for face_index in range(len(shape1.Faces)):
+            singleFace=shape1.Faces[face_index]
+            if applyDiffuse:
+                meshes.append(shapeToMesh(singleFace, exp_obj.face_colors[face_index], transparency, scale))
             else:
-                #say(single_color[0])
-                meshes.append(shapeToMesh(singleFace, single_color[0], transparency[i], scale))
-            indexColor=indexColor+1
-            #meshes.append(shapeToMesh(face, Diffuse_color[i], transparency[i], scale))
-        color_vector=[]
-        indexColor=0;
-        i=i+1
-    exportVRML(meshes, filename)
+                meshes.append(shapeToMesh(singleFace, color, transparency, scale))
+    say(meshes)
+    #exportVRML(meshes, filename)
     return
 ###
 
-def go_export():
+def exportVRMLfromSelction(fullFilePathName):
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
         FreeCAD.Console.PrintWarning("Select something first!\n\n")
@@ -560,7 +522,11 @@ def go_export():
                         #Dialog.exec_()
                         say(reply)
                         if reply==1:
-                            material=str(ui.comboBox.currentText())
+                            retval = str(ui.comboBox.currentText())
+                            if retval == "as is":
+                                material = color
+                            else:
+                                material = retval
                         else:
                             #material="as is"
                             material=color
@@ -569,11 +535,13 @@ def go_export():
                     face_colors.append(material)
                 else:
                     face_colors.append(know_material_substitutions[color])
-            objs.append(exportObject(freecad_object=obj, shape_color=face_colors[0], face_colors=face_colors))
+            objs.append(exportObject(freecad_object = obj,
+                    shape_color=face_colors[0],
+                    face_colors=face_colors))
         say(fullFilePathName)
         say(objs)
         #export(objs, fullFilePathName, scale=None)
-        #export(objs, fullFilePathName, 0.3937)
+        export(objs, fullFilePathName, 0.3937)
 
 doc = FreeCAD.ActiveDocument
 if doc!=None:
@@ -587,4 +555,4 @@ if doc!=None:
         fullFilePathName = os.path.dirname(os.path.abspath(fullFilePathName))
         fullFilePathName=fullFilePathName+os.sep+doc.Label+'.FCStd'
         say(fullFilePathName)
-    go_export()
+    exportVRMLfromSelction(fullFilePathName)
