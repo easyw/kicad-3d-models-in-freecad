@@ -15,7 +15,7 @@
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd, poeschlr"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "1.9.4 split export functionality and macro (make python import of export scripts possible)"
+__version__ = "1.9.4 split export functionality and macro (make python import of this export scripts possible)"
 __date__    = "09/04/2016"
 
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
@@ -382,7 +382,7 @@ def shapeToMesh(shape, color, transp, scale=None):
                 color = color, transp=transp)
     return newMesh
 
-def exportVRML(objects, filepath):
+def writeVRMLFile(objects, filepath):
     """Export given list of Mesh objects to a VRML file.
 
     `Mesh` structure is defined at root."""
@@ -435,22 +435,13 @@ def comboBox_Changed(text_combo):
         ui.plainTextEdit_2.viewport().setPalette(pal)
 
 ###
-def export(Gui, export_objects, fullfilePathName, scale=None):
+def getColoredMesh(Gui, export_objects , scale=None):
     """ Exports given ComponentModel object using FreeCAD.
 
     `componentObjs` : a ComponentObjs list
     `fullfilePathName` : name of the FC file, extension is important
 
     """
-    #Gui.ActiveDocument.getObject(obj.Name)
-    exp_name=export_objects[0].freecad_object.Label
-    path, fname = os.path.split(fullfilePathName)
-    fname=os.path.splitext(fname)[0]
-    if scale != None:
-        filename=path+os.sep+exp_name+'.wrl'
-    else:
-        filename=path+os.sep+exp_name+'_1_1.wrl'
-    say(filename)
     meshes=[]
     applyDiffuse=0
     for exp_obj in export_objects:
@@ -474,10 +465,66 @@ def export(Gui, export_objects, fullfilePathName, scale=None):
                 meshes.append(shapeToMesh(singleFace, exp_obj.face_colors[face_index], transparency, scale))
             else:
                 meshes.append(shapeToMesh(singleFace, color, transparency, scale))
-    say(meshes)
-    exportVRML(meshes, filename)
-    return
+    return meshes
 ###
+def getNamedColors(color_list):
+     used_colors = list(set(color_list))
+     return [x for x in used_colors if isinstance(x, basestring)]
+
+def determineColors(Gui, objects):
+    global ui
+    know_material_substitutions={}
+    Dialog = QtGui.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    ui.comboBox.addItems(material_properties_names)
+    material="as is"
+
+
+    objs = []
+    for obj in sel:
+        freecad_object = Gui.ActiveDocument.getObject(obj.Name)
+        face_colors = []
+        for color in freecad_object.DiffuseColor:
+            color = color[:-1]
+            say(color)
+            if color not in know_material_substitutions:
+                pal = QtGui.QPalette()
+                bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
+                pal.setColor(QtGui.QPalette.Base, bgc)
+                ui.plainTextEdit.viewport().setPalette(pal)
+                #ui.comboBox.addItems(color_list)
+                reply=Dialog.exec_()
+                #Dialog.exec_()
+                say(reply)
+                if reply==1:
+                    retval = str(ui.comboBox.currentText())
+                    if retval == "as is":
+                        material = color
+                    else:
+                        material = retval
+                else:
+                    #material="as is"
+                    material=color
+                know_material_substitutions.update({color:material})
+                say(material)
+                face_colors.append(material)
+            else:
+                face_colors.append(know_material_substitutions[color])
+        objs.append(exportObject(freecad_object = obj,
+                shape_color=face_colors[0],
+                face_colors=face_colors))
+    return (objs, getNamedColors(know_material_substitutions.values()))
+
+def generateFileName(label, fullFilePathName, scale):
+    path, fname = os.path.split(fullfilePathName)
+    fname=os.path.splitext(fname)[0]
+    if scale != None:
+        filename=path+os.sep+label+'.wrl'
+    else:
+        filename=path+os.sep+label+'_1_1.wrl'
+    say(filename)
+    return filename
 
 def exportVRMLfromSelction(Gui, fullFilePathName):
     sel = FreeCADGui.Selection.getSelection()
@@ -490,50 +537,10 @@ def exportVRMLfromSelction(Gui, fullFilePathName):
         msg+="change mesh deviation to increase quality of VRML"
         say(msg)
     else:
-        global ui
-        know_material_substitutions={}
-        Dialog = QtGui.QDialog()
-        ui = Ui_Dialog()
-        ui.setupUi(Dialog)
-        ui.comboBox.addItems(material_properties_names)
-        material="as is"
-
-
-        objs = []
-        for obj in sel:
-            freecad_object = Gui.ActiveDocument.getObject(obj.Name)
-            face_colors = []
-            for color in freecad_object.DiffuseColor:
-                color = color[:-1]
-                say(color)
-                if color not in know_material_substitutions:
-                    pal = QtGui.QPalette()
-                    bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
-                    pal.setColor(QtGui.QPalette.Base, bgc)
-                    ui.plainTextEdit.viewport().setPalette(pal)
-                    #ui.comboBox.addItems(color_list)
-                    if Materials:
-                        reply=Dialog.exec_()
-                        #Dialog.exec_()
-                        say(reply)
-                        if reply==1:
-                            retval = str(ui.comboBox.currentText())
-                            if retval == "as is":
-                                material = color
-                            else:
-                                material = retval
-                        else:
-                            #material="as is"
-                            material=color
-                    know_material_substitutions.update({color:material})
-                    say(material)
-                    face_colors.append(material)
-                else:
-                    face_colors.append(know_material_substitutions[color])
-            objs.append(exportObject(freecad_object = obj,
-                    shape_color=face_colors[0],
-                    face_colors=face_colors))
-        say(fullFilePathName)
-        say(objs)
+        export_objects, used_color_keys = determineColors(Gui, sel)
+        scale = 1/2.54
+        export_file_name = generateFileName(sel[0].Label, fullFilePathName, scale)
         #export(objs, fullFilePathName, scale=None)
-        export(Gui, objs, fullFilePathName, 0.3937)
+        colored_meshes = export(Gui, objs , scale)
+
+        writeVRMLFile(colored_meshes, export_file_name)
