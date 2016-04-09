@@ -57,7 +57,7 @@ from collections import namedtuple
 import sys, os
 from os.path import expanduser
 import re
-
+import shaderColors
 
 def say(msg):
     FreeCAD.Console.PrintMessage(msg)
@@ -74,228 +74,6 @@ def clear_console():
 #if not Mod_ENABLED:
 clear_console()
 
-#color_list=[];index_color=0
-
-Materials=True
-## "PIN-01";"metal grey pins"
-## "PIN-02";"gold pins"
-## "IC-BODY-EPOXY-04";"black body"
-## "RES-SMD-01";"resistor black body"
-## "IC-BODY-EPOXY-01";"grey body"
-## "CAP-CERAMIC-05";"dark grey body"
-## "CAP-CERAMIC-06";"brown body"
-## "PLASTIC-GREEN-01";"green body"
-## "PLASTIC-BLUE-01";"blue body"
-## "PLASTIC-WHITE-01";"white body"
-## "IC-LABEL-01";"light brown label"
-## LED-GREEN, LED-RED, LED-BLUE
-
-as_is=""
-
-metal_grey_pins="""material DEF PIN-01 Material {
-        ambientIntensity 0.271
-        diffuseColor 0.824 0.820 0.781
-        specularColor 0.328 0.258 0.172
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.70
-        transparency 0.0
-        }"""
-
-gold_pins="""material DEF PIN-02 Material {
-        ambientIntensity 0.379
-        diffuseColor 0.859 0.738 0.496
-        specularColor 0.137 0.145 0.184
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.40
-        transparency 0.0
-        }"""
-
-black_body="""material DEF IC-BODY-EPOXY-04 Material {
-        ambientIntensity 0.293
-        diffuseColor 0.148 0.145 0.145
-        specularColor 0.180 0.168 0.160
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.35
-        transparency 0.0
-        }"""
-
-resistor_black_body="""material DEF RES-SMD-01 Material {
-        diffuseColor 0.082 0.086 0.094
-        emissiveColor 0.000 0.000 0.000
-        specularColor 0.066 0.063 0.063
-        ambientIntensity 0.638
-        transparency 0.0
-        shininess 0.3
-        }"""
-
-dark_grey_body="""material DEF CAP-CERAMIC-05 Material {
-        ambientIntensity 0.179
-        diffuseColor 0.273 0.273 0.273
-        specularColor 0.203 0.188 0.176
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.15
-        transparency 0.0
-        }"""
-
-grey_body="""material DEF IC-BODY-EPOXY-01 Material {
-        ambientIntensity 0.117
-        diffuseColor 0.250 0.262 0.281
-        specularColor 0.316 0.281 0.176
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-brown_body="""material DEF CAP-CERAMIC-06 Material {
-        ambientIntensity 0.453
-        diffuseColor 0.379 0.270 0.215
-        specularColor 0.223 0.223 0.223
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.15
-        transparency 0.0
-        }"""
-
-light_brown_body="""material DEF RES-THT-01 Material {
-        ambientIntensity 0.149
-        diffuseColor 0.883 0.711 0.492
-        specularColor 0.043 0.121 0.281
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.40
-        transparency 0.0
-        }"""
-
-blue_body="""material DEF PLASTIC-BLUE-01 Material {
-        ambientIntensity 0.565
-        diffuseColor 0.137 0.402 0.727
-        specularColor 0.359 0.379 0.270
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-green_body="""material DEF PLASTIC-GREEN-01 Material {
-        ambientIntensity 0.315
-        diffuseColor 0.340 0.680 0.445
-        specularColor 0.176 0.105 0.195
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-orange_body="""material DEF PLASTIC-ORANGE-01 Material {
-        ambientIntensity 0.284
-        diffuseColor 0.809 0.426 0.148
-        specularColor 0.039 0.102 0.145
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-red_body="""material DEF RED-BODY Material {
-        ambientIntensity 0.683
-        diffuseColor 0.700 0.100 0.050
-        emissiveColor 0.000 0.000 0.000
-        specularColor 0.300 0.400 0.150
-        transparency 0.0
-        shininess 0.25
-        }"""
-
-pink_body="""material DEF CAP-CERAMIC-02 Material {
-        ambientIntensity 0.683
-        diffuseColor 0.578 0.336 0.352
-        specularColor 0.105 0.273 0.270
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-yellow_body="""material DEF PLASTIC-YELLOW-01 Material {
-        ambientIntensity 0.522
-        diffuseColor 0.832 0.680 0.066
-        specularColor 0.160 0.203 0.320
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-white_body="""material DEF PLASTIC-WHITE-01 Material {
-        ambientIntensity 0.494
-        diffuseColor 0.895 0.891 0.813
-        specularColor 0.047 0.055 0.109
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.25
-        transparency 0.0
-        }"""
-
-light_brown_label="""material DEF IC-LABEL-01 Material {
-        ambientIntensity 0.082
-        diffuseColor 0.691 0.664 0.598
-        specularColor 0.000 0.000 0.000
-        emissiveColor 0.0 0.0 0.0
-        shininess 0.01
-        transparency 0.0
-        }"""
-
-led_red="""material DEF LED-RED Material {
-        ambientIntensity 0.789
-        diffuseColor 0.700 0.100 0.050
-        emissiveColor 0.000 0.000 0.000
-        specularColor 0.300 0.400 0.150
-        transparency 0.10
-        shininess 0.125
-        }"""
-
-led_green="""material DEF LED-GREEN Material {
-        ambientIntensity 0.789
-        diffuseColor 0.400 0.700 0.150
-        emissiveColor 0.000 0.000 0.000
-        specularColor 0.600 0.300 0.100
-        transparency 0.10
-        shininess 0.05
-        }"""
-
-led_blue="""material DEF LED-BLUE Material {
-        ambientIntensity 0.789
-        diffuseColor 0.100 0.250 0.700
-        emissiveColor 0.000 0.000 0.000
-        specularColor 0.500 0.600 0.300
-        transparency 0.10
-        shininess 0.125
-        }"""
-
-led_white="""material DEF LED-WHITE Material {
-        ambientIntensity 0.494
-        diffuseColor 0.895 0.891 0.813
-        specularColor 0.047 0.055 0.109
-        emissiveColor 0.0 0.0 0.0
-        transparency 0.10
-        shininess 0.125
-        }"""
-
-material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
-                           "grey body","dark grey body","brown body","light brown body","blue body",\
-                           "green body","orange body","red_body","pink body","yellow body","white body","light brown label",\
-                           "led red","led green","led blue", "led white"]
-material_properties=[as_is,metal_grey_pins,gold_pins,black_body,resistor_black_body,\
-                     grey_body,dark_grey_body,brown_body,light_brown_body,blue_body,\
-                     green_body,orange_body,red_body,pink_body,yellow_body,white_body,light_brown_label,\
-                     led_red,led_green,led_blue,led_white]
-
-material_definitions=""
-for mat in material_properties[1:]:
-    material_definitions+="Shape {\n    appearance Appearance {"+mat+"\n    }\n}\n"
-
-material_ids=[]
-material_ids.append("")
-
-for mat in material_properties[1:]:
-    m = re.search('DEF\s(.+?)\sMaterial', mat)
-    if m:
-        found = m.group(1)
-        #say(found)
-        material_ids.append(found)
-#say(material_ids)
-#say (material_definitions)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -382,15 +160,20 @@ def shapeToMesh(shape, color, transp, scale=None):
                 color = color, transp=transp)
     return newMesh
 
-def writeVRMLFile(objects, filepath):
+def writeVRMLFile(objects, filepath, used_color_keys):
     """Export given list of Mesh objects to a VRML file.
 
     `Mesh` structure is defined at root."""
-
+    used_colors = None
+    if used_color_keys is not None:
+        used_colors = { x: shaderColors.named_colors[x] for x in used_color_keys }
+    say(used_color_keys)
+    say(used_colors.values())
     with open(filepath, 'w') as f:
         # write the standard VRML header
         f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
-        f.write(material_definitions)
+        for shader_color in used_colors.values():
+            f.write(shader_color.toVRMLdefinition())
 
         for obj in objects:
             f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
@@ -406,31 +189,24 @@ def writeVRMLFile(objects, filepath):
             f.write("}\n") # closes points
 
             #say(color_list_mat[col_index])
-            if not isinstance(obj.color,basestring):
+            if not isinstance(obj.color,basestring) or isinstance(used_colors, basestring):
                 shape_transparency=obj.transp
                 f.write("appearance Appearance{material Material{diffuseColor %f %f %f\n" % obj.color)
                 f.write("transparency %f}}" % shape_transparency)
-                f.write("}\n") # closes Shape
             else:
-                material_index=material_properties_names.index(obj.color)
-                #say(material_properties[material_index])
-                #f.write("appearance Appearance{"+material_properties[material_index]+"}}\n")
-                f.write("appearance Appearance{material USE "+material_ids[material_index]+" }}\n")
+                say(obj.color)
+                f.write(used_colors[obj.color].toVRMLuseColor())
+            f.write("}\n") # closes shape
         say(filepath+' written')
 ###
 def comboBox_Changed(text_combo):
     global ui
     say(text_combo)
-    material_index=material_properties_names.index(text_combo)
-    #say(material_index)
-    mat_prop = material_properties[material_index].split('\n')
-    if len(mat_prop)>1:
-        say(mat_prop[2])
-        color_rgb=mat_prop[2].split(' ')
-        say (color_rgb)
-        say(color_rgb[9]+" "+color_rgb[10]+" "+color_rgb[11])
+    if text_combo not in shaderColors.named_colors:
+        return
+    if len(shaderColors.named_colors)>1:
         pal = QtGui.QPalette()
-        bgc = QtGui.QColor(float(color_rgb[9])*255,float(color_rgb[10])*255, float(color_rgb[11])*255)
+        bgc = QtGui.QColor(*shaderColors.named_colors[text_combo].getDiffuseInt())
         pal.setColor(QtGui.QPalette.Base, bgc)
         ui.plainTextEdit_2.viewport().setPalette(pal)
 
@@ -477,17 +253,17 @@ def determineColors(Gui, objects):
     Dialog = QtGui.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
-    ui.comboBox.addItems(material_properties_names)
+    ui.comboBox.addItems(["as is"]+shaderColors.named_colors.keys())
     material="as is"
 
 
     objs = []
-    for obj in sel:
+    for obj in objects:
         freecad_object = Gui.ActiveDocument.getObject(obj.Name)
         face_colors = []
         for color in freecad_object.DiffuseColor:
             color = color[:-1]
-            say(color)
+            #say(color)
             if color not in know_material_substitutions:
                 pal = QtGui.QPalette()
                 bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
@@ -496,7 +272,7 @@ def determineColors(Gui, objects):
                 #ui.comboBox.addItems(color_list)
                 reply=Dialog.exec_()
                 #Dialog.exec_()
-                say(reply)
+                #say(reply)
                 if reply==1:
                     retval = str(ui.comboBox.currentText())
                     if retval == "as is":
@@ -507,7 +283,7 @@ def determineColors(Gui, objects):
                     #material="as is"
                     material=color
                 know_material_substitutions.update({color:material})
-                say(material)
+                #say(material)
                 face_colors.append(material)
             else:
                 face_colors.append(know_material_substitutions[color])
@@ -517,7 +293,7 @@ def determineColors(Gui, objects):
     return (objs, getNamedColors(know_material_substitutions.values()))
 
 def generateFileName(label, fullFilePathName, scale):
-    path, fname = os.path.split(fullfilePathName)
+    path, fname = os.path.split(fullFilePathName)
     fname=os.path.splitext(fname)[0]
     if scale != None:
         filename=path+os.sep+label+'.wrl'
@@ -541,6 +317,6 @@ def exportVRMLfromSelction(Gui, fullFilePathName):
         scale = 1/2.54
         export_file_name = generateFileName(sel[0].Label, fullFilePathName, scale)
         #export(objs, fullFilePathName, scale=None)
-        colored_meshes = export(Gui, objs , scale)
-
-        writeVRMLFile(colored_meshes, export_file_name)
+        colored_meshes = getColoredMesh(Gui, export_objects , scale)
+        say(used_color_keys)
+        writeVRMLFile(colored_meshes, export_file_name, used_color_keys)
