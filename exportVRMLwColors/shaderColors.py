@@ -1,3 +1,47 @@
+# -*- coding: utf-8 -*-
+
+# PartToVRML.FCMacro
+# creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)
+# useful messages on Report view
+#
+# Copyright (c) 2015 Maurice easyw@katamail.com
+# Copyright (c) 2015 Hasan Yavuz �zderya
+# Copyright Nico
+# this is a part of kicad StepUp tools; please refer to kicad StepUp tools
+# for the full licence
+#
+#
+
+__title__ = "PartToVRMLwithMaterials"
+__author__ = "easyw-fc, hyOzd, poeschlr"
+__url__     = "http://www.freecadweb.org/"
+__version__ = "1.9.4 split export functionality and macro (make python import of this export scripts possible)"
+__date__    = "09/04/2016"
+
+__Comment__ = "This file contains helper functions for the vrml export. It manages named colors."
+__Web__ = "http://www.freecadweb.org/"
+__Wiki__ = "http://www.freecadweb.org/wiki/index.php?title=Macro_PartToVRML"
+
+# FreeCAD VRML python exporter is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+#
+# This sw is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with expVrmlColor.FCMacro.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+## export VRML from FreeCAD is a python macro that will export simplified VRML of
+## a (multi)selected Part or fused Part to VRML optimized to Kicad and compatible with Blender
+## the size of VRML is much smaller compared to the one exported from FC Gui
+## and the loading/rendering time is smaller too
+## change mesh deviation to increase quality of VRML
+
 class shaderColor():
     def __init__(self, diffuseColor, name = None, ambientIntensity=None, specularColor=None, emissiveColor=None, transparency=None, shininess=None):
         self.name = name #none means do not define within the header of vrml file
