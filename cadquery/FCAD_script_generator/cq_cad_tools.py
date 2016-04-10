@@ -43,6 +43,44 @@ def sayw(*arg):
 
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+    
+#from an argument string, extract a list of numbers
+#numbers can be individual e.g. "3"
+#numbers can be comma delimited e.g. "3,5"
+#numbers can be in a range e.g. "3-8"
+#numbers can't be < 1
+def getListOfNumbers(string): 
+    numbers = []
+    #does this number contain a hyphen?
+    if '-' in string:
+        if len(string.split('-')) == 2:
+            a,b = string.split('-')
+            try:
+                a = int(a)
+                b = int(b)
+                if a > 0 and b > a:
+                    numbers = [i for i in range(a,b+1)]
+            except:
+                pass
+                
+    elif ',' in string:
+        #Now, split by comma
+        ss = string.split(",")
+
+        for s in ss:
+            try:
+                numbers += [int(s)]
+            except:
+                pass
+
+    else:
+        try:
+            numbers = [int(string)]
+        except:
+            numbers = []
+        
+    return numbers
+
 
 ###################################################################
 # close_CQ_Example()  maui
