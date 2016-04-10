@@ -171,7 +171,10 @@ def fuseAll(App, Gui):
     
     objects = App.ActiveDocument.Objects
     
+    say("Fusing",len(objects),"objects")
+    
     while len(objects) > 1:
+        say("Fusing:",objects[0].Name,objects[1].Name)
         FuseObjs_wColors_naming(App, Gui, docName, objects[0].Name, objects[1].Name)
         objects = App.ActiveDocument.Objects
     
