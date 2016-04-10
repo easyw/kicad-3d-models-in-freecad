@@ -69,7 +69,6 @@ pin_lock_d = 0.3
 pin_fillet = 0.2
 pin_bend_radius = 0.05
 pin_pitch = 2.5
-pin_z_distance = 5.75-2.35
 body_corner_x = -2.45
 body_corner_y = -2.35
 
@@ -249,6 +248,10 @@ def generate_straight_pins(params):
 def generate_angled_pins(params):
     num_pins = params.num_pins
     pin_angle_length = params.pin_angle_length
+    zdistance = params.zdistance
+    body_width = params.body_width
+
+    pin_z_distance = body_width + body_corner_y + zdistance
 
     pl = [
         (pin_width/2, -pin_depth),
