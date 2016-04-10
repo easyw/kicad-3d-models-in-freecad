@@ -142,6 +142,7 @@ import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
 import conn_jst_xh_models as M
+import step_license as L
 
 if __name__ == "__main__":
 
@@ -201,7 +202,11 @@ if __name__ == "__main__":
         scale=1/2.54
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
         fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
                         ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
         exportSTEP(doc,FileName,out_dir,fusion)
+        L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+
         saveFCdoc(App, Gui, doc, FileName,out_dir)
