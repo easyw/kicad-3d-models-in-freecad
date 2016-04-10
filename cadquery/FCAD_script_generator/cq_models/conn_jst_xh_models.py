@@ -15,7 +15,7 @@
 #* This is a cadquery description for the generation of MCAD models.        *
 #*                                                                          *
 #*   Copyright (c) 2016                                                     *
-#* poeschlr https://github.com/poeschlr                                     *
+#* Rene Poeschl https://github.com/poeschlr                                 *
 #* All trademarks within this guide belong to their legitimate owners.      *
 #*                                                                          *
 #*   This program is free software; you can redistribute it and/or modify   *

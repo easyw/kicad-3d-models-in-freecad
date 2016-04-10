@@ -6,4 +6,5 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-FreeCAD export_conn_jst_xh.py all
+FreeCAD export_conn_jst_xh.py B02B_XH_A
+#FreeCAD export_conn_jst_xh.py all

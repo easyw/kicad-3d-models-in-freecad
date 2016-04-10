@@ -17,7 +17,7 @@
 ##   https://github.com/jmwright/cadquery-freecad-module
 
 ## to run the script just do: freecad make_gwexport_fc.py modelName
-## e.g. FreeCAD make_gw_export_fc.py TE_1825360-1
+## e.g. FreeCAD export_conn_jst_xh.py all
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -26,12 +26,12 @@
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
 #* cadquery script for generating QFP/SOIC/SSOP/TSSOP models in STEP AP214  *
-#*   Copyright (c) 2015                                                     *
-#* Maurice https://launchpad.net/~easyw                                     *
+#*   Copyright (c) 2016                                                     *
+#* Rene Poeschl https://github.com/poeschlr                                 *
 #* All trademarks within this guide belong to their legitimate owners.      *
 #*                                                                          *
 #*   This program is free software; you can redistribute it and/or modify   *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)     *
+#*   it under the terms of the GNU General Public License (GPL)             *
 #*   as published by the Free Software Foundation; either version 2 of      *
 #*   the License, or (at your option) any later version.                    *
 #*   for detail see the LICENCE text file.                                  *
@@ -55,6 +55,41 @@ __Comment__ = 'make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry)'
 ___ver___ = "1.1 10/04/2016"
 
 import sys, os
+import datetime
+from datetime import datetime
+sys.path.append("../../exportVRMLwColors")
+import exportPartToVRML as expVRML
+import shaderColors
+
+#Licence information of your models.
+STR_licAuthor = "Rene Poeschl"
+STR_licEmail = "poeschlr@gmail.com"
+STR_licOrgSys = ""
+STR_licPreProc = ""
+
+LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor,
+                "",
+                "This program is free software: you can redistribute it and/or modify",
+                "it under the terms of the GNU General Public License as published by",
+                "the Free Software Foundation, either version 2 of the License, or",
+                "any later version.",
+                "",
+                "This program is distributed in the hope that it will be useful,",
+                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
+                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+                "GNU General Public License for more details.",
+                "",
+                "You should have received a copy of the GNU General Public License",
+                "along with this program.  If not, see http://www.gnu.org/licenses/.",
+                ""
+                ]
+
+body_color_key = "white body"
+body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
+pins_color_key = "metal grey pins"
+pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
+
+destination_dir="Connectors_JST" #for now
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -108,26 +143,11 @@ from Helpers import show
 from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
-
 sys.path.append("cq_models")
 import conn_jst_xh_models as M
 
-sys.path.append("../../exportVRMLwColors")
-import exportPartToVRML as expVRML
-import shaderColors
 # maui end
 
-
-body_color_key = "white body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
-pins_color_key = "metal grey pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
-
-
-
-destination_dir="Connectors_JST" #for now
-
-# original stuff (mostly)
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
@@ -185,7 +205,7 @@ if __name__ == "__main__":
 
         scale=1/2.54
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)
+        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
                         ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
         exportSTEP(doc,FileName,out_dir,fusion)

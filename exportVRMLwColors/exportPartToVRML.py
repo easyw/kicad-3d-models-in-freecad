@@ -6,6 +6,7 @@
 #
 # Copyright (c) 2015 Maurice easyw@katamail.com
 # Copyright (c) 2015 Hasan Yavuz �zderya
+# Copyright (c) 2016 Rene Poeschl https://github.com/poeschlr
 # Copyright Nico
 # this is a part of kicad StepUp tools; please refer to kicad StepUp tools
 # for the full licence
@@ -160,7 +161,7 @@ def shapeToMesh(shape, color, transp, scale=None):
                 color = color, transp=transp)
     return newMesh
 
-def writeVRMLFile(objects, filepath, used_color_keys):
+def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None):
     """Export given list of Mesh objects to a VRML file.
 
     `Mesh` structure is defined at root."""
@@ -172,6 +173,9 @@ def writeVRMLFile(objects, filepath, used_color_keys):
     with open(filepath, 'w') as f:
         # write the standard VRML header
         f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
+        if licence_info is not None:
+            for line in licence_info:
+                f.write('# '+line + '\n')
         for shader_color in used_colors.values():
             f.write(shader_color.toVRMLdefinition())
 
