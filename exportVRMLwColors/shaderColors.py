@@ -74,7 +74,12 @@ class shaderColor():
         return "appearance Appearance{material USE "+self.name+" }\n"
 
     def getDiffuseInt(self):
-        return self.diffuseColor[0]*255, self.diffuseColor[1]*255, self.diffuseColor[2]*255
+        return int(self.diffuseColor[0]*255),\
+            int(self.diffuseColor[1]*255),\
+            int(self.diffuseColor[2]*255)
+
+    def getDiffuseFloat(self):
+        return self.diffuseColor[0], self.diffuseColor[1], self.diffuseColor[2]
 
     def __str__(self):
         return self.toVRMLdefinition()
