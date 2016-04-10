@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.3 16/08/2015"
+___ver___ = "1.2.3 16/08/2015" 
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -43,6 +43,44 @@ def sayw(*arg):
     
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+    
+#from an argument string, extract a list of numbers
+#numbers can be individual e.g. "3"
+#numbers can be comma delimited e.g. "3,5"
+#numbers can be in a range e.g. "3-8"
+#numbers can't be < 1
+def getListOfNumbers(string): 
+    numbers = []
+    #does this number contain a hyphen?
+    if '-' in string:
+        if len(string.split('-')) == 2:
+            a,b = string.split('-')
+            try:
+                a = int(a)
+                b = int(b)
+                if a > 0 and b > a:
+                    numbers = [i for i in range(a,b+1)]
+            except:
+                pass
+                
+    elif ',' in string:
+        #Now, split by comma
+        ss = string.split(",")
+
+        for s in ss:
+            try:
+                numbers += [int(s)]
+            except:
+                pass
+
+    else:
+        try:
+            numbers = [int(string)]
+        except:
+            numbers = []
+        
+    return numbers
+
 
 ###################################################################
 # close_CQ_Example()  maui
@@ -72,63 +110,12 @@ def close_CQ_Example(App, Gui):
 
     return 0
 
-
 ###################################################################
 # FuseObjs_wColors()  maui
 #	Function to fuse two objects together.
 ###################################################################
-def FuseObjs_wColors(App, Gui,
-                           docName, part1, part2):
-
-    # Fuse two objects
-    App.ActiveDocument=None
-    Gui.ActiveDocument=None
-    App.setActiveDocument(docName)
-    App.ActiveDocument=App.getDocument(docName)
-    Gui.ActiveDocument=Gui.getDocument(docName)
-    App.activeDocument().addObject("Part::MultiFuse","Fusion")
-    App.activeDocument().Fusion.Shapes = [App.ActiveDocument.getObject(part1), App.ActiveDocument.getObject(part2)]
-    Gui.ActiveDocument.Fusion.ShapeColor=Gui.ActiveDocument.getObject(part1).ShapeColor
-    Gui.ActiveDocument.Fusion.DisplayMode=Gui.ActiveDocument.getObject(part1).DisplayMode
-    App.ActiveDocument.recompute()
-
-    App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
-    App.ActiveDocument.ActiveObject.Label=docName
-
-    Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
-    Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
-    Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
-    Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
-    App.ActiveDocument.recompute()
-
-    ## ## TBD refine Shape to reduce size maui
-    ## App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape.removeSplitter()
-    ## App.ActiveDocument.ActiveObject.Label=App.ActiveDocument.Fusion.Label
-    ## Gui.ActiveDocument.Fusion.hide()
-    ##
-    ## Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
-    ## Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
-    ## Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
-    ## Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
-    ## App.ActiveDocument.recompute()
-    ## App.ActiveDocument.ActiveObject.Label=docName
-    #######################################################
-    # Remove the part1 part2 objects
-    App.getDocument(docName).removeObject(part1)
-    App.getDocument(docName).removeObject(part2)
-
-    # Remove the fusion itself
-    App.getDocument(docName).removeObject("Fusion")
-    ## App.getDocument(docName).removeObject("Fusion001")
-
-    return 0
-
-###################################################################
-# FuseObjs_wColors_naming()  maui
-#	Function to fuse two objects together.
-###################################################################
 def FuseObjs_wColors_naming(App, Gui,
-                           docName, part1, part2, name):
+                           docName, part1, part2, name=None):
 
     # Fuse two objects
     App.ActiveDocument=None
@@ -143,6 +130,10 @@ def FuseObjs_wColors_naming(App, Gui,
     App.ActiveDocument.recompute()
 
     App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
+    
+    if not name:
+        name = docName
+        
     App.ActiveDocument.ActiveObject.Label=name
 
     Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
@@ -172,6 +163,20 @@ def FuseObjs_wColors_naming(App, Gui,
     ## App.getDocument(docName).removeObject("Fusion001")
 
     return 0    
+    
+    
+#fuse ALL objects (in the current document) into a single object
+def fuseAll(App, Gui):
+    docName = App.ActiveDocument.Name
+    
+    objects = App.ActiveDocument.Objects
+    
+    say("Fusing",len(objects),"objects")
+    
+    while len(objects) > 1:
+        say("Fusing:",objects[0].Name,objects[1].Name)
+        FuseObjs_wColors_naming(App, Gui, docName, objects[0].Name, objects[1].Name)
+        objects = App.ActiveDocument.Objects
     
 ###################################################################
 # CutObjs_wColors()  maui
@@ -222,9 +227,8 @@ def GetListOfObjects(App, docName):
     objs=[]
     for obj in docName.Objects:
         # do what you want to automate
-        objs.append(App.ActiveDocument.getObject(obj.Name))
-        FreeCAD.Console.PrintMessage(obj.Name)
-        FreeCAD.Console.PrintMessage(' objName\r\n')
+        objs.append(getAppObject(obj.Name))
+        say(obj.Name)
 
     return objs
 
@@ -234,14 +238,17 @@ def GetListOfObjects(App, docName):
 ###################################################################
 def Color_Objects(Gui,obj,color):
 
-    FreeCAD.Console.PrintMessage(obj.Name+'\r\n')
-    Gui.ActiveDocument.getObject(obj.Name).ShapeColor = color
-    Gui.ActiveDocument.getObject(obj.Name).LineColor = color
-    Gui.ActiveDocument.getObject(obj.Name).PointColor = color
-    Gui.ActiveDocument.getObject(obj.Name).DiffuseColor = color
-    FreeCAD.Console.PrintMessage(obj.Name)
-    FreeCAD.Console.PrintMessage(' objName\r\n')
-    #obj.Label=ModelName
+    say('Coloring:',gbj.Name)
+    
+    gObj = getGuiObject(obj.Name)
+    
+    if not gObj:
+        return 0
+    
+    gObj.ShapeColor = color
+    gObj.LineColor = color
+    gObj.PointColor = color
+    gObj.DiffuseColor = color
 
     return 0
 
@@ -321,14 +328,14 @@ def exportVRML(doc,modelName,scale,dir):
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
     objs=GetListOfObjects(FreeCAD, doc)
-    #objs.append(FreeCAD.getDocument(doc.Name).getObject("Fusion001"))
-    FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model').Shape=objs[0].Shape
-    FreeCAD.ActiveDocument.ActiveObject.Label='Vrml_model'
-    FreeCADGui.ActiveDocument.ActiveObject.ShapeColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).ShapeColor
-    FreeCADGui.ActiveDocument.ActiveObject.LineColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).LineColor
-    FreeCADGui.ActiveDocument.ActiveObject.PointColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).PointColor
-    FreeCADGui.ActiveDocument.ActiveObject.DiffuseColor=FreeCADGui.getDocument(doc.Name).getObject(objs[0].Name).DiffuseColor
-    FreeCAD.ActiveDocument.recompute()
+
+    vrml = FreeCAD.ActiveDocument.addObject('Part::Feature','Vrml_model')
+    vrml.Shape=objs[0].Shape
+    vrml.Label='Vrml_model'
+    
+    #copy colors across
+    copyColors(objs[0].Name, vrml.Name)
+    
     newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
     #scale to export vrml  start
     Draft.scale(newObj,delta=FreeCAD.Vector(scale,scale,scale),center=FreeCAD.Vector(0,0,0),legacy=True)
@@ -377,3 +384,45 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     App.getDocument(doc.Name).save()
 
     return 0
+    
+#Find a GUI object (within the active document) (or return None if it does not exist)
+def getGuiObject(objName):
+    if type(objName) is not str:
+        sayw("getGuiObject - 'objName' must be a string")
+    try:
+        return FreeCADGui.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCADGui.ActiveDocument has no object named",objName)
+    except:
+        sayw("Error in getGuiObject()")
+    return None
+    
+#Find an APP object (within the active document) (or return None if it does not exist)
+def getAppObject(objName):
+    if type(objName) is not str:
+        sayw("getAppObject - 'objName' must be a string")
+    try:
+        return FreeCAD.ActiveDocument.getObject(objName)
+    except NameError:
+        sayw("FreeCAD.Activedocument has no object named",objName)
+    except:
+        sayw("Error in getAppObject()")
+        
+#pass the names of two objects
+#copy the colors of obj1 (master) to obj2 (slave)
+def copyColors(obj1Name, obj2Name):
+    
+    obj1 = getGuiObject(obj1Name)
+    obj2 = getGuiObject(obj2Name)
+    
+    #couldn't get object references
+    if not obj1 or not obj2:
+        sayw("copyColors() - could not find objects!")
+        return
+        
+    #copy the color info across
+    obj2.ShapeColor = obj1.ShapeColor
+    obj2.LineColor = obj1.LineColor
+    obj2.PointColor = obj1.PointColor
+    obj2.DiffuseColor = obj1.DiffuseColor
+    
