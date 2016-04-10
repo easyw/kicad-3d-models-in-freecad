@@ -1,3 +1,48 @@
+# -*- coding: utf8 -*-
+#!/usr/bin/python
+#
+# CadQuery script returning JST XH Connectors
+
+## requirements
+## freecad (v1.5 and v1.6 have been tested)
+## cadquery FreeCAD plugin (v0.3.0 and v0.2.0 have been tested)
+##   https://github.com/jmwright/cadquery-freecad-module
+
+## This script can be run from within the cadquery module of freecad.
+## To generate VRML/ STEP files for, use export_conn_jst_xh
+## script of the parrent directory.
+
+#* This is a cadquery description for the generation of MCAD models.        *
+#*                                                                          *
+#*   Copyright (c) 2016                                                     *
+#* poeschlr https://github.com/poeschlr                                     *
+#* All trademarks within this guide belong to their legitimate owners.      *
+#*                                                                          *
+#*   This program is free software; you can redistribute it and/or modify   *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)     *
+#*   as published by the Free Software Foundation; either version 2 of      *
+#*   the License, or (at your option) any later version.                    *
+#*   for detail see the LICENCE text file.                                  *
+#*                                                                          *
+#*   This program is distributed in the hope that it will be useful,        *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+#*   GNU Library General Public License for more details.                   *
+#*                                                                          *
+#*   You should have received a copy of the GNU Library General Public      *
+#*   License along with this program; if not, write to the Free Software    *
+#*   Foundation, Inc.,                                                      *
+#*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA           *
+#*                                                                          *
+#****************************************************************************
+
+__title__ = "model description for JST-XH Connectors"
+__author__ = "poeschlr"
+__Comment__ = 'model description for JST-XH Connectors using cadquery'
+
+___ver___ = "1.1 10/04/2016"
+
+
 import cadquery as cq
 from math import sqrt
 from Helpers import show
@@ -242,7 +287,7 @@ def generate_angled_pins(params):
         pins = pins.union(normal_pin.translate((i*pin_pitch,0,0)))
     return pins
 
-def generate_body(params):
+def generate_angled_body(params):
     body_width = params.body_width
     body_height = params.body_height
     body_lenght = params.body_length
@@ -253,9 +298,6 @@ def generate_body(params):
     body_fin_width = 0.5
     body_fin_height = 5
     body_fin_back_height = 2.5
-
-    if not params.angled:
-        return generate_straight_body(params)
 
     body = generate_straight_body(params)
     body = body.rotate((0,body_width+body_corner_y,0),(1,0,0),-90)
@@ -268,7 +310,13 @@ def generate_body(params):
         .vLine(zdistance).close().extrude(body_fin_width)
     body=body.union(fin)
     body=body.union(fin.translate((body_lenght-body_fin_width,0,0)))
+
     return body.union(fin)
+
+def generate_body(params):
+    if not params.angled:
+        return generate_straight_body(params)
+    return generate_angled_body(params)
 
 def generate_straight_body(params):
     num_pins = params.num_pins
@@ -372,6 +420,11 @@ def generate_part(part_key):
     return (pins, body)
 
 
-#(pins, body) = generate_part("B02B_XH_A")
-#show(pins)
-#show(body)
+#opend from within freecad
+if "module" in __name__ :
+    part_to_build = "S02B_XH_A"
+    #part_to_build = "B02B_XH_A"
+    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
+    (pins, body) = generate_part(part_to_build)
+    show(pins)
+    show(body)
