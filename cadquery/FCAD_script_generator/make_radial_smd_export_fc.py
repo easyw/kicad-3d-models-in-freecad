@@ -318,10 +318,10 @@ if __name__ == "__main__":
         ##sleep
         #del objs
         objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors_naming(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name, 'fuse1')
-        FuseObjs_wColors_naming(FreeCAD, FreeCADGui,
-                        doc.Name, objs[2].Name, objs[3].Name, 'fuse2')
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[1].Name, name='fuse1')
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[2].Name, objs[3].Name, name='fuse2')
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui,
                         doc.Name, objs[0].Name, objs[1].Name)
