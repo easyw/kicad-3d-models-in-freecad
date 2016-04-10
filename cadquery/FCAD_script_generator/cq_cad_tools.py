@@ -164,6 +164,17 @@ def FuseObjs_wColors_naming(App, Gui,
 
     return 0    
     
+    
+#fuse ALL objects (in the current document) into a single object
+def fuseAll(App, Gui):
+    docName = App.ActiveDocument.Name
+    
+    objects = App.ActiveDocument.Objects
+    
+    while len(objects) > 1:
+        FuseObjs_wColors_naming(App, Gui, docName, objects[0].Name, objects[1].Name)
+        objects = App.ActiveDocument.Objects
+    
 ###################################################################
 # CutObjs_wColors()  maui
 #	Function to fuse two objects together.
