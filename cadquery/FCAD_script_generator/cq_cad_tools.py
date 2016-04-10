@@ -37,10 +37,10 @@ from Gui.Command import *
 #helper funcs for displaying messages in FreeCAD
 def say(*arg):
     FreeCAD.Console.PrintMessage(" ".join(map(str,arg)) + "\r\n")
-    
+
 def sayw(*arg):
     FreeCAD.Console.PrintWarning(" ".join(map(str,arg)) + "\r\n")
-    
+
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
 
@@ -78,7 +78,7 @@ def close_CQ_Example(App, Gui):
 #	Function to fuse two objects together.
 ###################################################################
 def FuseObjs_wColors(App, Gui,
-                           docName, part1, part2):
+                           docName, part1, part2, keepOriginals=False):
 
     # Fuse two objects
     App.ActiveDocument=None
@@ -94,6 +94,7 @@ def FuseObjs_wColors(App, Gui,
 
     App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
     App.ActiveDocument.ActiveObject.Label=docName
+    fused_obj = App.ActiveDocument.ActiveObject
 
     Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
     Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
@@ -114,21 +115,22 @@ def FuseObjs_wColors(App, Gui,
     ## App.ActiveDocument.ActiveObject.Label=docName
     #######################################################
     # Remove the part1 part2 objects
-    App.getDocument(docName).removeObject(part1)
-    App.getDocument(docName).removeObject(part2)
+    if not keepOriginals:
+        App.getDocument(docName).removeObject(part1)
+        App.getDocument(docName).removeObject(part2)
 
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
     ## App.getDocument(docName).removeObject("Fusion001")
 
-    return 0
+    return fused_obj
 
 ###################################################################
 # FuseObjs_wColors_naming()  maui
 #	Function to fuse two objects together.
 ###################################################################
 def FuseObjs_wColors_naming(App, Gui,
-                           docName, part1, part2, name):
+                           docName, part1, part2, name, keepOriginals=False):
 
     # Fuse two objects
     App.ActiveDocument=None
@@ -164,15 +166,16 @@ def FuseObjs_wColors_naming(App, Gui,
     ## App.ActiveDocument.ActiveObject.Label=docName
     #######################################################
     # Remove the part1 part2 objects
-    App.getDocument(docName).removeObject(part1)
-    App.getDocument(docName).removeObject(part2)
+    if not keepOriginals:
+        App.getDocument(docName).removeObject(part1)
+        App.getDocument(docName).removeObject(part2)
 
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
     ## App.getDocument(docName).removeObject("Fusion001")
 
-    return 0    
-    
+    return 0
+
 ###################################################################
 # CutObjs_wColors()  maui
 #	Function to fuse two objects together.
@@ -286,7 +289,7 @@ def z_RotateObject(doc, rot):
 #	Function to Export to STEP
 #
 ###################################################################
-def exportSTEP(doc,modelName, dir):
+def exportSTEP(doc,modelName, dir, objectToExport=None):
 
     ## Export to STEP
     ## Get cwd
@@ -296,7 +299,10 @@ def exportSTEP(doc,modelName, dir):
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
-    objs=GetListOfObjects(FreeCAD, doc)
+    if objectToExport is None:
+        objs=GetListOfObjects(FreeCAD, doc)
+    else:
+        objs.append(objectToExport)
     import ImportGui
     FreeCAD.Console.PrintMessage('\r\n'+StepFileName)
     # FreeCAD.Console.PrintMessage(objs)
