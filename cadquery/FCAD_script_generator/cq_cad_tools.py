@@ -33,6 +33,7 @@ ___ver___ = "1.2.3 16/08/2015"
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 from Gui.Command import *
+import os
 
 #helper funcs for displaying messages in FreeCAD
 def say(*arg):
@@ -297,7 +298,7 @@ def exportSTEP(doc,modelName, dir, objectToExport=None):
     ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
     outdir=dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
-    StepFileName=outdir+'/'+modelName+'.step'
+    StepFileName=outdir+os.sep+modelName+'.step'
     objs=[]
     if objectToExport is None:
         objs=GetListOfObjects(FreeCAD, doc)
@@ -373,7 +374,7 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
     outdir=dir
     FreeCAD.Console.PrintMessage('\r\n'+outdir)
-    FCName=outdir+'/'+modelName+'.FCStd'
+    FCName=outdir+os.sep+modelName+'.FCStd'
     FreeCAD.Console.PrintMessage('\r\n'+FCName+'\r\n')
     App.getDocument(doc.Name).saveAs(FCName)
     App.ActiveDocument.recompute()

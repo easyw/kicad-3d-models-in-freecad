@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="generated_qfn/"
+destination_dir="generated_qfn"
 # destination_dir="./"
 
 
