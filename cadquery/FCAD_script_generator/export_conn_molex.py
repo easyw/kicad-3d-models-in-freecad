@@ -44,12 +44,11 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of JST-XH-Connectors."
+__title__ = "make 3D models of molex 53261-Connectors."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry),
-                S??B-XH-A (Side entry) and S??B-XH-A-1 (Side entry compact version).'''
+__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
 
-___ver___ = "1.1 10/04/2016"
+___ver___ = "1.1 12/04/2016"
 
 import sys, os
 import datetime
@@ -152,8 +151,62 @@ from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_molex_53398 as M
+import conn_molex_53261 as M1
+import conn_molex_53398 as M2
 import step_license as L
+
+def export_one_part(modul, variant):
+    if not variant in modul.all_params:
+        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
+        return
+    ModelName = modul.all_params[variant].model_name
+    FileName = modul.all_params[variant].file_name
+    Newdoc = FreeCAD.newDocument(ModelName)
+    App.setActiveDocument(ModelName)
+    Gui.ActiveDocument=Gui.getDocument(ModelName)
+    (pins, body) = modul.generate_part(variant)
+
+    color_attr = body_color + (0,)
+    show(body, color_attr)
+
+    color_attr = pins_color + (0,)
+    show(pins, color_attr)
+
+    doc = FreeCAD.ActiveDocument
+    doc.Label=ModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = ModelName + "__body"
+    objs[1].Label = ModelName + "__pins"
+
+    restore_Main_Tools()
+
+    out_dir=destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    used_color_keys = [body_color_key, pins_color_key]
+    export_file_name=destination_dir+os.sep+FileName+'.wrl'
+
+    export_objects = []
+    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
+            shape_color=body_color_key,
+            face_colors=None))
+    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
+            shape_color=pins_color_key,
+            face_colors=None))
+
+    scale=1/2.54
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
+                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    exportSTEP(doc,FileName,out_dir,fusion)
+    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+
+    saveFCdoc(App, Gui, doc, FileName,out_dir)
+
 
 if __name__ == "__main__":
 
@@ -166,58 +219,17 @@ if __name__ == "__main__":
         model_to_build=sys.argv[2]
 
     if model_to_build == "all":
-        variants = M.all_params.keys()
+        variants = M1.all_params.keys()
     else:
         variants = [model_to_build]
     for variant in variants:
         FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        if not variant in M.all_params:
-            FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
-            continue
-        ModelName = M.all_params[variant].model_name
-        FileName = M.all_params[variant].file_name
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
-        (pins, body) = M.generate_part(variant)
+        export_one_part(M1,variant)
 
-        color_attr = body_color + (0,)
-        show(body, color_attr)
-
-        color_attr = pins_color + (0,)
-        show(pins, color_attr)
-
-        doc = FreeCAD.ActiveDocument
-        doc.Label=ModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = ModelName + "__body"
-        objs[1].Label = ModelName + "__pins"
-
-        restore_Main_Tools()
-
-        out_dir=destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-
-        used_color_keys = [body_color_key, pins_color_key]
-        export_file_name=destination_dir+os.sep+FileName+'.wrl'
-
-        export_objects = []
-        export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-                shape_color=body_color_key,
-                face_colors=None))
-        export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-                shape_color=pins_color_key,
-                face_colors=None))
-
-        scale=1/2.54
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-
-        fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
-        exportSTEP(doc,FileName,out_dir,fusion)
-        L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
-
-        saveFCdoc(App, Gui, doc, FileName,out_dir)
+    if model_to_build == "all":
+        variants = M2.all_params.keys()
+    else:
+        variants = [model_to_build]
+    for variant in variants:
+        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+        export_one_part(M2,variant)
