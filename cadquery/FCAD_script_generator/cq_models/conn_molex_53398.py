@@ -107,6 +107,12 @@ mount_pin_height = 1.6 #Measured
 mount_pin_top_len = 0.8 #Measured
 mount_pin_fillet = 0.3
 
+back_cutout_center_to_side = 2 #Measured
+back_cutout_b_height = 1.15
+back_cutout_b_width = 1.15
+back_cutout_t_height = 1.45
+back_cutout_t_width = 0.3 #Measured (+/-0.1 at least)
+
 def v_add(p1, p2):
     return (p1[0]+p2[0],p1[1]+p2[1])
 
@@ -158,6 +164,7 @@ def make_params(num_pins, name, file_name):
 
 all_params = {
     "0271" : make_params( 2, '53398_0271', 'Molex_PicoBlade_53398-0271'),
+    "0471" : make_params( 4, '53398_0471', 'Molex_PicoBlade_53398-0471')
 
 }
 
@@ -195,8 +202,8 @@ def generate_pins(params):
         .chamfer(contact_chamfer_width, contact_chamfer_depth)
 
     pins = pin
-    for i in range(1,num_pins):
-        pins = pins.union(pin.translate((-pin_pitch*i,0,0)))
+    for i in range(0,num_pins):
+        pins = pins.union(pin.translate((-i*pin_pitch,0,0)))
 
     outher_bend_radius = mount_pin_bend_radius+mount_pin_thickness
     mount_pin_tip_x = body_len/2+mount_pin_lenght
@@ -257,7 +264,7 @@ def generate_body(params):
 
     body = cq.Workplane("XY").workplane()\
         .moveTo(0, -body_center_y).rect(body_len, body_width)\
-            .extrude(connector_height-body_main_z)
+            .extrude(connector_height)
     body = body.faces("<Z").workplane()\
         .rect(body_len-2*body_support_width,body_width)\
         .cutBlind(-body_main_z)
@@ -266,7 +273,7 @@ def generate_body(params):
         .rect(body_pin_cutout_len,body_width)\
         .extrude(body_pin_cutout_depth)
     pin_cutouts = pin_cutout
-    for i in range(1,num_pins):
+    for i in range(0,num_pins):
         pin_cutouts=pin_cutouts.union(pin_cutout.translate((-i*pin_pitch,0,0)))
     body = body.cut(pin_cutouts)
 
@@ -274,11 +281,11 @@ def generate_body(params):
     body = body.faces(">Z").workplane()\
         .moveTo(-body_len/2.0+body_side_width, -body_width/2.0+body_back_width)\
         .hLine(body_len-2*body_side_width)\
-        .vLine(body_cutout_width).hLineTo((body_len-body_front_cutout_len)/2.0)\
+        .vLine(body_cutout_width).hLineTo(body_front_cutout_len/2.0)\
         .vLineTo(body_width/2-body_front_plastic_protution)\
         .hLineTo(body_len/2.0).vLineTo(body_width/2.0).hLine(-body_len)\
         .vLine(-body_front_plastic_protution)\
-        .hLineTo(-(body_len-body_front_cutout_len)/2.0)\
+        .hLineTo(-body_front_cutout_len/2.0)\
         .vLine(-front_thicknes).hLineTo(-body_len/2.0+body_side_width)\
         .close().cutBlind(-body_cutout_depth)
 
@@ -286,7 +293,6 @@ def generate_body(params):
         .moveTo(0,-body_center_y+body_width/2.0-body_front_plastic_protution-front_thicknes/2.0)\
         .rect(body_len,front_thicknes).extrude(-body_front_cutout_depth)
     body = body.cut(body_front_cutout)
-
 
     BS = cq.selectors.BoxSelector
     body = body.edges(BS(
@@ -298,7 +304,24 @@ def generate_body(params):
          connector_height+1),True))\
          .chamfer(body_top_chamfer)
 
-    return body
+    back_y = body_center_y+body_width/2
+
+    back_cutout_center_x = 0
+    if num_pins > 3:
+        back_cutout_center_x = body_len/2-back_cutout_center_to_side
+
+    back_cutout = cq.Workplane("XZ").workplane(back_y)\
+        .moveTo(back_cutout_center_x-back_cutout_t_width/2,connector_height)\
+        .hLine(back_cutout_t_width).vLine(-back_cutout_t_height)\
+        .hLine((back_cutout_b_width-back_cutout_t_width)/2.0)\
+        .vLine(-back_cutout_b_height).hLine(-back_cutout_b_width)\
+        .vLine(back_cutout_b_height)\
+        .hLine((back_cutout_b_width-back_cutout_t_width)/2.0)\
+        .close().extrude(-body_back_width)
+
+    if num_pins > 3:
+        back_cutout = back_cutout.union(back_cutout.translate((-body_len+2*back_cutout_center_to_side,0,0)))
+    return body.cut(back_cutout)
 
 
 def generate_part(part_key):
@@ -309,8 +332,8 @@ def generate_part(part_key):
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "0271"
-    #part_to_build = "B02B_XH_A"
+    #part_to_build = "0271"
+    part_to_build = "0471"
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
     (pins, body) = generate_part(part_to_build)
     show(pins)
