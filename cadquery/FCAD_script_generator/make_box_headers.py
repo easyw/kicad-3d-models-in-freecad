@@ -57,7 +57,7 @@ ___ver___ = "1.4.1 14/08/2015"
 from math import tan, radians, sqrt
 from collections import namedtuple
 
-from cq_cad_tools import say, sayw, saye
+#from cq_cad_tools import say, sayw, saye
 
 import sys, os
 
@@ -101,6 +101,8 @@ sys.path.append(outdir)
 
 # Import cad_tools
 import cq_cad_tools
+from cq_cad_tools import say, sayw, saye
+
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
