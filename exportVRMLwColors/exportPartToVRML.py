@@ -198,7 +198,7 @@ def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None):
                 f.write("appearance Appearance{material Material{diffuseColor %f %f %f\n" % obj.color)
                 f.write("transparency %f}}" % shape_transparency)
             else:
-                say(obj.color)
+                #say(obj.color)
                 f.write(used_colors[obj.color].toVRMLuseColor())
             f.write("}\n") # closes shape
         say(filepath+' written')
@@ -251,9 +251,10 @@ def getNamedColors(color_list):
      used_colors = list(set(color_list))
      return [x for x in used_colors if isinstance(x, basestring)]
 
-def determineColors(Gui, objects):
+def determineColors(Gui, objects, know_material_substitutions=None):
     global ui
-    know_material_substitutions={}
+    if know_material_substitutions is None:
+        know_material_substitutions={}
     Dialog = QtGui.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
@@ -267,8 +268,8 @@ def determineColors(Gui, objects):
         face_colors = []
         for color in freecad_object.DiffuseColor:
             color = color[:-1]
-            #say(color)
             if color not in know_material_substitutions:
+                say(color)
                 pal = QtGui.QPalette()
                 bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
                 pal.setColor(QtGui.QPalette.Base, bgc)
