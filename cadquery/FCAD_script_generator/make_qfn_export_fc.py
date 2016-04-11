@@ -60,7 +60,7 @@ from collections import namedtuple
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("../../exportVRMLwColors")
+sys.path.append("./exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -122,12 +122,23 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
 
-close_CQ_Example(App, Gui)
+try:
+    close_CQ_Example(App, Gui)
+except: # catch *all* exceptions
+    print "CQ 030 doesn't open example file"
+
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
 from Helpers import show
 # maui end
+
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
 
 import cq_params_qfn  # modules parameters
 from cq_params_qfn import *
@@ -351,5 +362,6 @@ if __name__ == "__main__":
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()

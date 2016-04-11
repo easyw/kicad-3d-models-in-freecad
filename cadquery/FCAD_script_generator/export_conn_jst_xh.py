@@ -54,7 +54,7 @@ ___ver___ = "1.1 10/04/2016"
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("../../exportVRMLwColors")
+sys.path.append("./exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -142,7 +142,10 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
 
-close_CQ_Example(App, Gui)
+try:
+    close_CQ_Example(App, Gui)
+except: # catch *all* exceptions
+    print "CQ 030 doesn't open example file"
 
 
 import cadquery as cq
@@ -154,6 +157,13 @@ import ImportGui
 sys.path.append("cq_models")
 import conn_jst_xh_models as M
 import step_license as L
+
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
 
 if __name__ == "__main__":
 
@@ -221,3 +231,6 @@ if __name__ == "__main__":
             STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
         saveFCdoc(App, Gui, doc, FileName,out_dir)
+        Gui.activateWorkbench("PartWorkbench")
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
