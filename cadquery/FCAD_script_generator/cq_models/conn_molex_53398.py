@@ -71,6 +71,7 @@ pin_len = 3.9 #Measured
 center_pin_pad_y = 2.75
 pin_center_offset = 0.05 # estimated
 pin_tip_y = center_pin_pad_y + pin_center_offset + pin_contact_len/2.0
+pin_tip_chamfer = 0.1
 
 
 contact_to_front = 2.175
@@ -168,9 +169,20 @@ def make_params(num_pins, name, file_name):
     )
 
 all_params = {
-    "0271" : make_params( 2, '53398_0271', 'Molex_PicoBlade_53398-0271'),
-    "0471" : make_params( 4, '53398_0471', 'Molex_PicoBlade_53398-0471')
-
+    "0271" : make_params( 2, 'Molex_53398_0271', 'Molex_PicoBlade_53398-0271'),
+    "0371" : make_params( 3, 'Molex_53398_0371', 'Molex_PicoBlade_53398-0371'),
+    "0471" : make_params( 4, 'Molex_53398_0471', 'Molex_PicoBlade_53398-0471'),
+    "0571" : make_params( 5, 'Molex_53398_0571', 'Molex_PicoBlade_53398-0571'),
+    "0671" : make_params( 6, 'Molex_53398_0671', 'Molex_PicoBlade_53398-0671'),
+    "0771" : make_params( 7, 'Molex_53398_0771', 'Molex_PicoBlade_53398-0771'),
+    "0871" : make_params( 8, 'Molex_53398_0871', 'Molex_PicoBlade_53398-0871'),
+    "0971" : make_params( 9, 'Molex_53398_0971', 'Molex_PicoBlade_53398-0971'),
+    "1071" : make_params(10, 'Molex_53398_1071', 'Molex_PicoBlade_53398-1071'),
+    "1171" : make_params(11, 'Molex_53398_1171', 'Molex_PicoBlade_53398-1171'),
+    "1271" : make_params(12, 'Molex_53398_1271', 'Molex_PicoBlade_53398-1271'),
+    "1371" : make_params(13, 'Molex_53398_1371', 'Molex_PicoBlade_53398-1371'),
+    "1471" : make_params(14, 'Molex_53398_1471', 'Molex_PicoBlade_53398-1471'),
+    "1571" : make_params(15, 'Molex_53398_1571', 'Molex_PicoBlade_53398-1571')
 }
 
 def union_all(objects):
@@ -205,7 +217,8 @@ def generate_pins(params):
         .chamfer(contact_chamfer_width, contact_chamfer_depth)
     pin = pin.faces(">Z").edges("<X")\
         .chamfer(contact_chamfer_width, contact_chamfer_depth)
-
+    pin = pin.faces(">Y").edges("|X")\
+        .chamfer(pin_tip_chamfer)
     pins = pin
     for i in range(0,num_pins):
         pins = pins.union(pin.translate((-i*pin_pitch,0,0)))
