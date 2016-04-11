@@ -113,6 +113,11 @@ back_cutout_b_width = 1.15
 back_cutout_t_height = 1.45
 back_cutout_t_width = 0.3 #Measured (+/-0.1 at least)
 
+mount_holder_len = 1.75
+mount_holder_width = 2.8
+mount_holder_top_z = 2.65 #Measured
+mount_holder_chamfer = 0.5 #Measured (+/-0.1 at least)
+
 def v_add(p1, p2):
     return (p1[0]+p2[0],p1[1]+p2[1])
 
@@ -321,7 +326,43 @@ def generate_body(params):
 
     if num_pins > 3:
         back_cutout = back_cutout.union(back_cutout.translate((-body_len+2*back_cutout_center_to_side,0,0)))
-    return body.cut(back_cutout)
+    body = body.cut(back_cutout)
+
+    sp=(body_len/2.0,body_main_z)
+    poly_points=[v_add(sp,(mount_holder_len-mount_holder_chamfer,0))]
+    add_p_to_chain(poly_points,(mount_holder_chamfer,mount_holder_chamfer))
+    add_p_to_chain(poly_points, (0,mount_holder_top_z-mount_holder_chamfer-body_main_z))
+    add_p_to_chain(poly_points, (-mount_holder_len,0))
+    mount_holder1 = cq.Workplane("XZ").workplane(back_y)\
+        .moveTo(*sp)\
+        .polyline(poly_points).close().extrude(-mount_holder_width)
+
+    poly_points=mirror(poly_points)
+    mount_holder2 = cq.Workplane("XZ").workplane(back_y)\
+        .moveTo(-sp[0],sp[1])\
+        .polyline(poly_points).close().extrude(-mount_holder_width)
+
+
+    poly_points=[v_add(sp,(mount_pin_thickness,0))]
+    add_p_to_chain(poly_points, (0,mount_pin_height-mount_pin_bend_radius-mount_pin_thickness-body_main_z))
+    add_p_to_chain(poly_points,(mount_pin_bend_radius,mount_pin_bend_radius))
+    add_p_to_chain(poly_points, (mount_pin_top_len-mount_pin_bend_radius-mount_pin_thickness,0))
+    add_p_to_chain(poly_points, (0, mount_pin_thickness))
+    add_p_to_chain(poly_points, (-mount_pin_top_len,0))
+    mount_holder1_cutout = cq.Workplane("XZ").workplane(back_y)\
+       .moveTo(*sp).polyline(poly_points).close().extrude(-mount_pin_width)
+
+    poly_points=mirror(poly_points)
+    mount_holder2_cutout = cq.Workplane("XZ").workplane(back_y)\
+        .moveTo(-sp[0],sp[1])\
+        .polyline(poly_points).close().extrude(-mount_pin_width)
+
+
+    body = body.union(mount_holder1)
+    body = body.union(mount_holder2)
+    body = body.cut(mount_holder1_cutout)
+    body = body.cut(mount_holder2_cutout)
+    return body
 
 
 def generate_part(part_key):
