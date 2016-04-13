@@ -42,11 +42,13 @@ from Gui.Command import *
 def close_CQ_Example(App, Gui):
 
     #close the example
-    App.setActiveDocument("Ex000_Introduction")
-    App.ActiveDocument=App.getDocument("Ex000_Introduction")
-    Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
-    App.closeDocument("Ex000_Introduction")
-    FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
+    if App.ActiveDocument != None:
+        if App.ActiveDocument.objectName() == ("Ex000_Introduction"):
+            App.setActiveDocument("Ex000_Introduction")
+            App.ActiveDocument=App.getDocument("Ex000_Introduction")
+            Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
+            App.closeDocument("Ex000_Introduction")
+            FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
 
     #Getting the main window will allow us to start setting things up the way we want
     mw = FreeCADGui.getMainWindow()
