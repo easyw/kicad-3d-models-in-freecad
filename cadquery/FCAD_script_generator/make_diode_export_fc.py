@@ -1,0 +1,462 @@
+# -*- coding: utf8 -*-
+#!/usr/bin/python
+#
+# This is derived from a cadquery script for generating QFP models in X3D format.
+#
+# from https://bitbucket.org/hyOzd/freecad-macros
+# author hyOzd
+#
+# Dimensions are from Jedec MS-026D document.
+
+## requirements
+## cadquery FreeCAD plugin
+##   https://github.com/jmwright/cadquery-freecad-module
+
+## to run the script just do: freecad make_qfn_export_fc.py modelName
+## e.g. c:\freecad\bin\freecad make_qfn_export_fc.py QFN16
+
+## the script will generate STEP and VRML parametric models
+## to be used with kicad StepUp script
+
+#* These are a FreeCAD & cadquery tools                                     *
+#* to export generated models in STEP & VRML format.                        *
+#*                                                                          *
+#* cadquery script for generating QFP/SOIC/SSOP/TSSOP models in STEP AP214  *
+#*   Copyright (c) 2015                                                     *
+#* Maurice https://launchpad.net/~easyw                                     *
+#* All trademarks within this guide belong to their legitimate owners.      *
+#*                                                                          *
+#*   This program is free software; you can redistribute it and/or modify   *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)     *
+#*   as published by the Free Software Foundation; either version 2 of      *
+#*   the License, or (at your option) any later version.                    *
+#*   for detail see the LICENCE text file.                                  *
+#*                                                                          *
+#*   This program is distributed in the hope that it will be useful,        *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+#*   GNU Library General Public License for more details.                   *
+#*                                                                          *
+#*   You should have received a copy of the GNU Library General Public      *
+#*   License along with this program; if not, write to the Free Software    *
+#*   Foundation, Inc.,                                                      *
+#*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA           *
+#*                                                                          *
+#****************************************************************************
+
+__title__ = "make QFN ICs 3D models"
+__author__ = "maurice and hyOzd"
+__Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
+
+___ver___ = "1.0.1 27/08/2015"
+
+###ToDo: QFN with ARC pad, exposed pad with chamfer
+
+# maui import cadquery as cq
+# maui from Helpers import show
+from math import tan, radians, sqrt
+from collections import namedtuple
+
+import sys, os
+
+# maui start
+import FreeCAD, Draft, FreeCADGui
+import ImportGui
+
+
+outdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(outdir)
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+#checking requirements
+#######################################################################
+FreeCAD.Console.PrintMessage("FC Version \r\n")
+FreeCAD.Console.PrintMessage(FreeCAD.Version())
+FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+if int(FC_majorV) <= 0:
+    if int(FC_minorV) < 15:
+        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+
+# FreeCAD.Console.PrintMessage(all_params_soic)
+FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+if os.path.exists(file_path_cq):
+    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+else:
+    msg="missing CadQuery Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+#######################################################################
+
+# CadQuery Gui
+from Gui.Command import *
+
+# Import cad_tools
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors
+
+# Gui.SendMsgToActiveView("Run")
+Gui.activateWorkbench("CadQueryWorkbench")
+import FreeCADGui as Gui
+
+close_CQ_Example(App, Gui)
+
+# from export_x3d import exportX3D, Mesh
+import cadquery as cq
+from Helpers import show
+# maui end
+
+import cq_params_qfn  # modules parameters
+from cq_params_qfn import *
+
+all_params= all_params_qfn
+
+def make_qfn(params):
+
+    c  = params.c
+    ef  = params.ef
+    cce = params.cce
+    fp_r  = params.fp_r
+    fp_d  = params.fp_d
+    fp_z  = params.fp_z
+#    K  = params.K
+    L  = params.L
+    D  = params.D
+    E   = params.E
+    A1  = params.A1
+    A2  = params.A2
+    b   = params.b
+    e   = params.e
+    npx = params.npx
+    npy = params.npy
+    mN  = params.modelName
+    rot = params.rotation
+    dest_dir_pref = params.dest_dir_prefix
+
+    if params.epad:
+        D2 = params.epad[0]
+        E2 = params.epad[1]
+
+    # calculated dimensions for body
+    # checking pin lenght compared to overall width
+    # d=(E-E1 -2*(S+L)-2*(R1))
+    #L=(E-E1-2*(S+R1))/2
+    #FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
+    A = A1 + A2
+
+    ## if ef!=0:
+    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+    ##          loft(ruled=True).faces(">Z").fillet(ef)
+    ## else:
+    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+    ##          loft(ruled=True).faces(">Z")
+    ##
+    ## # fillet the corners
+    ## if ef!=0:
+    ##     BS = cq.selectors.BoxSelector
+    ##     case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
+    ##     case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
+
+    ## cc1 = 0.25 #0.45 chamfer of the 1st pin corner
+    ## cc = 0.25  # chamfer of the other corners
+
+#    # calculate chamfers
+#    totpinwidthx = (npx-1)*e+b # total width of all pins on the X side
+#    totpinwidthy = (npy-1)*e+b # total width of all pins on the Y side
+
+#    if cc1!=0:
+#        cc1 = abs(min((D1-totpinwidthx)/2., (E1-totpinwidthy)/2.,cc1) - 0.5*tb_s)
+#        cc1 = min(cc1, max_cc1)
+#    # cc = cc1/2.
+#    cc=cc1
+#
+#    def crect(wp, rw, rh, cv1, cv):
+#        """
+#        Creates a rectangle with chamfered corners.
+#        wp: workplane object
+#        rw: rectangle width
+#        rh: rectangle height
+#        cv1: chamfer value for 1st corner (lower left)
+#        cv: chamfer value for other corners
+#        """
+#        points = [
+#            (-rw/2., -rh/2.+cv1),
+#            (-rw/2., rh/2.-cv),
+#            (-rw/2.+cv, rh/2.),
+#            (rw/2.-cv, rh/2.),
+#            (rw/2., rh/2.-cv),
+#            (rw/2., -rh/2.+cv),
+#            (rw/2.-cv, -rh/2.),
+#            (-rw/2.+cv1, -rh/2.),
+#            (-rw/2., -rh/2.+cv1)
+#        ]
+#        return wp.polyline(points)
+
+#    if cc1!=0:
+#        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1)
+#        case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
+#        case = case.pushPoints([(0,0)]).workplane(offset=A2_b)
+#        case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
+#        case = case.pushPoints([(0,0)]).workplane(offset=c)
+#        case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
+#        case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
+#        case = case.pushPoints([(0,0)]).workplane(offset=A2_t)
+#        cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
+#        case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
+#        if ef!=0:
+#            case = case.loft(ruled=True).faces(">Z").fillet(ef)
+#        else:
+#            case = case.loft(ruled=True).faces(">Z")
+#    else:
+    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+    if ef!=0:
+        case.edges("|X").fillet(ef)
+        case.edges("|Z").fillet(ef)
+    #translate the object
+    case=case.translate((0,0,A/2+A1)).rotate((0,0,0), (0,0,1), 0)
+
+    # first pin indicator is created with a spherical pocket
+    sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
+    sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+    
+    pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=H-T*0.01).rect(W-dtop-dtop, pml). \
+                workplane(offset=T*0.01).rect(W-dtop-dtop, pml). \
+                loft(ruled=True)
+    # Revolve a cylinder from a rectangle
+    # Switch comments around in this section to try the revolve operation with different parameters
+    #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
+    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, A+fp_z)).rect(fp_r/2, -fp_z, False).revolve()
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length, False).revolve(angle_degrees)
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5))
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5, -5),(-5, 5))
+    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5),(-5,5), False)
+
+    ## color_attr=(25,25,25,0)
+    ## show(case, color_attr)
+    ## color_attr=(255,255,255,0)
+    ## show(pinmark, color_attr)
+    ##sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
+    ##         sphere(sphere_r)
+    # color_attr=(255,255,255,0)
+    # show(sphere, color_attr)
+    #case = case.cut(sphere)
+    if (color_pin_mark==False) and (place_pinMark==True):
+        case = case.cut(pinmark)
+
+    #show(case)
+    #show(pinmark)
+
+    # calculated dimensions for pin
+    #R1_o = R1+c # pin upper corner, outer radius
+    #R2_o = R2+c # pin lower corner, outer radius
+
+    # Create a pin object at the center of top side.
+        #threePointArc((L+K/sqrt(2), b/2-K*(1-1/sqrt(2))),
+        #              (L+K, b/2-K)). \
+    bpin1 = cq.Workplane("XY"). \
+        moveTo(b, 0). \
+        lineTo(b, L-b/2). \
+        threePointArc((b/2,L),(0, L-b/2)). \
+        lineTo(0, 0). \
+        close().extrude(c).translate((b/2,E/2,0))
+        #close().extrude(c).translate((b/2,E/2,A1/2))
+    bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
+    #bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
+    #    moveTo(-b/2, 0). \
+    #    lineTo(-b/2, -L+K). \
+    #    threePointArc((-L,0),(b/2, -L+K)). \
+    #    lineTo(b/2, 0). \
+    #    close().extrude(c)
+    ##bpin = cq.Workplane("XY", (0,E/2,A1/2)). \
+    ##    moveTo(-b/2, 0). \
+    ##    lineTo(-b/2, -L). \
+    ##    lineTo(b/2, -L). \
+    ##    lineTo(b/2, 0). \
+    ##    close().extrude(c)
+        #close().extrude(c).translate((-b/2,0,0))
+    #show(bpin1)
+    #show (bpin)
+    #
+    #sleep
+    pins = []
+    # create top, bottom side pins
+    first_pos = -(npx-1)*e/2
+    for i in range(npx):
+        if i not in excluded_pins_xmirror:
+            pin = bpin.translate((first_pos+i*e, 0, 0))
+            pins.append(pin)
+        if i not in excluded_pins_x:
+            pin = bpin.translate((first_pos+i*e, 0, 0)).\
+                rotate((0,0,0), (0,0,1), 180)
+            pins.append(pin)
+
+    # create right, left side pins
+    first_pos = -(npy-1)*e/2
+    for i in range(npy):
+        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+            rotate((0,0,0), (0,0,1), 90)
+        pins.append(pin)
+        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+            rotate((0,0,0), (0,0,1), 270)
+        pins.append(pin)
+
+    # create exposed thermal pad if requested
+    if params.epad:
+        #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+        epad = cq.Workplane("XY", (0,0,A1/2)). \
+        moveTo(-D2/2+cce, -E2/2). \
+        lineTo(D2/2, -E2/2). \
+        lineTo(D2/2, E2/2). \
+        lineTo(-D2/2, E2/2). \
+        lineTo(-D2/2, -E2/2+cce). \
+        close().extrude(A1+A1/10)
+        pins.append(epad)
+
+    # merge all pins to a single object
+    merged_pins = pins[0]
+    for p in pins[1:]:
+        merged_pins = merged_pins.union(p)
+    pins = merged_pins
+
+    #show(pins)
+    #sleep
+    # extract pins from case
+    case = case.cut(pins)
+
+    return (case, pins, pinmark)
+
+
+def run():  # unused
+    FreeCAD.Console.PrintMessage('\r\nRun Called...\r\n')
+    # get variant names from command line
+    ## if len(sys.argv) < 2:
+    ##     print("No variant name is given!")
+    ##     return
+    ##
+    ## if sys.argv[1] == "all":
+    ##     variants = all_params.keys()
+    ## else:
+    ##     variants = sys.argv[1:]
+    ##
+    ## outdir = os.path.abspath("./generated_qfp/")
+    ## if not os.path.exists(outdir):
+    ##     os.makedirs(outdir)
+    ##
+    ## for variant in variants:
+    ##     if not variant in all_params:
+    ##         print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
+    ##         continue
+    ##     make_one(variant, outdir + ("/qfp_%s.x3d" % variant))
+
+
+
+if __name__ == "__main__":
+    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+# maui     run()
+    color_pin_mark=True
+    if len(sys.argv) < 3:
+        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
+        model_to_build='QFN16'
+    else:
+        model_to_build=sys.argv[2]
+        if len(sys.argv)==4:
+            FreeCAD.Console.PrintMessage(sys.argv[3]+'\r\n')
+            if (sys.argv[3].find('no-pinmark-color')!=-1):
+                color_pin_mark=False
+            else:
+                color_pin_mark=True
+
+    #FreeCAD.Console.PrintMessage(str(color_pin_mark)+'\r\n')
+    #FreeCAD.Console.PrintMessage(str(sys.argv[3].find('no-pinmark-color')))
+
+    if model_to_build == "all":
+        variants = all_params.keys()
+    else:
+        variants = [model_to_build]
+
+    for variant in variants:
+        excluded_pins_x=() ##no pin excluded
+        excluded_pins_xmirror=() ##no pin excluded
+        place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+
+        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        if not variant in all_params:
+            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
+            continue
+        ModelName = all_params[variant].modelName
+        Newdoc = FreeCAD.newDocument(ModelName)
+        App.setActiveDocument(ModelName)
+        Gui.ActiveDocument=Gui.getDocument(ModelName)
+        case, pins, pinmark = make_qfn(all_params[variant])
+
+        color_attr=case_color+(0,)
+        show(case, color_attr)
+        color_attr=pins_color+(0,)
+        show(pins, color_attr)
+        color_attr=mark_color+(0,)
+        show(pinmark, color_attr)
+
+        doc = FreeCAD.ActiveDocument
+        objs=GetListOfObjects(FreeCAD, doc)
+        ## objs[0].Label='body'
+        ## objs[1].Label='pins'
+        ## objs[2].Label='mark'
+        ###
+        ## print objs[0].Name, objs[1].Name, objs[2].Name
+
+        ## sleep
+        #if place_pinMark==True:
+        if (color_pin_mark==True) and (place_pinMark==True):
+            CutObjs_wColors(FreeCAD, FreeCADGui,
+                           doc.Name, objs[0].Name, objs[2].Name)
+        else:
+            #removing pinMark
+            App.getDocument(doc.Name).removeObject(objs[2].Name)
+        ###
+        #sleep
+        del objs
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[1].Name)
+        doc.Label=ModelName
+        objs=GetListOfObjects(FreeCAD, doc)
+        objs[0].Label=ModelName
+        restore_Main_Tools()
+        #rotate if required
+        if (all_params[variant].rotation!=0):
+            rot= all_params[variant].rotation
+            z_RotateObject(doc, rot)
+        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
+        script_dir=os.path.dirname(os.path.realpath(__file__))
+        out_dir=script_dir+destination_dir+all_params[variant].dest_dir_prefix+'/'
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        #out_dir="./generated_qfp/"
+        # export STEP model
+        exportSTEP(doc,ModelName,out_dir)
+        # scale and export Vrml model
+        scale=0.3937001
+        exportVRML(doc,ModelName,scale,out_dir)
+        # Save the doc in Native FC format
+        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        #display BBox
+        FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
