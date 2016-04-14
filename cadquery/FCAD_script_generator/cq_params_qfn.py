@@ -13,7 +13,7 @@
 
 from collections import namedtuple
 
-destination_dir = "/generated_qfn/"
+destination_dir = "generated_qfn_dfn"
 
 case_color = (26,  26,  26)
 # case_color = (50,  50,  50)
@@ -23,8 +23,6 @@ pins_color = (205,  205,  192)
 # mark_color = (255, 250, 250)  #snow
 # mark_color = (255, 255, 240)  #ivory
 mark_color = (248,  248,  255)  # ghost white
-destination_dir = "generated_qfn"
-# destination_dir="./"
 
 Params = namedtuple("Params",  [
     'c',                # pin thickness,  body center part height
