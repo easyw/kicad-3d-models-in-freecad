@@ -430,7 +430,8 @@ all_params_qfn = {
     ),
     'LGA1633': Params(  # 3x3mm, 16-pin LGA package, 1.0mm height
         c=0.2,               # pin thickness, body center part height
-        L=0.3,               # pin top flat part length (including fillet radius)
+        # pin top flat part length (including fillet radius)
+        L=0.3,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
         fp_z=0.02,           # first pin indicator depth
@@ -452,7 +453,8 @@ all_params_qfn = {
     'DFN622': Params(  # 2x2, 0.65 pitch, 6 pins, 0.75mm height  DFN (DD / LTC)
         # Example - http://www.onsemi.com/pub_link/Collateral/NCP308-D.PDF
         c=0.2,               # pin thickness, body center part height
-        L=0.3,               # pin top flat part length (including fillet radius)
+        # pin top flat part length (including fillet radius)
+        L=0.3,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
         fp_z=0.02,           # first pin indicator depth
@@ -474,7 +476,8 @@ all_params_qfn = {
     'DFN8-33-50': Params(  # 3x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
         # Example - http://cds.linear.com/docs/en/datasheet/2875f.pdf
         c=0.2,               # pin thickness, body center part height
-                             # pin top flat part length (including fillet radius)
+                             # pin top flat part length (including fillet
+                             # radius)
         L=0.7 - 0.25,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
@@ -499,7 +502,8 @@ all_params_qfn = {
         # Example -
         # http://www.st.com/web/en/resource/technical/document/datasheet/CD00001508.pdf
         c=0.2,               # pin thickness, body center part height
-        L=0.4,               # pin top flat part length (including fillet radius)
+        # pin top flat part length (including fillet radius)
+        L=0.4,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
         fp_z=0.02,           # first pin indicator depth
@@ -521,7 +525,8 @@ all_params_qfn = {
     'DFN823': Params(  # 2x3, 0.5 pitch, 8 pins, 0.75mm height  DFN (DD / LTC)
         # Example - http://cds.linear.com/docs/en/datasheet/4365fa.pdf
         c=0.2,               # pin thickness, body center part height
-        L=0.45,              # pin top flat part length (including fillet radius)
+        # pin top flat part length (including fillet radius)
+        L=0.45,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
         fp_z=0.02,           # first pin indicator depth
@@ -543,7 +548,8 @@ all_params_qfn = {
     'DFN865': Params(  # 6x5, 1.27mm pitch, 8 pins, 1.0mm height  DFN
         # Example - https://www.everspin.com/file/217/download
         c=0.2,               # pin thickness, body center part height
-        L=0.45,              # pin top flat part length (including fillet radius)
+        # pin top flat part length (including fillet radius)
+        L=0.45,
         fp_r=0.35,           # first pin indicator radius
         fp_d=0.1,            # first pin indicator distance from edge
         fp_z=0.02,           # first pin indicator depth
@@ -583,6 +589,94 @@ all_params_qfn = {
         epad=(2.4, 0.84),    # e Pad #epad = None, # e Pad
         modelName='dfn10_2x3_p05',
         rotation=-90,
+        dest_dir_prefix=''
+    ),
+    'DFN4A': Params(
+        c=0.2,               # pin thickness, body center part height
+        L=0.35,              # pin top flat part length (including fillet radius)
+        fp_r=0.15,           # first pin indicator radius
+        fp_d=0.03,           # first pin indicator distance from edge
+        fp_z=0.01,           # first pin indicator depth
+                             # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        ef=0.0,
+        cce=0.2,             # 0.45 chamfer of the epad 1st pin corner
+        D=1.1,               # body overall length
+        E=0.9,               # body overall width
+        A1=0.02,             # body-board separation  maui to check
+        A2=0.55,             # body height
+        b=0.2,               # pin width
+        e=0.55,              # pin (center-to-center) distance
+        npx=0,               # number of pins along X axis (width)
+        npy=2,               # number of pins along y axis (length)
+        epad=None,           # e Pad #epad = None, # e Pad
+        modelName='DFN4_09x12_p055',
+        rotation=0,          # rotation if required
+        dest_dir_prefix=''
+    ),
+    'UTDFN8': Params(
+        c=0.2,               # pin thickness, body center part height
+        L=0.35,              # pin top flat part length (including fillet radius)
+        fp_r=0.15,           # first pin indicator radius
+        fp_d=0.03,           # first pin indicator distance from edge
+        fp_z=0.01,           # first pin indicator depth
+                             # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        ef=0.0,
+        cce=0.2,             # 0.45 chamfer of the epad 1st pin corner
+        D=2.0,               # bwody overall length
+        E=2.0,               # body overall width
+        A1=0.02,             # body-board separation  maui to check
+        A2=0.55,             # body height
+        b=0.23,              # pin width
+        e=0.45,              # pin (center-to-center) distance
+        npx=4,               # number of pins along X axis (width)
+        npy=0,               # number of pins along y axis (length)
+        epad=(1.37, 0.64),   # e Pad #epad = None, # e Pad
+        modelName='UTDFN8_2x2_p045',
+        rotation=0,          # rotation if required
+        dest_dir_prefix=''
+    ),
+    'UTDFN10': Params(
+        c=0.2,               # pin thickness, body center part height
+        L=0.35,              # pin top flat part length (including fillet radius)
+        fp_r=0.15,           # first pin indicator radius
+        fp_d=0.03,           # first pin indicator distance from edge
+        fp_z=0.01,           # first pin indicator depth
+                             # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        ef=0.0,
+        cce=0.2,             # 0.45 chamfer of the epad 1st pin corner
+        D=3.0,               # body overall length
+        E=3.0,               # body overall width
+        A1=0.02,             # body-board separation  maui to check
+        A2=0.55,             # body height
+        b=0.25,              # pin width
+        e=0.5,               # pin (center-to-center) distance
+        npx=5,               # number of pins along X axis (width)
+        npy=0,               # number of pins along y axis (length)
+        epad=(2.38, 1.65),   # e Pad #epad = None, # e Pad
+        modelName='UTDFN10_3x3_p05',
+        rotation=0,          # rotation if required
+        dest_dir_prefix=''
+    ),
+    'UTDFN14': Params(
+        c=0.2,               # pin thickness, body center part height
+        L=0.35,              # pin top flat part length (including fillet radius)
+        fp_r=0.15,           # first pin indicator radius
+        fp_d=0.03,           # first pin indicator distance from edge
+        fp_z=0.01,           # first pin indicator depth
+                             # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        ef=0.0,
+        cce=0.2,             # 0.45 chamfer of the epad 1st pin corner
+        D=4.0,               # body overall length
+        E=3.0,               # body overall width
+        A1=0.02,             # body-board separation  maui to check
+        A2=0.55,             # body height
+        b=0.25,              # pin width
+        e=0.5,               # pin (center-to-center) distance
+        npx=7,               # number of pins along X axis (width)
+        npy=0,               # number of pins along y axis (length)
+        epad=(3.25, 1.65),   # e Pad #epad = None, # e Pad
+        modelName='UTDFN14_4x3_p05',
+        rotation=0,          # rotation if required
         dest_dir_prefix=''
     ),
 }
