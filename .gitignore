@@ -3,3 +3,4 @@
 *.step
 *.fcstd
 *.pyc
+*.DS_Store
