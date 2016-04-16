@@ -40,7 +40,7 @@ author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
 
 ## requirements ## +
-link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] +
+link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] version 0.30 +
 link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
 
 **********************************************************************
@@ -91,8 +91,8 @@ Copyright
 This document '{docname}' and all the materials and files at the repository are +
 Copyrighted © 2015 by {Author}. +
 You may distribute it and/or modify it under the terms of either
-the GNU General Public License  (http://www.gnu.org/licenses/gpl.html),
-version 3 or later, or the Creative Commons Attribution License
+the GNU Affero General Public License  (http://www.gnu.org/licenses/gpl.html),
+version 2, or the Creative Commons Attribution License
 (http://creativecommons.org/licenses/by/3.0/), version 3.0 or later.
 
 All trademarks within this guide belong to their legitimate owners.
