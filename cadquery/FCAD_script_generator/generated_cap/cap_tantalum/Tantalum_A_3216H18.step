@@ -2,9 +2,9 @@ ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('FreeCAD Model'),'2;1');
 FILE_NAME(
-'C:\\Cad\\Progetti_K\\FreeCAD-models\\scripts\\3D-models\\CadQuery\\
-version9d/generated_cap/cap_tantalum//Tantalum_A_3216H18.step',
-  '2015-09-15T09:25:24',('Author'),('Robit'),
+'C:\\Cad\\Progetti_K\\FreeCAD-models\\kicad-3d-models-in-freecad\\
+cadquery\\FCAD_script_generator/generated_cap/cap_tantalum/\\
+Tantalum_A_3216H18.step','2016-04-17T22:22:59',('Author'),(''),
   'Open CASCADE STEP processor 6.8','FreeCAD','Unknown');
 FILE_SCHEMA(('AUTOMOTIVE_DESIGN_CC2 { 1 2 10303 214 -1 1 5 4 }'));
 ENDSEC;
@@ -8291,8 +8291,7 @@ SHAPE_REPRESENTATION_RELATIONSHIP() );
 #6513 = ITEM_DEFINED_TRANSFORMATION('','',#11,#15);
 #6514 = PRODUCT_DEFINITION_SHAPE('Placement','Placement of an item',
   #6515);
-#6515 = NEXT_ASSEMBLY_USAGE_OCCURRENCE('10','=>[0:1:1:2]','',#5,#6506,$
-  );
+#6515 = NEXT_ASSEMBLY_USAGE_OCCURRENCE('1','=>[0:1:1:2]','',#5,#6506,$);
 #6516 = PRODUCT_TYPE('part',$,(#6508));
 #6517 = MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(
     #6518,#6526,#6533,#6540,#6547,#6554,#6561,#6568,#6575,#6582,#6589,
