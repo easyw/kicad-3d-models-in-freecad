@@ -92,7 +92,7 @@ def close_CQ_Example(App, Gui):
 
     #close the example
     if App.ActiveDocument != None:
-        if App.ActiveDocument.objectName() == ("Ex000_Introduction"):
+        if App.ActiveDocument.Label == ("Ex000_Introduction"):
             App.setActiveDocument("Ex000_Introduction")
             App.ActiveDocument=App.getDocument("Ex000_Introduction")
             Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
