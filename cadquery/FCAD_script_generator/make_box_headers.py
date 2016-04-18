@@ -123,7 +123,8 @@ from Helpers import show
 from collections import namedtuple
 
 destination_dir="./generated_pinheaders/"
-
+if not os.path.exists(destination_dir):
+    os.makedirs(destination_dir)
 outdir = "" # handled below
 
 #Make a single plastic base block (chamfered if required)
