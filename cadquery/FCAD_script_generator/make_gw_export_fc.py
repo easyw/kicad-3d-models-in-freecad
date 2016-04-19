@@ -131,7 +131,7 @@ cqv=cq.__version__.split(".")
 if int(cqv[0])==0 and int(cqv[1])<3:
     msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
     reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say2("cq need to be at least 0.3.0")
+    say2("cq needs to be at least 0.3.0")
     stop
 
 import cq_params_gw_soic  # modules parameters
