@@ -98,6 +98,10 @@ else:
 
 #######################################################################
 
+def say2(msg):
+    FreeCAD.Console.PrintMessage(msg)
+    FreeCAD.Console.PrintMessage('\n')
+
 # CadQuery Gui
 from Gui.Command import *
 
@@ -120,6 +124,15 @@ close_CQ_Example(App, Gui)
 import cadquery as cq
 from Helpers import show
 # maui end
+
+say2 (cq.__version__)
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say2("cq need to be at least 0.3.0")
+    stop
 
 import cq_params_gw_soic  # modules parameters
 from cq_params_gw_soic import *
@@ -258,33 +271,43 @@ def make_gw(params):
         cv: chamfer value for other corners
         """
         points = [
-            (-rw / 2., -rh / 2. + cv1),
-            (-rw / 2., rh / 2. - cv),
-            (-rw / 2. + cv, rh / 2.),
-            (rw / 2. - cv, rh / 2.),
-            (rw / 2., rh / 2. - cv),
-            (rw / 2., -rh / 2. + cv),
-            (rw / 2. - cv, -rh / 2.),
-            (-rw / 2. + cv1, -rh / 2.),
-            (-rw / 2., -rh / 2. + cv1)
+        #    (-rw/2., -rh/2.+cv1),
+            (-rw/2., rh/2.-cv),
+            (-rw/2.+cv, rh/2.),
+            (rw/2.-cv, rh/2.),
+            (rw/2., rh/2.-cv),
+            (rw/2., -rh/2.+cv),
+            (rw/2.-cv, -rh/2.),
+            (-rw/2.+cv1, -rh/2.),
+            (-rw/2., -rh/2.+cv1)
         ]
-        return wp.polyline(points)
+        #return wp.polyline(points)
+        return wp.polyline(points).wire() #, forConstruction=True)
 
     if cc1 != 0:
-        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1)
-        case = crect(case, D1_b, E1_b, cc1 - (D1 - D1_b) / 4.,
-                     cc - (D1 - D1_b) / 4.)  # bottom edges
-        case = case.pushPoints([(0, 0)]).workplane(offset=A2_b)
+        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).moveTo(-D1_b/2., -E1_b/2.+(cc1-(D1-D1_b)/4.))
+        case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
+        #show(case)
+        case = case.pushPoints([(0,0)]).workplane(offset=A2_b).moveTo(-D1/2, -E1/2+cc1)
         case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
-        case = case.pushPoints([(0, 0)]).workplane(offset=c)
-        case = crect(case, D1, E1, cc1, cc)       # center (upper) outer edges
-        case = crect(case, D1_t1, E1_t1, cc1 - (D1 - D1_t1) / 4.,
-                     cc - (D1 - D1_t1) / 4.)  # center (upper) inner edges
-        case = case.pushPoints([(0, 0)]).workplane(offset=A2_t)
-        cc1_t = cc1 - (D1 - D1_t2) / \
-            4.  # this one is defined because we use it later
-        case = crect(case, D1_t2, E1_t2, cc1_t, cc -
-                     (D1 - D1_t2) / 4.)  # top edges
+        #show(case)
+        case = case.pushPoints([(0,0)]).workplane(offset=c).moveTo(-D1/2,-E1/2+cc1)
+        case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
+        #show(case)
+        #say2("here arrived 1")
+        #case=cq.Workplane(cq.Plane.XY()).workplane(offset=c).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
+        case=case.pushPoints([(0,0)]).workplane(offset=0).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
+        #say2("here arrived 2")
+        case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
+        #show(case)
+        #say2("here arrived 3")
+        #stop
+        cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
+        case = case.pushPoints([(0,0)]).workplane(offset=A2_t).moveTo(-D1_t2/2,-E1_t2/2+cc1_t)
+        #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
+        case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
+        #say2("here arrived 3")
+        #show(case)
         if ef != 0:
             case = case.loft(ruled=True).faces(">Z").fillet(ef)
         else:
@@ -312,6 +335,8 @@ def make_gw(params):
             case = case.edges(BS((D1_t2 / 2, -E1_t2 / 2, 0),
                                  (D1 / 2 + 0.1, -E1 / 2 - 0.1, A2))).fillet(ef)
 
+    #show(case)
+    #stop
     # first pin indicator is created with a spherical pocket
     sphere_r = (fp_r * fp_r / 2 + fp_z * fp_z) / (2 * fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
@@ -393,9 +418,12 @@ def make_gw(params):
         merged_pins = merged_pins.union(p)
     pins = merged_pins
 
+    #show(pins)
+    #stop
     # extract pins from case
     case = case.cut(pins)
-
+    #show (case);show (pins);show (pinmark)
+    #stop
     return (case, pins, pinmark)
 
 
@@ -445,11 +473,14 @@ if __name__ == "__main__":
     # FreeCAD.Console.PrintMessage(str(color_pin_mark)+'\r\n')
     # FreeCAD.Console.PrintMessage(str(sys.argv[3].find('no-pinmark-color')))
 
-    if model_to_build == "all" or "sot" or "soic" or "tssop" or "ssop" or "qfp":
+    #say2(model_to_build)
+    if model_to_build == "all" or model_to_build == "sot" or model_to_build == "soic" or model_to_build == "tssop" or model_to_build == "ssop" or model_to_build == "qfp":
         variants = all_params.keys()
     else:
         variants = [model_to_build]
 
+    #say2(variants)
+    #stop
     for variant in variants:
         place_pinMark = True
         if all_params[variant].exclude:
@@ -502,7 +533,7 @@ if __name__ == "__main__":
         ###
         # print objs[0].Name, objs[1].Name, objs[2].Name
 
-        # sleep
+        #sleep
         # if place_pinMark==True:
         if (color_pin_mark is True) and (place_pinMark is True):
             CutObjs_wColors(FreeCAD, FreeCADGui,
@@ -511,7 +542,7 @@ if __name__ == "__main__":
             # removing pinMark
             App.getDocument(doc.Name).removeObject(objs[2].Name)
         ###
-        # sleep
+        #sleep
         del objs
         objs = GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui,
