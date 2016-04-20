@@ -91,13 +91,11 @@ def getListOfNumbers(string):
 def close_CQ_Example(App, Gui):
 
     #close the example
-    if App.ActiveDocument != None:
-        if App.ActiveDocument.Label == ("Ex000_Introduction"):
-            App.setActiveDocument("Ex000_Introduction")
-            App.ActiveDocument=App.getDocument("Ex000_Introduction")
-            Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
-            App.closeDocument("Ex000_Introduction")
-            FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
+    App.setActiveDocument("Ex000_Introduction")
+    App.ActiveDocument=App.getDocument("Ex000_Introduction")
+    Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
+    App.closeDocument("Ex000_Introduction")
+    FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
 
     #Getting the main window will allow us to start setting things up the way we want
     mw = FreeCADGui.getMainWindow()

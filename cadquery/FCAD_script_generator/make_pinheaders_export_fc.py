@@ -113,12 +113,25 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
 
-close_CQ_Example(App, Gui)
+try:
+    close_CQ_Example(App, Gui)
+except: # catch *all* exceptions
+    print "example not present"
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
 from Helpers import show
 # maui end
+
+#check version
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say("cq needs to be at least 0.3.0")
+    stop
+
 
 from collections import namedtuple
 
@@ -224,6 +237,7 @@ headers = {
 destination_dir="./generated_pinheaders/"
 if not os.path.exists(destination_dir):
     os.makedirs(destination_dir)
+
 outdir = "" # handled below
 
 #Make a single plastic base block (chamfered if required)
@@ -342,6 +356,7 @@ def MakeHeader(n, params):
 if __name__ == "__main__":
     
     models = []
+    pins = []
     
     if len(sys.argv) < 3:
         say("Nothing to build...")
@@ -352,13 +367,13 @@ if __name__ == "__main__":
         
         if model == 'all':
             models = [headers[model] for model in headers.keys()]
+            pins = range(2,41)
         else:
             models = [headers[i] for i in model.split(',') if i in headers.keys()]#separate model types with comma
             
-    pins = []
-    
+    #say(models)
     if len(sys.argv) < 4:
-        say("No pins specifed. Not building")
+        say("No pins specifed. if not all then not building")
     else:
         p = sys.argv[3].strip()
         

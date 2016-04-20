@@ -149,6 +149,16 @@ except: # catch *all* exceptions
 
 
 import cadquery as cq
+
+#check version
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say("cq needs to be at least 0.3.0")
+    stop
+
 from math import sqrt
 from Helpers import show
 from collections import namedtuple

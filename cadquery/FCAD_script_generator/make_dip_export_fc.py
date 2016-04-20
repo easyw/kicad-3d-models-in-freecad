@@ -105,12 +105,24 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
 
-close_CQ_Example(App, Gui)
+try:
+    close_CQ_Example(App, Gui)
+except: # catch *all* exceptions
+    print "example not present"
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
 from Helpers import show
 # maui end
+
+#check version
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say("cq needss to be at least 0.3.0")
+    stop
 
 # case_color = (0.1, 0.1, 0.1)
 # pins_color = (0.9, 0.9, 0.9)
