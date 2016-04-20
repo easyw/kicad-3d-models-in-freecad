@@ -35,30 +35,6 @@ Params = namedtuple("Params", [
 ])
 
 all_params = {
-"01005_h015" : Params(
-        L = 0.40,  # package length
-        W = 0.20,  # package width
-        T = 0.15,  # package height
-
-        pb = 0.15,  # pin band
-        pt = 0.01,   # pin thickness
-
-        ef = 0.025, # fillet of edges
-        modelName = 'r_01005_h015',  # Model Name
-        rotation = 0   # rotation
-    ),
-"0201_h02" : Params(
-        L = 0.60,  # package length
-        W = 0.30,  # package width
-        T = 0.20,  # package height
-
-        pb = 0.2,  # pin band
-        pt = 0.01,   # pin thickness
-
-        ef = 0.02, # fillet of edges
-        modelName = 'r_0201_h032',  # Model Name
-        rotation = 0   # rotation
-    ),
     "0402_h040" : Params(
         L = 1.07,  # package length
         W = 0.55,  # package width
