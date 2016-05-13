@@ -291,6 +291,29 @@ all_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
+    'QFN40': Params( # 6x6, 0.5 pitch, 40 pins, 1.0mm height  QFN44 p005
+        #datasheet example - http://www.ti.com/lit/ds/symlink/drv8308.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
+        D = 6.0,       # body overall length
+        E = 6.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.2,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 10,  # number of pins along X axis (width)
+        npy = 10,  # number of pins along y axis (length)
+        epad = (3.52,2.62), # e Pad #epad = None, # e Pad
+        modelName = 'qfn40_6x6_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
     'QFN44': Params( # 8x8, 0.65 pitch, 44 pins, 1.0mm height  QFN44 p065 microchip
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
