@@ -537,7 +537,7 @@ def export(componentObjs, fullfilePathName, scale=None):
             mesh_deviation=mesh_deviation_default #the smaller the best quality, 1 coarse
             #default
     #say(mesh_deviation)
-    creaseAngle_default=1.5
+    creaseAngle_default=0.5
     reply = QtGui.QInputDialog.getText(None, "creaseAngle","creaseAngle (range:0-1.5)\nthe bigger the better quality\n(0->None)",QtGui.QLineEdit.Normal,str(creaseAngle_default))
     if reply[1]:
             # user clicked OK
