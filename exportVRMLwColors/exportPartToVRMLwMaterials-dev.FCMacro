@@ -15,7 +15,7 @@
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "2.0.1 test Materials"
+__version__ = "2.0.2 test Materials"
 __date__    = "21/05/2016"
  
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
@@ -47,6 +47,7 @@ __Requires__ = "Freecad"
 ## and the loading/rendering time is smaller too
 ## change mesh deviation to increase quality of VRML
 ## change creaseAngle to improve quality
+## used %g
  
 ## to do 
 #  check if file exists to overwrite
@@ -445,7 +446,7 @@ def exportVRML(objects, filepath):
             f.write("coord Coordinate { point [")
             # write coordinate points for each vertex
             #f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
-            f.write(','.join('%.3f %.3f %.3f' % (p.x, p.y, p.z) for p in obj.points))
+            f.write(','.join('%g %g %g' % (p.x, p.y, p.z) for p in obj.points))
             f.write("]\n}") # closes Coordinate
             #shape_col=(1.0, 0.0, 0.0)#, 0.0)
             f.write("}\n") # closes points
@@ -478,8 +479,8 @@ def exportVRML(objects, filepath):
             #say(color_list_mat[col_index])
             if not Materials or color_list_mat[col_index]=="as is":
                 shape_transparency=obj.transp
-                f.write("appearance Appearance{material Material{diffuseColor %f %f %f\n" % shape_col)
-                f.write("transparency %f}}" % shape_transparency)
+                f.write("appearance Appearance{material Material{diffuseColor %g %g %g\n" % shape_col)
+                f.write("transparency %g}}" % shape_transparency)
                 f.write("}\n") # closes Shape
             else:
                 material_index=material_properties_names.index(color_list_mat[col_index])
