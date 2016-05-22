@@ -15,7 +15,7 @@
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "2.0.2 test Materials"
+__version__ = "2.0.3 test Materials"
 __date__    = "21/05/2016"
  
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
@@ -539,7 +539,7 @@ def export(componentObjs, fullfilePathName, scale=None):
             #default
     #say(mesh_deviation)
     creaseAngle_default=0.5
-    reply = QtGui.QInputDialog.getText(None, "creaseAngle","creaseAngle (range:0-1.5)\nthe bigger the better quality\n(0->None)",QtGui.QLineEdit.Normal,str(creaseAngle_default))
+    reply = QtGui.QInputDialog.getText(None, "creaseAngle","creaseAngle (range:0-1.5)\ncheck your wrl result\n(0->None)",QtGui.QLineEdit.Normal,str(creaseAngle_default))
     if reply[1]:
             # user clicked OK
             replyText = reply[0]
