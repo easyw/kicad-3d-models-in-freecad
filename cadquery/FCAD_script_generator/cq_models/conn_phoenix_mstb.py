@@ -46,11 +46,11 @@
 #*   exception statement from your version.                                 *
 #****************************************************************************
 
-__title__ = "model description for JST-XH Connectors"
+__title__ = "model description for Phoenix Series MSTB Connectors"
 __author__ = "poeschlr"
-__Comment__ = 'model description for JST-XH Connectors using cadquery'
+__Comment__ = 'model description for Phoenix Series MSTB Connectors using cadquery'
 
-___ver___ = "1.1 10/04/2016"
+___ver___ = "1.1 18/04/2016"
 
 
 import cadquery as cq
