@@ -91,13 +91,11 @@ def getListOfNumbers(string):
 def close_CQ_Example(App, Gui):
 
     #close the example
-    if App.ActiveDocument != None:
-        if App.ActiveDocument.Label == ("Ex000_Introduction"):
-            App.setActiveDocument("Ex000_Introduction")
-            App.ActiveDocument=App.getDocument("Ex000_Introduction")
-            Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
-            App.closeDocument("Ex000_Introduction")
-            FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
+    App.setActiveDocument("Ex000_Introduction")
+    App.ActiveDocument=App.getDocument("Ex000_Introduction")
+    Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
+    App.closeDocument("Ex000_Introduction")
+    FreeCAD.Console.PrintMessage('\r\nEx000 Closed\r\n')
 
     #Getting the main window will allow us to start setting things up the way we want
     mw = FreeCADGui.getMainWindow()
@@ -163,6 +161,43 @@ def FuseObjs_wColors(App, Gui,
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
     ## App.getDocument(docName).removeObject("Fusion001")
+
+    return fused_obj
+###################################################################
+# FuseObjs_wColors()  poeschlr
+#	Function to fuse multible objects together.
+###################################################################
+def multiFuseObjs_wColors(App, Gui, docName, objs, keepOriginals=False):
+
+    # Fuse two objects
+    App.ActiveDocument=None
+    Gui.ActiveDocument=None
+    App.setActiveDocument(docName)
+    App.ActiveDocument=App.getDocument(docName)
+    Gui.ActiveDocument=Gui.getDocument(docName)
+    App.activeDocument().addObject("Part::MultiFuse","Fusion")
+    App.activeDocument().Fusion.Shapes = objs
+    Gui.ActiveDocument.Fusion.ShapeColor=Gui.ActiveDocument.getObject(objs[0].Name).ShapeColor
+    Gui.ActiveDocument.Fusion.DisplayMode=Gui.ActiveDocument.getObject(objs[0].Name).DisplayMode
+    App.ActiveDocument.recompute()
+
+    App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
+    App.ActiveDocument.ActiveObject.Label=docName
+    fused_obj = App.ActiveDocument.ActiveObject
+
+    Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
+    Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
+    Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
+    Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
+    App.ActiveDocument.recompute()
+
+    # Remove the part1 part2 objects
+    if not keepOriginals:
+        for o in objs:
+            App.getDocument(docName).removeObject(o.Name)
+
+    # Remove the fusion itself
+    App.getDocument(docName).removeObject("Fusion")
 
     return fused_obj
 

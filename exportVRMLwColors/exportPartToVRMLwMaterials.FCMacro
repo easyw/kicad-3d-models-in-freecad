@@ -15,8 +15,8 @@
 __title__ = "PartToVRMLwithMaterials"
 __author__ = "easyw-fc, hyOzd"
 __url__     = "http://www.freecadweb.org/"
-__version__ = "1.9.3 test Materials"
-__date__    = "07/04/2016"
+__version__ = "1.9.4 test Materials"
+__date__    = "24/04/2016"
  
 __Comment__ = "This macro creates VRML model of selected object(s), with colors (for Kicad and Blender compatibility)"
 __Web__ = "http://www.freecadweb.org/"
@@ -48,7 +48,7 @@ __Requires__ = "Freecad"
 ## change mesh deviation to increase quality of VRML
  
 ## to do 
-#  export material properties to vrml
+#  check if file exists to overwrite
  
 import FreeCAD,FreeCADGui,Part,Mesh
 #import PySide
@@ -98,6 +98,8 @@ Materials=True
 
 as_is=""
 
+as_is=""
+
 metal_grey_pins="""material DEF PIN-01 Material {
         ambientIntensity 0.271
         diffuseColor 0.824 0.820 0.781
@@ -106,7 +108,17 @@ metal_grey_pins="""material DEF PIN-01 Material {
         shininess 0.70
         transparency 0.0
         }"""
-
+        
+# http://vrmlstuff.free.fr/materials/
+metal_grey="""material DEF MET-01 Material {
+        ambientIntensity 0.249999
+        diffuseColor 0.298 0.298 0.298
+        specularColor 0.398 0.398 0.398
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.056122
+        transparency 0.0
+        }"""
+    
 gold_pins="""material DEF PIN-02 Material {
         ambientIntensity 0.379
         diffuseColor 0.859 0.738 0.496
@@ -202,8 +214,8 @@ red_body="""material DEF RED-BODY Material {
         diffuseColor 0.700 0.100 0.050
         emissiveColor 0.000 0.000 0.000
         specularColor 0.300 0.400 0.150
-        transparency 0.0
         shininess 0.25
+        transparency 0.0
         }"""
 
 pink_body="""material DEF CAP-CERAMIC-02 Material {
@@ -247,8 +259,8 @@ led_red="""material DEF LED-RED Material {
         diffuseColor 0.700 0.100 0.050
         emissiveColor 0.000 0.000 0.000
         specularColor 0.300 0.400 0.150
-        transparency 0.10
         shininess 0.125
+        transparency 0.10
         }"""
 
 led_green="""material DEF LED-GREEN Material {
@@ -256,8 +268,8 @@ led_green="""material DEF LED-GREEN Material {
         diffuseColor 0.400 0.700 0.150
         emissiveColor 0.000 0.000 0.000
         specularColor 0.600 0.300 0.100
-        transparency 0.10
         shininess 0.05
+        transparency 0.10
         }"""
 
 led_blue="""material DEF LED-BLUE Material {
@@ -265,8 +277,17 @@ led_blue="""material DEF LED-BLUE Material {
         diffuseColor 0.100 0.250 0.700
         emissiveColor 0.000 0.000 0.000
         specularColor 0.500 0.600 0.300
-        transparency 0.10
         shininess 0.125
+        transparency 0.10
+        }"""
+
+led_yellow="""material DEF LED-YELLOW Material {
+        ambientIntensity 0.522
+        diffuseColor 0.98 0.840 0.066
+        specularColor 0.160 0.203 0.320
+        emissiveColor 0.0 0.0 0.0
+        shininess 0.125
+        transparency 0.10
         }"""
 
 led_white="""material DEF LED-WHITE Material {
@@ -274,18 +295,18 @@ led_white="""material DEF LED-WHITE Material {
         diffuseColor 0.895 0.891 0.813
         specularColor 0.047 0.055 0.109
         emissiveColor 0.0 0.0 0.0
-        transparency 0.10
         shininess 0.125
+        transparency 0.10
         }"""
 
-material_properties_names=["as is","metal grey pins","gold pins","black body","resistor black body",\
+material_properties_names=["as is","metal grey pins","metal grey","gold pins","black body","resistor black body",\
                            "grey body","dark grey body","brown body","light brown body","blue body",\
                            "green body","orange body","red_body","pink body","yellow body","white body","light brown label",\
-                           "led red","led green","led blue", "led white"]
-material_properties=[as_is,metal_grey_pins,gold_pins,black_body,resistor_black_body,\
+                           "led red","led green","led blue","led yellow","led white"]
+material_properties=[as_is,metal_grey_pins,metal_grey,gold_pins,black_body,resistor_black_body,\
                      grey_body,dark_grey_body,brown_body,light_brown_body,blue_body,\
                      green_body,orange_body,red_body,pink_body,yellow_body,white_body,light_brown_label,\
-                     led_red,led_green,led_blue,led_white]
+                     led_red,led_green,led_blue,led_yellow,led_white]
  
 material_definitions=""
 for mat in material_properties[1:]:

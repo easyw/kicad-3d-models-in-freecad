@@ -53,7 +53,7 @@ ___ver___ = "1.1 12/04/2016"
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("../../exportVRMLwColors")
+sys.path.append("./exportVRMLwColors")
 import exportPartToVRML as expVRML
 import shaderColors
 
