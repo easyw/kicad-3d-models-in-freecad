@@ -44,9 +44,9 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of molex 53261-Connectors."
+__title__ = "make 3D models of phoenix contact connectors (MSTB and MC series)."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
+__Comment__ = '''make 3D models of phoenix contact types MSTB and MC.'''
 
 ___ver___ = "1.1 12/04/2016"
 

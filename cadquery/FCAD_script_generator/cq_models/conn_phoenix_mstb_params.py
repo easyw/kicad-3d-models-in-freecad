@@ -1,4 +1,6 @@
 from collections import namedtuple
+from conn_phoenix_global_params import generate_footprint_name
+
 
 Params = namedtuple("Params",[
     'series_name',
@@ -16,9 +18,7 @@ def generate_params(num_pins, series_name, pin_pitch, angled, flanged, mount_hol
 
     return Params(
         series_name=series_name,
-        file_name="PhoenixContact_" + series_name + "_01x" + ('%02d' % num_pins) + "_"\
-        + ('%.2f' % pin_pitch) + "mm_" + ('Angled' if angled else 'Vertical')\
-        + ('_ThreadedFlange' + ('_MountHole' if mount_hole else '') if flanged else ''),
+        file_name=generate_footprint_name(series_name, num_pins, pin_pitch, angled, mount_hole, flanged),
         angled=angled,
         flanged=flanged,
         num_pins=num_pins,
