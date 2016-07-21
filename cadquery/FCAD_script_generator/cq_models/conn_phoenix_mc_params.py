@@ -12,7 +12,8 @@ Params = namedtuple("Params",[
     'order_info',
     'mount_hole_to_pin',
     'side_to_pin',
-    'back_to_pin'
+    'back_to_pin',
+    'angled_back_to_pin'
 ])
 
 def generate_params(num_pins, series_name, pin_pitch, angled, flanged, order_info, mount_hole=False, mount_hole_to_pin=None, side_to_pin=None, back_to_pin=None):
@@ -28,7 +29,8 @@ def generate_params(num_pins, series_name, pin_pitch, angled, flanged, order_inf
         order_info=order_info,
         mount_hole_to_pin=pin_pitch if mount_hole_to_pin is None else mount_hole_to_pin,
         side_to_pin=(3*pin_pitch if flanged else pin_pitch+2)/2.0 if side_to_pin is None else side_to_pin,
-        back_to_pin= (8-9.2 if angled else 3-7.25) if back_to_pin is None else back_to_pin
+        back_to_pin= 3-7.25 if back_to_pin is None else back_to_pin,
+        angled_back_to_pin = 8-9.2
     )
 
 
@@ -312,43 +314,42 @@ class seriesParams():
 
     plug_cut_len = 3.0
     plug_cut_width = 4.3
-    plug_arc_len = 1.5
+    plug_arc_len = 2
     plug_trapezoid_short = 2.5
     plug_trapezoid_long = 3.0
-    plug_trapezoid_width = 1
+    plug_trapezoid_width = 0.8
     plug_seperator_distance = 1.5
+    plug_cutout_depth = 6.6
+    plug_cutout_front = -2.5
+    plug_arc_mid_y = plug_cutout_front+0.6
+    plug_cutout_back = 3.5
 
     pin_width = 0.85
     pin_depth = 3.9
     pin_inside_distance = 1.4
-    pin_from_front_bottom = 3.8
     pin_bend_radius = 0.1
     pin_chamfer_long = 0.6
     pin_chamfer_short = 0.2
-    pin_angled_from_back = 2.0
 
     body_width = 7.25
     body_height = 9.2
+    body_flange_width = 6.0
 
 
 
 #lock_cutout=
 CalcDim=namedtuple("CalcDim",[
-    "length", "width", "left_to_pin",
-    "mount_hole_left", "mount_hole_right", "flange_width",
-    "plug_front", "plug_back"
+    "length", "left_to_pin",
+    "mount_hole_left", "mount_hole_right",
+    "plug_back"
 ])
 def dimensions(params):
     mount_hole_y = 0.9 if params.angled else 0.0
-    width = 9.2 if params.angled else 7.25
     return CalcDim(
         length = (params.num_pins-1)*params.pin_pitch + 2*params.side_to_pin
-        ,width = width
         ,left_to_pin = -params.side_to_pin
         ,mount_hole_left = [-params.mount_hole_to_pin,mount_hole_y]
         ,mount_hole_right = [(params.num_pins-1)*params.pin_pitch+params.mount_hole_to_pin,mount_hole_y]
-        ,flange_width = 9.2 if params.angled else 6.0
-        ,plug_front = width + params.back_to_pin -0.75
         ,plug_back = params.back_to_pin+0.6+0.25
     )
 

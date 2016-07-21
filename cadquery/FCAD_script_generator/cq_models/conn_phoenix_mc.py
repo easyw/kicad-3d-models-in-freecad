@@ -162,30 +162,37 @@ def generate_body(params, calc_dim):
     return body, insert
 
 def generate_straight_body(params ,calc_dim):
-    num_pins = params.num_pins
-    pin_pitch = params.pin_pitch
-    mount_hole_to_pin = params.mount_hole_to_pin
+    flange_main_dif=seriesParams.body_width-seriesParams.body_flange_width
+    body = cq.Workplane("XY")\
+        .moveTo(calc_dim.left_to_pin, -seriesParams.body_width-params.back_to_pin)
+        # back is the side which faces up for the angled version.
+        # We use this becaus we want to be consistent with the footprint generation script.
+    body = body.hLine(calc_dim.length).vLine(seriesParams.body_flange_width)\
+        .hLine(-seriesParams.flange_lenght).vLine(flange_main_dif)\
+        .hLine(2*seriesParams.flange_lenght-calc_dim.length)\
+        .vLine(-flange_main_dif).hLine(-seriesParams.flange_lenght)\
+        .close().extrude(seriesParams.body_height)
 
-    body_len = calc_dim.length
-    body_width = seriesParams.body_width
-    body_height = seriesParams.body_height
-    front_side = seriesParams.pin_from_front_bottom
-    left_side = -params.side_to_pin
-
-
-    plug_width = seriesParams.plug_width
-    # plug_arc_width = seriesParams.plug_arc_width
-    # plug_arc_len = seriesParams.plug_arc_len
-    # plug_front = seriesParams.plug_front
-    plug_left_side = calc_dim.plug_left_side
-    plug_len = calc_dim.cutout_len
-    # plug_depth = seriesParams.plug_depth
-    #
-    # thread_insert_r = seriesParams.thread_insert_r
-    # thread_depth = seriesParams.thread_depth
-    # thread_r = seriesParams.thread_r
-
-
+    single_cutout = cq.Workplane("XY")\
+        .workplane(offset=seriesParams.body_height-seriesParams.plug_cutout_depth)\
+        .moveTo(-seriesParams.plug_cut_len/2.0, seriesParams.plug_cutout_front)\
+        .vLine(seriesParams.plug_cut_width)\
+        .hLineTo(-seriesParams.plug_seperator_distance/2.0)\
+        .vLineTo(seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
+        .hLineTo(-seriesParams.plug_trapezoid_short/2.0)\
+        .lineTo(-seriesParams.plug_trapezoid_long/2.0,seriesParams.plug_cutout_back)\
+        .hLine(seriesParams.plug_trapezoid_long)\
+        .lineTo(seriesParams.plug_trapezoid_short/2.0,seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
+        .hLineTo(seriesParams.plug_seperator_distance/2.0)\
+        .vLineTo(seriesParams.plug_cutout_front+seriesParams.plug_cut_width)\
+        .hLineTo(seriesParams.plug_cut_len/2.0).vLine(-seriesParams.plug_cut_width)\
+        .hLineTo(seriesParams.plug_arc_len/2.0)\
+        .threePointArc((0,seriesParams.plug_arc_mid_y),(-seriesParams.plug_arc_len/2.0,seriesParams.plug_cutout_front))\
+        .close().extrude(seriesParams.plug_cutout_depth)
+    plug_cutouts = single_cutout
+    for i in range(0, params.num_pins):
+        plug_cutouts = plug_cutouts.union(single_cutout.translate((i*params.pin_pitch,0,0)))
+    body=body.cut(plug_cutouts)
     insert = None
     # if params.flanged:
     #     thread_insert = cq.Workplane("XY").workplane(offset=body_height)\
@@ -244,7 +251,7 @@ def generate_part(part_key):
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "MCV_01x02_GF_3.5mm_MH"
+    part_to_build = "MCV_01x04_GF_3.5mm_MH"
 
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
     (pins, body, insert, mount_screw) = generate_part(part_to_build)
