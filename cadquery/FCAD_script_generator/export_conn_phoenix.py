@@ -100,7 +100,7 @@ insert_color = shaderColors.named_colors[insert_color_key].getDiffuseInt()
 screw_color_key = "metal grey pins"
 screw_color = shaderColors.named_colors[screw_color_key].getDiffuseInt()
 
-destination_dir="Connectors_Phoenix"
+destination_dir="Connectors_Phoenix.3dshapes"
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -158,10 +158,11 @@ import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
 import conn_phoenix_mstb as MSTB
+import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
 import step_license as L
 
-series = [MSTB]
+series = [MSTB,MC]
 
 def export_one_part(modul, variant):
     if not variant in modul.all_params:

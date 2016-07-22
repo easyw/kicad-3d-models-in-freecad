@@ -8,3 +8,4 @@ echo $SCRIPTPATH
 cd $SCRIPTPATH
 #FreeCAD export_conn_phoenix.py MSTB_01x02_GF_5.00mm_MH
 FreeCAD export_conn_phoenix.py all
+#FreeCAD export_conn_phoenix.py MC_01x04_GF_3.5mm_MH

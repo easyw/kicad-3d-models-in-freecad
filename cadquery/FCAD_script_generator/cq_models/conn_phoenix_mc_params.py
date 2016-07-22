@@ -308,9 +308,10 @@ all_params = {
 }
 
 class seriesParams():
-    mount_screw_head_r = 2.0
     flange_lenght = 4.8
-    scoreline_from_back = 6.0
+    scoreline_from_bottom = 6.0
+    scoreline_width = 0.6
+    body_roundover_r = 0.5
 
     plug_cut_len = 3.0
     plug_cut_width = 4.3
@@ -325,7 +326,7 @@ class seriesParams():
     plug_cutout_back = 3.5
 
     pin_width = 0.85
-    pin_depth = 3.9
+    pin_depth = 3.4
     pin_inside_distance = 1.4
     pin_bend_radius = 0.1
     pin_chamfer_long = 0.6
@@ -335,22 +336,33 @@ class seriesParams():
     body_height = 9.2
     body_flange_width = 6.0
 
+    thread_insert_r = 2.0
+    thread_r = 1.0
+    thread_depth = 5.0 # estimated
 
+    pcb_thickness=1.5
+    mount_screw_head_radius=2.0
+    mount_screw_head_heigth=1.5
+    mount_screw_fillet = 0.5
+    mount_screw_slot_width = 0.6
+    mount_screw_slot_depth = 0.8
 
 #lock_cutout=
 CalcDim=namedtuple("CalcDim",[
     "length", "left_to_pin",
-    "mount_hole_left", "mount_hole_right",
-    "plug_back"
+    "mount_hole_y",
+    "plug_back", "body_front_y"
 ])
 def dimensions(params):
-    mount_hole_y = 0.9 if params.angled else 0.0
+
     return CalcDim(
-        length = (params.num_pins-1)*params.pin_pitch + 2*params.side_to_pin
-        ,left_to_pin = -params.side_to_pin
-        ,mount_hole_left = [-params.mount_hole_to_pin,mount_hole_y]
-        ,mount_hole_right = [(params.num_pins-1)*params.pin_pitch+params.mount_hole_to_pin,mount_hole_y]
-        ,plug_back = params.back_to_pin+0.6+0.25
+        length = (params.num_pins-1)*params.pin_pitch + 2*params.side_to_pin,
+        left_to_pin = -params.side_to_pin,
+        mount_hole_y = 0.9 if params.angled else 0.0,
+        plug_back = params.back_to_pin+0.6+0.25,
+        # back is the side which faces up for the angled version.
+        # We use this becaus we want to be consistent with the footprint generation script.
+        body_front_y = -seriesParams.body_width-params.back_to_pin
     )
 
 def generate_description(params):
