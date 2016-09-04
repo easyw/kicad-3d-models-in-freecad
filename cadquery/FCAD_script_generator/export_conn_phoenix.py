@@ -100,8 +100,6 @@ insert_color = shaderColors.named_colors[insert_color_key].getDiffuseInt()
 screw_color_key = "metal grey pins"
 screw_color = shaderColors.named_colors[screw_color_key].getDiffuseInt()
 
-destination_dir="Connectors_Phoenix.3dshapes"
-
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
@@ -164,10 +162,14 @@ import step_license as L
 
 series = [MSTB,MC]
 
-def export_one_part(modul, variant):
+def export_one_part(modul, variant, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
+
+    destination_dir="Connectors_Phoenix.3dshapes"
+    if with_plug:
+        destination_dir="Connectors_Phoenix__with_plug.3dshapes"
     ModelName = variant
     ModelName = ModelName.replace(".","_")
     FileName = modul.all_params[variant].file_name
@@ -177,7 +179,7 @@ def export_one_part(modul, variant):
     Gui.ActiveDocument=Gui.getDocument(ModelName)
     #App.setActiveDocument(ModelName)
     #Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body, insert, mount_screw) = modul.generate_part(variant)
+    (pins, body, insert, mount_screw, plug, plug_screws) = modul.generate_part(variant, with_plug)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
@@ -188,21 +190,36 @@ def export_one_part(modul, variant):
     if insert is not None:
         color_attr = insert_color + (0,)
         show(insert, color_attr)
-        if mount_screw is not None:
-            color_attr = screw_color + (0,)
-            show(mount_screw, color_attr)
+    if mount_screw is not None:
+        color_attr = screw_color + (0,)
+        show(mount_screw, color_attr)
+    if plug is not None:
+        color_attr = body_color + (0,)
+        show(plug, color_attr)
+
+        color_attr = screw_color + (0,)
+        show(plug_screws, color_attr)
 
     doc = FreeCAD.ActiveDocument
     doc.Label=ModelName
     objs=FreeCAD.ActiveDocument.Objects
     FreeCAD.Console.PrintMessage(objs)
-    objs[0].Label = ModelName + "__body"
-    objs[1].Label = ModelName + "__pins"
-    if insert is not None:
-        objs[2].Label = ModelName + "__thread_insert"
-        if mount_screw is not None:
-            objs[3].Label = ModelName + "__mount_screw"
 
+    i=0
+    objs[i].Label = ModelName + "__body"
+    i+=1
+    objs[i].Label = ModelName + "__pins"
+    i+=1
+    if insert is not None:
+        objs[i].Label = ModelName + "__thread_insert"
+        i+=1
+    if mount_screw is not None:
+        objs[i].Label = ModelName + "__mount_screw"
+        i+=1
+    if plug is not None:
+        objs[i].Label = ModelName + "__plug"
+        i+=1
+        objs[i].Label = ModelName + "__plug_screws"
     restore_Main_Tools()
 
     out_dir=destination_dir
@@ -213,22 +230,35 @@ def export_one_part(modul, variant):
     export_file_name=destination_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
-    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
+    i=0
+    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
             shape_color=body_color_key,
             face_colors=None))
-    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
+    i+=1
+    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
             shape_color=pins_color_key,
             face_colors=None))
+    i+=1
     if insert is not None:
-        export_objects.append(expVRML.exportObject(freecad_object = objs[2],
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
                 shape_color=insert_color_key,
                 face_colors=None))
         used_color_keys.append(insert_color_key)
-        if mount_screw is not None:
-            export_objects.append(expVRML.exportObject(freecad_object = objs[3],
-                    shape_color=screw_color_key,
-                    face_colors=None))
-            used_color_keys.append(screw_color_key)
+        i+=1
+    if mount_screw is not None:
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=screw_color_key,
+                face_colors=None))
+        used_color_keys.append(screw_color_key)
+        i+=1
+    if plug is not None:
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=body_color_key,
+                face_colors=None))
+        i+=1
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=screw_color_key,
+                face_colors=None))
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
@@ -251,7 +281,19 @@ if __name__ == "__main__":
         FreeCAD.Console.PrintMessage('No variant name is given! building all')
         model_to_build='all'
     else:
-        model_to_build=sys.argv[2]
+        if sys.argv[2] == "MC_SERIES_ALL":
+            model_to_build='all'
+            series = [MC]
+        elif sys.argv[2] == "MSTB_SERIES_ALL":
+            model_to_build='all'
+            series = [MSTB]
+        else:
+            model_to_build=sys.argv[2]
+        if len(sys.argv) < 4:
+            with_plug=False
+        else:
+            with_plug = sys.argv[3]=="WITH_PLUG"
+
 
     for typ in series:
         variants = []
@@ -263,4 +305,4 @@ if __name__ == "__main__":
 
         for variant in variants:
             FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-            export_one_part(typ, variant)
+            export_one_part(typ, variant, with_plug)

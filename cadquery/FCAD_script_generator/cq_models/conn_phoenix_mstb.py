@@ -283,13 +283,13 @@ def generate_mount_screw(params, calc_dim):
     screw = screw.union(screw.translate((2*mount_hole_to_pin+(num_pins-1)*pin_pitch,0,0)))
     return screw
 
-def generate_part(part_key):
+def generate_part(part_key, with_plug=False):
     params = all_params[part_key]
     calc_dim = dimensions(params)
     pins = generate_pins(params)
     body, insert = generate_body(params, calc_dim)
     mount_screw = generate_mount_screw(params, calc_dim)
-    return (pins, body, insert, mount_screw)
+    return (pins, body, insert, mount_screw, None, None)
 
 
 #opend from within freecad

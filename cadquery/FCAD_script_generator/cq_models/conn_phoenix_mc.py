@@ -150,8 +150,8 @@ def generate_pins(params, calc_dim):
     return pins
 
 
-def generate_body(params, calc_dim):
-    body, insert = generate_straight_body(params, calc_dim)
+def generate_body(params, calc_dim, with_details=True):
+    body, insert = generate_straight_body(params, calc_dim, with_details)
     if not params.angled:
         return body, insert
 
@@ -216,36 +216,36 @@ def generate_scoreline(params, calc_dim):
         #.lineTo(*arc_p2).lineTo(*arc_p3).close().extrude(sc_len)
     return scline
 
-def generate_straight_body(params, calc_dim):
+def generate_straight_body(params, calc_dim, with_details):
     if params.flanged:
         body = generate_main_body_flanged(params, calc_dim)
     else:
         body = generate_main_body(params, calc_dim)
 
     body = body.union(generate_scoreline(params, calc_dim))
-
-    single_cutout = cq.Workplane("XY")\
-        .workplane(offset=seriesParams.body_height-seriesParams.plug_cutout_depth)\
-        .moveTo(-seriesParams.plug_cut_len/2.0, seriesParams.plug_cutout_front)\
-        .vLine(seriesParams.plug_cut_width)\
-        .hLineTo(-seriesParams.plug_seperator_distance/2.0)\
-        .vLineTo(seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
-        .hLineTo(-seriesParams.plug_trapezoid_short/2.0)\
-        .lineTo(-seriesParams.plug_trapezoid_long/2.0,seriesParams.plug_cutout_back)\
-        .hLine(seriesParams.plug_trapezoid_long)\
-        .lineTo(seriesParams.plug_trapezoid_short/2.0,seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
-        .hLineTo(seriesParams.plug_seperator_distance/2.0)\
-        .vLineTo(seriesParams.plug_cutout_front+seriesParams.plug_cut_width)\
-        .hLineTo(seriesParams.plug_cut_len/2.0).vLine(-seriesParams.plug_cut_width)\
-        .hLineTo(seriesParams.plug_arc_len/2.0)\
-        .threePointArc((0,seriesParams.plug_arc_mid_y),(-seriesParams.plug_arc_len/2.0,seriesParams.plug_cutout_front))\
-        .close().extrude(seriesParams.plug_cutout_depth)
-    plug_cutouts = single_cutout
-    for i in range(0, params.num_pins):
-        plug_cutouts = plug_cutouts.union(single_cutout.translate((i*params.pin_pitch,0,0)))
-    body=body.cut(plug_cutouts)
+    if with_details:
+        single_cutout = cq.Workplane("XY")\
+            .workplane(offset=seriesParams.body_height-seriesParams.plug_cutout_depth)\
+            .moveTo(-seriesParams.plug_cut_len/2.0, seriesParams.plug_cutout_front)\
+            .vLine(seriesParams.plug_cut_width)\
+            .hLineTo(-seriesParams.plug_seperator_distance/2.0)\
+            .vLineTo(seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
+            .hLineTo(-seriesParams.plug_trapezoid_short/2.0)\
+            .lineTo(-seriesParams.plug_trapezoid_long/2.0,seriesParams.plug_cutout_back)\
+            .hLine(seriesParams.plug_trapezoid_long)\
+            .lineTo(seriesParams.plug_trapezoid_short/2.0,seriesParams.plug_cutout_back-seriesParams.plug_trapezoid_width)\
+            .hLineTo(seriesParams.plug_seperator_distance/2.0)\
+            .vLineTo(seriesParams.plug_cutout_front+seriesParams.plug_cut_width)\
+            .hLineTo(seriesParams.plug_cut_len/2.0).vLine(-seriesParams.plug_cut_width)\
+            .hLineTo(seriesParams.plug_arc_len/2.0)\
+            .threePointArc((0,seriesParams.plug_arc_mid_y),(-seriesParams.plug_arc_len/2.0,seriesParams.plug_cutout_front))\
+            .close().extrude(seriesParams.plug_cutout_depth)
+        plug_cutouts = single_cutout
+        for i in range(0, params.num_pins):
+            plug_cutouts = plug_cutouts.union(single_cutout.translate((i*params.pin_pitch,0,0)))
+        body=body.cut(plug_cutouts)
     insert = None
-    if params.flanged:
+    if params.flanged and with_details:
         thread_insert = cq.Workplane("XY").workplane(offset=seriesParams.body_height)\
             .moveTo(-params.mount_hole_to_pin, 0)\
             .circle(seriesParams.thread_insert_r)\
@@ -292,29 +292,192 @@ def generate_mount_screw(params, calc_dim):
     screw = screw.union(screw.translate((2*mount_hole_to_pin+(num_pins-1)*pin_pitch,0,0)))
     return screw
 
+class plug_params():
+    body_width = 11.1
+    flange_width = 5.6
+    flange_height = 6.9
+    y_max_wire_side = -6.4
+    y_max_screw_side = 4.7
 
-def generate_part(part_key):
+
+def generate_plug(params, calc_dim):
+    plug, plug_screws = generate_plug_staight(params, calc_dim)
+
+    if not params.angled:
+        return plug, plug_screws
+
+    front_side = calc_dim.body_front_y
+    pin_angled_from_back = params.angled_back_to_pin
+
+    rotation_origin=(0, front_side,0)
+    translation_vector=(0, -front_side-pin_angled_from_back,0)
+
+    plug = plug.rotate(rotation_origin,(1,0,0),90)
+    plug = plug.translate(translation_vector)
+    if plug_screws is not None:
+        plug_screws = plug_screws.rotate(rotation_origin,(1,0,0),90)
+        plug_screws = plug_screws.translate(translation_vector)
+    return plug, plug_screws
+
+def generate_plug_staight(params, calc_dim):
+    plug_bottom = seriesParams.body_height
+    plug_main_side_to_0 = 4.2/2
+    if params.pin_pitch == 3.81:
+        plug_main_side_to_0 = 4.6/2
+    if params.pin_pitch == 5.08:
+        plug_main_side_to_0 = 2.54
+
+    plug_main_body_len = plug_main_side_to_0*2 + (params.num_pins-1)*params.pin_pitch
+
+    psvp = [(plug_params.flange_width/2.0, plug_bottom)]
+    add_p_to_chain(psvp, (-8.1, 0))
+    add_p_to_chain(psvp, (-0.3, 0.3))
+    arc_psv_1 = get_third_arc_point2(psvp[1], psvp[2])
+    add_p_to_chain(psvp, (0, 0.6))
+    add_p_to_chain(psvp, (-0.8, 0))
+    add_p_to_chain(psvp, (0, 8))
+    add_p_to_chain(psvp, (5.7, 0))
+    add_p_to_chain(psvp, (0, 0.3))
+    add_p_to_chain(psvp, (0.3, 0.3))
+    arc_psv_2 = get_third_arc_point1(psvp[7], psvp[8])
+    add_p_to_chain(psvp, (0.2, 0))
+    add_p_to_chain(psvp, (0.5, -0.5))
+    arc_psv_3 = get_third_arc_point2(psvp[9], psvp[10])
+    add_p_to_chain(psvp, (0, -0.7))
+    add_p_to_chain(psvp, (3.8, -1.0))
+    add_p_to_chain(psvp, (0, 0.2))
+    add_p_to_chain(psvp, (0.3, 0))
+    add_p_to_chain(psvp, (0.3, -0.3))
+    arc_psv_4 = get_third_arc_point2(psvp[14], psvp[15])
+    add_p_to_chain(psvp, (0, -5.8))
+    add_p_to_chain(psvp, (-0.5, -0.5))
+    arc_psv_5 = get_third_arc_point1(psvp[16], psvp[17])
+    add_p_to_chain(psvp, (-1.4, 0))
+
+    plug_body = cq.Workplane("YZ").workplane(offset=-plug_main_side_to_0)\
+        .moveTo(*psvp[0]).lineTo(*psvp[1])\
+        .threePointArc(arc_psv_1, psvp[2])\
+        .lineTo(*psvp[3]).lineTo(*psvp[4])\
+        .lineTo(*psvp[5]).lineTo(*psvp[6])\
+        .lineTo(*psvp[7]).threePointArc(arc_psv_2, psvp[8])\
+        .lineTo(*psvp[9]).threePointArc(arc_psv_3, psvp[10])\
+        .lineTo(*psvp[11]).lineTo(*psvp[12]).lineTo(*psvp[13])\
+        .lineTo(*psvp[14]).threePointArc(arc_psv_4, psvp[15])\
+        .lineTo(*psvp[16]).threePointArc(arc_psv_5, psvp[17])\
+        .lineTo(*psvp[18]).close().extrude(plug_main_body_len)
+
+    if params.flanged:
+        flange_radius = 1
+        flange = cq.Workplane("XY").workplane(offset=plug_bottom)\
+            .moveTo(calc_dim.left_to_pin, -plug_params.flange_width/2)\
+            .hLine(calc_dim.length).vLine(plug_params.flange_width)\
+            .hLine(-calc_dim.length)\
+            .close().extrude(plug_params.flange_height)\
+            .edges("|Z").fillet(flange_radius)
+
+        flange_screw_cutouts = cq.Workplane("XY")\
+            .workplane(offset=seriesParams.body_height+plug_params.flange_height)\
+            .moveTo(-params.mount_hole_to_pin, 0)\
+            .circle(2)\
+            .moveTo(params.mount_hole_to_pin+(params.num_pins-1)*params.pin_pitch, 0)\
+            .circle(2)\
+            .extrude(-plug_params.flange_height+1.5)
+        flange = flange.cut(flange_screw_cutouts)
+
+        plug_body = plug_body.union(flange)
+
+    first_hole_pos = (params.num_pins-1)*params.pin_pitch/2.0
+
+    single_screwhole_cutout = plug_body.faces(">Y").workplane()\
+        .moveTo(first_hole_pos, -0.7).circle(1.45).extrude(-2, False)
+
+    single_screw = plug_body.faces(">Y").workplane(offset=-2)\
+        .moveTo(first_hole_pos, -0.7).circle(1.4).extrude(1, False)\
+        .faces(">Y").workplane().rect(2*1.4, 0.4).cutBlind(-0.3)
+
+    wcu_top_width = 2.7
+    wcu_top_len = 4.8
+    wcu_top_arc_center_width = 3
+    wcu_top_y0 = 0.7
+
+    wcu_bottom_len = 2.75
+    wcu_bottom_width = 1.72
+
+    wire_input_single_cutout = cq.Workplane("XY").workplane(offset=8.9+plug_bottom)\
+        .moveTo(wcu_top_width/2.0, -wcu_top_y0)\
+        .threePointArc((wcu_top_arc_center_width/2.0, -wcu_top_y0-wcu_top_len/2.0),
+                       (wcu_top_width/2.0, -wcu_top_y0-wcu_top_len))\
+        .hLine(-wcu_top_width)\
+        .threePointArc((-wcu_top_arc_center_width/2.0, -wcu_top_y0-wcu_top_len/2.0),
+                       (-wcu_top_width/2.0, -wcu_top_y0))\
+        .close()\
+        .workplane(offset=-1.5).rect(wcu_bottom_width, wcu_bottom_len).loft()\
+        .faces("<Z").rect(wcu_bottom_width, wcu_bottom_len).extrude(-1.5)
+        #.close().extrude(2)
+
+    screwhole_cutouts = single_screwhole_cutout
+    screws = single_screw
+    wire_input_cutouts = wire_input_single_cutout
+    for i in range(0, params.num_pins):
+        screwhole_cutouts = screwhole_cutouts.union(
+            single_screwhole_cutout.translate((i*params.pin_pitch, 0, 0))
+            )
+        screws = screws.union(
+            single_screw.translate((i*params.pin_pitch, 0, 0))
+            )
+        wire_input_cutouts = wire_input_cutouts.union(
+            wire_input_single_cutout.translate((i*params.pin_pitch, 0, 0))
+            )
+
+    plug_body = plug_body.cut(screwhole_cutouts)
+    plug_body = plug_body.cut(wire_input_cutouts)
+
+    if params.flanged:
+        flange_screw = cq.Workplane("XY")\
+            .workplane(offset=seriesParams.body_height+1.5)\
+            .moveTo(-params.mount_hole_to_pin, 0)\
+            .circle(1.95).extrude(1.5)\
+            .faces(">Z").workplane().rect(0.4,2*2).cutBlind(-0.5)
+        flange_screw_distance = 2*params.mount_hole_to_pin+(params.num_pins-1)*params.pin_pitch
+
+        screws=screws.union(flange_screw)
+        screws=screws.union(flange_screw.translate((flange_screw_distance, 0, 0)))
+    return plug_body, screws
+
+
+def generate_part(part_key, with_plug=False):
     params = all_params[part_key]
     calc_dim = dimensions(params)
     pins = generate_pins(params, calc_dim)
-    body, insert = generate_body(params, calc_dim)
+    body, insert = generate_body(params, calc_dim,
+                                 with_details=(not with_plug))
     mount_screw = generate_mount_screw(params, calc_dim)
-    return (pins, body, insert, mount_screw)
+    if with_plug:
+        plug, plug_screws = generate_plug(params, calc_dim)
+    else:
+        plug = None
+        plug_screws = None
+    return (pins, body, insert, mount_screw, plug, plug_screws)
 
 
 # opend from within freecad
 if "module" in __name__:
-    part_to_build = "MCV_01x04_GF_3.5mm_MH"
-    part_to_build = "MCV_01x04_G_3.5mm"
-    part_to_build = "MC_01x04_G_3.5mm"
+    #part_to_build = "MCV_01x04_GF_3.5mm_MH"
+    #part_to_build = "MCV_01x04_G_3.5mm"
+    #part_to_build = "MC_01x04_G_3.5mm"
     part_to_build = "MC_01x04_GF_3.5mm_MH"
+    with_plug = True
 
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +
                                  part_to_build + "\n")
-    (pins, body, insert, mount_screw) = generate_part(part_to_build)
+    (pins, body, insert, mount_screw, plug, plug_screws) = generate_part(part_to_build, with_plug)
     show(pins)
     show(body)
     if insert is not None:
         show(insert)
     if mount_screw is not None:
         show(mount_screw)
+    if plug is not None:
+        show(plug)
+    if plug_screws is not None:
+        show(plug_screws)
