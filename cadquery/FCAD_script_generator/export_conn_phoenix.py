@@ -56,7 +56,7 @@ from datetime import datetime
 sys.path.append("./exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
-
+import re, fnmatch
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
@@ -279,30 +279,24 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='all'
+        model_to_build='.*'
     else:
         if sys.argv[2] == "MC_SERIES_ALL":
-            model_to_build='all'
+            model_to_build='.*'
             series = [MC]
         elif sys.argv[2] == "MSTB_SERIES_ALL":
-            model_to_build='all'
+            model_to_build='.*'
             series = [MSTB]
         else:
-            model_to_build=sys.argv[2]
+            model_to_build=fnmatch.translate(sys.argv[2])
         if len(sys.argv) < 4:
             with_plug=False
         else:
             with_plug = sys.argv[3]=="WITH_PLUG"
 
-
+    model_filter_regobj=re.compile(model_to_build)
     for typ in series:
-        variants = []
-        if model_to_build == "all":
-            variants = typ.all_params.keys()
-        else:
-            if model_to_build in typ.all_params.keys():
-                variants = [model_to_build]
-
-        for variant in variants:
-            FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-            export_one_part(typ, variant, with_plug)
+        for variant in typ.all_params.keys():
+            if model_filter_regobj.match(variant):
+                FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+                export_one_part(typ, variant, with_plug)

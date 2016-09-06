@@ -331,6 +331,49 @@ def generate_plug_straight(params, calc_dim):
         .threePointArc(arc3_psv, psvp[13])\
         .lineTo(*psvp[14]).lineTo(*psvp[15]).lineTo(*psvp[16])\
         .close().extrude(plg_main_with)
+    if not params.flanged:
+        # plug lock points
+        plug_lock_width=1.6
+
+        plp = [psvp[1]]
+        add_p_to_chain(plp, (1.125, 0))
+        add_p_to_chain(plp, (0.2, 0.2))
+        arc1_pl = get_third_arc_point2(plp[1], plp[2])
+        add_p_to_chain(plp, (0.6, 0))
+        arc2_pl = v_add(plp[2], (0.3, 0.3))
+        add_p_to_chain(plp, (0, -3.2))
+        add_p_to_chain(plp, (-0.45, -0.45))
+        add_p_to_chain(plp, (0.7, -1.1))
+        add_p_to_chain(plp, (1.1, 1.15))
+        add_p_to_chain(plp, (0.3, 3.68))
+        add_p_to_chain(plp, (0.3, 0.3))
+        add_p_to_chain(plp, (0, 0.1))
+        add_p_to_chain(plp, (-4.3, 0))
+        arc3_pl = get_third_arc_point1(plp[8], plp[9])
+
+        pl_wp_offset = params.pin_pitch/2.0
+        plug_lock = cq.Workplane("YZ").workplane(offset=pl_wp_offset)\
+            .moveTo(*plp[0]).lineTo(*plp[1])\
+            .threePointArc(arc1_pl, plp[2])\
+            .threePointArc(arc2_pl, plp[3])\
+            .lineTo(*plp[4]).lineTo(*plp[5])\
+            .lineTo(*plp[6]).lineTo(*plp[7])\
+            .lineTo(*plp[8])\
+            .threePointArc(arc3_pl, plp[9])\
+            .lineTo(*plp[10]).lineTo(*plp[11])\
+            .close().extrude(-plug_lock_width)
+
+        BS = cq.selectors.BoxSelector
+        plug_lock = plug_lock.edges(
+                BS(
+                    (pl_wp_offset-0.1, 0, 0),
+                    (pl_wp_offset-plug_lock_width+0.1, 11,
+                     seriesParams.body_height))
+            ).fillet(0.3)
+
+        plug_body = plug_body.union(plug_lock)
+        if params.num_pins>2:
+            plug_body = plug_body.union(plug_lock.translate(((params.num_pins-2)*params.pin_pitch+plug_lock_width,0,0)))
 
     single_screw_cutout = plug_body.faces(">Y").workplane()\
         .moveTo((params.num_pins-1)*params.pin_pitch/2, -0.7)\
@@ -343,9 +386,12 @@ def generate_plug_straight(params, calc_dim):
             .faces(">Y").workplane().rect(2*2,0.4).cutBlind(-0.3)
     screws = single_screw
     for i in range(params.num_pins):
+        #temp=single_screw.translate((i*params.pin_pitch, 0, 0))
+        screws = screws.union(single_screw.translate((i*params.pin_pitch, 0, 0)))
+
+
+    for i in range(params.num_pins):
         plug_body = plug_body.cut(single_screw_cutout.translate((i*params.pin_pitch, 0, 0)))
-        if i > 0:
-            screws = screws.union(single_screw.translate((i*params.pin_pitch, 0, 0)))
 
     if params.flanged:
         plug_flange = cq.Workplane("XY").workplane(offset=seriesParams.body_height)\
@@ -405,7 +451,7 @@ def generate_part(part_key, with_plug=False):
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "MSTBV_01x02_GF_5.00mm"
+    part_to_build = "MSTBVA_01x02_G_5.00mm"
 
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
     (pins, body, insert, mount_screw, plug, plug_screws) = generate_part(part_to_build, True)
