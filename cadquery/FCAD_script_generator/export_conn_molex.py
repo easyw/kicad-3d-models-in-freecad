@@ -141,7 +141,10 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
 
-close_CQ_Example(App, Gui)
+try:
+    close_CQ_Example(App, Gui)
+except:
+    FreeCAD.Console.PrintMessage("can't close example.")
 
 
 import cadquery as cq
