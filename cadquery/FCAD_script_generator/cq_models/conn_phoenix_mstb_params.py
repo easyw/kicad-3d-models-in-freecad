@@ -328,7 +328,7 @@ all_params = {
     'GMSTBV_01x12_GF_7.62mm_MH' : generate_params(12, "GMSTBV-GF", 7.62, False, True, mount_hole=True, mount_hole_to_pin=6.1, side_to_pin=9.1)
 }
 
-class globalParams():
+class seriesParams():
     pin_width = 1.0
     pin_depth = 4.0
     pin_inside_distance = 2.0

@@ -160,32 +160,32 @@ Params = namedtuple("Params",[
     'body_front_cutout_len'
 ])
 
-def make_params(num_pins, name, file_name):
+def make_params(num_pins, name):
     bl=3+(num_pins-1)*pin_pitch
     return Params(
         num_pins=num_pins,
         model_name=name,
         body_length=bl,
-        file_name=file_name,
+        file_name="Molex_PicoBlade_53261-"+ ('%02d' % num_pins) +"71_" + ('%02d' % num_pins) + "x" + ('%.2f' % pin_pitch) +"mm_Angled",
         body_front_cutout_len=bl-1.9
     )
 
 all_params = {
-    "0271" : make_params( 2, 'Molex_53261_0271', 'Molex_PicoBlade_53261-0271'),
-    "0371" : make_params( 3, 'Molex_53261_0371', 'Molex_PicoBlade_53261-0371'),
-    "0471" : make_params( 4, 'Molex_53261_0471', 'Molex_PicoBlade_53261-0471'),
-    "0571" : make_params( 5, 'Molex_53261_0571', 'Molex_PicoBlade_53261-0571'),
-    "0671" : make_params( 6, 'Molex_53261_0671', 'Molex_PicoBlade_53261-0671'),
-    "0771" : make_params( 7, 'Molex_53261_0771', 'Molex_PicoBlade_53261-0771'),
-    "0871" : make_params( 8, 'Molex_53261_0871', 'Molex_PicoBlade_53261-0871'),
-    "0971" : make_params( 9, 'Molex_53261_0971', 'Molex_PicoBlade_53261-0971'),
-    "1071" : make_params(10, 'Molex_53261_1071', 'Molex_PicoBlade_53261-1071'),
-    "1171" : make_params(11, 'Molex_53261_1171', 'Molex_PicoBlade_53261-1171'),
-    "1271" : make_params(12, 'Molex_53261_1271', 'Molex_PicoBlade_53261-1271'),
-    "1371" : make_params(13, 'Molex_53261_1371', 'Molex_PicoBlade_53261-1371'),
-    "1471" : make_params(14, 'Molex_53261_1471', 'Molex_PicoBlade_53261-1471'),
-    "1571" : make_params(15, 'Molex_53261_1571', 'Molex_PicoBlade_53261-1571'),
-    "1771" : make_params(17, 'Molex_53261_1771', 'Molex_PicoBlade_53261-1771')
+    "0271" : make_params( 2, 'Molex_53261_0271'),
+    "0371" : make_params( 3, 'Molex_53261_0371'),
+    "0471" : make_params( 4, 'Molex_53261_0471'),
+    "0571" : make_params( 5, 'Molex_53261_0571'),
+    "0671" : make_params( 6, 'Molex_53261_0671'),
+    "0771" : make_params( 7, 'Molex_53261_0771'),
+    "0871" : make_params( 8, 'Molex_53261_0871'),
+    "0971" : make_params( 9, 'Molex_53261_0971'),
+    "1071" : make_params(10, 'Molex_53261_1071'),
+    "1171" : make_params(11, 'Molex_53261_1171'),
+    "1271" : make_params(12, 'Molex_53261_1271'),
+    "1371" : make_params(13, 'Molex_53261_1371'),
+    "1471" : make_params(14, 'Molex_53261_1471'),
+    "1571" : make_params(15, 'Molex_53261_1571'),
+    "1771" : make_params(17, 'Molex_53261_1771')
 }
 
 def union_all(objects):
