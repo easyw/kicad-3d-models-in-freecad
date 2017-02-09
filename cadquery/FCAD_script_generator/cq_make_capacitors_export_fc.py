@@ -49,7 +49,9 @@ __title__ = "make chip capacitors 3D models"
 __author__ = "maurice"
 __Comment__ = 'make chip capacitos 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.1 14/08/2015"
+___ver___ = "1.3.2 09/02/2017"
+
+# thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -280,7 +282,9 @@ if __name__ == "__main__":
         expVRML.say(objs)
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
+
+        # export_file_name=out_dir+os.sep+ModelName+'.wrl'
+        export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
@@ -290,3 +294,4 @@ if __name__ == "__main__":
         Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
+        

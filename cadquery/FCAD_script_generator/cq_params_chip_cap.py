@@ -13,6 +13,7 @@
 from collections import namedtuple
 
 destination_dir="/generated_cap"
+#destination_dir="generated_cap"
 
 ### Parametric Values
 ##
@@ -343,6 +344,7 @@ kicad_naming_params_chip_cap = {
  
         ef = 0.025, # fillet of edges 
         modelName = 'c_2225_HandSoldering',  # Model Name 
+        #modelName = 'C_2220_h25',  # Model Name 
         rotation = 0   # rotation 
     ), 
 }
