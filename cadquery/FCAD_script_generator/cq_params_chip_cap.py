@@ -12,7 +12,8 @@
 
 from collections import namedtuple
 
-destination_dir="generated_cap"
+destination_dir="/generated_cap"
+#destination_dir="generated_cap"
 
 ### Parametric Values
 ##
@@ -51,7 +52,7 @@ all_params_chip_cap = {
         pt = 0.015,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'C_0402_h03',  # Model Name 
+        modelName = 'C_0402',  # Model Name 
         rotation = 0   # rotation 
     ), 
     "0603_h078" : Params(
@@ -63,7 +64,7 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness
 
         ef = 0.025, # fillet of edges
-        modelName = 'c_0603_h078',  # Model Name
+        modelName = 'C_0602',  # Model Name
         rotation = 0   # rotation
     ),
     "0805_h078" : Params(
@@ -75,7 +76,7 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness
 
         ef = 0.025, # fillet of edges
-        modelName = 'c_0805_h078',  # Model Name
+        modelName = 'C_0805',  # Model Name
         rotation = 0   # rotation
     ),
     "1206_h078" : Params(
@@ -87,7 +88,7 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness
 
         ef = 0.025, # fillet of edges
-        modelName = 'c_1206_h078',  # Model Name
+        modelName = 'C_1206',  # Model Name
         rotation = 0   # rotation
     ),
      "1210_h25" : Params( 
@@ -99,7 +100,7 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'C_1210_h25',  # Model Name 
+        modelName = 'C_1210',  # Model Name 
         rotation = 0   # rotation 
     ), 
     "1812_h25" : Params( 
@@ -111,7 +112,7 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'C_1812_h25',  # Model Name 
+        modelName = 'C_1812',  # Model Name 
         rotation = 0   # rotation 
     ), 
         "2220_h25" : Params( 
@@ -123,7 +124,227 @@ all_params_chip_cap = {
         pt = 0.02,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'C_2220_h25',  # Model Name 
+        modelName = 'C_2220',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+}
+
+kicad_naming_params_chip_cap = {
+    "0201" : Params( 
+        L = 0.60,  # package length 
+        W = 0.30,  # package width 
+        T = 0.30,  # package height 
+ 
+        pb = 0.15,  # pin band 
+        pt = 0.01,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_0201',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "0402" : Params( 
+        L = 1.0,  # package length 
+        W = 0.5,  # package width 
+        T = 0.5,  # package height 
+ 
+        pb = 0.25,  # pin band 
+        pt = 0.015,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_0402',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "0603" : Params(
+        L = 1.60,  # package length
+        W = 0.81,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.25,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_0603',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "0603_h" : Params(
+        L = 1.60,  # package length
+        W = 0.81,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.25,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_0603_HandSoldering',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "0805" : Params(
+        L = 2.00,  # package length
+        W = 1.25,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.35,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_0805',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "0805_h" : Params(
+        L = 2.00,  # package length
+        W = 1.25,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.35,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_0805_HandSoldering',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "1206" : Params(
+        L = 3.05,  # package length
+        W = 1.52,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.5,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_1206',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "1206_h" : Params(
+        L = 3.05,  # package length
+        W = 1.52,  # package width
+        T = 0.78,  # package height
+
+        pb = 0.5,  # pin band
+        pt = 0.02,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'C_1206_HandSoldering',  # Model Name
+        rotation = 0   # rotation
+    ),
+    "1210" : Params( 
+        L = 3.2,  # package length 
+        W = 2.5,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1210',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1210_h" : Params( 
+        L = 3.2,  # package length 
+        W = 2.5,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1210_HandSoldering',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1812" : Params( 
+        L = 4.5,  # package length 
+        W = 3.2,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1812',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1812_h" : Params( 
+        L = 4.5,  # package length 
+        W = 3.2,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1812_HandSoldering',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1825" : Params( 
+        L = 4.5,  # package length 
+        W = 6.4,  # package width 
+        T = 2,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1825',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1825_h" : Params( 
+        L = 4.5,  # package length 
+        W = 6.4,  # package width 
+        T = 2,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1825_HandSoldering',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "2220" : Params( 
+        L = 5.7,  # package length 
+        W = 5.0,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_2220',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "2220_h" : Params( 
+        L = 5.7,  # package length 
+        W = 5.0,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_2220_HandSoldering',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "2225" : Params( 
+        L = 5.6,  # package length 
+        W = 6.4,  # package width 
+        T = 1.6,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'c_2225',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "2225_h" : Params( 
+        L = 5.6,  # package length 
+        W = 6.4,  # package width 
+        T = 1.6,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'c_2225_HandSoldering',  # Model Name 
+        #modelName = 'C_2220_h25',  # Model Name 
         rotation = 0   # rotation 
     ), 
 }

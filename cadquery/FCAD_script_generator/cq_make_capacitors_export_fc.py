@@ -160,7 +160,8 @@ if float(cq.__version__[:-2]) < 0.3:
 import cq_params_chip_cap  # modules parameters
 from cq_params_chip_cap import *
 
-all_params= all_params_chip_cap
+all_params= kicad_naming_params_chip_cap
+#all_params= all_params_chip_cap
 
 def make_chip(params):
     # dimensions for chip capacitors
@@ -267,7 +268,6 @@ if __name__ == "__main__":
         script_dir=os.path.dirname(os.path.realpath(__file__))
         expVRML.say(script_dir)
         #out_dir=script_dir+os.sep+destination_dir+all_params[variant].dest_dir_prefix
-        script_dir=os.path.dirname(os.path.realpath(__file__))
         out_dir=script_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
@@ -282,6 +282,8 @@ if __name__ == "__main__":
         expVRML.say(objs)
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+
+        # export_file_name=out_dir+os.sep+ModelName+'.wrl'
         export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
@@ -292,3 +294,4 @@ if __name__ == "__main__":
         Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
+        
