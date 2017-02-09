@@ -12,10 +12,7 @@
 
 from collections import namedtuple
 
-#case_color = (139, 69, 19)  #  saddle brown
-case_color = (139, 119, 101)  # peach puff 4
-pins_color = (230, 230, 230)
-destination_dir="/generated_cap"
+destination_dir="generated_cap"
 
 ### Parametric Values
 ##
@@ -32,7 +29,31 @@ Params = namedtuple("Params", [
     'rotation' # rotation if required
 ])
 
-all_params = {
+all_params_chip_cap = {
+    "0201_h03" : Params( 
+        L = 0.60,  # package length 
+        W = 0.30,  # package width 
+        T = 0.30,  # package height 
+ 
+        pb = 0.15,  # pin band 
+        pt = 0.01,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_0201',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "0402_h05" : Params( 
+        L = 1.0,  # package length 
+        W = 0.5,  # package width 
+        T = 0.5,  # package height 
+ 
+        pb = 0.25,  # pin band 
+        pt = 0.015,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_0402_h03',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
     "0603_h078" : Params(
         L = 1.60,  # package length
         W = 0.81,  # package width
@@ -69,4 +90,40 @@ all_params = {
         modelName = 'c_1206_h078',  # Model Name
         rotation = 0   # rotation
     ),
+     "1210_h25" : Params( 
+        L = 3.2,  # package length 
+        W = 2.5,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1210_h25',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+    "1812_h25" : Params( 
+        L = 4.5,  # package length 
+        W = 3.2,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_1812_h25',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
+        "2220_h25" : Params( 
+        L = 5.7,  # package length 
+        W = 5.0,  # package width 
+        T = 2.5,  # package height 
+ 
+        pb = 0.5,  # pin band 
+        pt = 0.02,   # pin thickness 
+ 
+        ef = 0.025, # fillet of edges 
+        modelName = 'C_2220_h25',  # Model Name 
+        rotation = 0   # rotation 
+    ), 
 }
