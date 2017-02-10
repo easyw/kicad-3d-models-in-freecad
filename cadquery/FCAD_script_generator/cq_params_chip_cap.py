@@ -331,7 +331,7 @@ kicad_naming_params_chip_cap = {
         pt = 0.02,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'c_2225',  # Model Name 
+        modelName = 'C_2225',  # Model Name 
         rotation = 0   # rotation 
     ), 
     "2225_h" : Params( 
@@ -343,7 +343,7 @@ kicad_naming_params_chip_cap = {
         pt = 0.02,   # pin thickness 
  
         ef = 0.025, # fillet of edges 
-        modelName = 'c_2225_HandSoldering',  # Model Name 
+        modelName = 'C_2225_HandSoldering',  # Model Name 
         #modelName = 'C_2220_h25',  # Model Name 
         rotation = 0   # rotation 
     ), 

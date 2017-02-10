@@ -216,7 +216,6 @@ if __name__ == "__main__":
     else:
         model_to_build=sys.argv[2]
 
-        
     if model_to_build == "all":
             variants = all_params.keys()
     else:
@@ -283,8 +282,8 @@ if __name__ == "__main__":
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
 
-        # export_file_name=out_dir+os.sep+ModelName+'.wrl'
-        export_file_name=destination_dir+os.sep+ModelName+'.wrl'
+        export_file_name=out_dir+os.sep+ModelName+'.wrl'
+        #export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
