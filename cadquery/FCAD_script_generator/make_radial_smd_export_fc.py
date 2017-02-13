@@ -295,6 +295,7 @@ if __name__ == "__main__":
             continue
         ModelName = all_params[variant].modelName
         CheckedModelName = ModelName.replace('.', '')
+        CheckedModelName = CheckedModelName.replace('-', '_')
         Newdoc = FreeCAD.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
