@@ -237,6 +237,18 @@ kicad_naming_params_res = {
         modelName = 'R_1218_HandSoldering',  # Model Name
         rotation = 0   # rotation
     ),
+    "R_1508_w" : Params(
+        L = 2.0,  # package length
+        W = 3.75,  # package width
+        T = 0.50,  # package height
+
+        pb = 0.5,  # pin band
+        pt = 0.03,   # pin thickness
+
+        ef = 0.025, # fillet of edges
+        modelName = 'R_1508_Wide',  # Model Name
+        rotation = 0   # rotation
+    ),
     "R_1812" : Params(
         L = 4.5,  # package length
         W = 3.2,  # package width
