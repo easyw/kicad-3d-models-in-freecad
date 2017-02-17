@@ -452,6 +452,8 @@ all_params_qfn = {
         A2 = 0.95,  # body height
         b = 0.5,  # pin width
         e = 1.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 3,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
