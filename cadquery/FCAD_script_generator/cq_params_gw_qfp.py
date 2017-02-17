@@ -15,10 +15,8 @@ import cq_params_gw_soic  # modules parameters
 from cq_params_gw_soic import *
 
 
-# destination_dir="./generated_gw/"
+destination_dir="./generated_gw/"
 # destination_dir="./"
-# case_color = (0.1, 0.1, 0.1)
-# pins_color = (0.9, 0.9, 0.9)
 
 
 all_params_qfp = {
@@ -316,6 +314,552 @@ all_params_qfp = {
         npy = 16,  # number of pins along y axis (length)
         epad = None, # e Pad
         modelName = 'qfp64_10x10_p05', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+}
+
+kicad_naming_params_qfp = {
+    'LQFP-32_5x5mm_Pitch0.5mm': Params(
+    #from http://www.nxp.com/documents/outline_drawing/SOT401-1.pdf    
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.15,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0, #0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 5.0,       # body length
+        E1 = 5.0,       # body width
+        E = 7.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 8,   # number of pins along X axis (width)
+        npy = 8,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-32_5x5mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+
+
+    'LQFP-32_7x7mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT358-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0, #0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 7.0,       # body length
+        E1 = 7.0,       # body width
+        E = 9.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.35,  # pin width
+        e = 0.8,  # pin (center-to-center) distance
+        npx = 8,   # number of pins along X axis (width)
+        npy = 8,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-32_5x5mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-36_7x7mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub_link/Collateral/561AV.PDF
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 7.0,       # body length
+        E1 = 7.0,       # body width
+        E = 9.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.7,  # body height
+        b = 0.3,  # pin width
+        e = 0.65,   # pin (center-to-center) distance
+        npx = 9,  # number of pins along X axis (width)
+        npy = 9,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-36_7x7mm_Pitch0.65mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-44_10x10mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT389-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 10.0,       # body length
+        E1 = 10.0,       # body width
+        E = 12.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.16,  # pin width
+        e = 0.8,   # pin (center-to-center) distance
+        npx = 11,  # number of pins along X axis (width)
+        npy = 11,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-44_10x10mm_Pitch0.8mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-48_7x7mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT313-2.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 7.0,       # body length
+        E1 = 7.0,       # body width
+        E = 9.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,   # pin (center-to-center) distance
+        npx = 12,  # number of pins along X axis (width)
+        npy = 12,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-48_7x7mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-52_10x10mm_Pitch0.65mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1671-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 10.0,       # body length
+        E1 = 10.0,       # body width
+        E = 12,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.32,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 13,  # number of pins along X axis (width)
+        npy = 13,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-52_10x10mm_Pitch0.65mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-52-1EP_10x10mm_Pitch0.65mm': Params(
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 10.0,       # body length
+        E1 = 10.0,       # body width
+        E = 12,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.32,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 13,  # number of pins along X axis (width)
+        npy = 13,  # number of pins along y axis (length)
+        epad = (4.8,4.8), # e Pad
+        modelName = 'LQFP-52-1EP_10x10mm_Pitch0.65mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-64_7x7mm_Pitch0.4mm': Params( # http://www.nxp.com/documents/outline_drawing/SOT414-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 7.0,       # body length
+        E1 = 7.0,       # body width
+        E = 9.8,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.18,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        npx = 16,  # number of pins along X axis (width)
+        npy = 16,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-64_7x7mm_Pitch0.4mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-64_10x10mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT314-2.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 10.0,       # body length
+        E1 = 10.0,       # body width
+        E = 12.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 16,  # number of pins along X axis (width)
+        npy = 16,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-64_10x10mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-64_14x14mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT791-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 14.0,       # body width
+        E = 16.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.37,  # pin width
+        e = 0.8,  # pin (center-to-center) distance
+        npx = 16,  # number of pins along X axis (width)
+        npy = 16,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-64_14x14mm_Pitch0.8mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-80_12x12mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT315-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 12.0,       # body length
+        E1 = 12.0,       # body width
+        E = 14.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.2,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 20,  # number of pins along X axis (width)
+        npy = 20,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-80_12x12mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-100_14x14mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT407-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 14.0,       # body width
+        E = 16.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 25,  # number of pins along X axis (width)
+        npy = 25,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-100_14x14mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-128_14x14mm_Pitch0.4mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT315-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 14.0,       # body width
+        E = 16.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.18,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        npx = 32,  # number of pins along X axis (width)
+        npy = 32,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-128_14x14mm_Pitch0.4mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-128_14x20mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT425-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 20.0,       # body width
+        E = 22.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 26,  # number of pins along X axis (width)
+        npy = 38,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-128_14x20mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-144_20x20mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT486-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 20.0,       # body length
+        E1 = 20.0,       # body width
+        E = 22.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 36,  # number of pins along X axis (width)
+        npy = 36,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-144_20x20mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-160_24x24mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT435-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 24.0,       # body length
+        E1 = 24.0,       # body width
+        E = 26.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 40,  # number of pins along X axis (width)
+        npy = 40,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-160_24x24mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-176_20x20mm_Pitch0.4mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1017-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 20.0,       # body length
+        E1 = 20.0,       # body width
+        E = 22.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.18,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        npx = 44,  # number of pins along X axis (width)
+        npy = 44,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-176_20x20mm_Pitch0.4mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-176_24x24mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT506-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 24.0,       # body length
+        E1 = 24.0,       # body width
+        E = 26.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 44,  # number of pins along X axis (width)
+        npy = 44,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-176_24x24mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-208_28x28mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT459-1.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 28.0,       # body length
+        E1 = 28.0,       # body width
+        E = 30.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 52,  # number of pins along X axis (width)
+        npy = 52,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-208_28x28mm_Pitch0.5mm', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = 'qfp'
+        ),
+    'LQFP-216_24x24mm_Pitch0.4mm': Params( # from https://www.renesas.com/en-in/package-image/pdf/outdrawing/p216gm-40-gby.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 24.0,       # body length
+        E1 = 24.0,       # body width
+        E = 26.0,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.18,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        npx = 54,  # number of pins along X axis (width)
+        npy = 54,  # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'LQFP-216_24x24mm_Pitch0.4mm', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = 'qfp'
         ),

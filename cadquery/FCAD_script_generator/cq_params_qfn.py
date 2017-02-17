@@ -38,7 +38,7 @@ Params = namedtuple("Params", [
     'epad',  # exposed pad, None or the dimensions as tuple: (width, length)
     'modelName', #modelName
     'rotation', #rotation if required
-    'dest_dir_prefix' #destination dir prefix
+    'dest_dir_prefix' #destination dir prefixD2 = params.epad[0]
 ])
 
 all_params_qfn = {
@@ -166,6 +166,31 @@ all_params_qfn = {
         epad = (2.2,0.61), # e Pad #epad = None, # e Pad
         modelName = 'dfn8_2x3_p05', #modelName
         rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DHVQFN14': Params( #
+        #Example - http://www.nxp.com/documents/outline_drawing/SOT762-1.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 2.5,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 1.0,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 2,  # number of pins along y axis (length)
+        epad = (1.5,1.0), # e Pad #epad = None, # e Pad
+        modelName = 'DHVQFN14', #modelName
+        rotation = 0, # rotation if required
         dest_dir_prefix = ''
         ),
     'SOT891': Params( # 1x1, 0.35 pitch, 6 pins, 0.5mm height  DFN (DD / LTC)
@@ -409,6 +434,28 @@ all_params_qfn = {
         npy = 16,  # number of pins along y axis (length)
         epad = (4.7,4.7), # e Pad #epad = None, # e Pad
         modelName = 'qfn64_9x9_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'TCPT1350': Params( # 2
+        c = 0.47,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.7,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0,      #0.45 chamfer of the epad 1st pin corner
+        D = 4.0,       # body overall length
+        E = 5.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.95,  # body height
+        b = 0.5,  # pin width
+        e = 1.4,  # pin (center-to-center) distance
+        npx = 3,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        modelName = 'TCPT1350x01', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
