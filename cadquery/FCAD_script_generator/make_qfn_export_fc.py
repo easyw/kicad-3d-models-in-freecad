@@ -203,11 +203,15 @@ def make_qfn(params):
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
 
-    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, A+fp_z)).rect(fp_r/2, -fp_z, False).revolve()
+    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
 
+    #stop
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
-
+    # show(pinmark)
+    # show(case)
+    # stop
+    
     if sq: #square pins
         bpin1 = cq.Workplane("XY"). \
             moveTo(b, 0). \
@@ -319,7 +323,8 @@ if __name__ == "__main__":
         show(case)
         show(pins)
         show(pinmark)
-
+        #stop
+        
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
 
