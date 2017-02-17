@@ -117,7 +117,6 @@ all_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-
     'DFN8-33-65': Params( # 3x3, 0.65 pitch, 8 pins, 1.0mm height  DFN (DD / LTC)
         #Example - http://www.st.com/web/en/resource/technical/document/datasheet/CD00001508.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -138,7 +137,7 @@ all_params_qfn = {
         sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = (2.5,1.5), # e Pad #epad = None, # e Pad
+        epad = (2.4,1.4), #(2.5,1.5), # e Pad #epad = None, # e Pad
         modelName = 'dfn8_3x3_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
