@@ -189,7 +189,10 @@ def make_qfn(params):
     A = A1 + A2
 
 
-    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+    if m == 0:
+        case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+    else:
+        case = cq.Workplane("XY").box(D, E, A2)  #NO margin, pins don't emerge
     if ef!=0:
         case.edges("|X").fillet(ef)
         case.edges("|Z").fillet(ef)
