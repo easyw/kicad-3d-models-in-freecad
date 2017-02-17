@@ -48,7 +48,7 @@ __title__ = "make QFN ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.1 27/08/2015"
+___ver___ = "1.0.2 17/02/2017"
 
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
@@ -170,6 +170,7 @@ def make_qfn(params):
     A2  = params.A2
     b   = params.b
     e   = params.e
+    m   = params.m
     npx = params.npx
     npy = params.npy
     mN  = params.modelName
@@ -214,20 +215,20 @@ def make_qfn(params):
     first_pos = -(npx-1)*e/2
     for i in range(npx):
         if i not in excluded_pins_xmirror:
-            pin = bpin.translate((first_pos+i*e, 0, 0))
+            pin = bpin.translate((first_pos+i*e, -m, 0))
             pins.append(pin)
         if i not in excluded_pins_x:
-            pin = bpin.translate((first_pos+i*e, 0, 0)).\
+            pin = bpin.translate((first_pos+i*e, -m, 0)).\
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
 
     # create right, left side pins
     first_pos = -(npy-1)*e/2
     for i in range(npy):
-        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
             rotate((0,0,0), (0,0,1), 90)
         pins.append(pin)
-        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
             rotate((0,0,0), (0,0,1), 270)
         pins.append(pin)
 
