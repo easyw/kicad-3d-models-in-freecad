@@ -269,7 +269,7 @@ if __name__ == "__main__":
         script_dir=os.path.dirname(os.path.realpath(__file__))
         expVRML.say(script_dir)
         #out_dir=script_dir+os.sep+destination_dir+all_params[variant].dest_dir_prefix
-        out_dir=script_dir+destination_dir
+        out_dir=script_dir+os.sep+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"

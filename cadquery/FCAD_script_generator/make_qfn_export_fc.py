@@ -48,7 +48,7 @@ __title__ = "make QFN ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.1 27/08/2015"
+___ver___ = "1.0.3 17/02/2017"
 
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
@@ -100,9 +100,13 @@ file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
 if os.path.exists(file_path_cq):
     FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
 else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        msg="missing CadQuery Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
 
@@ -170,6 +174,8 @@ def make_qfn(params):
     A2  = params.A2
     b   = params.b
     e   = params.e
+    m   = params.m
+    sq  = params.sq
     npx = params.npx
     npy = params.npy
     mN  = params.modelName
@@ -183,30 +189,45 @@ def make_qfn(params):
     A = A1 + A2
 
 
-    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+    if m == 0:
+        case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+    else:
+        case = cq.Workplane("XY").box(D, E, A2)  #NO margin, pins don't emerge
     if ef!=0:
         case.edges("|X").fillet(ef)
         case.edges("|Z").fillet(ef)
     #translate the object
-    case=case.translate((0,0,A/2+A1)).rotate((0,0,0), (0,0,1), 0)
+    case=case.translate((0,0,A2/2+A1)).rotate((0,0,0), (0,0,1), 0)
 
     # first pin indicator is created with a spherical pocket
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
 
-    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, A+fp_z)).rect(fp_r/2, -fp_z, False).revolve()
+    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
 
+    #stop
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
-
-
-    bpin1 = cq.Workplane("XY"). \
-        moveTo(b, 0). \
-        lineTo(b, L-b/2). \
-        threePointArc((b/2,L),(0, L-b/2)). \
-        lineTo(0, 0). \
-        close().extrude(c).translate((b/2,E/2,0))
-        #close().extrude(c).translate((b/2,E/2,A1/2))
+    # show(pinmark)
+    # show(case)
+    # stop
+    
+    if sq: #square pins
+        bpin1 = cq.Workplane("XY"). \
+            moveTo(b, 0). \
+            lineTo(b, L). \
+            lineTo(0, L). \
+            lineTo(0, 0). \
+            close().extrude(c).translate((b/2,E/2,0))
+            #close().extrude(c).translate((b/2,E/2,A1/2))
+    else:
+        bpin1 = cq.Workplane("XY"). \
+            moveTo(b, 0). \
+            lineTo(b, L-b/2). \
+            threePointArc((b/2,L),(0, L-b/2)). \
+            lineTo(0, 0). \
+            close().extrude(c).translate((b/2,E/2,0))
+            #close().extrude(c).translate((b/2,E/2,A1/2))
     bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
 
     pins = []
@@ -214,20 +235,20 @@ def make_qfn(params):
     first_pos = -(npx-1)*e/2
     for i in range(npx):
         if i not in excluded_pins_xmirror:
-            pin = bpin.translate((first_pos+i*e, 0, 0))
+            pin = bpin.translate((first_pos+i*e, -m, 0))
             pins.append(pin)
         if i not in excluded_pins_x:
-            pin = bpin.translate((first_pos+i*e, 0, 0)).\
+            pin = bpin.translate((first_pos+i*e, -m, 0)).\
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
 
     # create right, left side pins
     first_pos = -(npy-1)*e/2
     for i in range(npy):
-        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
             rotate((0,0,0), (0,0,1), 90)
         pins.append(pin)
-        pin = bpin.translate((first_pos+i*e, (D-E)/2, 0)).\
+        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
             rotate((0,0,0), (0,0,1), 270)
         pins.append(pin)
 
@@ -302,7 +323,8 @@ if __name__ == "__main__":
         show(case)
         show(pins)
         show(pinmark)
-
+        #stop
+        
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
 

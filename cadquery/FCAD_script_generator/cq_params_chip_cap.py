@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="/generated_cap"
+destination_dir="generated_cap"
 #destination_dir="generated_cap"
 
 ### Parametric Values

@@ -69,7 +69,7 @@ body_color_key = "white body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-top_color_key = "black body"
+top_color_key = "resistor black body"
 top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 
 
