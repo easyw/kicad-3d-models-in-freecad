@@ -12,17 +12,9 @@
 
 from collections import namedtuple
 
-destination_dir="/generated_gw/"
+destination_dir="generated_gw"
 # destination_dir="./"
 
-case_color = (26, 26, 26)
-#case_color = (50, 50, 50)
-#pins_color = (230, 230, 230)
-pins_color = (205,205,192)
-#mark_color = (255,255,255) #white
-#mark_color = (255,250,250) #snow
-#mark_color = (255,255,240) #ivory
-mark_color = (248,248,255) #ghost white
 max_cc1 = 1     # maximum size for 1st pin corner chamfer
 
 Params = namedtuple("Params", [

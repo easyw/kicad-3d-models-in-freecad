@@ -48,8 +48,9 @@ __title__ = "make GullWings ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make GullWings ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.8 26/08/2015"
+___ver___ = "1.3.9 14/02/2017"
 
+# thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -57,6 +58,19 @@ from math import tan, radians, sqrt
 from collections import namedtuple
 
 import sys, os
+import datetime
+from datetime import datetime
+sys.path.append("./exportVRML")
+import exportPartToVRML as expVRML
+import shaderColors
+
+body_color_key = "black body"
+body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+pins_color_key = "metal grey pins"
+pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+mark_color_key = "light brown label"
+mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
+
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -87,14 +101,15 @@ file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
 if os.path.exists(file_path_cq):
     FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
 else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        msg="missing CadQuery Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
-def say2(msg):
-    FreeCAD.Console.PrintMessage(msg)
-    FreeCAD.Console.PrintMessage('\n')
     
 # CadQuery Gui
 from Gui.Command import *
@@ -115,7 +130,8 @@ import FreeCADGui as Gui
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "example not present"
+    print "CQ 030 doesn't open example file"
+
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
@@ -130,6 +146,13 @@ if int(cqv[0])==0 and int(cqv[1])<3:
     reply = QtGui.QMessageBox.information(None, "Info ...", msg)
     say("cq needs to be at least 0.3.0")
     stop
+
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
 
 import cq_params_gw_soic  # modules parameters
 from cq_params_gw_soic import *
@@ -155,7 +178,7 @@ from cq_params_gw_sot import *
 # all_params.update(all_params_ssop)
 
 all_params= all_params_soic.copy()
-all_params.update(all_params_qfp)
+all_params.update(kicad_naming_params_qfp)
 all_params.update(all_params_ssop)
 all_params.update(all_params_tssop)
 all_params.update(all_params_sot)
@@ -316,19 +339,15 @@ def make_gw(params):
         case = case.pushPoints([(0,0)]).workplane(offset=c).moveTo(-D1/2,-E1/2+cc1)
         case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
         #show(case)
-        say2("here arrived 1")
         #case=cq.Workplane(cq.Plane.XY()).workplane(offset=c).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
         case=case.pushPoints([(0,0)]).workplane(offset=0).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
-        say2("here arrived 2")
         case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
         #show(case)
-        say2("here arrived 3")
         #stop
         cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = case.pushPoints([(0,0)]).workplane(offset=A2_t).moveTo(-D1_t2/2,-E1_t2/2+cc1_t)
         #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
-        say2("here arrived 3")
         #show(case)
         if ef!=0:
             case = case.loft(ruled=True).faces(">Z").fillet(ef)
@@ -439,41 +458,18 @@ def make_gw(params):
     return (case, pins, pinmark)
 
 
-def run():  # unused
-    FreeCAD.Console.PrintMessage('\r\nRun Called...\r\n')
-    # get variant names from command line
-    ## if len(sys.argv) < 2:
-    ##     print("No variant name is given!")
-    ##     return
-    ##
-    ## if sys.argv[1] == "all":
-    ##     variants = all_params.keys()
-    ## else:
-    ##     variants = sys.argv[1:]
-    ##
-    ## outdir = os.path.abspath("./generated_qfp/")
-    ## if not os.path.exists(outdir):
-    ##     os.makedirs(outdir)
-    ##
-    ## for variant in variants:
-    ##     if not variant in all_params:
-    ##         print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-    ##         continue
-    ##     make_one(variant, outdir + ("/qfp_%s.x3d" % variant))
-
+import step_license as L
 
 
 if __name__ == "__main__":
+    expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+
 # maui     run()
-    ## if (not "modelName" in all_params['AKA']):
-    ##     ModelName = "newModel" # "LQFP64_p05_h12"
-    ## else:
-    ##     ModelName = all_params.modelName
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building AKA')
-        model_to_build='AKA'
+        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
+        model_to_build='G_D10_L10'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
@@ -482,68 +478,58 @@ if __name__ == "__main__":
                 color_pin_mark=False
             else:
                 color_pin_mark=True
-
-    #FreeCAD.Console.PrintMessage(str(color_pin_mark)+'\r\n')
-    #FreeCAD.Console.PrintMessage(str(sys.argv[3].find('no-pinmark-color')))
-    
     if model_to_build == "all":
         variants = all_params.keys()
     else:
         variants = [model_to_build]
 
     for variant in variants:
-        if variant == 'SOT23_3' or variant == 'SC70_3':
-            excluded_pins_x=(1,) ##used to build sot23-3; sc70 (asimmetrical pins, no pinmark)
-            excluded_pins_xmirror=(0,2,)
-            place_pinMark=False ##used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
-        elif variant == 'SOT23_5':
-            excluded_pins_x=() ##used to build sot23-3; sc70 (asimmetrical pins, no pinmark)
-            excluded_pins_xmirror=(1,)
-            place_pinMark=False ##used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
-        else:
-            excluded_pins_x=() ##no pin excluded
-            excluded_pins_xmirror=() ##no pin excluded
-            place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
-        
+        excluded_pins_x=() ##no pin excluded
+        excluded_pins_xmirror=() ##no pin excluded
+        place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+
         FreeCAD.Console.PrintMessage('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
         ModelName = all_params[variant].modelName
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
-        case, pins, pinmark = make_gw(all_params[variant])
+        CheckedModelName = ModelName.replace('.', '')
+        CheckedModelName = CheckedModelName.replace('-', '_')
+        Newdoc = FreeCAD.newDocument(CheckedModelName)
+        App.setActiveDocument(CheckedModelName)
+        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+        body, pins, mark = make_gw(all_params[variant])
 
-        color_attr=case_color+(0,)
-        show(case, color_attr)
-        color_attr=pins_color+(0,)
-        show(pins, color_attr)
-        color_attr=mark_color+(0,)
-        show(pinmark, color_attr)
-
+        show(body)
+        show(pins)
+        show(mark)
+        
         doc = FreeCAD.ActiveDocument
-        objs=GetListOfObjects(FreeCAD, doc)
-        ## objs[0].Label='body'
-        ## objs[1].Label='pins'
-        ## objs[2].Label='mark'
-        ###
-        ## print objs[0].Name, objs[1].Name, objs[2].Name
+        objs = GetListOfObjects(FreeCAD, doc)
 
-        ## sleep
-        #if place_pinMark==True:
+        Color_Objects(Gui,objs[0],body_color)
+        Color_Objects(Gui,objs[1],pins_color)
+        Color_Objects(Gui,objs[2],mark_color)
+
+        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        material_substitutions={
+            col_body[:-1]:body_color_key,
+            col_pin[:-1]:pins_color_key,
+            col_mark[:-1]:mark_color_key
+        }
+        expVRML.say(material_substitutions)
+        del objs
+        objs=GetListOfObjects(FreeCAD, doc)
         if (color_pin_mark==True) and (place_pinMark==True):
-            CutObjs_wColors(FreeCAD, FreeCADGui,
-                           doc.Name, objs[0].Name, objs[2].Name)
+            CutObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[2].Name)
         else:
             #removing pinMark
             App.getDocument(doc.Name).removeObject(objs[2].Name)
-        ###
-        #sleep
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         doc.Label=ModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label=ModelName
@@ -554,18 +540,28 @@ if __name__ == "__main__":
             z_RotateObject(doc, rot)
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
-        out_dir=script_dir+destination_dir+all_params[variant].dest_dir_prefix+'/'
+        expVRML.say(script_dir)
+        out_dir=script_dir+os.sep+destination_dir+os.sep+all_params[variant].dest_dir_prefix
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"
         # export STEP model
-        exportSTEP(doc,ModelName,out_dir)
+        exportSTEP(doc, ModelName, out_dir)
         # scale and export Vrml model
-        scale=0.3937001
-        exportVRML(doc,ModelName,scale,out_dir)
+        scale=1/2.54
+        #exportVRML(doc,ModelName,scale,out_dir)
+        objs=GetListOfObjects(FreeCAD, doc)
+        expVRML.say("######################################################################")
+        expVRML.say(objs)
+        expVRML.say("######################################################################")
+        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+        export_file_name=out_dir+os.sep+ModelName+'.wrl'
+        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
-        FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
