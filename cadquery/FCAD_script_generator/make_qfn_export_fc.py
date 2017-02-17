@@ -48,7 +48,7 @@ __title__ = "make QFN ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.2 17/02/2017"
+___ver___ = "1.0.3 17/02/2017"
 
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
@@ -100,9 +100,13 @@ file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
 if os.path.exists(file_path_cq):
     FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
 else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        msg="missing CadQuery Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
 
@@ -171,6 +175,7 @@ def make_qfn(params):
     b   = params.b
     e   = params.e
     m   = params.m
+    sq  = params.sq
     npx = params.npx
     npy = params.npy
     mN  = params.modelName
@@ -200,14 +205,22 @@ def make_qfn(params):
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
 
-
-    bpin1 = cq.Workplane("XY"). \
-        moveTo(b, 0). \
-        lineTo(b, L-b/2). \
-        threePointArc((b/2,L),(0, L-b/2)). \
-        lineTo(0, 0). \
-        close().extrude(c).translate((b/2,E/2,0))
-        #close().extrude(c).translate((b/2,E/2,A1/2))
+    if sq: #square pins
+        bpin1 = cq.Workplane("XY"). \
+            moveTo(b, 0). \
+            lineTo(b, L). \
+            lineTo(0, L). \
+            lineTo(0, 0). \
+            close().extrude(c).translate((b/2,E/2,0))
+            #close().extrude(c).translate((b/2,E/2,A1/2))
+    else:
+        bpin1 = cq.Workplane("XY"). \
+            moveTo(b, 0). \
+            lineTo(b, L-b/2). \
+            threePointArc((b/2,L),(0, L-b/2)). \
+            lineTo(0, 0). \
+            close().extrude(c).translate((b/2,E/2,0))
+            #close().extrude(c).translate((b/2,E/2,A1/2))
     bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
 
     pins = []

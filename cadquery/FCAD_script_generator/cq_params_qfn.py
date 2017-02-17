@@ -32,6 +32,7 @@ Params = namedtuple("Params", [
     'b',    # pin width
     'e',    # pin (center-to-center) distance
     'm',    # margin between pins and body  
+    'sq',   # square pads True/False
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
     'epad',  # exposed pad, None or the dimensions as tuple: (width, length)
@@ -58,6 +59,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 5,  # number of pins along X axis (width)
         npy = 3,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
@@ -82,6 +84,7 @@ all_params_qfn = {
         b = 0.3,  # pin width
         e = 0.65,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 3,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (1.6,1.0), # e Pad #epad = None, # e Pad
@@ -106,6 +109,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
@@ -131,6 +135,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.65,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.5,1.5), # e Pad #epad = None, # e Pad
@@ -155,6 +160,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.2,0.61), # e Pad #epad = None, # e Pad
@@ -179,6 +185,7 @@ all_params_qfn = {
         b = 0.20,  # pin width
         e = 0.35,  # pin (center-to-center) distance
         m = 0.05,  # margin between pins and body  
+        sq = True,   # square pads
         npx = 3,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
@@ -203,6 +210,7 @@ all_params_qfn = {
         b = 0.4,  # pin width
         e = 1.27,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2,2), # e Pad #epad = None, # e Pad
@@ -227,6 +235,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 5,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,0.84), # e Pad #epad = None, # e Pad
@@ -250,6 +259,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 4,  # number of pins along y axis (length)
         epad = (1.7,1.7), # e Pad #epad = None, # e Pad
@@ -273,6 +283,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 6,  # number of pins along X axis (width)
         npy = 6,  # number of pins along y axis (length)
         epad = (2.45,2.45), # e Pad #epad = None, # e Pad
@@ -296,6 +307,7 @@ all_params_qfn = {
         b = 0.38,  # pin width
         e = 0.65,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 7,  # number of pins along X axis (width)
         npy = 7,  # number of pins along y axis (length)
         epad = (3.7,3.7), # e Pad #epad = None, # e Pad
@@ -319,6 +331,7 @@ all_params_qfn = {
         b = 0.3,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 8,  # number of pins along X axis (width)
         npy = 8,  # number of pins along y axis (length)
         epad = (3.6,3.6), # e Pad #epad = None, # e Pad
@@ -343,6 +356,7 @@ all_params_qfn = {
         b = 0.2,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 10,  # number of pins along X axis (width)
         npy = 10,  # number of pins along y axis (length)
         epad = (3.52,2.62), # e Pad #epad = None, # e Pad
@@ -366,6 +380,7 @@ all_params_qfn = {
         b = 0.3,  # pin width
         e = 0.65,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 11,  # number of pins along X axis (width)
         npy = 11,  # number of pins along y axis (length)
         epad = (6.45,6.45), # e Pad #epad = None, # e Pad
@@ -389,6 +404,7 @@ all_params_qfn = {
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 16,  # number of pins along X axis (width)
         npy = 16,  # number of pins along y axis (length)
         epad = (4.7,4.7), # e Pad #epad = None, # e Pad
