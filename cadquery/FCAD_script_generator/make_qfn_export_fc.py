@@ -197,7 +197,7 @@ def make_qfn(params):
         case.edges("|X").fillet(ef)
         case.edges("|Z").fillet(ef)
     #translate the object
-    case=case.translate((0,0,A/2+A1)).rotate((0,0,0), (0,0,1), 0)
+    case=case.translate((0,0,A2/2+A1)).rotate((0,0,0), (0,0,1), 0)
 
     # first pin indicator is created with a spherical pocket
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
