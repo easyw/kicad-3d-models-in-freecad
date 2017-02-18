@@ -153,7 +153,6 @@ if float(cq.__version__[:-2]) < 0.3:
     msg+="actual CQ version "+cq.__version__
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
-
 import cq_params_gw_soic  # modules parameters
 from cq_params_gw_soic import *
 

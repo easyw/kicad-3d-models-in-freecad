@@ -10,6 +10,8 @@
 
 ## file of parametric definitions
 from collections import namedtuple
+import cq_params_gw_soic  # modules parameters
+from cq_params_gw_soic import *
 
 destination_dir="generated_gw"
 # destination_dir="./"
