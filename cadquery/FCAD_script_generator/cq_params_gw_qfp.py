@@ -348,8 +348,6 @@ kicad_naming_params_qfp = {
         rotation = 0, # rotation if required
         dest_dir_prefix = 'qfp'
         ),
-
-
     'LQFP-32_7x7mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT358-1.pdf
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
@@ -373,7 +371,7 @@ kicad_naming_params_qfp = {
         npx = 8,   # number of pins along X axis (width)
         npy = 8,   # number of pins along y axis (length)
         epad = None, # e Pad
-        modelName = 'LQFP-32_5x5mm_Pitch0.5mm', #modelName
+        modelName = 'LQFP-32_7x7mm_Pitch0.5mm', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = 'qfp'
         ),
