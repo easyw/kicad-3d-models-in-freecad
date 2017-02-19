@@ -184,7 +184,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-8_3.9x4.9mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-8-1EP_3.9x4.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/msoi002j/msoi002j.pdf
@@ -210,8 +210,8 @@ kicad_naming_params_soic = {
         npx = 4,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = (2.35,2.35),    # e Pad
-        modelName = 'SOIC-8_3.9x4.9mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        modelName = 'SOIC-8-1EP_3.9x4.9mm_Pitch1.27mm', #modelName
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-14_3.9x8.7mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds177g/mpds177g.pdf
@@ -238,7 +238,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-14_3.9x8.7mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-16_3.9x9.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds178g/mpds178g.pdf
@@ -265,7 +265,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-16_3.9x9.9mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-16_7.5x10.3mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/msoi003g/msoi003g.pdf
@@ -292,7 +292,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-16_7.5x10.3mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-18_7.5x11.6mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds172a/mpds172a.pdf
@@ -319,7 +319,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-18_7.5x11.6mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-20_7.5x12.8mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
@@ -346,7 +346,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-20_7.5x12.8mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-24_7.5x15.4mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
@@ -373,7 +373,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-24_7.5x15.4mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIC-28_7.5x17.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds175a/mpds175a.pdf
@@ -400,7 +400,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIC-28_7.5x17.9mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
     'SOIJ-8_5.3x5.3mm_Pitch1.27mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AU.pdf
@@ -427,7 +427,7 @@ kicad_naming_params_soic = {
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
         modelName = 'SOIJ-8_5.3x5.3mm_Pitch1.27mm', #modelName
-        rotation = 0,   # rotation if required
+        rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
 }
