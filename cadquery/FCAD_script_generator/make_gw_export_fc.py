@@ -176,7 +176,7 @@ from cq_params_gw_sot import *
 # all_params= all_params1.copy()
 # all_params.update(all_params_ssop)
 
-all_params= all_params_soic.copy()
+all_params= kicad_naming_params_soic.copy()
 all_params.update(kicad_naming_params_qfp)
 all_params.update(all_params_ssop)
 all_params.update(all_params_tssop)
