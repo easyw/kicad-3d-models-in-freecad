@@ -268,7 +268,7 @@ kicad_naming_params_soic = {
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
-    'SOIC-16_7.5x10.3mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/msoi003g/msoi003g.pdf
+    'SOIC-16W_7.5x10.3mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/msoi003g/msoi003g.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.2,        # pin thickness, body center part height
@@ -291,11 +291,11 @@ kicad_naming_params_soic = {
         npx = 8,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
-        modelName = 'SOIC-16_7.5x10.3mm_Pitch1.27mm', #modelName
+        modelName = 'SOIC-16W_7.5x10.3mm_Pitch1.27mm', #modelName
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
-    'SOIC-18_7.5x11.6mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds172a/mpds172a.pdf
+    'SOIC-18W_7.5x11.6mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds172a/mpds172a.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.2,        # pin thickness, body center part height
@@ -318,11 +318,11 @@ kicad_naming_params_soic = {
         npx = 9,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
-        modelName = 'SOIC-18_7.5x11.6mm_Pitch1.27mm', #modelName
+        modelName = 'SOIC-18W_7.5x11.6mm_Pitch1.27mm', #modelName
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
-    'SOIC-20_7.5x12.8mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
+    'SOIC-20W_7.5x12.8mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.2,        # pin thickness, body center part height
@@ -345,11 +345,11 @@ kicad_naming_params_soic = {
         npx = 10,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
-        modelName = 'SOIC-20_7.5x12.8mm_Pitch1.27mm', #modelName
+        modelName = 'SOIC-20W_7.5x12.8mm_Pitch1.27mm', #modelName
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
-    'SOIC-24_7.5x15.4mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
+    'SOIC-24W_7.5x15.4mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds173b/mpds173b.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.2,        # pin thickness, body center part height
@@ -372,11 +372,11 @@ kicad_naming_params_soic = {
         npx = 12,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
-        modelName = 'SOIC-24_7.5x15.4mm_Pitch1.27mm', #modelName
+        modelName = 'SOIC-24W_7.5x15.4mm_Pitch1.27mm', #modelName
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
-    'SOIC-28_7.5x17.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds175a/mpds175a.pdf
+    'SOIC-28W_7.5x17.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds175a/mpds175a.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.2,        # pin thickness, body center part height
@@ -399,7 +399,7 @@ kicad_naming_params_soic = {
         npx = 14,        # number of pins along X axis (width)
         npy = 0,        # number of pins along y axis (length)
         epad = None,    # e Pad
-        modelName = 'SOIC-28_7.5x17.9mm_Pitch1.27mm', #modelName
+        modelName = 'SOIC-28W_7.5x17.9mm_Pitch1.27mm', #modelName
         rotation = -90,   # rotation if required
         dest_dir_prefix = 'SOIC'
         ),
