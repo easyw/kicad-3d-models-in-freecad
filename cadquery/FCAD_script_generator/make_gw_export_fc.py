@@ -564,4 +564,4 @@ if __name__ == "__main__":
         Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
-    sys.exit()  #to create model and exit
+    #sys.exit()  #to create model and exit
