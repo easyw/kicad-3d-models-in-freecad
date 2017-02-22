@@ -314,9 +314,11 @@ if __name__ == "__main__":
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
         ModelName = all_params[variant].modelName
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
+        CheckedModelName = ModelName.replace('.', '')
+        CheckedModelName = CheckedModelName.replace('-', '_')
+        Newdoc = FreeCAD.newDocument(CheckedModelName)
+        App.setActiveDocument(CheckedModelName)
+        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case, pins, pinmark = make_qfn(all_params[variant])
 
 

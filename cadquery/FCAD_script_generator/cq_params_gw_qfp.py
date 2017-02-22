@@ -917,21 +917,21 @@ kicad_naming_params_qfp = {
         dest_dir_prefix = 'qfp'
         ),
     'PQFP-80_14x20mm_Pitch0.8mm': Params( # from http://www.ti.com/lit/ds/symlink/tl16pir552.pdf
-        the = 12.0,      # body angle in degrees
-        tb_s = 0.15,    # top part of body is that much smaller
-        c = 0.1,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.2,       # pin top flat part length (excluding corner arc)
+        the = 8.0,      # body angle in degrees
+        tb_s = 0.15, #0.15,    # top part of body is that much smaller
+        c = 0.15,        # pin thickness, body center part height
+        R1 = 0.2,       # pin upper corner, inner radius
+        R2 = 0.2,       # pin lower corner, inner radius
+        S = 0.5,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
-        fp_r = 0.5,     # first pin indicator radius
+        fp_r = 0.7,     # first pin indicator radius
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        cc1 = 0.25, #0.15, #0.45 chamfer of the 1st pin corner
         D1 = 20.0,       # body length
         E1 = 14.0,       # body width
-        E = 17.6,        # body overall width  E=E1+2*(S+L+c)
+        E = 17.2,        # body overall width  E=E1+2*(S+L+c)
         A1 = 0.1,  # body-board separation
         A2 = 2.7,  # body height
         b = 0.35,  # pin width
@@ -944,51 +944,51 @@ kicad_naming_params_qfp = {
         dest_dir_prefix = 'qfp'
         ),
     'PQFP-100_14x20mm_Pitch0.65mm': Params( # from http://pdf1.alldatasheet.com/datasheet-pdf/view/181852/STMICROELECTRONICS/PQFP100.html
-        the = 12.0,      # body angle in degrees
+        the = 8.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
-        c = 0.1,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.2,       # pin top flat part length (excluding corner arc)
+        c = 0.15,        # pin thickness, body center part height
+        R1 = 0.2,       # pin upper corner, inner radius
+        R2 = 0.2,       # pin lower corner, inner radius
+        S = 0.5,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
-        fp_r = 0.5,     # first pin indicator radius
+        fp_r = 0.7,     # first pin indicator radius
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
         cc1 = 0.25, #0.45 chamfer of the 1st pin corner
-        D1 = 14.0,       # body length
-        E1 = 20.0,       # body width
-        E = 23.2,        # body overall width  E=E1+2*(S+L+c)
+        D1 = 20.0,       # body length
+        E1 = 14.0,       # body width
+        E = 17.2,        # body overall width  E=E1+2*(S+L+c)
         A1 = 0.1,  # body-board separation
-        A2 = 3.4,  # body height
+        A2 = 2.7,  # body height
         b = 0.31,  # pin width
         e = 0.65,  # pin (center-to-center) distance
-        npx = 20,  # number of pins along X axis (width)
-        npy = 30,  # number of pins along y axis (length)
+        npx = 30,  # number of pins along X axis (width)
+        npy = 20,  # number of pins along y axis (length)
         epad = None, # e Pad
         modelName = 'PQFP-100_14x20mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = 'qfp'
         ),
     'PQFP-256_28x28mm_Pitch0.4mm': Params( # from http://www.topline.tv/drawings/pdf/qfp/QFP256T15.7-2.6.pdf
-        the = 12.0,      # body angle in degrees
+        the = 8.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
-        c = 0.1,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.2,       # pin top flat part length (excluding corner arc)
+        c = 0.17,        # pin thickness, body center part height
+        R1 = 0.2,       # pin upper corner, inner radius
+        R2 = 0.2,       # pin lower corner, inner radius
+        S = 0.3,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
-        fp_r = 0.5,     # first pin indicator radius
+        fp_r = 0.7,     # first pin indicator radius
         fp_d = 0.2,     # first pin indicator distance from edge
         fp_z = 0.1,     # first pin indicator depth
         ef = 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        cc1 = 0.0, #0.45 chamfer of the 1st pin corner
         D1 = 28.0,       # body length
         E1 = 28.0,       # body width
         E = 30.6,        # body overall width  E=E1+2*(S+L+c)
         A1 = 0.5,  # body-board separation
         A2 = 3.5,  # body height
-        b = 0.2,  # pin width
+        b = 0.18,  # pin width
         e = 0.4,  # pin (center-to-center) distance
         npx = 64,  # number of pins along X axis (width)
         npy = 64,  # number of pins along y axis (length)
