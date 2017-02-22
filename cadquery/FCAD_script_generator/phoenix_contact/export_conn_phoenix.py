@@ -132,6 +132,7 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
+sys.path.append("../")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)

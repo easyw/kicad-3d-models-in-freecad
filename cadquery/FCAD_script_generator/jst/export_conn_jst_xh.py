@@ -54,7 +54,7 @@ ___ver___ = "1.1 10/04/2016"
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -97,7 +97,7 @@ body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
-destination_dir="Connectors_JST"
+destination_dir="Connectors_JST.3dshapes"
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -131,6 +131,7 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
+sys.path.append("../")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
@@ -165,7 +166,7 @@ from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_jst_eh_models as M
+import conn_jst_xh_models as M
 import step_license as L
 
 if float(cq.__version__[:-2]) < 0.3:

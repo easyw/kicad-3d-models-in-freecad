@@ -44,16 +44,17 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of molex 53261-Connectors."
+__title__ = "make 3D models of JST-XH-Connectors."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
+__Comment__ = '''make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry),
+                S??B-XH-A (Side entry) and S??B-XH-A-1 (Side entry compact version).'''
 
-___ver___ = "1.1 12/04/2016"
+___ver___ = "1.1 10/04/2016"
 
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -96,7 +97,7 @@ body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
-destination_dir="Connectors_Molex"
+destination_dir="Connectors_JST.3dshapes"
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -130,6 +131,7 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
+sys.path.append("../")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
@@ -143,72 +145,35 @@ import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
-except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+except: # catch *all* exceptions
+    print "CQ 030 doesn't open example file"
 
 
 import cadquery as cq
+
+#check version
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say("cq needs to be at least 0.3.0")
+    stop
+
 from math import sqrt
 from Helpers import show
 from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_molex_53261 as M1
-import conn_molex_53398 as M2
+import conn_jst_eh_models as M
 import step_license as L
 
-def export_one_part(modul, variant):
-    if not variant in modul.all_params:
-        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
-        return
-    ModelName = modul.all_params[variant].model_name
-    FileName = modul.all_params[variant].file_name
-    Newdoc = FreeCAD.newDocument(ModelName)
-    App.setActiveDocument(ModelName)
-    Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = modul.generate_part(variant)
-
-    color_attr = body_color + (0,)
-    show(body, color_attr)
-
-    color_attr = pins_color + (0,)
-    show(pins, color_attr)
-
-    doc = FreeCAD.ActiveDocument
-    doc.Label=ModelName
-    objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = ModelName + "__body"
-    objs[1].Label = ModelName + "__pins"
-
-    restore_Main_Tools()
-
-    out_dir=destination_dir
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-
-    used_color_keys = [body_color_key, pins_color_key]
-    export_file_name=destination_dir+os.sep+FileName+'.wrl'
-
-    export_objects = []
-    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-            shape_color=body_color_key,
-            face_colors=None))
-    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-            shape_color=pins_color_key,
-            face_colors=None))
-
-    scale=1/2.54
-    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-
-    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
-    exportSTEP(doc,FileName,out_dir,fusion)
-    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
-
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 
 if __name__ == "__main__":
@@ -222,17 +187,61 @@ if __name__ == "__main__":
         model_to_build=sys.argv[2]
 
     if model_to_build == "all":
-        variants = M1.all_params.keys()
+        variants = M.all_params.keys()
     else:
         variants = [model_to_build]
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(M1,variant)
+        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        if not variant in M.all_params:
+            print("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
+            continue
+        ModelName = M.all_params[variant].model_name
+        FileName = M.all_params[variant].file_name
+        Newdoc = FreeCAD.newDocument(ModelName)
+        App.setActiveDocument(ModelName)
+        Gui.ActiveDocument=Gui.getDocument(ModelName)
+        (pins, body) = M.generate_part(variant)
 
-    if model_to_build == "all":
-        variants = M2.all_params.keys()
-    else:
-        variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(M2,variant)
+        color_attr = body_color + (0,)
+        show(body, color_attr)
+
+        color_attr = pins_color + (0,)
+        show(pins, color_attr)
+
+        doc = FreeCAD.ActiveDocument
+        doc.Label=ModelName
+        objs=GetListOfObjects(FreeCAD, doc)
+        objs[0].Label = ModelName + "__body"
+        objs[1].Label = ModelName + "__pins"
+
+        restore_Main_Tools()
+
+        out_dir=destination_dir
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+
+        used_color_keys = [body_color_key, pins_color_key]
+        export_file_name=destination_dir+os.sep+FileName+'.wrl'
+
+        export_objects = []
+        export_objects.append(expVRML.exportObject(freecad_object = objs[0],
+                shape_color=body_color_key,
+                face_colors=None))
+        export_objects.append(expVRML.exportObject(freecad_object = objs[1],
+                shape_color=pins_color_key,
+                face_colors=None))
+
+        scale=1/2.54
+        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+        fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+        exportSTEP(doc,FileName,out_dir,fusion)
+        L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+
+        saveFCdoc(App, Gui, doc, FileName,out_dir)
+        Gui.activateWorkbench("PartWorkbench")
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
