@@ -376,10 +376,11 @@ def generate_body(params):
     body = body.cut(mount_holder2_cutout)
     return body
 
-
-def generate_part(part_key):
+def generate_part(part_key, y_origin_from_mountpad = 0):
     pins = generate_pins(all_params[part_key])
     body = generate_body(all_params[part_key])
+    pins = pins.translate((0,y_origin_from_mountpad,0))
+    body = body.translate((0,y_origin_from_mountpad,0))
     return (pins, body)
 
 
@@ -388,6 +389,6 @@ if "module" in __name__ :
     #part_to_build = "0271"
     part_to_build = "0471"
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    (pins, body) = generate_part(part_to_build)
+    (pins, body) = generate_part(part_to_build, -(3.0/2+0.6+1.3/2)/2.0)
     show(pins)
     show(body)

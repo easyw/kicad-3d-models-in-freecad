@@ -155,11 +155,11 @@ from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_molex_53261 as M1
-import conn_molex_53398 as M2
+import conn_molex_53261 as CQ_MODELS_HORIZONTAL
+import conn_molex_53398 as CQ_MODELS_VERTICAL
 import step_license as L
 
-def export_one_part(modul, variant):
+def export_one_part(modul, variant, y_origin_from_mountpad = 0):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
@@ -168,7 +168,7 @@ def export_one_part(modul, variant):
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = modul.generate_part(variant)
+    (pins, body) = modul.generate_part(variant, y_origin_from_mountpad)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
@@ -215,25 +215,47 @@ def export_one_part(modul, variant):
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    model_to_build='all'
+    CENTER_MOUNTPAD = 1
+    CENTER_MIDDLE = 0
 
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='all'
-    else:
-        model_to_build=sys.argv[2]
+    centeroption = CENTER_MIDDLE
+    for arg in sys.argv[1:]:
+        if arg.startswith("-f="):
+            model_to_build = arg[len("-f="):]
+        elif arg.startswith("-c="):
+            centeroption_str=arg[len("-c="):].lower()
+            if centeroption_str == "mountpad":
+                centeroption = 1
+
+    y_origin_from_mountpad = 0
+
+    if centeroption == CENTER_MIDDLE:
+        mountpad_y_size = 3.0
+        pad_y_size = 1.6
+        innerdistance_between_mountpad_and_pad = 0.6
+        distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+        y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
     if model_to_build == "all":
-        variants = M1.all_params.keys()
+        variants = CQ_MODELS_HORIZONTAL.all_params.keys()
     else:
         variants = [model_to_build]
     for variant in variants:
         FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(M1,variant)
+        export_one_part(CQ_MODELS_HORIZONTAL, variant, y_origin_from_mountpad)
+
+    if centeroption == CENTER_MIDDLE:
+        mountpad_y_size = 3.0
+        pad_y_size = 1.3
+        innerdistance_between_mountpad_and_pad = 0.6
+        distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+        y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
     if model_to_build == "all":
-        variants = M2.all_params.keys()
+        variants = CQ_MODELS_VERTICAL.all_params.keys()
     else:
         variants = [model_to_build]
     for variant in variants:
         FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(M2,variant)
+        export_one_part(CQ_MODELS_VERTICAL, variant, y_origin_from_mountpad)
