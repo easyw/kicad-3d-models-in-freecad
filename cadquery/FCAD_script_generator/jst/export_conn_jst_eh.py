@@ -253,7 +253,7 @@ if __name__ == "__main__":
     if len(series_to_build) == 0:
         series_to_build = ['straight', 'angled']
 
-    elif len(modelfilter) == 0:
+    if len(modelfilter) == 0:
         modelfilter = "*"
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))

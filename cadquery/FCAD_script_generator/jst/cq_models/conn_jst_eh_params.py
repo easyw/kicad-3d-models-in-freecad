@@ -129,7 +129,7 @@ def make_params_angled(num_pins, name):
         body_height=Body_height,
         body_length=2*body_side_to_pin+(num_pins-1)*pin_pitch,
         zdistance=Body_width_difference_between_angled_and_straight,
-        file_name="JST_EH_S{num_pins:02d}B-EH-A_{num_pins:02d}x{pin_pitch:.2f}mm_Angled".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        file_name="JST_EH_S{num_pins:02d}B-EH_{num_pins:02d}x{pin_pitch:.2f}mm_Angled".format(num_pins=num_pins, pin_pitch=pin_pitch)
     )
 def make_params_straight(num_pins, name):
     return Params(
