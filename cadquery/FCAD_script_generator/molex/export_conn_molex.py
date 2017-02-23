@@ -56,6 +56,7 @@ from datetime import datetime
 sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
+import re, fnmatch
 
 # Licence information of the generated models.
 #################################################################################################
@@ -211,51 +212,69 @@ def export_one_part(modul, variant, y_origin_from_mountpad = 0):
 
     saveFCdoc(App, Gui, doc, FileName,out_dir)
 
+    FreeCAD.activeDocument().recompute()
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
+
+def exportSeries(modul, model_filter_regobj, y_origin_from_mountpad = 0):
+    for key in modul.all_params.keys():
+        if model_filter_regobj.match(key):
+            FreeCAD.Console.PrintMessage('\r\n'+key+'\r\n')
+            export_one_part(modul, key, y_origin_from_mountpad)
 
 if __name__ == "__main__":
-
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
     model_to_build='all'
     CENTER_MOUNTPAD = 1
     CENTER_MIDDLE = 0
 
     centeroption = CENTER_MIDDLE
+    modelfilter = ""
+    series_to_build = []
     for arg in sys.argv[1:]:
-        if arg.startswith("f="):
-            model_to_build = arg[len("f="):]
-        elif arg.startswith("c="):
-            centeroption_str=arg[len("c="):].lower()
+        if arg.startswith("filter="):
+            modelfilter = arg[len("filter="):]
+        elif arg.startswith("series="):
+            series_to_build += arg[len("series="):].split(',')
+        elif arg.startswith("yCenter="):
+            centeroption_str=arg[len("yCenter="):].lower()
             if centeroption_str == "mountpad":
                 centeroption = 1
 
+    if len(series_to_build) == 0:
+        series_to_build = ['straight', 'angled']
+
+    if len(modelfilter) == 0:
+        modelfilter = "*"
+
     y_origin_from_mountpad = 0
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
 
-    if centeroption == CENTER_MIDDLE:
-        mountpad_y_size = 3.0
-        pad_y_size = 1.6
-        innerdistance_between_mountpad_and_pad = 0.6
-        distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
-        y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
-    if model_to_build == "all":
+    if 'angled' in series_to_build:
         variants = CQ_MODELS_HORIZONTAL.all_params.keys()
-    else:
-        variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(CQ_MODELS_HORIZONTAL, variant, y_origin_from_mountpad)
 
-    if centeroption == CENTER_MIDDLE:
-        mountpad_y_size = 3.0
-        pad_y_size = 1.3
-        innerdistance_between_mountpad_and_pad = 0.6
-        distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
-        y_origin_from_mountpad = -distance_between_pad_centers/2.0
+        if centeroption == CENTER_MIDDLE:
+            mountpad_y_size = 3.0
+            pad_y_size = 1.6
+            innerdistance_between_mountpad_and_pad = 0.6
+            distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+            y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
-    if model_to_build == "all":
-        variants = CQ_MODELS_VERTICAL.all_params.keys()
-    else:
-        variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-        export_one_part(CQ_MODELS_VERTICAL, variant, y_origin_from_mountpad)
+        exportSeries(CQ_MODELS_HORIZONTAL, model_filter_regobj, y_origin_from_mountpad)
+
+
+    if 'straight' in series_to_build:
+        variants = CQ_MODELS_HORIZONTAL.all_params.keys()
+
+        if centeroption == CENTER_MIDDLE:
+            mountpad_y_size = 3.0
+            pad_y_size = 1.3
+            innerdistance_between_mountpad_and_pad = 0.6
+            distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+            y_origin_from_mountpad = -distance_between_pad_centers/2.0
+
+        exportSeries(CQ_MODELS_VERTICAL, model_filter_regobj, y_origin_from_mountpad)
+
+    FreeCAD.Console.PrintMessage('\r\Done\r\n')

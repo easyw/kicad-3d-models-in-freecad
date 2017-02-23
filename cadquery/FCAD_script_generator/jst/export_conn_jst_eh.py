@@ -242,3 +242,8 @@ if __name__ == "__main__":
             STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
         saveFCdoc(App, Gui, doc, FileName,out_dir)
+
+        FreeCAD.activeDocument().recompute()
+        # FreeCADGui.activateWorkbench("PartWorkbench")
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()

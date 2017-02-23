@@ -224,6 +224,12 @@ def export_one_part(params):
     L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
+
+    FreeCAD.activeDocument().recompute()
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
+
     saveFCdoc(App, Gui, doc, FileName,out_dir)
 
 def exportSeries(series_params, model_filter_regobj):
