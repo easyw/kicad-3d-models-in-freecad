@@ -4,5 +4,3 @@ echo cadquery-freecad-module required
 @echo ON
 cd %~p0
 start /b "" "C:\Program Files\FreeCAD 0.15\bin\freecad" export_conn_jst_xh.py
-
-pause

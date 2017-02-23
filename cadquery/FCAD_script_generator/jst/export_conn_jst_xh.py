@@ -201,8 +201,7 @@ def export_one_part(params):
     restore_Main_Tools()
 
     out_dir=destination_dir
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
+
 
     used_color_keys = [body_color_key, pins_color_key]
     export_file_name=destination_dir+os.sep+FileName+'.wrl'
@@ -226,9 +225,6 @@ def export_one_part(params):
         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
     saveFCdoc(App, Gui, doc, FileName,out_dir)
-    Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
 
 def exportSeries(series_params, model_filter_regobj):
     for key in series_params.keys():
@@ -238,6 +234,8 @@ def exportSeries(series_params, model_filter_regobj):
 
 if __name__ == "__main__":
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
     series_to_build = []
     modelfilter = ""
     for arg in sys.argv[1:]:
