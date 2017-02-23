@@ -311,3 +311,5 @@ if __name__ == "__main__":
             if model_filter_regobj.match(variant):
                 FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
                 export_one_part(typ, variant, with_plug)
+
+    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
