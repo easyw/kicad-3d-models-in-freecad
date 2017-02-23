@@ -120,7 +120,7 @@ def make_params_angled(num_pins, name):
         body_height=7.0,
         body_length=2*2.45+(num_pins-1)*pin_pitch,
         zdistance=6.1-5.75,
-        file_name="JST_XH_S{num_pins:02d}B-XH-A-1_{num_pins:02d}x{pin_pitch:.2f}mm_Angled_compact".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        file_name="JST_XH_S{num_pins:02d}B-XH-A_{num_pins:02d}x{pin_pitch:.2f}mm_Angled".format(num_pins=num_pins, pin_pitch=pin_pitch)
     )
 def make_params_angled_short(num_pins, name):
     return Params(
@@ -133,7 +133,7 @@ def make_params_angled_short(num_pins, name):
         body_height=7.0,
         body_length=2*2.45+(num_pins-1)*pin_pitch,
         zdistance=6.1-5.75,
-        file_name="JST_XH_S{num_pins:02d}B-XH-A_{num_pins:02d}x{pin_pitch:.2f}mm_Angled".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        file_name="JST_XH_S{num_pins:02d}B-XH-A-1_{num_pins:02d}x{pin_pitch:.2f}mm_Angled_compact".format(num_pins=num_pins, pin_pitch=pin_pitch)
     )
 def make_params_straight(num_pins, name):
     return Params(

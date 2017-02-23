@@ -242,6 +242,3 @@ if __name__ == "__main__":
             STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
         saveFCdoc(App, Gui, doc, FileName,out_dir)
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
