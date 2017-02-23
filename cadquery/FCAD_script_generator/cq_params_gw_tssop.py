@@ -14,11 +14,8 @@ from collections import namedtuple
 import cq_params_gw_soic  # modules parameters
 from cq_params_gw_soic import *
 
-
-# destination_dir="./generated_gw/"
+destination_dir="generated_gw"
 # destination_dir="./"
-# case_color = (0.1, 0.1, 0.1)
-# pins_color = (0.9, 0.9, 0.9)
 
 
 all_params_tssop = {

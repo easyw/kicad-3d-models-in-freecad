@@ -75,6 +75,7 @@ def clear_console():
 #if not Mod_ENABLED:
 clear_console()
 
+creaseAngle_default=0.5
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -166,6 +167,9 @@ def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None):
 
     `Mesh` structure is defined at root."""
     used_colors = None
+    
+    creaseAngle=creaseAngle_default #creaseAngle=0.5 good compromise
+    
     if used_color_keys is not None:
         used_colors = { x: shaderColors.named_colors[x] for x in used_color_keys }
     say(used_color_keys)
@@ -180,7 +184,11 @@ def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None):
             f.write(shader_color.toVRMLdefinition())
 
         for obj in objects:
-            f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
+            if creaseAngle==0:
+                f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
+            else:
+                f.write("Shape { geometry IndexedFaceSet \n{ creaseAngle %.2f coordIndex [" % creaseAngle)
+            #f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
             # write coordinate indexes for each face
             f.write(','.join("%d,%d,%d,-1" % f for f in obj.faces))
             f.write("]\n") # closes coordIndex

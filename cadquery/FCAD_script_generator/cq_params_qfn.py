@@ -31,13 +31,14 @@ Params = namedtuple("Params", [
     'A2',   # body height
     'b',    # pin width
     'e',    # pin (center-to-center) distance
-
+    'm',    # margin between pins and body  
+    'sq',   # square pads True/False
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
     'epad',  # exposed pad, None or the dimensions as tuple: (width, length)
     'modelName', #modelName
     'rotation', #rotation if required
-    'dest_dir_prefix' #destination dir prefix
+    'dest_dir_prefix' #destination dir prefixD2 = params.epad[0]
 ])
 
 all_params_qfn = {
@@ -57,6 +58,8 @@ all_params_qfn = {
         A2 = 1.0,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 5,  # number of pins along X axis (width)
         npy = 3,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
@@ -80,6 +83,8 @@ all_params_qfn = {
         A2 = 0.75,  # body height
         b = 0.3,  # pin width
         e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 3,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (1.6,1.0), # e Pad #epad = None, # e Pad
@@ -103,6 +108,8 @@ all_params_qfn = {
         A2 = 0.75,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
@@ -110,7 +117,6 @@ all_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-
     'DFN8-33-65': Params( # 3x3, 0.65 pitch, 8 pins, 1.0mm height  DFN (DD / LTC)
         #Example - http://www.st.com/web/en/resource/technical/document/datasheet/CD00001508.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -127,9 +133,11 @@ all_params_qfn = {
         A2 = 1.0,  # body height
         b = 0.25,  # pin width
         e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = (2.5,1.5), # e Pad #epad = None, # e Pad
+        epad = (2.4,1.4), #(2.5,1.5), # e Pad #epad = None, # e Pad
         modelName = 'dfn8_3x3_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
@@ -150,10 +158,62 @@ all_params_qfn = {
         A2 = 0.75,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.2,0.61), # e Pad #epad = None, # e Pad
         modelName = 'dfn8_2x3_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'DHVQFN14': Params( #
+        #Example - http://www.nxp.com/documents/outline_drawing/SOT762-1.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 2.5,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 1.0,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 2,  # number of pins along y axis (length)
+        epad = (1.5,1.0), # e Pad #epad = None, # e Pad
+        modelName = 'DHVQFN14', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'SOT891': Params( # 1x1, 0.35 pitch, 6 pins, 0.5mm height  DFN (DD / LTC)
+        #Example - http://cds.linear.com/docs/en/datasheet/4365fa.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.3,        # pin top flat part length (including fillet radius)
+        fp_r = 0.1,     # first pin indicator radius
+        fp_d = 0.05,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.05,      #0.45 chamfer of the epad 1st pin corner
+        D = 1.0,       # body overall length
+        E = 1.0,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.5,  # body height
+        b = 0.20,  # pin width
+        e = 0.35,  # pin (center-to-center) distance
+        m = 0.05,  # margin between pins and body  
+        sq = True,   # square pads
+        npx = 3,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        modelName = 'sot891_1x1_p035', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -173,6 +233,8 @@ all_params_qfn = {
         A2 = 1,  # body height
         b = 0.4,  # pin width
         e = 1.27,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2,2), # e Pad #epad = None, # e Pad
@@ -196,6 +258,8 @@ all_params_qfn = {
         A2 = 0.75,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 5,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,0.84), # e Pad #epad = None, # e Pad
@@ -218,6 +282,8 @@ all_params_qfn = {
         A2 = 0.98,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 4,  # number of pins along y axis (length)
         epad = (1.7,1.7), # e Pad #epad = None, # e Pad
@@ -240,6 +306,8 @@ all_params_qfn = {
         A2 = 0.98,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 6,  # number of pins along X axis (width)
         npy = 6,  # number of pins along y axis (length)
         epad = (2.45,2.45), # e Pad #epad = None, # e Pad
@@ -262,6 +330,8 @@ all_params_qfn = {
         A2 = 0.9,  # body height
         b = 0.38,  # pin width
         e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 7,  # number of pins along X axis (width)
         npy = 7,  # number of pins along y axis (length)
         epad = (3.7,3.7), # e Pad #epad = None, # e Pad
@@ -284,6 +354,8 @@ all_params_qfn = {
         A2 = 0.98,  # body height
         b = 0.3,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 8,  # number of pins along X axis (width)
         npy = 8,  # number of pins along y axis (length)
         epad = (3.6,3.6), # e Pad #epad = None, # e Pad
@@ -307,6 +379,8 @@ all_params_qfn = {
         A2 = 0.98,  # body height
         b = 0.2,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 10,  # number of pins along X axis (width)
         npy = 10,  # number of pins along y axis (length)
         epad = (3.52,2.62), # e Pad #epad = None, # e Pad
@@ -329,6 +403,8 @@ all_params_qfn = {
         A2 = 0.98,  # body height
         b = 0.3,  # pin width
         e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 11,  # number of pins along X axis (width)
         npy = 11,  # number of pins along y axis (length)
         epad = (6.45,6.45), # e Pad #epad = None, # e Pad
@@ -351,10 +427,36 @@ all_params_qfn = {
         A2 = 0.88,  # body height
         b = 0.25,  # pin width
         e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
         npx = 16,  # number of pins along X axis (width)
         npy = 16,  # number of pins along y axis (length)
         epad = (4.7,4.7), # e Pad #epad = None, # e Pad
         modelName = 'qfn64_9x9_p05', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'TCPT1350': Params( # 2
+        c = 0.47,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.7,        # pin top flat part length (including fillet radius)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0,      #0.45 chamfer of the epad 1st pin corner
+        D = 4.0,       # body overall length
+        E = 5.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.95,  # body height
+        b = 0.5,  # pin width
+        e = 1.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 3,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        modelName = 'TCPT1350x01', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),

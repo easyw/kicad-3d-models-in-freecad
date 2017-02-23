@@ -49,7 +49,9 @@ __title__ = "make chip capacitors 3D models"
 __author__ = "maurice"
 __Comment__ = 'make chip capacitos 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.1 14/08/2015"
+___ver___ = "1.3.2 10/02/2017"
+
+# thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -57,14 +59,30 @@ from math import tan, radians, sqrt
 from collections import namedtuple
 
 import sys, os
+import datetime
+from datetime import datetime
+sys.path.append("./exportVRML")
+import exportPartToVRML as expVRML
+import shaderColors
+
+body_color_key = "white body"
+body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+pins_color_key = "metal grey pins"
+pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+top_color_key = "resistor black body"
+top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 
+
+outdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(outdir)
+
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
-
 
 #checking requirements
 #######################################################################
@@ -84,17 +102,18 @@ file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
 if os.path.exists(file_path_cq):
     FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
 else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        msg="missing CadQuery Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
 
-
+# CadQuery Gui
 from Gui.Command import *
-
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
 
 # Import cad_tools
 import cq_cad_tools
@@ -102,7 +121,8 @@ import cq_cad_tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -111,7 +131,8 @@ import FreeCADGui as Gui
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "example not present"
+    print "CQ 030 doesn't open example file"
+
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
@@ -127,8 +148,18 @@ if int(cqv[0])==0 and int(cqv[1])<3:
     say("cq needs to be at least 0.3.0")
     stop
 
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+
 import cq_params_chip_res  # modules parameters
 from cq_params_chip_res import *
+
+#all_params= all_params_res
+all_params= kicad_naming_params_res
 
 def make_chip(params):
     # dimensions for chip capacitors
@@ -170,62 +201,64 @@ def make_chip(params):
 
     return (case, top, pins)
 
+import step_license as L
 
-# The dimensions of the box. These can be modified rather than changing the
-# object's code directly.
-
-
-# when run from freecad-cadquery
-if __name__ == "temp.module":
-
-    ModelName=""
-
-
-# when run from command line
 if __name__ == "__main__":
-
+    expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building c_1206_h106')
+        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
         model_to_build='1206_h106'
     else:
         model_to_build=sys.argv[2]
 
     if model_to_build == "all":
         variants = all_params.keys()
-        FreeCAD.Console.PrintMessage(variants)
-        FreeCAD.Console.PrintMessage('\r\n')
     else:
         variants = [model_to_build]
+
     for variant in variants:
+        excluded_pins_x=() ##no pin excluded
+        excluded_pins_xmirror=() ##no pin excluded
+        
         FreeCAD.Console.PrintMessage('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
         ModelName = all_params[variant].modelName
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
-        case, top, pins = make_chip(all_params[variant])
-        color_attr=case_color+(0,)
-        show(case, color_attr)
-        #FreeCAD.Console.PrintMessage(pins_color)
+        CheckedModelName = ModelName.replace('.', '')
+        CheckedModelName = CheckedModelName.replace('-', '_')
+        Newdoc = FreeCAD.newDocument(CheckedModelName)
+        App.setActiveDocument(CheckedModelName)
+        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+        body, pins, top = make_chip(all_params[variant])
 
-        color_attr=top_color+(0,)
-        show(top, color_attr)
+        show(body)
+        show(pins)
+        show(top)
+        
+        doc = FreeCAD.ActiveDocument
+        objs = GetListOfObjects(FreeCAD, doc)
 
-        color_attr=pins_color+(0,)
-        #FreeCAD.Console.PrintMessage(color_attr)
-        show(pins, color_attr)
-        doc = FreeCAD.ActiveDocument
+        Color_Objects(Gui,objs[0],body_color)
+        Color_Objects(Gui,objs[1],top_color)
+        Color_Objects(Gui,objs[2],pins_color)
+
+        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        material_substitutions={
+            col_body[:-1]:body_color_key,
+            col_pin[:-1]:pins_color_key,
+            col_top[:-1]:top_color_key
+        }
+        expVRML.say(material_substitutions)
+        del objs
         objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name)
-        doc = FreeCAD.ActiveDocument
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         objs=GetListOfObjects(FreeCAD, doc)
-        objs[1].Label="Fusion2"
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         doc.Label=ModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label=ModelName
@@ -234,22 +267,30 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
+        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
+        expVRML.say(script_dir)
         out_dir=script_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
-            #out_dir="./generated_qfp/"
+        #out_dir="./generated_qfp/"
         # export STEP model
-        exportSTEP(doc,ModelName,out_dir)
-
+        exportSTEP(doc, ModelName, out_dir)
         # scale and export Vrml model
-        scale=0.3937001
-        exportVRML(doc,ModelName,scale,out_dir)
-
+        scale=1/2.54
+        #exportVRML(doc,ModelName,scale,out_dir)
+        objs=GetListOfObjects(FreeCAD, doc)
+        expVRML.say("######################################################################")
+        expVRML.say(objs)
+        expVRML.say("######################################################################")
+        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+        export_file_name=out_dir+os.sep+ModelName+'.wrl'
+        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
-
-        FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-
-        ## run()
+        #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        Gui.activateWorkbench("PartWorkbench")
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
