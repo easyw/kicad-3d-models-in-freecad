@@ -4,3 +4,4 @@
 *.fcstd
 *.pyc
 *.DS_Store
+cadquery\output\
