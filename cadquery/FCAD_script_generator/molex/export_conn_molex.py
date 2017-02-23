@@ -221,10 +221,10 @@ if __name__ == "__main__":
 
     centeroption = CENTER_MIDDLE
     for arg in sys.argv[1:]:
-        if arg.startswith("-f="):
-            model_to_build = arg[len("-f="):]
-        elif arg.startswith("-c="):
-            centeroption_str=arg[len("-c="):].lower()
+        if arg.startswith("f="):
+            model_to_build = arg[len("f="):]
+        elif arg.startswith("c="):
+            centeroption_str=arg[len("c="):].lower()
             if centeroption_str == "mountpad":
                 centeroption = 1
 

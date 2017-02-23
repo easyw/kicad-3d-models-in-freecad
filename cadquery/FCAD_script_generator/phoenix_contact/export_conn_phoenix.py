@@ -280,13 +280,13 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='.*'
+        model_to_build='*'
     else:
         if sys.argv[2] == "MC_SERIES_ALL":
-            model_to_build='.*'
+            model_to_build='*'
             series = [MC]
         elif sys.argv[2] == "MSTB_SERIES_ALL":
-            model_to_build='.*'
+            model_to_build='*'
             series = [MSTB]
         else:
             model_to_build=fnmatch.translate(sys.argv[2])
@@ -295,7 +295,7 @@ if __name__ == "__main__":
         else:
             with_plug = sys.argv[3]=="WITH_PLUG"
 
-    model_filter_regobj=re.compile(model_to_build)
+    model_filter_regobj=re.compile(fnmatch.translate(model_to_build))
     for typ in series:
         for variant in typ.all_params.keys():
             if model_filter_regobj.match(variant):
