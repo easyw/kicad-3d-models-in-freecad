@@ -53,7 +53,7 @@ ___ver___ = "1.1 12/04/2016"
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
@@ -160,8 +160,6 @@ import conn_phoenix_mstb as MSTB
 import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
 import step_license as L
-
-series = [MSTB,MC]
 
 def export_one_part(modul, variant, with_plug=False):
     if not variant in modul.all_params:
@@ -273,29 +271,41 @@ def export_one_part(modul, variant, with_plug=False):
 
     saveFCdoc(App, Gui, doc, FileName,out_dir)
 
+    FreeCAD.activeDocument().recompute()
+    # FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
 
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='*'
-    else:
-        if sys.argv[2] == "MC_SERIES_ALL":
-            model_to_build='*'
-            series = [MC]
-        elif sys.argv[2] == "MSTB_SERIES_ALL":
-            model_to_build='*'
-            series = [MSTB]
-        else:
-            model_to_build=fnmatch.translate(sys.argv[2])
-        if len(sys.argv) < 4:
-            with_plug=False
-        else:
-            with_plug = sys.argv[3]=="WITH_PLUG"
+    series_to_build = []
+    modelfilter = ""
+    with_plug = False
 
-    model_filter_regobj=re.compile(fnmatch.translate(model_to_build))
+    for arg in sys.argv[1:]:
+        if arg.startswith("series="):
+            series_to_build += arg[len("series="):].split(',')
+        if arg.startswith("filter="):
+            modelfilter = arg[len("filter="):]
+        if arg.lower() == 'with_plug':
+            with_plug = True;
+
+
+    if len(series_to_build) == 0:
+        series_to_build = ['mc', 'mstb']
+
+    if len(modelfilter) == 0:
+        modelfilter = "*"
+
+    series = []
+    if 'mc' in series_to_build:
+        series += [MC]
+    if 'mstb' in series_to_build:
+        series += [MSTB]
+
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
     for typ in series:
         for variant in typ.all_params.keys():
             if model_filter_regobj.match(variant):
