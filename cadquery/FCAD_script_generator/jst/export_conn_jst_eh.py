@@ -57,6 +57,7 @@ from datetime import datetime
 sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
+import re, fnmatch
 
 # Licence information of the generated models.
 #################################################################################################
@@ -175,75 +176,93 @@ if float(cq.__version__[:-2]) < 0.3:
     msg+="actual CQ version "+cq.__version__
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
+def export_one_part(params):
+    FreeCAD.Console.PrintMessage('\r\n'+params.model_name)
+
+    ModelName = params.model_name
+    FileName = params.file_name
+    Newdoc = FreeCAD.newDocument(ModelName)
+    App.setActiveDocument(ModelName)
+    Gui.ActiveDocument=Gui.getDocument(ModelName)
+    (pins, body) = M.generate_part(params)
+
+    color_attr = body_color + (0,)
+    show(body, color_attr)
+
+    color_attr = pins_color + (0,)
+    show(pins, color_attr)
+
+    doc = FreeCAD.ActiveDocument
+    doc.Label=ModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = ModelName + "__body"
+    objs[1].Label = ModelName + "__pins"
+
+    restore_Main_Tools()
+
+    out_dir=destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    used_color_keys = [body_color_key, pins_color_key]
+    export_file_name=destination_dir+os.sep+FileName+'.wrl'
+
+    export_objects = []
+    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
+            shape_color=body_color_key,
+            face_colors=None))
+    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
+            shape_color=pins_color_key,
+            face_colors=None))
+
+    scale=1/2.54
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
+                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    exportSTEP(doc,FileName,out_dir,fusion)
+    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+
+    saveFCdoc(App, Gui, doc, FileName,out_dir)
+
+    FreeCAD.activeDocument().recompute()
+    # FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
+
+def exportSeries(series_params, model_filter_regobj):
+    for key in series_params.keys():
+        if model_filter_regobj.match(key):
+            export_one_part(series_params[key])
 
 if __name__ == "__main__":
-
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+    series_to_build = []
+    modelfilter = ""
+    for arg in sys.argv[1:]:
+        if arg.startswith("series="):
+            series_to_build += arg[len("series="):].split(',')
+        if arg.startswith("filter="):
+            modelfilter = arg[len("filter="):]
 
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='all'
-    else:
-        model_to_build=sys.argv[2]
 
-    if model_to_build == "all":
-        variants = M.all_params.keys()
-    else:
-        variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in M.all_params:
-            print("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
-            continue
-        ModelName = M.all_params[variant].model_name
-        FileName = M.all_params[variant].file_name
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
-        (pins, body) = M.generate_part(variant)
+    if len(series_to_build) == 0:
+        series_to_build = ['straight', 'angled']
 
-        color_attr = body_color + (0,)
-        show(body, color_attr)
+    elif len(modelfilter) == 0:
+        modelfilter = "*"
 
-        color_attr = pins_color + (0,)
-        show(pins, color_attr)
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
 
-        doc = FreeCAD.ActiveDocument
-        doc.Label=ModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = ModelName + "__body"
-        objs[1].Label = ModelName + "__pins"
+    if 'straight' in series_to_build:
+        exportSeries(M.params_straight, model_filter_regobj)
 
-        restore_Main_Tools()
+    if 'angled' in series_to_build:
+        exportSeries(M.params_angled, model_filter_regobj)
 
-        out_dir=destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
 
-        used_color_keys = [body_color_key, pins_color_key]
-        export_file_name=destination_dir+os.sep+FileName+'.wrl'
-
-        export_objects = []
-        export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-                shape_color=body_color_key,
-                face_colors=None))
-        export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-                shape_color=pins_color_key,
-                face_colors=None))
-
-        scale=1/2.54
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-
-        fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
-        exportSTEP(doc,FileName,out_dir,fusion)
-        L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
-
-        saveFCdoc(App, Gui, doc, FileName,out_dir)
-
-        FreeCAD.activeDocument().recompute()
-        # FreeCADGui.activateWorkbench("PartWorkbench")
-        FreeCADGui.SendMsgToActiveView("ViewFit")
-        FreeCADGui.activeDocument().activeView().viewAxometric()
+    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
