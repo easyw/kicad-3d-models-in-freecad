@@ -99,7 +99,7 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
-    
+
 from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__))
@@ -114,7 +114,7 @@ from cq_cad_tools import *
 
 checkMinRequirements()
 
-destination_dir = getOutputDir("jst_eh")
+destination_dir = getOutputDir("jst_xh")
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -124,6 +124,7 @@ try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
+
 
 import cadquery as cq
 
@@ -142,12 +143,10 @@ from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 
-# Get model parameters
+# get model parameters
 sys.path.append("parameters")
-import conn_jst_eh_models as M
+import conn_jst_xh_models as M
 import step_license as L
-
-
 
 if float(cq.__version__[:-2]) < 0.3:
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
