@@ -70,7 +70,7 @@ def getLicence(**kwarg):
         authorEmail = " ({email})".format(email=authorEmail) if authorEmail else ""
         )
 
-    LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + authorInfo +,
+    LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + authorInfo,
                     "",
                     "This program is free software: you can redistribute it and/or modify",
                     "it under the terms of the GNU General Public License as published by",
