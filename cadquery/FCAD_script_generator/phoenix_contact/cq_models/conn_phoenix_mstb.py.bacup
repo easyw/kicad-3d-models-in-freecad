@@ -1,0 +1,151 @@
+# -*- coding: utf8 -*-
+#!/usr/bin/python
+#
+# CadQuery script returning JST XH Connectors
+
+## requirements
+## freecad (v1.5 and v1.6 have been tested)
+## cadquery FreeCAD plugin (v0.3.0 and v0.2.0 have been tested)
+##   https://github.com/jmwright/cadquery-freecad-module
+
+## This script can be run from within the cadquery module of freecad.
+## To generate VRML/ STEP files for, use export_conn_jst_xh
+## script of the parrent directory.
+
+#* This is a cadquery script for the generation of MCAD Models.             *
+#*                                                                          *
+#*   Copyright (c) 2016                                                     *
+#* Rene Poeschl https://github.com/poeschlr                                 *
+#* All trademarks within this guide belong to their legitimate owners.      *
+#*                                                                          *
+#*   This program is free software; you can redistribute it and/or modify   *
+#*   it under the terms of the GNU General Public License (GPL)             *
+#*   as published by the Free Software Foundation; either version 2 of      *
+#*   the License, or (at your option) any later version.                    *
+#*   for detail see the LICENCE text file.                                  *
+#*                                                                          *
+#*   This program is distributed in the hope that it will be useful,        *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+#*   GNU Library General Public License for more details.                   *
+#*                                                                          *
+#*   You should have received a copy of the GNU Library General Public      *
+#*   License along with this program; if not, write to the Free Software    *
+#*   Foundation, Inc.,                                                      *
+#*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA           *
+#*                                                                          *
+#* The models generated with this script add the following exception:       *
+#*   As a special exception, if you create a design which uses this symbol, *
+#*   and embed this symbol or unaltered portions of this symbol into the    *
+#*   design, this symbol does not by itself cause the resulting design to   *
+#*   be covered by the GNU General Public License. This exception does not  *
+#*   however invalidate any other reasons why the design itself might be    *
+#*   covered by the GNU General Public License. If you modify this symbol,  *
+#*   you may extend this exception to your version of the symbol, but you   *
+#*   are not obligated to do so. If you do not wish to do so, delete this   *
+#*   exception statement from your version.                                 *
+#****************************************************************************
+
+__title__ = "model description for Molex 53398 Connectors"
+__author__ = "poeschlr"
+__Comment__ = 'model description for Molex 53398 Connectors using cadquery'
+
+___ver___ = "1.0 10/04/2016"
+
+
+import cadquery as cq
+from math import sqrt
+from Helpers import show
+from collections import namedtuple
+import FreeCAD
+
+#global parameter
+
+def v_add(p1, p2):
+    return (p1[0]+p2[0],p1[1]+p2[1])
+
+def v_sub(p1, p2):
+    return (p1[0]-p2[0],p1[1]-p2[1])
+#v_add(pcs2, (-body_cutout_radius*(1-1/sqrt(2)), -1/sqrt(2)*body_cutout_radius))
+def get_third_arc_point1(starting_point, end_point):
+    px = v_sub(end_point, starting_point)
+    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
+    return v_add((px[0]*(1-1/sqrt(2)),px[1]*(1/sqrt(2))),starting_point)
+
+def get_third_arc_point2(starting_point, end_point):
+    px = v_sub(end_point, starting_point)
+    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
+    return v_add((px[0]*(1/sqrt(2)),px[1]*(1-1/sqrt(2))),starting_point)
+
+def add_p_to_chain(chain, rel_point):
+    chain.append(v_add(chain[len(chain)-1], rel_point))
+
+def mirror(chain):
+    result = []
+    for point in chain:
+        result.append((point[0]*-1,point[1]))
+    return result
+
+def poline(points, plane):
+    sp = points.pop()
+    plane=plane.moveTo(sp[0],sp[1])
+    plane=plane.polyline(points)
+    return plane
+
+Params = namedtuple("Params",[
+    'file_name',
+    'num_pins',
+    'model_name',
+    'body_length',
+    'body_front_cutout_len'
+])
+
+def make_params(num_pins, name, file_name, pin_pitch):
+    bl=3+(num_pins-1)*pin_pitch
+    return Params(
+        num_pins=num_pins,
+        model_name=name,
+        body_length=bl,
+        file_name=file_name,
+        body_front_cutout_len=bl-1.9
+    )
+
+all_params = {
+    "0271" : make_params( 2, 'Molex_53261_0271', 'Molex_PicoBlade_53261-0271'),
+}
+
+def union_all(objects):
+    o = objects[0]
+    for i in range(1,len(objects)):
+        o = o.union(objects[i])
+    return o
+
+
+def generate_pins(params):
+    num_pins = params.num_pins
+    body_len = params.body_length
+
+
+    return
+
+
+
+def generate_body(params):
+
+    return
+
+
+def generate_part(part_key):
+    pins = generate_pins(all_params[part_key])
+    body = generate_body(all_params[part_key])
+    return (pins, body)
+
+
+#opend from within freecad
+if "module" in __name__ :
+    part_to_build = "1771"
+    #part_to_build = "0471"
+    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
+    (pins, body) = generate_part(part_to_build)
+    show(pins)
+    show(body)

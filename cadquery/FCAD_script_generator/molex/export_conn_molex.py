@@ -44,19 +44,19 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of JST-XH-Connectors."
+__title__ = "make 3D models of molex 53261-Connectors."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry),
-                S??B-XH-A (Side entry) and S??B-XH-A-1 (Side entry compact version).'''
+__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
 
-___ver___ = "1.1 10/04/2016"
+___ver___ = "1.1 12/04/2016"
 
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
+import re, fnmatch
 
 # Licence information of the generated models.
 #################################################################################################
@@ -97,7 +97,7 @@ body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
-destination_dir="Connectors_JST"
+destination_dir="Connectors_Molex.3dshapes"
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -131,6 +131,7 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
+sys.path.append("../")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
@@ -144,103 +145,136 @@ import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+except:
+    FreeCAD.Console.PrintMessage("can't close example.")
 
 
 import cadquery as cq
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
 from math import sqrt
 from Helpers import show
 from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_jst_xh_models as M
+import conn_molex_53261 as CQ_MODELS_HORIZONTAL
+import conn_molex_53398 as CQ_MODELS_VERTICAL
 import step_license as L
 
-if float(cq.__version__[:-2]) < 0.3:
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    msg+="actual CQ version "+cq.__version__
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+def export_one_part(modul, variant, y_origin_from_mountpad = 0):
+    if not variant in modul.all_params:
+        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
+        return
+    ModelName = modul.all_params[variant].model_name
+    FileName = modul.all_params[variant].file_name
+    Newdoc = FreeCAD.newDocument(ModelName)
+    App.setActiveDocument(ModelName)
+    Gui.ActiveDocument=Gui.getDocument(ModelName)
+    (pins, body) = modul.generate_part(variant, y_origin_from_mountpad)
 
+    color_attr = body_color + (0,)
+    show(body, color_attr)
+
+    color_attr = pins_color + (0,)
+    show(pins, color_attr)
+
+    doc = FreeCAD.ActiveDocument
+    doc.Label=ModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = ModelName + "__body"
+    objs[1].Label = ModelName + "__pins"
+
+    restore_Main_Tools()
+
+    out_dir=destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    used_color_keys = [body_color_key, pins_color_key]
+    export_file_name=destination_dir+os.sep+FileName+'.wrl'
+
+    export_objects = []
+    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
+            shape_color=body_color_key,
+            face_colors=None))
+    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
+            shape_color=pins_color_key,
+            face_colors=None))
+
+    scale=1/2.54
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
+                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    exportSTEP(doc,FileName,out_dir,fusion)
+    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+
+    saveFCdoc(App, Gui, doc, FileName,out_dir)
+
+    FreeCAD.activeDocument().recompute()
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
+
+def exportSeries(modul, model_filter_regobj, y_origin_from_mountpad = 0):
+    for key in modul.all_params.keys():
+        if model_filter_regobj.match(key):
+            FreeCAD.Console.PrintMessage('\r\n'+key+'\r\n')
+            export_one_part(modul, key, y_origin_from_mountpad)
 
 if __name__ == "__main__":
-
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    model_to_build='all'
+    CENTER_MOUNTPAD = 1
+    CENTER_MIDDLE = 0
 
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='all'
-    else:
-        model_to_build=sys.argv[2]
+    centeroption = CENTER_MIDDLE
+    modelfilter = ""
+    series_to_build = []
+    for arg in sys.argv[1:]:
+        if arg.startswith("filter="):
+            modelfilter = arg[len("filter="):]
+        elif arg.startswith("series="):
+            series_to_build += arg[len("series="):].split(',')
+        elif arg.startswith("yCenter="):
+            centeroption_str=arg[len("yCenter="):].lower()
+            if centeroption_str == "mountpad":
+                centeroption = 1
 
-    if model_to_build == "all":
-        variants = M.all_params.keys()
-    else:
-        variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in M.all_params:
-            print("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
-            continue
-        ModelName = M.all_params[variant].model_name
-        FileName = M.all_params[variant].file_name
-        Newdoc = FreeCAD.newDocument(ModelName)
-        App.setActiveDocument(ModelName)
-        Gui.ActiveDocument=Gui.getDocument(ModelName)
-        (pins, body) = M.generate_part(variant)
+    if len(series_to_build) == 0:
+        series_to_build = ['straight', 'angled']
 
-        color_attr = body_color + (0,)
-        show(body, color_attr)
+    if len(modelfilter) == 0:
+        modelfilter = "*"
 
-        color_attr = pins_color + (0,)
-        show(pins, color_attr)
+    y_origin_from_mountpad = 0
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
 
-        doc = FreeCAD.ActiveDocument
-        doc.Label=ModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = ModelName + "__body"
-        objs[1].Label = ModelName + "__pins"
 
-        restore_Main_Tools()
+    if 'angled' in series_to_build:
+        variants = CQ_MODELS_HORIZONTAL.all_params.keys()
 
-        out_dir=destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
+        if centeroption == CENTER_MIDDLE:
+            mountpad_y_size = 3.0
+            pad_y_size = 1.6
+            innerdistance_between_mountpad_and_pad = 0.6
+            distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+            y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
-        used_color_keys = [body_color_key, pins_color_key]
-        export_file_name=destination_dir+os.sep+FileName+'.wrl'
+        exportSeries(CQ_MODELS_HORIZONTAL, model_filter_regobj, y_origin_from_mountpad)
 
-        export_objects = []
-        export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-                shape_color=body_color_key,
-                face_colors=None))
-        export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-                shape_color=pins_color_key,
-                face_colors=None))
 
-        scale=1/2.54
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+    if 'straight' in series_to_build:
+        variants = CQ_MODELS_HORIZONTAL.all_params.keys()
 
-        fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
-        exportSTEP(doc,FileName,out_dir,fusion)
-        L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
+        if centeroption == CENTER_MIDDLE:
+            mountpad_y_size = 3.0
+            pad_y_size = 1.3
+            innerdistance_between_mountpad_and_pad = 0.6
+            distance_between_pad_centers = mountpad_y_size/2.0 + innerdistance_between_mountpad_and_pad + pad_y_size/2.0
+            y_origin_from_mountpad = -distance_between_pad_centers/2.0
 
-        saveFCdoc(App, Gui, doc, FileName,out_dir)
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
+        exportSeries(CQ_MODELS_VERTICAL, model_filter_regobj, y_origin_from_mountpad)
+
+    FreeCAD.Console.PrintMessage('\r\Done\r\n')

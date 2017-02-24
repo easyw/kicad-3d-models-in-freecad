@@ -44,19 +44,21 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of phoenix contact connectors (MSTB and MC series)."
+__title__ = "make 3D models of JST-XH-Connectors."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of phoenix contact types MSTB and MC.'''
+__Comment__ = '''make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry),
+                S??B-XH-A (Side entry) and S??B-XH-A-1 (Side entry compact version).'''
 
-___ver___ = "1.1 12/04/2016"
+___ver___ = "1.1 10/04/2016"
 
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
+
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
@@ -91,14 +93,12 @@ LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAut
                 ]
 #################################################################################################
 
-body_color_key = "green body"
+body_color_key = "white body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
-insert_color_key = "gold pins"
-insert_color = shaderColors.named_colors[insert_color_key].getDiffuseInt()
-screw_color_key = "metal grey pins"
-screw_color = shaderColors.named_colors[screw_color_key].getDiffuseInt()
+
+destination_dir="Connectors_JST.3dshapes"
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -132,12 +132,13 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
+sys.path.append("../")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -145,41 +146,45 @@ import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
-except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+except: # catch *all* exceptions
+    print "CQ 030 doesn't open example file"
+
 
 import cadquery as cq
+
+#check version
+cqv=cq.__version__.split(".")
+#say2(cqv)
+if int(cqv[0])==0 and int(cqv[1])<3:
+    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+    say("cq needs to be at least 0.3.0")
+    stop
+
 from math import sqrt
 from Helpers import show
 from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_phoenix_mstb as MSTB
-import conn_phoenix_mc as MC
-#import conn_molex_53398 as M2
+import conn_jst_xh_models as M
 import step_license as L
 
-series = [MSTB,MC]
+if float(cq.__version__[:-2]) < 0.3:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg+="actual CQ version "+cq.__version__
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
-def export_one_part(modul, variant, with_plug=False):
-    if not variant in modul.all_params:
-        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
-        return
 
-    destination_dir="Connectors_Phoenix.3dshapes"
-    if with_plug:
-        destination_dir="Connectors_Phoenix__with_plug.3dshapes"
-    ModelName = variant
-    ModelName = ModelName.replace(".","_")
-    FileName = modul.all_params[variant].file_name
+def export_one_part(params):
+    FreeCAD.Console.PrintMessage('\r\n'+params.model_name)
+    ModelName = params.model_name
+    FileName = params.file_name
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
-    App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    #App.setActiveDocument(ModelName)
-    #Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body, insert, mount_screw, plug, plug_screws) = modul.generate_part(variant, with_plug)
+    (pins, body) = M.generate_part(params)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
@@ -187,116 +192,83 @@ def export_one_part(modul, variant, with_plug=False):
     color_attr = pins_color + (0,)
     show(pins, color_attr)
 
-    if insert is not None:
-        color_attr = insert_color + (0,)
-        show(insert, color_attr)
-    if mount_screw is not None:
-        color_attr = screw_color + (0,)
-        show(mount_screw, color_attr)
-    if plug is not None:
-        color_attr = body_color + (0,)
-        show(plug, color_attr)
-
-        color_attr = screw_color + (0,)
-        show(plug_screws, color_attr)
-
     doc = FreeCAD.ActiveDocument
     doc.Label=ModelName
-    objs=FreeCAD.ActiveDocument.Objects
-    FreeCAD.Console.PrintMessage(objs)
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = ModelName + "__body"
+    objs[1].Label = ModelName + "__pins"
 
-    i=0
-    objs[i].Label = ModelName + "__body"
-    i+=1
-    objs[i].Label = ModelName + "__pins"
-    i+=1
-    if insert is not None:
-        objs[i].Label = ModelName + "__thread_insert"
-        i+=1
-    if mount_screw is not None:
-        objs[i].Label = ModelName + "__mount_screw"
-        i+=1
-    if plug is not None:
-        objs[i].Label = ModelName + "__plug"
-        i+=1
-        objs[i].Label = ModelName + "__plug_screws"
     restore_Main_Tools()
 
     out_dir=destination_dir
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
+
 
     used_color_keys = [body_color_key, pins_color_key]
     export_file_name=destination_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
-    i=0
-    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
             shape_color=body_color_key,
             face_colors=None))
-    i+=1
-    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
             shape_color=pins_color_key,
             face_colors=None))
-    i+=1
-    if insert is not None:
-        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
-                shape_color=insert_color_key,
-                face_colors=None))
-        used_color_keys.append(insert_color_key)
-        i+=1
-    if mount_screw is not None:
-        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
-                shape_color=screw_color_key,
-                face_colors=None))
-        used_color_keys.append(screw_color_key)
-        i+=1
-    if plug is not None:
-        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
-                shape_color=body_color_key,
-                face_colors=None))
-        i+=1
-        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
-                shape_color=screw_color_key,
-                face_colors=None))
+
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
-    fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
-                     ModelName, objs, keepOriginals=True)
-
+    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
+                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
     exportSTEP(doc,FileName,out_dir,fusion)
     L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
+
+    FreeCAD.activeDocument().recompute()
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.activeDocument().activeView().viewAxometric()
+
     saveFCdoc(App, Gui, doc, FileName,out_dir)
+
+def exportSeries(series_params, model_filter_regobj):
+    for key in series_params.keys():
+        if model_filter_regobj.match(key):
+            export_one_part(series_params[key])
 
 
 if __name__ == "__main__":
-
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+    series_to_build = []
+    modelfilter = ""
+    for arg in sys.argv[1:]:
+        if arg.startswith("series="):
+            series_to_build += arg[len("series="):].split(',')
+        if arg.startswith("filter="):
+            modelfilter = arg[len("filter="):]
 
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
-        model_to_build='.*'
-    else:
-        if sys.argv[2] == "MC_SERIES_ALL":
-            model_to_build='.*'
-            series = [MC]
-        elif sys.argv[2] == "MSTB_SERIES_ALL":
-            model_to_build='.*'
-            series = [MSTB]
-        else:
-            model_to_build=fnmatch.translate(sys.argv[2])
-        if len(sys.argv) < 4:
-            with_plug=False
-        else:
-            with_plug = sys.argv[3]=="WITH_PLUG"
 
-    model_filter_regobj=re.compile(model_to_build)
-    for typ in series:
-        for variant in typ.all_params.keys():
-            if model_filter_regobj.match(variant):
-                FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                export_one_part(typ, variant, with_plug)
+    if len(series_to_build) == 0:
+        if len(modelfilter) == 0:
+            modelfilter = "*"
+            series_to_build = ['straight', 'angled']
+        else:
+            series_to_build = ['straight', 'angled', 'compact']
+    elif len(modelfilter) == 0:
+        modelfilter = "*"
+
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
+
+    if 'straight' in series_to_build:
+        exportSeries(M.params_straight, model_filter_regobj)
+
+    if 'angled' in series_to_build:
+        exportSeries(M.params_angled, model_filter_regobj)
+
+    if 'compact' in series_to_build:
+        exportSeries(M.params_angled_compact, model_filter_regobj)
+
+    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
