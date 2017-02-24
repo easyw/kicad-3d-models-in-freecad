@@ -57,39 +57,13 @@ sys.path.append("./exportVRML")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
-# Licence information of the generated models.
-#################################################################################################
-STR_licAuthor = "Rene Poeschl"
-STR_licEmail = "poeschlr@gmail.com"
-STR_licOrgSys = ""
-STR_licPreProc = ""
 
-LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor,
-                "",
-                "This program is free software: you can redistribute it and/or modify",
-                "it under the terms of the GNU General Public License (GPL)",
-                "as published by the Free Software Foundation, either version 2 of",
-                "the License, or any later version.",
-                "",
-                "As a special exception, if you create a design which uses this symbol,",
-                "and embed this symbol or unaltered portions of this symbol into the design,",
-                "this symbol does not by itself cause the resulting design to be covered by",
-                "the GNU General Public License. This exception does not however invalidate",
-                "any other reasons why the design itself might be covered by the",
-                "GNU General Public License. If you modify this symbol, you may extend this",
-                "exception to your version of the symbol, but you are not obligated to do so.",
-                "If you do not wish to do so, delete this exception statement from your version.",
-                "",
-                "This program is distributed in the hope that it will be useful,",
-                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
-                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
-                "GNU General Public License for more details.",
-                "",
-                "You should have received a copy of the GNU General Public License",
-                "along with this program.  If not, see http://www.gnu.org/licenses/.",
-                ""
-                ]
-#################################################################################################
+from step_license import *
+
+licAuthor = "Rene Poeschl"
+licEmail = "poeschlr@gmail.com"
+
+LIST_license = getLicense(licAuthor, licEmail)
 
 body_color_key = "green body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
