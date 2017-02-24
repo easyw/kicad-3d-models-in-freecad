@@ -187,17 +187,17 @@ def make_gw(params):
     # checking pin lenght compared to overall width
     # d=(E-E1 -2*(S+L)-2*(R1))
     L=(E-E1-2*(S+R1))/2
-    FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
+    say('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
 
     ## d=(E-E1 -2*(S+L)-2*(R1))
-    ## FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+';d='+str(d)+'\r\n')
+    ## say('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+';d='+str(d)+'\r\n')
     ## #if (d > 0):
     ## if (d > c/10):  #tolerance
     ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\nincreasing pin lenght\r\n')
+    ##     say(str(E-E1-2*(S+L))+'\r\nincreasing pin lenght\r\n')
     ## if (d < -c/10):  #tolerance
     ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
+    ##     say(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
     A = A1 + A2
     A2_t = (A2-c)/2 # body top part height
     A2_b = A2_t     # body bottom part height
@@ -208,10 +208,10 @@ def make_gw(params):
     D1_t2 = D1_t1-2*tan(radians(the))*A2_t # top part upper width
     E1_t2 = E1_t1-2*tan(radians(the))*A2_t # top part upper length
 
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
+    # say('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
+    # say('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
+    # say('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
+    # say('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
     # sleep
     ## if ef!=0:
     ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
@@ -429,16 +429,16 @@ import step_license as L
 
 if __name__ == "__main__":
     expVRML.say(expVRML.__file__)
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
-            FreeCAD.Console.PrintMessage(sys.argv[3]+'\r\n')
+            say(sys.argv[3]+'\r\n')
             if (sys.argv[3].find('no-pinmark-color')!=-1):
                 color_pin_mark=False
             else:
@@ -453,7 +453,7 @@ if __name__ == "__main__":
         excluded_pins_xmirror=() ##no pin excluded
         place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
 
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue

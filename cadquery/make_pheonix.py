@@ -98,7 +98,7 @@ import FreeCADGui as Gui
 try:
     close_CQ_Example(App, Gui)
 except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+    say("can't close example.")
 
 import cadquery as cq
 from math import sqrt
@@ -118,7 +118,7 @@ series = [MSTB,MC]
 
 def export_one_part(modul, variant, with_plug=False):
     if not variant in modul.all_params:
-        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
+        say("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
 
     if with_plug:
@@ -159,7 +159,7 @@ def export_one_part(modul, variant, with_plug=False):
     doc = FreeCAD.ActiveDocument
     doc.Label=ModelName
     objs=FreeCAD.ActiveDocument.Objects
-    FreeCAD.Console.PrintMessage(objs)
+    say(objs)
 
     i=0
     objs[i].Label = ModelName + "__body"
@@ -229,10 +229,10 @@ def export_one_part(modul, variant, with_plug=False):
 
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='.*'
         with_plug = False
     else:
@@ -253,5 +253,5 @@ if __name__ == "__main__":
     for typ in series:
         for variant in typ.all_params.keys():
             if model_filter_regobj.match(variant):
-                FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+                say('\r\n'+variant+'\r\n')
                 export_one_part(typ, variant, with_plug)

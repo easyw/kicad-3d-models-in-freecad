@@ -183,10 +183,10 @@ import step_license as L
 
 if __name__ == "__main__":
     expVRML.say(expVRML.__file__)
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
@@ -200,7 +200,7 @@ if __name__ == "__main__":
         excluded_pins_x=() ##no pin excluded
         excluded_pins_xmirror=() ##no pin excluded
         
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue

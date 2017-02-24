@@ -95,7 +95,7 @@ import FreeCADGui as Gui
 try:
     close_CQ_Example(App, Gui)
 except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+    say("can't close example.")
 
 
 import cadquery as cq
@@ -113,7 +113,7 @@ import step_license as L
 
 def export_one_part(modul, variant):
     if not variant in modul.all_params:
-        FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
+        say("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
     ModelName = modul.all_params[variant].model_name
     FileName = modul.all_params[variant].file_name
@@ -164,10 +164,10 @@ def export_one_part(modul, variant):
 
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     else:
         variants = [model_to_build]
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+        say('\r\n'+variant+'\r\n')
         export_one_part(M1,variant)
 
     if model_to_build == "all":
@@ -185,5 +185,5 @@ if __name__ == "__main__":
     else:
         variants = [model_to_build]
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+        say('\r\n'+variant+'\r\n')
         export_one_part(M2,variant)

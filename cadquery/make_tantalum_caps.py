@@ -240,17 +240,17 @@ import step_license as L
 
 if __name__ == "__main__":
     expVRML.say(expVRML.__file__)
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
 # maui     run()
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
-            FreeCAD.Console.PrintMessage(sys.argv[3]+'\r\n')
+            say(sys.argv[3]+'\r\n')
             if (sys.argv[3].find('no-pinmark-color')!=-1):
                 color_pin_mark=False
             else:
@@ -265,7 +265,7 @@ if __name__ == "__main__":
         excluded_pins_xmirror=() ##no pin excluded
         place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
 
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue

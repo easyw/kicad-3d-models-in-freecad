@@ -411,9 +411,9 @@ if __name__ == "temp.module":
     ## case, pins = make_dip(all_params["DIP08"])
     ## color_attr=case_color+(0,)
     ## show(case, color_attr)
-    ## #FreeCAD.Console.PrintMessage(pins_color)
+    ## #say(pins_color)
     ## color_attr=pins_color+(0,)
-    ## #FreeCAD.Console.PrintMessage(color_attr)
+    ## #say(color_attr)
     ## show(pins, color_attr)
     ##
     ## show(case, (80, 80, 80, 0))
@@ -422,11 +422,11 @@ if __name__ == "temp.module":
 # when run from command line
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 # maui     run()
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
@@ -436,7 +436,7 @@ if __name__ == "__main__":
     else:
         variants = [model_to_build]
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
@@ -447,9 +447,9 @@ if __name__ == "__main__":
         case, pins = make_dip(all_params[variant])
         color_attr=case_color+(0,)
         show(case, color_attr)
-        #FreeCAD.Console.PrintMessage(pins_color)
+        #say(pins_color)
         color_attr=pins_color+(0,)
-        #FreeCAD.Console.PrintMessage(color_attr)
+        #say(color_attr)
         show(pins, color_attr)
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

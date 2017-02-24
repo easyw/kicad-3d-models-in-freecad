@@ -237,7 +237,7 @@ import step_license as L
 
 if __name__ == "__main__":
     expVRML.say(expVRML.__file__)
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
 # maui     run()
     color_pin_mark=True
@@ -246,7 +246,7 @@ if __name__ == "__main__":
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
-            FreeCAD.Console.PrintMessage(sys.argv[3]+'\r\n')
+            say(sys.argv[3]+'\r\n')
             if (sys.argv[3].find('no-pinmark-color')!=-1):
                 color_pin_mark=False
             else:
@@ -257,7 +257,7 @@ if __name__ == "__main__":
         variants = [model_to_build]
 
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue

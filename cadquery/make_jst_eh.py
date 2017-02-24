@@ -131,10 +131,10 @@ if float(cq.__version__[:-2]) < 0.3:
 
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    say('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        say('No variant name is given! building all')
         model_to_build='all'
     else:
         model_to_build=sys.argv[2]
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     else:
         variants = [model_to_build]
     for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
+        say('\r\n'+variant)
         if not variant in M.all_params:
             print("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
             continue
