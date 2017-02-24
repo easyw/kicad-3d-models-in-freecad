@@ -89,8 +89,6 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import *
 
-checkMinRequirements()
-
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
@@ -101,6 +99,9 @@ except:
     say("can't close example.")
 
 import cadquery as cq
+
+checkMinRequirements(cq)
+
 from math import sqrt
 from Helpers import show
 from collections import namedtuple

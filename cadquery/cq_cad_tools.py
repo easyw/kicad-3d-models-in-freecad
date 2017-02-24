@@ -48,8 +48,8 @@ def saye(*arg):
     
 def infoBox(title, msg):
     return QtGui.QMessageBox.information(None, title, msg)
-    
-def checkMinRequirements():
+
+def checkFreecadVersion():
     say("FC Version \r\n")
     say(FreeCAD.Version())
     FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
@@ -72,6 +72,27 @@ def checkMinRequirements():
             msg="missing CadQuery Module!\r\n\r\n"
             msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
             reply = infoBox("Info ...",msg)
+            
+def checkCadqueryVersion(cq):
+
+    cqv=cq.__version__.split(".")
+    #say2(cqv)
+    if int(cqv[0])==0 and int(cqv[1])<3:
+        msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+        reply = infoBox("Info ...", msg)
+        say("cq needs to be at least 0.3.0")
+        stop
+
+    if float(cq.__version__[:-2]) < 0.3:
+        msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+        msg+="actual CQ version "+cq.__version__
+        reply = infoBox(None,"Info ...",msg)
+            
+def checkMinRequirements(cq=None):
+    checkFreecadVersion()
+    if cq:
+        checkCadqueryVersion(cq)
     
 #from an argument string, extract a list of numbers
 #numbers can be individual e.g. "3"

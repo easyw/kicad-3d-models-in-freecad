@@ -85,8 +85,6 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import *
 
-checkMinRequirements()
-
 destination_dir = getOutputDir("jst_xh")
 
 # Gui.SendMsgToActiveView("Run")
@@ -98,17 +96,9 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-
 import cadquery as cq
 
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
+checkMinRequirements(cq)
 
 from math import sqrt
 from Helpers import show
@@ -126,7 +116,6 @@ if float(cq.__version__[:-2]) < 0.3:
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     msg+="actual CQ version "+cq.__version__
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
 
 if __name__ == "__main__":
 

@@ -71,11 +71,9 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 mark_color_key = "light brown label"
 mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
 
-
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
-
 
 outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
@@ -92,8 +90,6 @@ import cq_cad_tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import *
-
-checkMinRequirements()
 
 # get parameters
 sys.path.append("parameters")
@@ -132,23 +128,10 @@ except: # catch *all* exceptions
 
 # from export_x3d import exportX3D, Mesh
 import cadquery as cq
+
+checkMinRequirements(cq)
+
 from Helpers import show
-# maui end
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
-if float(cq.__version__[:-2]) < 0.3:
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    msg+="actual CQ version "+cq.__version__
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 # all_params = dict(all_params1.items() | all_params2.items())
 

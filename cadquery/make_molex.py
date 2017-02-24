@@ -86,8 +86,6 @@ from cq_cad_tools import *
 
 destination_dir= getOutputDir("molex")
 
-checkMinRequirements()
-
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
@@ -97,8 +95,10 @@ try:
 except:
     say("can't close example.")
 
-
 import cadquery as cq
+
+checkMinRequirements(cq)
+
 from math import sqrt
 from Helpers import show
 from collections import namedtuple
