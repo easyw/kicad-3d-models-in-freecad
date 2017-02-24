@@ -84,33 +84,9 @@ sys.path.append(outdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
+from cq_cad_tools import *
+    
+checkMinRequirements()
 
 # CadQuery Gui
 from Gui.Command import *
@@ -155,6 +131,8 @@ if float(cq.__version__[:-2]) < 0.3:
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 
+sys.path.append("parameters")
+destination_dir=getOutputDir("chip_resistors")
 import cq_params_chip_res  # modules parameters
 from cq_params_chip_res import *
 
@@ -208,8 +186,8 @@ if __name__ == "__main__":
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
-        model_to_build='1206_h106'
+        FreeCAD.Console.PrintMessage('No variant name is given! building all')
+        model_to_build='all'
     else:
         model_to_build=sys.argv[2]
 
@@ -267,28 +245,25 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
-        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-        expVRML.say(script_dir)
-        out_dir=script_dir+destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
+        
+        
         # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
+        exportSTEP(doc, ModelName, destination_dir)
         # scale and export Vrml model
         scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
+        
         objs=GetListOfObjects(FreeCAD, doc)
         expVRML.say("######################################################################")
         expVRML.say(objs)
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
+        
+        export_file_name = destination_dir + os.path.sep + ModelName + ".wrl"
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        saveFCdoc(App, Gui, doc, ModelName, destination_dir)
+        
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
         Gui.activateWorkbench("PartWorkbench")

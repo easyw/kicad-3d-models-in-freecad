@@ -257,13 +257,12 @@ if __name__ == "__main__":
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
 
-        #export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         export_file_name = destination_dir + os.path.sep + ModelName + ".wrl"
-        
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName, destination_dir)
+        
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
         Gui.activateWorkbench("PartWorkbench")
