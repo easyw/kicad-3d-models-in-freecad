@@ -32,6 +32,7 @@ ___ver___ = "1.2.3 16/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+from PySide import QtCore, QtGui
 from Gui.Command import *
 import os
 
@@ -44,6 +45,33 @@ def sayw(*arg):
 
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+    
+def infoBox(title, msg):
+    return QtGui.QMessageBox.information(None, title, msg)
+    
+def checkMinRequirements():
+    say("FC Version \r\n")
+    say(FreeCAD.Version())
+    FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+    say('FC Version '+FC_majorV+FC_minorV+'\r\n')
+
+    if int(FC_majorV) <= 0:
+        if int(FC_minorV) < 15:
+            reply = infoBox("Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+
+            
+    say(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+    file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        say('CadQuery exists\r\n')
+    else:
+        file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+        if os.path.exists(file_path_cq):
+            say('CadQuery exists\r\n')
+        else:
+            msg="missing CadQuery Module!\r\n\r\n"
+            msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+            reply = infoBox("Info ...",msg)
     
 #from an argument string, extract a list of numbers
 #numbers can be individual e.g. "3"

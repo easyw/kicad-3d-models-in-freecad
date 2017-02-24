@@ -74,7 +74,7 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 
-from cq_cad_tools import getOutputDir, say, sayw, saye
+from cq_cad_tools import *
 
 import logging
 logging.getLogger('builder').addHandler(logging.NullHandler())
@@ -88,36 +88,13 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
 
-#checking requirements
-#######################################################################
-say("FC Version \r\n")
-say(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-say('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-        
-say(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    say('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        say('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
+# check minimum requirements
+checkMinRequirements()
 
 # CadQuery Gui
 from Gui.Command import *
 
+"""
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
@@ -126,7 +103,8 @@ reload(cq_cad_tools)
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors
-
+"""
+ 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
 import FreeCADGui as Gui
@@ -200,8 +178,7 @@ def make_chip(params):
     case = case.cut(pins)
     return (case, pins)
     
-
-
+    
 # The dimensions of the box. These can be modified rather than changing the
 # object's code directly.
 
@@ -213,8 +190,8 @@ if __name__ == "__main__":
     say('\r\nRunning...\r\n')
 
     if len(sys.argv) < 3:
-        say('No variant name is given! building c_1206_h106')
-        model_to_build='1206_h106'
+        say('No variant name is given! building all')
+        model_to_build='all'
     else:
         model_to_build=sys.argv[2]
 
@@ -237,8 +214,7 @@ if __name__ == "__main__":
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case, pins = make_chip(all_params[variant])
-
-
+        
         show(case)
         show(pins)
    
@@ -269,19 +245,12 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
-        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-        expVRML.say(script_dir)
-        #out_dir=script_dir+os.sep+destination_dir+all_params[variant].dest_dir_prefix
-        out_dir=script_dir+os.sep+destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
+
         # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
+        exportSTEP(doc, ModelName, destination_dir)
         # scale and export Vrml model
         scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
+        
         objs=GetListOfObjects(FreeCAD, doc)
         expVRML.say("######################################################################")
         expVRML.say(objs)
@@ -289,11 +258,12 @@ if __name__ == "__main__":
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
 
         #export_file_name=destination_dir+os.sep+ModelName+'.wrl'
-        export_file_name=script_dir+os.sep+destination_dir+os.sep+ModelName+'.wrl'
+        export_file_name = destination_dir + os.path.sep + ModelName + ".wrl"
+        
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        saveFCdoc(App, Gui, doc, ModelName, destination_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
         Gui.activateWorkbench("PartWorkbench")
