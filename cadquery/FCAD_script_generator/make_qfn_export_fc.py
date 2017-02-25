@@ -48,7 +48,7 @@ __title__ = "make QFN ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.4 17/02/2017"
+___ver___ = "1.0.5 25/Feb/2017"
 
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
@@ -167,7 +167,8 @@ if float(cq.__version__[:-2]) < 0.3:
 import cq_params_qfn  # modules parameters
 from cq_params_qfn import *
 
-all_params= all_params_qfn
+#all_params= all_params_qfn
+all_params= kicad_naming_params_qfn
 
 def make_qfn(params):
 

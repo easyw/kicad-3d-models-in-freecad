@@ -461,3 +461,128 @@ all_params_qfn = {
         dest_dir_prefix = ''
         ),
 }
+
+kicad_naming_params_qfn = {
+    'QFN-28-1EP_6x6mm_Pitch0.65mm': Params( # 6x6, 0.65 pitch, 28 pins, 0.9mm height QFN28 Microchip
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 6,       # body overall length
+        E = 6,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.38,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 7,  # number of pins along X axis (width)
+        npy = 7,  # number of pins along y axis (length)
+        epad = (4.55,4.55), # e Pad #epad = None, # e Pad
+        modelName = 'QFN-28-1EP_6x6mm_Pitch0.65mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN-40-1EP_6x6mm_Pitch0.5mm': Params( # 6x6, 0.5 pitch, 40 pins, 1.0mm height  QFN44 p005
+        #datasheet example - http://www.ti.com/lit/ds/symlink/drv8308.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
+        D = 6.0,       # body overall length
+        E = 6.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.23,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = True,   # square pads
+        npx = 10,  # number of pins along X axis (width)
+        npy = 10,  # number of pins along y axis (length)
+        epad = (4.1,4.1), # e Pad #epad = None, # e Pad
+        modelName = 'QFN-40-1EP_6x6mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN-42-1EP_5x6mm_Pitch0.4mm': Params( # 5x6, 0.4 pitch, 42 pins, 1.0mm height  QFN42 p004
+        #datasheet example - http://www.ti.com/lit/ds/symlink/drv8308.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
+        D = 6.0,       # body overall length
+        E = 5.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.23,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 12,  # number of pins along X axis (width)
+        npy = 9,  # number of pins along y axis (length)
+        epad = (3.7,4.7), # e Pad #epad = None, # e Pad
+        modelName = 'QFN-42-1EP_5x6mm_Pitch0.4mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN-44-1EP_8x8mm_Pitch0.65mm': Params( # 8x8, 0.65 pitch, 44 pins, 1.0mm height  QFN44 p065 microchip
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
+        D = 8.0,       # body overall length
+        E = 8.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.98,  # body height
+        b = 0.3,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 11,  # number of pins along X axis (width)
+        npy = 11,  # number of pins along y axis (length)
+        epad = (6.45,6.45), # e Pad #epad = None, # e Pad
+        modelName = 'QFN-44-1EP_8x8mm_Pitch0.65mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'QFN-64-1EP_9x9mm_Pitch0.5mm': Params( # 9x9, 0.5 pitch, 64 pins, 0.9mm height  QFN64 p05 microchip
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.4,      #0.45 chamfer of the epad 1st pin corner
+        D = 9.0,       # body overall length
+        E = 9.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.73,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 16,  # number of pins along X axis (width)
+        npy = 16,  # number of pins along y axis (length)
+        epad = (7.15,7.15), # e Pad #epad = None, # e Pad
+        modelName = 'QFN-64-1EP_9x9mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+}
