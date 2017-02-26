@@ -83,6 +83,17 @@ sys.path.append(outdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
+# Licence information of the generated models.
+#################################################################################################
+STR_licAuthor = "kicad StepUp"
+STR_licEmail = "ksu"
+STR_licOrgSys = "kicad StepUp"
+STR_licPreProc = "OCC"
+STR_licOrg = "FreeCAD"   
+
+LIST_license = ["",]
+#################################################################################################
+
 #checking requirements
 #######################################################################
 FreeCAD.Console.PrintMessage("FC Version \r\n")
@@ -255,8 +266,8 @@ def make_tantalum(params):
 
     return (body, pins, pinmark)
 
-import step_license as L
-
+#import step_license as L
+import add_license as Lic
 
 if __name__ == "__main__":
     expVRML.say(expVRML.__file__)
@@ -344,6 +355,9 @@ if __name__ == "__main__":
         #out_dir="./generated_qfp/"
         # export STEP model
         exportSTEP(doc, ModelName, out_dir)
+        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                           STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
         # scale and export Vrml model
         scale=1/2.54
         #exportVRML(doc,ModelName,scale,out_dir)

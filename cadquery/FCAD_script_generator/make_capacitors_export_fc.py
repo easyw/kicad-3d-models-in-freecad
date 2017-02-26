@@ -85,6 +85,16 @@ sys.path.append(outdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
+# Licence information of the generated models.
+#################################################################################################
+STR_licAuthor = "kicad StepUp"
+STR_licEmail = "ksu"
+STR_licOrgSys = "kicad StepUp"
+STR_licPreProc = "OCC"
+STR_licOrg = "FreeCAD"   
+
+LIST_license = ["",]
+#################################################################################################
 
 #checking requirements
 #######################################################################
@@ -203,7 +213,8 @@ def make_chip(params):
 # The dimensions of the box. These can be modified rather than changing the
 # object's code directly.
 
-import step_license as L
+#import step_license as L
+import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__":
@@ -233,7 +244,6 @@ if __name__ == "__main__":
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case, pins = make_chip(all_params[variant])
-
 
         show(case)
         show(pins)
@@ -275,6 +285,8 @@ if __name__ == "__main__":
         #out_dir="./generated_qfp/"
         # export STEP model
         exportSTEP(doc, ModelName, out_dir)
+        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                           STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
         # scale and export Vrml model
         scale=1/2.54
         #exportVRML(doc,ModelName,scale,out_dir)
