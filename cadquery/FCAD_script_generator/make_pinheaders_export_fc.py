@@ -47,7 +47,7 @@ __title__ = "make pin header 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make pin header 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.4.1 14/08/2015"
+___ver___ = "1.4.2 26/02/2017"
 
 
 #sleep ### NB il modello presenta errori di geometria
@@ -60,6 +60,18 @@ from collections import namedtuple
 #from cq_cad_tools import say, sayw, saye
 
 import sys, os
+import datetime
+from datetime import datetime
+sys.path.append("./exportVRML")
+import exportPartToVRML as expVRML
+import shaderColors
+
+body_color_key = "black body"
+body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+pins_color_key = "gold pins"
+pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+#marking_color_key = "light brown label"
+#marking_color = shaderColors.named_colors[marking_color_key].getDiffuseFloat()
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -68,6 +80,17 @@ import ImportGui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
+
+# Licence information of the generated models.
+#################################################################################################
+STR_licAuthor = "kicad StepUp"
+STR_licEmail = "ksu"
+STR_licOrgSys = "kicad StepUp"
+STR_licPreProc = "OCC"
+STR_licOrg = "FreeCAD"   
+
+LIST_license = ["",]
+#################################################################################################
 
 #checking requirements
 #######################################################################
@@ -87,12 +110,15 @@ file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
 if os.path.exists(file_path_cq):
     FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
 else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        msg="missing CadQuery Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
-
 
 from Gui.Command import *
 
@@ -107,7 +133,8 @@ from cq_cad_tools import say, sayw, saye
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -152,6 +179,18 @@ Params = namedtuple("Params", [
 ])
 
 headers = {
+    '254singleH10': Params(
+        p = 2.54,
+        w = 2.5,
+        rows = 1,
+        c = 0.25,
+        h = 2.54,
+        pw = 0.64,
+        pc = 0.15,
+        pa = 6 + 2.54,
+        ph = 6 + 2.54 + 3.05,
+        rot = -90,
+    ),
     '254single': Params(
         p = 2.54,
         w = 2.5,
@@ -291,7 +330,7 @@ def MakePinRow(n, params):
 
 #generate a name for the pin header
 def HeaderName(n, params):
-    return "PinHeader_Straight_{r:01}x{n:02}x{p:.2f}mm".format(r=params.rows,n=n,p=params.p)
+    return "PinHeader_Straight_{r:01}x{n:02}_H{h:02}_p{p:.2f}mm".format(r=params.rows,n=n,h=int(params.ph),p=params.p)
     
 #make a pin header using supplied parameters, n pins in each row
 def MakeHeader(n, params):
@@ -314,16 +353,34 @@ def MakeHeader(n, params):
     
     base = MakeBase(n,params)
         
-    #assign some colors
-    base_color = (50,50,50)
-    pins_color = (225,175,0)
+    show(base)
+    show(pins)
 
-    show(base,base_color+(0,))
-    show(pins,pins_color+(0,))
-    
     doc = FreeCAD.ActiveDocument
-        
     objs=GetListOfObjects(FreeCAD, doc)
+    
+    Color_Objects(Gui,objs[0],body_color)
+    Color_Objects(Gui,objs[1],pins_color)
+    #Color_Objects(Gui,objs[2],marking_color)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+    #col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+    material_substitutions={
+        col_body[:-1]:body_color_key,
+        col_pin[:-1]:pins_color_key,
+        #col_mark[:-1]:marking_color_key
+    }
+    expVRML.say(material_substitutions)
+
+    ##assign some colors
+    #base_color = (50,50,50)
+    #pins_color = (225,175,0)
+    #
+    #show(base,base_color+(0,))
+    #show(pins,pins_color+(0,))
+    
+    #objs=GetListOfObjects(FreeCAD, doc)
     FuseObjs_wColors(FreeCAD, FreeCADGui,
                    doc.Name, objs[0].Name, objs[1].Name)
     doc.Label=docname
@@ -340,10 +397,24 @@ def MakeHeader(n, params):
     
     #save the STEP file
     exportSTEP(doc, name, out_dir)
+    Lic.addLicenseToStep(out_dir+'/', name+".step", LIST_license,\
+                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,ModelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+    expVRML.say("######################################################################")
+    expVRML.say(objs)
+    expVRML.say("######################################################################")
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=destination_dir+os.sep+name+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
 
     #save the VRML file
-    scale=0.3937001
-    exportVRML(doc,name,scale,out_dir)
+    #scale=0.3937001
+    #exportVRML(doc,name,scale,out_dir)
     
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, name,out_dir)
@@ -353,6 +424,8 @@ def MakeHeader(n, params):
 
     return 0
     
+import add_license as Lic
+
 if __name__ == "__main__":
     
     models = []
