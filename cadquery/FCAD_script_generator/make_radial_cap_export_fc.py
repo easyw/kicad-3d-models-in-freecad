@@ -73,7 +73,7 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 mark_color_key = "light brown label"
 mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
 top_color_key = "metal grey pins"
-top_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
+top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 
 
 # maui start
@@ -354,7 +354,6 @@ if __name__ == "__main__":
             col_top[:-1]:top_color_key
         }
         expVRML.say(material_substitutions)
-
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
