@@ -314,7 +314,10 @@ def MakeHeader(n):
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
     export_file_name=destination_dir+os.sep+name+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
     ###save the VRML file
     ##scale=0.3937001

@@ -299,7 +299,10 @@ if __name__ == "__main__":
         #export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         export_file_name=script_dir+os.sep+destination_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
+        if LIST_license[0]=="":
+            LIST_license=Lic.LIST_int_license
+            LIST_license.append("")
+        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
