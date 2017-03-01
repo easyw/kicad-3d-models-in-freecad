@@ -64,6 +64,14 @@ def say(msg):
     FreeCAD.Console.PrintMessage(msg)
     FreeCAD.Console.PrintMessage('\n')
 
+def sayw(msg):
+    FreeCAD.Console.PrintWarning(msg)
+    FreeCAD.Console.PrintWarning('\n')
+    
+def sayerr(msg):
+    FreeCAD.Console.PrintError(msg)
+    FreeCAD.Console.PrintWarning('\n')
+
 def clear_console():
     #clearing previous messages
     mw=FreeCADGui.getMainWindow()

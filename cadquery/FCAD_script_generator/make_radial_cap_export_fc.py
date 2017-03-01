@@ -230,12 +230,28 @@ def make_radial_th(params):
     body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
     bar = bodyp().revolve(ciba, (0,0,0), (0,1,0))
 
+    #show(body)
+    #show(bar)
     # # fillet the belt edges
     BS = cq.selectors.BoxSelector
     # note that edges are selected from their centers
-    body = body.edges(BS((-0.5,-0.5, bs+bt-0.01), (0.5, 0.5, bs+bt+bh+0.01))).\
-           fillet(bf)
     b_r = D/2.-bd # inner radius of the belt
+    try:
+        #body = body.edges(BS((-0.5,-0.5, bs+bt-0.01), (0.5, 0.5, bs+bt+bh+0.01))).\
+        #    fillet(bf)
+        pos=D/10
+        body = body.edges(BS((-pos,-pos, bs+bt-0.2), (pos, pos, bs+bt+bh+0.01))).\
+            fillet(bf)
+    except:
+        #stop
+        expVRML.sayerr("")
+        expVRML.sayerr("not filleting")
+        #show(body)
+        #show(bar)
+        #raise
+        pass
+    
+    #b_r = D/2.-bd # inner radius of the belt
     bar = bar.edges(BS((b_r/sqrt(2), 0, bs+bt-0.01),(b_r, -b_r/sqrt(2), bs+bt+bh+0.01))).\
           fillet(bf)
 
