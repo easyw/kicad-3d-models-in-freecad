@@ -74,7 +74,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         ll = 2.0,
         la = 0.0,
         bs = 0.,
-        modelName = 'c_el_th_L11_5_D08_p05', #modelName
+        modelName = 'c_el_th_L18_D15_p075', #modelName
         rotation  = -90, # rotation if required
         dest_dir_prefix = 'cap_El_th'
     ),
@@ -86,7 +86,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         ll = 2.0,
         la = 0.0,
         bs = 0.,
-        modelName = 'c_el_th_L18_D15_p075', #modelName
+        modelName = 'c_el_th_L18_D20_p075', #modelName
         rotation  = -90, # rotation if required
         dest_dir_prefix = 'cap_El_th'
     ),
