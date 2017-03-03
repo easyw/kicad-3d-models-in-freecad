@@ -556,6 +556,9 @@ if __name__ == "__main__":
         #out_dir="./generated_qfp/"
         # export STEP model
         exportSTEP(doc, ModelName, out_dir)
+        if LIST_license[0]=="":
+            LIST_license=Lic.LIST_int_license
+            LIST_license.append("")
         Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
                              STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
         # scale and export Vrml model
@@ -568,9 +571,6 @@ if __name__ == "__main__":
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
         export_file_name=out_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)

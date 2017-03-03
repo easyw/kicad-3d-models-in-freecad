@@ -570,6 +570,9 @@ if __name__ == "__main__":
         #out_dir="./generated_qfp/"
         # export STEP model
         exportSTEP(doc, ModelName, out_dir)
+        if LIST_license[0]=="":
+            LIST_license=Lic.LIST_int_license
+            LIST_license.append("")
         Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
                            STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
 
@@ -584,9 +587,6 @@ if __name__ == "__main__":
         export_file_name=destination_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         #scale=0.3937001
         #exportVRML(doc,ModelName,scale,out_dir)

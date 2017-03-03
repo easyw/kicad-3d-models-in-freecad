@@ -80,7 +80,6 @@ import ImportGui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "kicad StepUp"
@@ -335,6 +334,7 @@ def HeaderName(n, params):
 #make a pin header using supplied parameters, n pins in each row
 def MakeHeader(n, params):
     
+    global LIST_license
     name = HeaderName(n,params)
     
     #having a period '.' character in the model name REALLY messes with things.
@@ -397,9 +397,12 @@ def MakeHeader(n, params):
     
     #save the STEP file
     exportSTEP(doc, name, out_dir)
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
     Lic.addLicenseToStep(out_dir+'/', name+".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
+    
     # scale and export Vrml model
     scale=1/2.54
     #exportVRML(doc,ModelName,scale,out_dir)
@@ -410,9 +413,6 @@ def MakeHeader(n, params):
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
     export_file_name=destination_dir+os.sep+name+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-    if LIST_license[0]=="":
-        LIST_license=Lic.LIST_int_license
-        LIST_license.append("")
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
     #save the VRML file
@@ -431,6 +431,7 @@ import add_license as Lic
 
 if __name__ == "__main__":
     
+    global LIST_license
     models = []
     pins = []
     
