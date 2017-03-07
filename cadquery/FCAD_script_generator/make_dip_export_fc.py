@@ -197,6 +197,23 @@ def make_params(D, npins, modelName, rotation):
         rotation = rotation    # rotation if required
     )
 
+def make_paramsm(D, npins, modelName, rotation):
+    """Wider version of make_params() 10.16"""
+    return Params(
+        D = D,      # package length
+        E1 = 10.16+0.254-1.24,  # package width
+        E = 10.16+0.254,  # shoulder to shoulder width (includes pins)
+        A1 = 0.38,  # base to seating plane
+        A2 = 3.3,   # package height
+
+        b1 = 1.524, # upper lead width
+        b = 0.457,  # lower lead width
+        e = 2.54,   # pin to pin distance
+
+        npins = npins,  # total number of pins
+        modelName = modelName,  # Model Name
+        rotation = rotation    # rotation if required
+    )
 def make_paramsw(D, npins, modelName, rotation):
     """Wider version of make_params()"""
     return Params(
@@ -236,6 +253,8 @@ all_params = {
         rotation = 90    # rotation if required
     ),
 
+    "DIP-4_W7.62mm" : make_params(4.93, 4, 'DIP-4_W7.62mm', 90),
+    "DIP-4_W10.16mm" : make_paramsm(4.93, 4, 'DIP-4_W10.16mm', 90),
     "DIP-6_W7.62mm" : make_params(7.05, 6, 'DIP-6_W7.62mm', 90),
     "DIP-14_W7.62mm" : make_params(19.05, 14, 'DIP-14_W7.62mm', 90),
     "DIP-16_W7.62mm" : make_params(mm(0.755), 16, 'DIP-16_W7.62mm', 90),
@@ -243,6 +262,8 @@ all_params = {
     "DIP-20_W7.62mm" : make_params(mm(1.03), 20, 'DIP-20_W7.62mm', 90),
     "DIP-22_W7.62mm" : make_params(mm(1.1), 22, 'DIP-22_W7.62mm', 90),
     "DIP-24_W7.62mm" : make_params(mm(1.25), 24, 'DIP-24_W7.62mm', 90),
+    "DIP-22_W10.16mm" : make_paramsm(mm(1.1), 22, 'DIP-22_W10.16mm', 90),
+    "DIP-24_W10.16mm" : make_paramsm(mm(1.25), 24, 'DIP-24_W10.16mm', 90),
     "DIP-28_W7.62mm" : make_params(mm(1.4), 28, 'DIP-28_W7.62mm', 90),
     "DIP-24_W15.24mm" : make_paramsw(mm(1.25), 24, 'DIP-24_W15.24mm', 90),
     "DIP-28_W15.24mm" : make_paramsw(mm(1.4), 28, 'DIP-28_W15.24mm', 90),
@@ -392,24 +413,26 @@ def make_dip(params):
 
     pin = fillet_corner(pin)
 
-    # draw the 2nd pin (regular pin shape)
-    x = e*(npins/4.-0.5-1) # center x position of 2nd pin
-    pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
-           moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
-           line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
-           line(-(b1-b)/2.,0).line(0,ty).\
-           close().extrude(c)
-
-    # draw the top part of the pin
-    pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
-    pin2 = fillet_corner(pin2)
-
-    # create other pins (except last one)
-    pins = [pin, pin2]
-    for i in range(2,npins/2-1):
-        pin_i = pin2.translate((-e*(i-1),0,0))
-        pins.append(pin_i)
-
+    if npins/2>2:
+        # draw the 2nd pin (regular pin shape)
+        x = e*(npins/4.-0.5-1) # center x position of 2nd pin
+        pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
+            moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
+            line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
+            line(-(b1-b)/2.,0).line(0,ty).\
+            close().extrude(c)
+    
+        # draw the top part of the pin
+        pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
+        pin2 = fillet_corner(pin2)
+    
+        # create other pins (except last one)
+        pins = [pin, pin2]
+        for i in range(2,npins/2-1):
+            pin_i = pin2.translate((-e*(i-1),0,0))
+            pins.append(pin_i)
+    else:
+        pins = [pin,]
     # create last pin (mirrored 1st pin)
     x = -e*(npins/4.-0.5)
     pinl = cq.Workplane("XZ", (x, E/2., 0)).\
