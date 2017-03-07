@@ -220,7 +220,7 @@ def mm(inch):
     return inch*25.4
 
 all_params = {
-    "DIP08" : Params(
+    "DIP-8_W7.62mm" : Params(
         D = 9.27,   # package length
         E1 = 6.35,  # package width
         E = 7.874,  # shoulder to shoulder width (includes pins)
@@ -232,28 +232,27 @@ all_params = {
         e = 2.54,   # pin to pin distance
 
         npins = 8,  # total number of pins
-        modelName = 'dip_8_300',  # Model Name
-        rotation = 180    # rotation if required
+        modelName = 'DIP-8_W7.62mm',  # Model Name
+        rotation = 90    # rotation if required
     ),
 
-    "DIP06" : make_params(7.05, 6, 'dip_6_300', 180),
-    "DIP14" : make_params(19.05, 14, 'dip_14_300', 180),
-    "DIP16" : make_params(mm(0.755), 16, 'dip_16_300', 180),
-    "DIP18" : make_params(mm(0.9), 18, 'dip_18_300', 180),
-    "DIP20" : make_params(mm(1.03), 20, 'dip_20_300', 180),
-    "DIP22" : make_params(mm(1.1), 22, 'dip_22_300', 180),
-    "DIP24" : make_params(mm(1.25), 24, 'dip_24_300', 180),
-    "DIP28" : make_params(mm(1.4), 28, 'dip_28_300', 180),
-    "DIP22-6" : make_paramsw(mm(1.1), 22, 'dip_22_600', 180),
-    "DIP24-6" : make_paramsw(mm(1.25), 24, 'dip_24_600', 180),
-    "DIP28-6" : make_paramsw(mm(1.4), 28, 'dip_28_600', 180),
-    "DIP32-6" : make_paramsw(mm(1.63), 32, 'dip_32_600', 180),
-    "DIP40-6" : make_paramsw(mm(2), 40, 'dip_40_600', 180),
-    "DIP48-6" : make_paramsw(mm(2.42), 48, 'dip_48_600', 180),
-    "DIP52-6" : make_paramsw(mm(2.6), 52, 'dip_52_600', 180),
+    "DIP-6_W7.62mm" : make_params(7.05, 6, 'DIP-6_W7.62mm', 90),
+    "DIP-14_W7.62mm" : make_params(19.05, 14, 'DIP-14_W7.62mm', 90),
+    "DIP-16_W7.62mm" : make_params(mm(0.755), 16, 'DIP-16_W7.62mm', 90),
+    "DIP-18_W7.62mm" : make_params(mm(0.9), 18, 'DIP-18_W7.62mm', 90),
+    "DIP-20_W7.62mm" : make_params(mm(1.03), 20, 'DIP-20_W7.62mm', 90),
+    "DIP-22_W7.62mm" : make_params(mm(1.1), 22, 'DIP-22_W7.62mm', 90),
+    "DIP-24_W7.62mm" : make_params(mm(1.25), 24, 'DIP-24_W7.62mm', 90),
+    "DIP-28_W7.62mm" : make_params(mm(1.4), 28, 'DIP-28_W7.62mm', 90),
+    "DIP-24_W15.24mm" : make_paramsw(mm(1.25), 24, 'DIP-24_W15.24mm', 90),
+    "DIP-28_W15.24mm" : make_paramsw(mm(1.4), 28, 'DIP-28_W15.24mm', 90),
+    "DIP-32_W15.24mm" : make_paramsw(mm(1.63), 32, 'DIP-32_W15.24mm', 90),
+    "DIP-40_W15.24mm" : make_paramsw(mm(2), 40, 'DIP-40_W15.24mm', 90),
+    "DIP-48_W15.24mm" : make_paramsw(mm(2.42), 48, 'DIP-48_W15.24mm', 90),
+    "DIP-64_W15.24mm" : make_paramsw(mm(3.26), 64, 'DIP-64_W15.24mm', 90),
 
     # 64-Lead Shrink Plastic Dual In-Line (SP) 750mil Body
-    "DIP64-75" : Params(
+    "DIP-64_W22.86mm" : Params(
         D = mm(2.27),   # package length
         E1 = mm(0.670),  # package width
         E = mm(0.760),  # shoulder to shoulder width (includes pins)
@@ -265,10 +264,61 @@ all_params = {
         e = mm(0.070),   # pin to pin distance
 
         npins = 64,  # total number of pins
-        modelName = 'dip_64_75',  # Model Name
+        modelName = 'DIP-64_W22.86mm',  # Model Name
         rotation = 0    # rotation if required
     ),
 }
+
+#all_params_base = {  #kicad naming
+#    "DIP08" : Params(
+#        D = 9.27,   # package length
+#        E1 = 6.35,  # package width
+#        E = 7.874,  # shoulder to shoulder width (includes pins)
+#        A1 = 0.38,  # base to seating plane
+#        A2 = 3.3,   # package height
+#
+#        b1 = 1.524, # upper lead width
+#        b = 0.457,  # lower lead width
+#        e = 2.54,   # pin to pin distance
+#
+#        npins = 8,  # total number of pins
+#        modelName = 'dip_8_300',  # Model Name
+#        rotation = 180    # rotation if required
+#    ),
+#
+#    "DIP06" : make_params(7.05, 6, 'dip_6_300', 180),
+#    "DIP14" : make_params(19.05, 14, 'dip_14_300', 180),
+#    "DIP16" : make_params(mm(0.755), 16, 'dip_16_300', 180),
+#    "DIP18" : make_params(mm(0.9), 18, 'dip_18_300', 180),
+#    "DIP20" : make_params(mm(1.03), 20, 'dip_20_300', 180),
+#    "DIP22" : make_params(mm(1.1), 22, 'dip_22_300', 180),
+#    "DIP24" : make_params(mm(1.25), 24, 'dip_24_300', 180),
+#    "DIP28" : make_params(mm(1.4), 28, 'dip_28_300', 180),
+#    "DIP22-6" : make_paramsw(mm(1.1), 22, 'dip_22_600', 180),
+#    "DIP24-6" : make_paramsw(mm(1.25), 24, 'dip_24_600', 180),
+#    "DIP28-6" : make_paramsw(mm(1.4), 28, 'dip_28_600', 180),
+#    "DIP32-6" : make_paramsw(mm(1.63), 32, 'dip_32_600', 180),
+#    "DIP40-6" : make_paramsw(mm(2), 40, 'dip_40_600', 180),
+#    "DIP48-6" : make_paramsw(mm(2.42), 48, 'dip_48_600', 180),
+#    "DIP52-6" : make_paramsw(mm(2.6), 52, 'dip_52_600', 180),
+#
+#    # 64-Lead Shrink Plastic Dual In-Line (SP) 750mil Body
+#    "DIP64-75" : Params(
+#        D = mm(2.27),   # package length
+#        E1 = mm(0.670),  # package width
+#        E = mm(0.760),  # shoulder to shoulder width (includes pins)
+#        A1 = mm(0.02),  # base to seating plane
+#        A2 = mm(0.150),   # package height
+#
+#        b1 = mm(0.040), # upper lead width
+#        b = mm(0.018),  # lower lead width
+#        e = mm(0.070),   # pin to pin distance
+#
+#        npins = 64,  # total number of pins
+#        modelName = 'dip_64_75',  # Model Name
+#        rotation = 90    # rotation if required
+#    ),
+#}
 
 def make_dip(params):
     # dimensions for PDIP-8
@@ -406,7 +456,11 @@ def make_dip(params):
 
     # extract pins from the case
     case = case.cut(pins)
-
+    #mvX = (npins*e/4+e/2)
+    #mvY = (E-c)/2
+    #case = case.translate ((-mvX,-mvY,0))
+    #pins = pins.translate ((-mvX,-mvY,0))
+    
     return (case, pins)
 
 ## def shapeToMesh(shape, color):
@@ -556,6 +610,19 @@ if __name__ == "__main__":
         if (all_params[variant].rotation!=0):
             rot= all_params[variant].rotation
             z_RotateObject(doc, rot)
+        npins=all_params[variant].npins
+        e=all_params[variant].e
+        E=all_params[variant].E
+        c= 0.254 # lead thickness
+        mvY = (npins*e/4-e/2)
+        mvX = (E-c)/2
+        s = objs[0].Shape
+        shape=s.copy()
+        shape.Placement=s.Placement;
+        shape.translate((+mvX,-mvY,0))
+        objs[0].Placement=shape.Placement
+        #case = case.translate ((-mvX,-mvY,0))
+        #pins = pins.translate ((-mvX,-mvY,0))
         # out_dir=destination_dir
         # if not os.path.exists(out_dir):
         #     os.makedirs(out_dir)
