@@ -19,7 +19,89 @@ destination_dir="generated_gw"
 
 
 all_params_ssop = {
-    'SSOP_20': Params( # 5.6x7.2, pitch 0.65 20pin 2.0mm height
+    'SSOP-20_5.3x7.2mm_Pitch0.65mm': Params( # 5.3x7.2, pitch 0.65 20pin 2.0mm height
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 6.9,       # body length
+        E1 = 5.3,       # body width
+        E = 7.2,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.9,  # body height
+        b = 0.30,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 10,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'SSOP-20_5.3x7.2mm_Pitch0.65mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        ),
+    'MSOP-8-1EP_3x3mm_Pitch0.65mm': Params( # 3x3, pitch 0.65 8pin 1.0mm height
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.2,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 3.0,       # body length
+        E1 = 3.0,       # body width
+        E = 4.9,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.001,  # body-board separation
+        A2 = 0.999,  # body height
+        b = 0.33,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 4,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = (1.7,1.7), # e Pad
+        modelName = 'MSOP-8-1EP_3x3mm_Pitch0.65mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        ),
+    'TSSOP-14_4.4x5mm_Pitch0.65mm': Params( # 5.0x4.4, pitch 0.65 14pin 1.1mm height
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.3,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_r = 0.65,     # first pin indicator radius
+        fp_d = 0.15,     # first pin indicator distance from edge
+        fp_z = 0.10,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 5.0,       # body length
+        E1 = 4.4,       # body width
+        E = 6.4,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.0,  # body height
+        b = 0.25,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        npx = 7,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        modelName = 'TSSOP-14_4.4x5mm_Pitch0.65mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        ),
+        
+        'SSOP_20': Params( # 5.6x7.2, pitch 0.65 20pin 2.0mm height
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
         c = 0.1,        # pin thickness, body center part height
