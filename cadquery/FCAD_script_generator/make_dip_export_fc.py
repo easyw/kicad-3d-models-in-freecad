@@ -198,10 +198,10 @@ def make_params(D, npins, modelName, rotation):
     )
 
 def make_paramsm(D, npins, modelName, rotation):
-    """Wider version of make_params() 10.16"""
+    """Wider version of make_params() 10.16 for opto-couplers """
     return Params(
         D = D,      # package length
-        E1 = 10.16+0.254-1.24,  # package width
+        E1 = 6.35, #10.16+0.254-1.24,  # package width
         E = 10.16+0.254,  # shoulder to shoulder width (includes pins)
         A1 = 0.38,  # base to seating plane
         A2 = 3.3,   # package height
@@ -355,6 +355,8 @@ def make_dip(params):
 
     npins = params.npins  # number of pins
 
+    modelName = params.modelName
+    
     # common dimensions
     L = 3.3 # tip to seating plane
     c = 0.254 # lead thickness
@@ -366,7 +368,8 @@ def make_dip(params):
 
     ti_r = 0.75     # top indicator radius
     ti_d = 0.5      # top indicator depth
-
+   
+    
     the = 12.0      # body angle in degrees
     tb_s = 0.15     # top part of body is that much smaller
 
@@ -411,8 +414,18 @@ def make_dip(params):
             edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
             fillet(1.5*c)
 
-    pin = fillet_corner(pin)
+    def chamfer_corner(pina):
+        BS = cq.selectors.BoxSelector
+        return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+            chamfer(c/0.18).\
+            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+            chamfer(6.*c)
 
+    if "W10.16mm" not in ModelName:
+        pin = fillet_corner(pin)
+    else:
+        pin = chamfer_corner(pin)
+        
     if npins/2>2:
         # draw the 2nd pin (regular pin shape)
         x = e*(npins/4.-0.5-1) # center x position of 2nd pin
@@ -424,7 +437,11 @@ def make_dip(params):
     
         # draw the top part of the pin
         pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
-        pin2 = fillet_corner(pin2)
+        #pin2 = fillet_corner(pin2)
+        if "W10.16mm" not in ModelName:
+            pin2 = fillet_corner(pin2)
+        else:
+            pin2 = chamfer_corner(pin2)
     
         # create other pins (except last one)
         pins = [pin, pin2]
@@ -441,7 +458,11 @@ def make_dip(params):
            extrude(c).\
            faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
            rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
-    pinl = fillet_corner(pinl)
+    #pinl = fillet_corner(pinl)
+    if "W10.16mm" not in ModelName:
+        pinl = fillet_corner(pinl)
+    else:
+        pinl = chamfer_corner(pinl)
 
     pins.append(pinl)
 
