@@ -197,7 +197,7 @@ def make_params(D, npins, modelName, rotation):
         rotation = rotation    # rotation if required
     )
 
-def make_paramsm(D, npins, modelName, rotation):
+def make_paramso(D, npins, modelName, rotation):
     """Wider version of make_params() 10.16 for opto-couplers """
     return Params(
         D = D,      # package length
@@ -214,6 +214,25 @@ def make_paramsm(D, npins, modelName, rotation):
         modelName = modelName,  # Model Name
         rotation = rotation    # rotation if required
     )
+    
+def make_paramsm(D, npins, modelName, rotation):
+    """Wider version of make_params() 10.16 for opto-couplers """
+    return Params(
+        D = D,      # package length
+        E1 = 10.16+0.254-1.24,  # package width
+        E = 10.16+0.254,  # shoulder to shoulder width (includes pins)
+        A1 = 0.38,  # base to seating plane
+        A2 = 3.3,   # package height
+
+        b1 = 1.524, # upper lead width
+        b = 0.457,  # lower lead width
+        e = 2.54,   # pin to pin distance
+
+        npins = npins,  # total number of pins
+        modelName = modelName,  # Model Name
+        rotation = rotation    # rotation if required
+    )
+
 def make_paramsw(D, npins, modelName, rotation):
     """Wider version of make_params()"""
     return Params(
@@ -254,8 +273,10 @@ all_params = {
     ),
 
     "DIP-4_W7.62mm" : make_params(4.93, 4, 'DIP-4_W7.62mm', 90),
-    "DIP-4_W10.16mm" : make_paramsm(4.93, 4, 'DIP-4_W10.16mm', 90),
+    "DIP-4_W10.16mm" : make_paramso(4.93, 4, 'DIP-4_W10.16mm', 90),
     "DIP-6_W7.62mm" : make_params(7.05, 6, 'DIP-6_W7.62mm', 90),
+    "DIP-6_W10.16mm" : make_paramsm(7.05, 6, 'DIP-6_W10.16mm', 90),
+    "DIP-8_W10.16mm" : make_paramsm(9.27, 8, 'DIP-8_W10.16mm', 90),
     "DIP-14_W7.62mm" : make_params(19.05, 14, 'DIP-14_W7.62mm', 90),
     "DIP-16_W7.62mm" : make_params(mm(0.755), 16, 'DIP-16_W7.62mm', 90),
     "DIP-18_W7.62mm" : make_params(mm(0.9), 18, 'DIP-18_W7.62mm', 90),
@@ -421,10 +442,10 @@ def make_dip(params):
             edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
             chamfer(6.*c)
 
-    if "W10.16mm" not in ModelName:
-        pin = fillet_corner(pin)
-    else:
+    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
         pin = chamfer_corner(pin)
+    else:
+        pin = fillet_corner(pin)
         
     if npins/2>2:
         # draw the 2nd pin (regular pin shape)
@@ -438,11 +459,11 @@ def make_dip(params):
         # draw the top part of the pin
         pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
         #pin2 = fillet_corner(pin2)
-        if "W10.16mm" not in ModelName:
-            pin2 = fillet_corner(pin2)
-        else:
+        if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
             pin2 = chamfer_corner(pin2)
-    
+        else:
+            pin2 = fillet_corner(pin2)
+
         # create other pins (except last one)
         pins = [pin, pin2]
         for i in range(2,npins/2-1):
@@ -459,10 +480,10 @@ def make_dip(params):
            faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
            rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
     #pinl = fillet_corner(pinl)
-    if "W10.16mm" not in ModelName:
-        pinl = fillet_corner(pinl)
-    else:
+    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
         pinl = chamfer_corner(pinl)
+    else:
+        pinl = fillet_corner(pinl)
 
     pins.append(pinl)
 
