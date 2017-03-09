@@ -171,38 +171,26 @@ def MakeBase(pins):
     
     #length of the base block
     L = pins * 2.54 + 7.62
-    
     #Width of base block
     W1 = 8.9
-
     #internal width
     W2 = 6.4
-    
     #wall thickness
     T = (W1 - W2) / 2
-    
     #length of pin array
     D = (pins - 1) * 2.54
-    
     #height of the base
     H = 2.8
-    
     base = cq.Workplane("XY").rect(L,W1).extrude(H - T)
-    
     #wall height H2
     H2 = 8.9 - H
-    
     #extrude the edge up around the base
     wall = cq.Workplane("XY").workplane(offset=H-T).rect(L,W1).extrude(H2+T).faces(">Z").shell(-T)
-    
     base = base.union(wall)
-    
     #cut a notch out of one side 
     CW = 4
     cutout = cq.Workplane("XY").workplane(offset=H).rect(CW,W1).extrude(H2).translate((0,-W2/2,0))
-    
     base = base.cut(cutout)
-    
     #now offset the location of the base appropriately
     base = base.translate(((pins-1)*1.27,1.27,0))
     
@@ -213,18 +201,13 @@ def MakePin():
 
     #pin size
     size = 0.64
-    
     #pin height
     H = 11.0
-    
     #pin distance below z=0
     Z = -3.0
-
     pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H)
-
     #Chamfer C
     C = 0.2
-    
     pin = pin.faces("<Z").chamfer(C)
     pin = pin.faces(">Z").chamfer(C)
     
