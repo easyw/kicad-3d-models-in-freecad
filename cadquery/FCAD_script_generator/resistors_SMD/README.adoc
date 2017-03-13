@@ -44,7 +44,7 @@ author *hyOzd* +
 author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
 
 ## requirements ## +
-link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] version 0.30 +
+link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] version 0.52 +
 link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
 
 **********************************************************************
@@ -54,11 +54,13 @@ Running the scripts
 to run the script just move to the scripts dir and do: +
 freecad ./main_generator.py modelName +
 examples in win: +
-+c:\freecad\bin\freecad main_generator.py SOIC_8+ +
++c:\freecad\bin\freecad main_generator.py R_0402+ +
 +c:\freecad\bin\freecad main_generator.py all+ +
 in linux: +
-+freecad ./main_generator.py SOIC_8+ +
-+freecad ./main_generator.py all+
++freecad ./main_generator.py R_0402+ +
++freecad ./main_generator.py all+ +
+or simply run the 'create_model' script/batch +
+
 
 modelName and parameters are described in: +
 1. cq_parameters.py file in their relative DIR
@@ -75,12 +77,13 @@ If you do, run the following command line from a terminal to fix this issue. +
 credits
 -------
 
-author *hyOzd* +
-author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
 FreeCAD & cadquery tools: +
 libraries to export generated models in STEP & VRML format +
 - cad tools functions +
-Copyright (c) 2015 *Maurice* link:https://launchpad.net/~easyw[] +
+Main author *Maurice* link:https://github.com/easyw[] +
+ +
+starting from work of author *hyOzd* +
+author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
 
 [[copyright]]
 Copyright
