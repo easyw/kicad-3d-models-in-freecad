@@ -497,3 +497,56 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     App.getDocument(doc.Name).save()
 
     return 0
+
+###################################################################
+# checkRequirements()  maui
+#	Function to check FC and CQ minimum versions
+#
+###################################################################
+def checkRequirements(cq):
+
+    #checking requirements
+    FreeCAD.Console.PrintMessage("FC Version \r\n")
+    FreeCAD.Console.PrintMessage(FreeCAD.Version())
+    FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
+    FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+    
+    if int(FC_majorV) <= 0:
+        if int(FC_minorV) < 15:
+            reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
+    
+    
+    # FreeCAD.Console.PrintMessage(all_params_soic)
+    FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
+    file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
+    if os.path.exists(file_path_cq):
+        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+    else:
+        file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
+        if os.path.exists(file_path_cq):
+            FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
+        else:
+            msg="missing CadQuery Module!\r\n\r\n"
+            msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+            reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+    #check version
+    cqv=cq.__version__.split(".")
+    #say2(cqv)
+    if int(cqv[0])==0 and int(cqv[1])<3:
+        msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
+        reply = QtGui.QMessageBox.information(None, "Info ...", msg)
+        say("cq needs to be at least 0.3.0")
+        stop
+    
+    if float(cq.__version__[:-2]) < 0.3:
+        msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+        msg+="actual CQ version "+cq.__version__
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+
+
+
+            
+    return 0

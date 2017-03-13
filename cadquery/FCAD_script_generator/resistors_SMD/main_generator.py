@@ -76,7 +76,8 @@ top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
-
+import FreeCADGui as Gui
+from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
@@ -97,36 +98,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
-
-# CadQuery Gui
-from Gui.Command import *
 
 # Import cad_tools
 import cq_cad_tools
@@ -135,38 +106,27 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors
+ CutObjs_wColors, checkRequirements
 
-# Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+try:
+    # Gui.SendMsgToActiveView("Run")
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
+#checking requirements
+checkRequirements(cq)
 
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
-
-
-# from export_x3d import exportX3D, Mesh
-import cadquery as cq
-from Helpers import show
-# maui end
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
-if float(cq.__version__[:-2]) < 0.3:
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    msg+="actual CQ version "+cq.__version__
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
@@ -223,7 +183,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
-        model_to_build='1206_h106'
+        model_to_build='R_0402'
     else:
         model_to_build=sys.argv[2]
 

@@ -6,4 +6,6 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-freecad  cq_make_capacitors_export_fc.py all
+echo Best using FC 0.15
+#freecad  main_generator.py 0402
+freecad  main_generator.py $1
