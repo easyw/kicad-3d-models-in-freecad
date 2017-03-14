@@ -226,12 +226,36 @@ named_colors = {
         transparency= 0.10,
         shininess= 0.125
     ),
-     "led white":shaderColor(
+    "led white":shaderColor(
         name="LED-WHITE",
         ambientIntensity=0.494,
         diffuseColor=(0.895, 0.891, 0.813),
         specularColor=(0.047, 0.055, 0.109),
         transparency=0.10,
         shininess=0.125
-        )
+        ),
+    "glass_grey":shaderColor(
+        name="GLASS-GREY",
+        ambientIntensity=2.018212,
+        diffuseColor=(0.400769, 0.441922, 0.459091),
+        specularColor=(0.573887, 0.649271, 0.810811),
+        transparency=0.37,
+        shininess=0.127273
+        ),
+    "glass_gold":shaderColor(
+        name="GLASS-GOLD",
+        ambientIntensity=0.234375,
+        diffuseColor=(0.566681, 0.580872, 0.580874),
+        specularColor=(0.617761, 0.429816, 0.400140),
+        transparency=0.38,
+        shininess=0.072727
+        ),
+    "glass_blue":shaderColor(
+        name="GLASS-BLUE",
+        ambientIntensity=0.250000,
+        diffuseColor=(0.000000, 0.631244, 0.748016),
+        specularColor=(0.915152, 0.915152, 0.915152),
+        transparency=0.39,
+        shininess=0.642424
+        ),
 }
