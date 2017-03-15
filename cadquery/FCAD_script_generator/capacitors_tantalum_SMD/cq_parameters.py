@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="generated_cap"
+destination_dir="/Capacitors_Tantalum_SMD"
 # destination_dir="./"
 
 ma_deg = 8
