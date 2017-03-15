@@ -12,8 +12,8 @@
 ## cadquery FreeCAD plugin
 ##   https://github.com/jmwright/cadquery-freecad-module
 
-## to run the script just do: freecad make_qfn_export_fc.py modelName
-## e.g. c:\freecad\bin\freecad make_qfn_export_fc.py QFN16
+## to run the script just do: freecad main_generator.py modelName
+## e.g. c:\freecad\bin\freecad main_generator.py CP_Elec_4x53
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -46,7 +46,7 @@
 
 __title__ = "make Radial SMD Caps 3D models"
 __author__ = "maurice and hyOzd"
-__Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make SMD Radial Capacitors 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.3.2 10/02/2017"
 
@@ -60,7 +60,7 @@ from collections import namedtuple
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -77,11 +77,14 @@ mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+import FreeCADGui as Gui
+from Gui.Command import *
 
 
-outdir=os.path.dirname(os.path.realpath(__file__))
+outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
+scriptdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
-
+sys.path.append(scriptdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
@@ -96,37 +99,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
-
-# CadQuery Gui
-from Gui.Command import *
-
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
@@ -134,40 +106,30 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors
+ CutObjs_wColors, checkRequirements
 
-# Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+try:
+    # Gui.SendMsgToActiveView("Run")
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
+#checking requirements
+checkRequirements(cq)
 
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-
-# from export_x3d import exportX3D, Mesh
-import cadquery as cq
-from Helpers import show
-# maui end
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
-if float(cq.__version__[:-2]) < 0.3:
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    msg+="actual CQ version "+cq.__version__
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-import cq_params_radial_smd_cap  # modules parameters
-from cq_params_radial_smd_cap import *
+import cq_parameters  # modules parameters
+from cq_parameters import *
 
 all_params = kicad_naming_params_radial_smd_cap
 # all_params = all_params_radial_smd_cap
@@ -285,7 +247,7 @@ if __name__ == "__main__":
     color_pin_mark=True
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
-        model_to_build='G_D10_L10'
+        model_to_build='CP_Elec_4x53'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
@@ -353,8 +315,9 @@ if __name__ == "__main__":
             z_RotateObject(doc, rot)
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
-        expVRML.say(script_dir)
-        out_dir=script_dir+os.sep+destination_dir+os.sep+all_params[variant].dest_dir_prefix
+        models_dir=script_dir+"/../_3Dmodels"
+        expVRML.say(models_dir)
+        out_dir=models_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"
