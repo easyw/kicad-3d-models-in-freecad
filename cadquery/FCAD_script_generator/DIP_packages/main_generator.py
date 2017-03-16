@@ -13,8 +13,8 @@
 ## cadquery FreeCAD plugin
 ##   https://github.com/jmwright/cadquery-freecad-module
 
-## to run the script just do: freecad make_gwexport_fc.py modelName
-## e.g. c:\freecad\bin\freecad make_gw_export_fc.py SOIC_8
+## to run the script just do: freecad main_generator.py modelName
+## e.g. c:\freecad\bin\freecad main_generator.py DIP8
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -59,7 +59,7 @@ from collections import namedtuple
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -73,7 +73,14 @@ marking_color = shaderColors.named_colors[marking_color_key].getDiffuseFloat()
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+import FreeCADGui as Gui
+from Gui.Command import *
 
+
+outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
+scriptdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(outdir)
+sys.path.append(scriptdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
@@ -88,39 +95,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
-
-from Gui.Command import *
-
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
-
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
@@ -128,36 +102,33 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors
+ CutObjs_wColors, checkRequirements
 
-# Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+try:
+    # Gui.SendMsgToActiveView("Run")
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
+#checking requirements
+checkRequirements(cq)
 
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "example not present"
-
-# from export_x3d import exportX3D, Mesh
-import cadquery as cq
-from Helpers import show
-# maui end
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needss to be at least 0.3.0")
-    stop
+    print "CQ 030 doesn't open example file"
 
 # case_color = (0.1, 0.1, 0.1)
 # pins_color = (0.9, 0.9, 0.9)
 #case_color = (50, 50, 50)
 #pins_color = (230, 230, 230)
-destination_dir="./generated_dip/"
+destination_dir="/DIP_packages"
 # rotation = 0
 
 
@@ -275,8 +246,8 @@ all_params = {
     "DIP-4_W7.62mm" : make_params(4.93, 4, 'DIP-4_W7.62mm', 90),
     "DIP-4_W10.16mm" : make_paramso(4.93, 4, 'DIP-4_W10.16mm', 90),
     "DIP-6_W7.62mm" : make_params(7.05, 6, 'DIP-6_W7.62mm', 90),
-    "DIP-6_W10.16mm" : make_paramsm(7.05, 6, 'DIP-6_W10.16mm', 90),
-    "DIP-8_W10.16mm" : make_paramsm(9.27, 8, 'DIP-8_W10.16mm', 90),
+    "DIP-6_W10.16mm" : make_paramso(7.05, 6, 'DIP-6_W10.16mm', 90),
+    "DIP-8_W10.16mm" : make_paramso(9.27, 8, 'DIP-8_W10.16mm', 90),
     "DIP-14_W7.62mm" : make_params(19.05, 14, 'DIP-14_W7.62mm', 90),
     "DIP-16_W7.62mm" : make_params(mm(0.755), 16, 'DIP-16_W7.62mm', 90),
     "DIP-18_W7.62mm" : make_params(mm(0.9), 18, 'DIP-18_W7.62mm', 90),
@@ -480,7 +451,7 @@ def make_dip(params):
            faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
            rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
     #pinl = fillet_corner(pinl)
-    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
+    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName: #this has to be reworked :)
         pinl = chamfer_corner(pinl)
     else:
         pinl = fillet_corner(pinl)
@@ -596,8 +567,8 @@ if __name__ == "__main__":
 # maui     run()
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building DIP08')
-        model_to_build='DIP08'
+        FreeCAD.Console.PrintMessage('No variant name is given! building DIP-8_W7.62mm')
+        model_to_build='DIP-8_W7.62mm'
     else:
         model_to_build=sys.argv[2]
 
@@ -695,8 +666,9 @@ if __name__ == "__main__":
         # # export STEP model
         # exportSTEP(doc,ModelName,out_dir)
         script_dir=os.path.dirname(os.path.realpath(__file__))
-        expVRML.say(script_dir)
-        out_dir=script_dir+os.sep+destination_dir #+all_params[variant].dest_dir_prefix
+        models_dir=script_dir+"/../_3Dmodels"
+        expVRML.say(models_dir)
+        out_dir=models_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"
@@ -716,7 +688,7 @@ if __name__ == "__main__":
         expVRML.say(objs)
         expVRML.say("######################################################################")
         export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=destination_dir+os.sep+ModelName+'.wrl'
+        export_file_name=out_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)

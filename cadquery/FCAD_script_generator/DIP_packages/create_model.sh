@@ -6,4 +6,6 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-freecad make_dip_export_fc.py DIP08
+echo Best using FC 0.15
+#freecad  main_generator.py DIP-8_W7.62mm
+freecad  main_generator.py $1
