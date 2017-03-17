@@ -11,10 +11,10 @@
 ## file of parametric definitions
 
 from collections import namedtuple
-import cq_params_gw_soic  # modules parameters
-from cq_params_gw_soic import *
+import cq_parameters_soic  # modules parameters
+from cq_parameters_soic import *
 
-destination_dir="generated_gw"
+destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 
@@ -44,7 +44,7 @@ all_params_tssop = {
         epad = None, # e Pad
         modelName = 'tssop_14_50x44_p065', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'tssop'
+        dest_dir_prefix = 'TSSOP'
         ),
 }
 

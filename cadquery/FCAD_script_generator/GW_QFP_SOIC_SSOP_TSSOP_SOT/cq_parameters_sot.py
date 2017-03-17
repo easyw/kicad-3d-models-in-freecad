@@ -10,10 +10,10 @@
 
 ## file of parametric definitions
 from collections import namedtuple
-import cq_params_gw_soic  # modules parameters
-from cq_params_gw_soic import *
+import cq_parameters_soic  # modules parameters
+from cq_parameters_soic import *
 
-destination_dir="generated_gw"
+destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 all_params_sot = {
@@ -42,7 +42,7 @@ all_params_sot = {
         epad = None, # e Pad
         modelName = 'sot23_6_18x29_p095', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'sot'
+        dest_dir_prefix = 'SOT'
         ),
     'SOT23_3': Params( # 1.8x3.1, pitch 0.95 6pin 1.45mm height
         the = 8.0,      # body angle in degrees
@@ -69,7 +69,7 @@ all_params_sot = {
         epad = None, # e Pad
         modelName = 'sot23_3_25x30_p095', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'sot'
+        dest_dir_prefix = 'SOT'
         ),
     'SOT23_5': Params( # 1.8x3.1, pitch 0.95 5pin 1.45mm height
         the = 8.0,      # body angle in degrees
@@ -96,7 +96,7 @@ all_params_sot = {
         epad = None, # e Pad
         modelName = 'sot23_5_18x29_p095', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'sot'
+        dest_dir_prefix = 'SOT'
         ),
     'SC70_3': Params( # 1.8x3.1, pitch 0.95 6pin 1.45mm height
         the = 8.0,      # body angle in degrees
@@ -123,6 +123,6 @@ all_params_sot = {
         epad = None, # e Pad
         modelName = 'sc70_3_22x22_p065', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'sot'
+        dest_dir_prefix = 'SOT'
         ),        
 }

@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="generated_gw"
+destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 max_cc1 = 1     # maximum size for 1st pin corner chamfer

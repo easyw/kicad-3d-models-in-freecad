@@ -11,11 +11,11 @@
 ## file of parametric definitions
 
 from collections import namedtuple
-import cq_params_gw_soic  # modules parameters
-from cq_params_gw_soic import *
+import cq_parameters_soic  # modules parameters
+from cq_parameters_soic import *
 
 
-destination_dir="./generated_gw/"
+destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 
@@ -346,7 +346,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-32_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-32-1EP_5x5mm_Pitch0.5mm': Params(
     #from http://www.nxp.com/documents/outline_drawing/SOT401-1.pdf    
@@ -374,7 +374,7 @@ kicad_naming_params_qfp = {
         epad = (3.45,3.45), # e Pad
         modelName = 'LQFP-32-1EP_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-32_7x7mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT358-1.pdf
         the = 12.0,      # body angle in degrees
@@ -401,7 +401,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-32_7x7mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-36_7x7mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub_link/Collateral/561AV.PDF
         the = 12.0,      # body angle in degrees
@@ -428,7 +428,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-36_7x7mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-44_10x10mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT389-1.pdf
         the = 12.0,      # body angle in degrees
@@ -455,7 +455,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-44_10x10mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-48_7x7mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT313-2.pdf
         the = 12.0,      # body angle in degrees
@@ -482,7 +482,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-48_7x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-52_10x10mm_Pitch0.65mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1671-1.pdf
         the = 12.0,      # body angle in degrees
@@ -509,7 +509,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-52_10x10mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-52-1EP_10x10mm_Pitch0.65mm': Params(
         the = 12.0,      # body angle in degrees
@@ -536,7 +536,7 @@ kicad_naming_params_qfp = {
         epad = (4.8,4.8), # e Pad
         modelName = 'LQFP-52-1EP_10x10mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-64_7x7mm_Pitch0.4mm': Params( # http://www.nxp.com/documents/outline_drawing/SOT414-1.pdf
         the = 12.0,      # body angle in degrees
@@ -563,7 +563,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-64_7x7mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-64_10x10mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT314-2.pdf
         the = 12.0,      # body angle in degrees
@@ -590,7 +590,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-64_10x10mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-64-1EP_10x10mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT314-2.pdf
         the = 12.0,      # body angle in degrees
@@ -617,7 +617,7 @@ kicad_naming_params_qfp = {
         epad = (6.5,6.5), # e Pad
         modelName = 'LQFP-64-1EP_10x10mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-64_14x14mm_Pitch0.8mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT791-1.pdf
         the = 12.0,      # body angle in degrees
@@ -644,7 +644,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-64_14x14mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-80_12x12mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT315-1.pdf
         the = 12.0,      # body angle in degrees
@@ -671,7 +671,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-80_12x12mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-100_14x14mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT407-1.pdf
         the = 12.0,      # body angle in degrees
@@ -698,7 +698,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-100_14x14mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-128_14x14mm_Pitch0.4mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT315-1.pdf
         the = 12.0,      # body angle in degrees
@@ -725,7 +725,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-128_14x14mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-128_14x20mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT425-1.pdf
         the = 12.0,      # body angle in degrees
@@ -752,7 +752,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-128_14x20mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-144_20x20mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT486-1.pdf
         the = 12.0,      # body angle in degrees
@@ -779,7 +779,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-144_20x20mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-160_24x24mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT435-1.pdf
         the = 12.0,      # body angle in degrees
@@ -806,7 +806,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-160_24x24mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-176_20x20mm_Pitch0.4mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1017-1.pdf
         the = 12.0,      # body angle in degrees
@@ -833,7 +833,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-176_20x20mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
          ),
     'LQFP-176_24x24mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT506-1.pdf
         the = 12.0,      # body angle in degrees
@@ -860,7 +860,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-176_24x24mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-208_28x28mm_Pitch0.5mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT459-1.pdf
         the = 12.0,      # body angle in degrees
@@ -887,7 +887,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-208_28x28mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'LQFP-216_24x24mm_Pitch0.4mm': Params( # from https://www.renesas.com/en-in/package-image/pdf/outdrawing/p216gm-40-gby.pdf
         the = 12.0,      # body angle in degrees
@@ -914,7 +914,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'LQFP-216_24x24mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'PQFP-80_14x20mm_Pitch0.8mm': Params( # from http://www.ti.com/lit/ds/symlink/tl16pir552.pdf
         the = 8.0,      # body angle in degrees
@@ -941,7 +941,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'PQFP-80_14x20mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'PQFP-100_14x20mm_Pitch0.65mm': Params( # from http://pdf1.alldatasheet.com/datasheet-pdf/view/181852/STMICROELECTRONICS/PQFP100.html
         the = 8.0,      # body angle in degrees
@@ -968,7 +968,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'PQFP-100_14x20mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'PQFP-256_28x28mm_Pitch0.4mm': Params( # from http://www.topline.tv/drawings/pdf/qfp/QFP256T15.7-2.6.pdf
         the = 8.0,      # body angle in degrees
@@ -995,7 +995,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'PQFP-256_28x28mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-32_7x7mm_Pitch0.8mm': Params( # from http://www.ti.com/lit/ml/mpqf112/mpqf112.pdf
         the = 12.0,      # body angle in degrees
@@ -1022,7 +1022,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-32_7x7mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-44_10x10mm_Pitch0.8mm': Params( # from http://www.ti.com/lit/ml/mpqf075/mpqf075.pdf
         the = 12.0,      # body angle in degrees
@@ -1049,7 +1049,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-44_10x10mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-44-1EP_10x10mm_Pitch0.8mm': Params( # from http://www.ti.com/lit/ml/mpqf074c/mpqf074c.pdf
         the = 12.0,      # body angle in degrees
@@ -1076,7 +1076,7 @@ kicad_naming_params_qfp = {
         epad = (4.5,4.5), # e Pad
         modelName = 'TQFP-44-1EP_10x10mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-48_7x7mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mtqf019a/mtqf019a.pdf
         the = 12.0,      # body angle in degrees
@@ -1103,7 +1103,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-48_7x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-48-1EP_7x7mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mtqf019a/mtqf019a.pdf
         the = 12.0,      # body angle in degrees
@@ -1130,7 +1130,7 @@ kicad_naming_params_qfp = {
         epad = (3.5,3.5), # e Pad
         modelName = 'TQFP-48-1EP_7x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-64_7x7mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ml/mpqf039a/mpqf039a.pdf
         the = 12.0,      # body angle in degrees
@@ -1157,7 +1157,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-64_7x7mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-64_10x10mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mtqf006a/mtqf006a.pdf
         the = 12.0,      # body angle in degrees
@@ -1184,7 +1184,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-64_10x10mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-64_1EP_10x10mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mtqf006a/mtqf006a.pdf
         the = 12.0,      # body angle in degrees
@@ -1211,7 +1211,7 @@ kicad_naming_params_qfp = {
         epad = (4.5,4.5), # e Pad
         modelName = 'TQFP-64_1EP_10x10mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'HTQFP-64_1EP_10x10mm_Pitch0.5mm_ThermalPad': Params( # from http://www.ti.com/lit/ml/mtqf006a/mtqf006a.pdf
         the = 12.0,      # body angle in degrees
@@ -1238,7 +1238,7 @@ kicad_naming_params_qfp = {
         epad = (7.5,7.5), #None, # e Pad
         modelName = 'HTQFP-64_1EP_10x10mm_Pitch0.5mm_ThermalPad', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-64_14x14mm_Pitch0.8mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
         the = 12.0,      # body angle in degrees
@@ -1265,7 +1265,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-64_14x14mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-80_12x12mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mtqf009a/mtqf009a.pdf
         the = 12.0,      # body angle in degrees
@@ -1292,7 +1292,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-80_12x12mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-80_14x14mm_Pitch0.65mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
         the = 12.0,      # body angle in degrees
@@ -1319,7 +1319,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-80_14x14mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-100_12x12mm_Pitch0.4mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
         the = 12.0,      # body angle in degrees
@@ -1346,7 +1346,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-100_12x12mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-100_14x14mm_Pitch0.5mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
         the = 12.0,      # body angle in degrees
@@ -1373,7 +1373,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-100_14x14mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-100_1EP_14x14mm_Pitch0.5mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
         the = 12.0,      # body angle in degrees
@@ -1400,7 +1400,7 @@ kicad_naming_params_qfp = {
         epad = (7.5,7.5), # e Pad
         modelName = 'TQFP-100_1EP_14x14mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-120_14x14mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ml/mpqf012/mpqf012.pdf
         the = 12.0,      # body angle in degrees
@@ -1427,7 +1427,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-120_14x14mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-128_14x14mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ml/mpqf013/mpqf013.pdf
         the = 12.0,      # body angle in degrees
@@ -1454,7 +1454,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-128_14x14mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
     'TQFP-144_16x16mm_Pitch0.4mm': Params( # from http://ww1.microchip.com/downloads/en/DeviceDoc/70616g.pdf
         the = 12.0,      # body angle in degrees
@@ -1481,7 +1481,7 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-144_16x16mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
 	'TQFP-144_20x20mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mpqf082/mpqf082.pdf
         the = 12.0,      # body angle in degrees
@@ -1508,6 +1508,6 @@ kicad_naming_params_qfp = {
         epad = None, # e Pad
         modelName = 'TQFP-144_20x20mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'qfp'
+        dest_dir_prefix = 'QFP'
         ),
 }

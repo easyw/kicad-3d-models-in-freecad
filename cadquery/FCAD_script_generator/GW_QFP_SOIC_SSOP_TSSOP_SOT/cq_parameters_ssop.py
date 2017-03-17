@@ -11,10 +11,10 @@
 ## file of parametric definitions
 
 from collections import namedtuple
-import cq_params_gw_soic  # modules parameters
-from cq_params_gw_soic import *
+import cq_parameters_soic  # modules parameters
+from cq_parameters_soic import *
 
-destination_dir="generated_gw"
+destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 
@@ -44,7 +44,7 @@ all_params_ssop = {
         epad = None, # e Pad
         modelName = 'SSOP-20_5.3x7.2mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        dest_dir_prefix = 'SSOP'
         ),
     'MSOP-8-1EP_3x3mm_Pitch0.65mm': Params( # 3x3, pitch 0.65 8pin 1.0mm height
         the = 12.0,      # body angle in degrees
@@ -71,7 +71,7 @@ all_params_ssop = {
         epad = (1.7,1.7), # e Pad
         modelName = 'MSOP-8-1EP_3x3mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        dest_dir_prefix = 'SSOP'
         ),
     'TSSOP-14_4.4x5mm_Pitch0.65mm': Params( # 5.0x4.4, pitch 0.65 14pin 1.1mm height
         the = 12.0,      # body angle in degrees
@@ -98,7 +98,7 @@ all_params_ssop = {
         epad = None, # e Pad
         modelName = 'TSSOP-14_4.4x5mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'Housings_SSOP.3dshapes'
+        dest_dir_prefix = 'SSOP'
         ),
         
         'SSOP_20': Params( # 5.6x7.2, pitch 0.65 20pin 2.0mm height
@@ -126,7 +126,7 @@ all_params_ssop = {
         epad = None, # e Pad
         modelName = 'ssop_20_53x72_p065', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'ssop'
+        dest_dir_prefix = 'SSOP'
         ),
     'SSOP_20_Pad': Params( # 5.6x7.2, pitch 0.65 20pin 2.0mm height
         the = 12.0,      # body angle in degrees
@@ -153,6 +153,6 @@ all_params_ssop = {
         epad = (5.0,3.0), # e Pad
         modelName = 'ssop_20_53x72_pad_p065', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'ssop'
+        dest_dir_prefix = 'SSOP'
         ),
 }

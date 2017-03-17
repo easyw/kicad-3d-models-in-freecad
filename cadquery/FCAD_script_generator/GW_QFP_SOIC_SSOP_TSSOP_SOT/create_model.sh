@@ -6,4 +6,6 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-freecad make_gw_export_fc.py SOIC_8
+echo Best using FC 0.15
+#freecad  main_generator.py SOIC-8_3.9x4.9mm_Pitch1.27mm
+freecad  main_generator.py $1
