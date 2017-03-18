@@ -460,10 +460,12 @@ if __name__ == "__main__":
     #if model_to_build == "all":
     #    variants = all_params.keys()
     #elif model_to_build == "SOIC":
+    close_doc=False
     if model_to_build == "allSOIC":
         variants = kicad_naming_params_soic.keys()
     elif model_to_build == "allQFP":
         variants = kicad_naming_params_qfp.keys()
+        close_doc=True #QFP are too many ... closing doc is requied to avoid memory leak
     elif model_to_build == "allSSOP":
         variants = all_params_ssop.keys()
     elif model_to_build == "allTSSOP":
@@ -563,4 +565,12 @@ if __name__ == "__main__":
         Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
+        if close_doc: #closing doc to avoid memory leak
+            expVRML.say("closing doc to save memory")
+            App.closeDocument(doc.Name)
+            App.setActiveDocument("")
+            App.ActiveDocument=None
+            Gui.ActiveDocument=None
+        
+        
     #sys.exit()  #to create model and exit
