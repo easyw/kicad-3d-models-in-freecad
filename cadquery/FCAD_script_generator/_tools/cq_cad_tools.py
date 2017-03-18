@@ -495,7 +495,11 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
     App.getDocument(doc.Name).Label = doc.Name
     Gui.SendMsgToActiveView("Save")
     App.getDocument(doc.Name).save()
-
+    try:
+        os.remove(outdir+os.sep+modelName+'.FCStd1') #removing backup file
+    except:
+        pass
+        
     return 0
 
 ###################################################################
