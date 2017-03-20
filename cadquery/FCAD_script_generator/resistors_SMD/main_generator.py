@@ -177,12 +177,26 @@ def make_chip(params):
 #import step_license as L
 import add_license as Lic
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "main_generator":
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    
+    full_path=os.path.realpath(__file__)
+    expVRML.say(full_path)
+    scriptdir=os.path.dirname(os.path.realpath(__file__))
+    expVRML.say(scriptdir)
+    sub_path = full_path.split(scriptdir)
+    expVRML.say(sub_path)
+    sub_dir_name =full_path.split(os.sep)[-2]
+    expVRML.say(sub_dir_name)
+    sub_path = full_path.split(sub_dir_name)[0]
+    expVRML.say(sub_path)
+    models_dir=sub_path+"_3Dmodels"
+    #expVRML.say(models_dir)
+    #stop
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
+        FreeCAD.Console.PrintMessage('No variant name is given! building R_0402')
         model_to_build='R_0402'
     else:
         model_to_build=sys.argv[2]
@@ -203,7 +217,7 @@ if __name__ == "__main__":
         ModelName = all_params[variant].modelName
         CheckedModelName = ModelName.replace('.', '')
         CheckedModelName = CheckedModelName.replace('-', '_')
-        Newdoc = FreeCAD.newDocument(CheckedModelName)
+        Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         body, pins, top = make_chip(all_params[variant])
@@ -243,7 +257,7 @@ if __name__ == "__main__":
             z_RotateObject(doc, rot)
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
-        models_dir=script_dir+"/../_3Dmodels"
+        #models_dir=script_dir+"/../_3Dmodels"
         expVRML.say(models_dir)
         out_dir=models_dir+destination_dir
         if not os.path.exists(out_dir):
