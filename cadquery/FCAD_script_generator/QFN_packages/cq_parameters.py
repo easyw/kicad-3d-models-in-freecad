@@ -41,7 +41,7 @@ Params = namedtuple("Params", [
     'rotation', #rotation if required
     'dest_dir_prefix' #destination dir prefixD2 = params.epad[0]
 ])
-
+    
 all_params_qfn = {
     'LGA1633': Params( #3x3mm, 16-pin LGA package, 1.0mm height
         #example - http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00250937.pdf
@@ -65,7 +65,7 @@ all_params_qfn = {
         npy = 3,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfp20_4x4_p032', #modelName 'lga16_3x3_p05', #modelName
+        modelName = 'lga16_3x3_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
     ),
@@ -91,7 +91,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.6,1.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn6_2x2_p065', #modelName
+        modelName = 'dfn6_2x2_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -117,7 +117,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn8_3x3_p05', #modelName
+        modelName = 'dfn8_3x3_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -143,7 +143,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,1.4), #(2.5,1.5), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn8_3x3_p065', #modelName
+        modelName = 'dfn8_3x3_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -169,7 +169,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.2,0.61), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn8_2x3_p05', #modelName
+        modelName = 'dfn8_2x3_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -195,7 +195,7 @@ all_params_qfn = {
         npy = 2,  # number of pins along y axis (length)
         epad = (1.5,1.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DHVQFN14', #modelName
+        modelName = 'DHVQFN14', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -221,7 +221,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'sot891_1x1_p035', #modelName
+        modelName = 'sot891_1x1_p035', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -247,7 +247,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2,2), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn8_6x5_p127', #modelName
+        modelName = 'dfn8_6x5_p127', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -273,7 +273,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,0.84), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'dfn10_2x3_p05', #modelName
+        modelName = 'dfn10_2x3_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -298,7 +298,7 @@ all_params_qfn = {
         npy = 4,  # number of pins along y axis (length)
         epad = (1.7,1.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn16_3x3_p05', #modelName
+        modelName = 'qfn16_3x3_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -323,7 +323,7 @@ all_params_qfn = {
         npy = 6,  # number of pins along y axis (length)
         epad = (2.45,2.45), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn24_415x415_p05', #modelName
+        modelName = 'qfn24_415x415_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -348,7 +348,7 @@ all_params_qfn = {
         npy = 7,  # number of pins along y axis (length)
         epad = (3.7,3.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn28_6x6_p065', #modelName
+        modelName = 'qfn28_6x6_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -373,7 +373,7 @@ all_params_qfn = {
         npy = 8,  # number of pins along y axis (length)
         epad = (3.6,3.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn32_5x5_p05', #modelName
+        modelName = 'qfn32_5x5_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -399,7 +399,7 @@ all_params_qfn = {
         npy = 10,  # number of pins along y axis (length)
         epad = (3.52,2.62), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn40_6x6_p05', #modelName
+        modelName = 'qfn40_6x6_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -424,7 +424,7 @@ all_params_qfn = {
         npy = 11,  # number of pins along y axis (length)
         epad = (6.45,6.45), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn44_8x8_p065', #modelName
+        modelName = 'qfn44_8x8_p065', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -449,7 +449,7 @@ all_params_qfn = {
         npy = 16,  # number of pins along y axis (length)
         epad = (4.7,4.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'qfn64_9x9_p05', #modelName
+        modelName = 'qfn64_9x9_p05', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -474,7 +474,7 @@ all_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'TCPT1350x01', #modelName
+        modelName = 'TCPT1350x01', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -502,7 +502,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.37,0.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-6-1EP_2x2mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-6-1EP_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -527,7 +527,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.64,0.9), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-6-1EP_2x2mm_Pitch0.65mm', #modelName
+        modelName = 'DFN-6-1EP_2x2mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -552,7 +552,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.0,1.2), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-6-1EP_3x3mm_Pitch0.95mm', #modelName
+        modelName = 'DFN-6-1EP_3x3mm_Pitch0.95mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -577,7 +577,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8_2x2mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-8_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -602,7 +602,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.2,0.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_2x2mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-8-1EP_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -627,7 +627,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.37,0.64), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_2x2mm_Pitch0.45mm', #modelName
+        modelName = 'DFN-8-1EP_2x2mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -652,7 +652,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.15,0.56), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_2x3mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-8-1EP_2x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -677,7 +677,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.4,1.4), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_3x2mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-8-1EP_3x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -702,7 +702,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.65,1.35), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_3x2mm_Pitch0.45mm', #modelName
+        modelName = 'DFN-8-1EP_3x2mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -727,7 +727,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_3x3mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-8-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -752,7 +752,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.3,1.5), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_3x3mm_Pitch0.65mm', #modelName
+        modelName = 'DFN-8-1EP_3x3mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -777,7 +777,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.06,2.4), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_4x4mm_Pitch0.8mm', #modelName
+        modelName = 'DFN-8-1EP_4x4mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -802,7 +802,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (4.0,4.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_6x5mm_Pitch1.27mm_LargeFlag', #modelName
+        modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm_LargeFlag', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -827,7 +827,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.0,2.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-8-1EP_6x5mm_Pitch1.27mm_SmallFlag', #modelName
+        modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm_SmallFlag', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -852,7 +852,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.4,0.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-10-1EP_2x3mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-10-1EP_2x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -877,7 +877,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.38,1.65), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-10-1EP_3x3mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-10-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -902,7 +902,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.39,0.64), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-12-1EP_2x3mm_Pitch0.45mm', #modelName
+        modelName = 'DFN-12-1EP_2x3mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -927,7 +927,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (2.25,1.65), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-12-1EP_3x3mm_Pitch0.45mm', #modelName
+        modelName = 'DFN-12-1EP_3x3mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -952,7 +952,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (3.3,1.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-12-1EP_3x4mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-12-1EP_3x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -977,7 +977,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (3.4,2.5), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-12-1EP_4x4mm_Pitch0.65mm', #modelName
+        modelName = 'DFN-12-1EP_4x4mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1002,7 +1002,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (3.38,1.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-14-1EP_4x4mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-14-1EP_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1027,7 +1027,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (3.99,3.45), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'DFN-16-1EP_5x5mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-16-1EP_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1053,7 +1053,7 @@ kicad_naming_params_qfn = {
         npy = 7,  # number of pins along y axis (length)
         epad = (4.55,4.55), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'QFN-28-1EP_6x6mm_Pitch0.65mm', #modelName
+        modelName = 'QFN-28-1EP_6x6mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1080,7 +1080,7 @@ kicad_naming_params_qfn = {
         npy = 10,  # number of pins along y axis (length)
         epad = (4.1,4.1), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'QFN-40-1EP_6x6mm_Pitch0.5mm', #modelName
+        modelName = 'QFN-40-1EP_6x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1106,7 +1106,7 @@ kicad_naming_params_qfn = {
         npy = 9,  # number of pins along y axis (length)
         epad = (4.7,3.7), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'QFN-42-1EP_5x6mm_Pitch0.4mm', #modelName
+        modelName = 'QFN-42-1EP_5x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1132,7 +1132,7 @@ kicad_naming_params_qfn = {
         npy = 11,  # number of pins along y axis (length)
         epad = (6.45,6.45), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'QFN-44-1EP_8x8mm_Pitch0.65mm', #modelName
+        modelName = 'QFN-44-1EP_8x8mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -1158,8 +1158,34 @@ kicad_naming_params_qfn = {
         npy = 16,  # number of pins along y axis (length)
         epad = (7.15,7.15), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'QFN-64-1EP_9x9mm_Pitch0.5mm', #modelName
+        modelName = 'QFN-64-1EP_9x9mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
-        ),  
+        ),
+    'UQFN-48-1EP_6x6mm_Pitch0.4mm': Params( # 9x9, 0.5 pitch, 64 pins, 0.9mm height  QFN64 p05 microchip
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.4,      #0.45 chamfer of the epad 1st pin corner
+        D = 6.0,       # body overall length
+        E = 6.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.2,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        sq = False,   # square pads
+        npx = 12,  # number of pins along X axis (width)
+        npy = 12,  # number of pins along y axis (length)
+        epad = (4.5,4.5), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'qfp20_4x4_p032', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+
 }
