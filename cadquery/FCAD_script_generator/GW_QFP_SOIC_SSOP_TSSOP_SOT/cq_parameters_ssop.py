@@ -19,6 +19,34 @@ destination_dir="/GullWings_packages"
 
 
 all_params_ssop = {
+    'QSOP-24_3.9x8.7mm_Pitch0.635mm': Params( # 3.9x8.7, pitch 0.635 24pin 1.5mm height
+        the = 12.0,           # body angle in degrees
+        tb_s = 0.15,          # top part of body is that much smaller
+        c = 0.17,             # pin thickness, body center part height
+        R1 = 0.1,             # pin upper corner, inner radius
+        R2 = 0.1,             # pin lower corner, inner radius
+        S = 0.2,              # pin top flat part length (excluding corner arc)
+#        L = 0.64,            # pin bottom flat part length (including corner arc)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.2,           # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 8.7,             # body length
+        E1 = 3.9,             # body width
+        E = 6.0,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.17,            # body-board separation
+        A2 = 1.47,            # body height
+        b = 0.25,             # pin width
+        e = 0.635,            # pin (center-to-center) distance
+        npx = 12,             # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = None,          # ePad
+        excluded_pins = None, # no pin excluded
+        modelName = 'QSOP-24_3.9x8.7mm_Pitch0.635mm',
+        rotation = -90,       # rotation if required
+        dest_dir_prefix = 'SSOP'
+        ),
     'SSOP-20_5.3x7.2mm_Pitch0.65mm': Params( # 5.3x7.2, pitch 0.65 20pin 2.0mm height
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
