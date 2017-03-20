@@ -407,4 +407,5 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
         Gui.activateWorkbench("PartWorkbench")
         Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewBottom()
+        #Gui.activeDocument().activeView().viewBottom()
+        Gui.activeDocument().activeView().viewAxometric()
