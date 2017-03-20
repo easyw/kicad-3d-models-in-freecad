@@ -71,7 +71,7 @@ all_params_ssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'SSOP-20_5.3x7.2mm_Pitch0.65mm', #modelName
+        modelName ='SSOP-20_5.3x7.2mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
@@ -99,7 +99,7 @@ all_params_ssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = (1.7,1.7), # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'MSOP-8-1EP_3x3mm_Pitch0.65mm', #modelName
+        modelName ='MSOP-8-1EP_3x3mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
@@ -127,7 +127,7 @@ all_params_ssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'TSSOP-14_4.4x5mm_Pitch0.65mm', #modelName
+        modelName ='TSSOP-14_4.4x5mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
@@ -156,7 +156,7 @@ all_params_ssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'ssop_20_53x72_p065', #modelName
+        modelName ='ssop_20_53x72_p065', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
@@ -184,7 +184,7 @@ all_params_ssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = (5.0,3.0), # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'qfp20_4x4_p032', #modelName 'ssop_20_53x72_pad_p065', #modelName
+        modelName ='ssop_20_53x72_pad_p065', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),

@@ -217,7 +217,7 @@ def make_qfn(params):
     first_pos_x = (npx-1)*e/2
     for i in range(npx):
         if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, 0, 0)).\
+            pin = bpin.translate((first_pos_x-i*e, -m, 0)).\
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
         pincounter += 1
@@ -225,20 +225,20 @@ def make_qfn(params):
     first_pos_y = (npy-1)*e/2
     for i in range(npy):
         if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+            pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
                 rotate((0,0,0), (0,0,1), 270)
             pins.append(pin)
         pincounter += 1
 
     for i in range(npx):
         if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, 0, 0))
+            pin = bpin.translate((first_pos_x-i*e, -m, 0))
             pins.append(pin)
         pincounter += 1
     
     for i in range(npy):
         if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+            pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
                 rotate((0,0,0), (0,0,1), 90)
             pins.append(pin)
         pincounter += 1
@@ -323,7 +323,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case, pins, pinmark = make_qfn(all_params[variant])
-
 
         show(case)
         show(pins)
