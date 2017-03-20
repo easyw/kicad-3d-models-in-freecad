@@ -192,12 +192,16 @@ def make_gw(params):
     mN  = params.modelName
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
+    if params.excluded_pins:
+        excluded_pins = params.excluded_pins
+    else:
+        excluded_pins=() ##no pin excluded 
 
     if params.epad:
         D2 = params.epad[0]
         E2 = params.epad[1]
 
-    # calculated dimensions for body
+    # calculated dimensions for body    
     # checking pin lenght compared to overall width
     # d=(E-E1 -2*(S+L)-2*(R1))
     L=(E-E1-2*(S+R1))/2
@@ -240,7 +244,7 @@ def make_gw(params):
     ##
     ## # fillet the corners
     ## if ef!=0:
-    ##     BS = cq.selectors.BoxSelector
+    ##     BS = cq.selectors.BoxSelector    
     ##     case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
     ##     case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
     ##     case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
@@ -353,6 +357,10 @@ def make_gw(params):
             case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
 
     # first pin indicator is created with a spherical pocket
+    if fp_r == 0:
+        global place_pinMark
+        place_pinMark=False
+        fp_r = 0.1
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
     
@@ -401,26 +409,35 @@ def make_gw(params):
         line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
 
     pins = []
-    # create top, bottom side pins
-    first_pos = -(npx-1)*e/2
+    pincounter = 1
+    first_pos_x = (npx-1)*e/2
     for i in range(npx):
-        if i not in excluded_pins_xmirror:
-            pin = bpin.translate((first_pos+i*e, 0, 0))
-            pins.append(pin)
-        if i not in excluded_pins_x:
-            pin = bpin.translate((first_pos+i*e, 0, 0)).\
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_x-i*e, 0, 0)).\
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
-
-    # create right, left side pins
-    first_pos = -(npy-1)*e/2
+        pincounter += 1
+    
+    first_pos_y = (npy-1)*e/2
     for i in range(npy):
-        pin = bpin.translate((first_pos+i*e, (D1-E1)/2, 0)).\
-            rotate((0,0,0), (0,0,1), 90)
-        pins.append(pin)
-        pin = bpin.translate((first_pos+i*e, (D1-E1)/2, 0)).\
-            rotate((0,0,0), (0,0,1), 270)
-        pins.append(pin)
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+                rotate((0,0,0), (0,0,1), 270)
+            pins.append(pin)
+        pincounter += 1
+
+    for i in range(npx):
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_x-i*e, 0, 0))
+            pins.append(pin)
+        pincounter += 1
+    
+    for i in range(npy):
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+                rotate((0,0,0), (0,0,1), 90)
+            pins.append(pin)
+        pincounter += 1
 
     # create exposed thermal pad if requested
     if params.epad:
@@ -488,8 +505,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
         variants = [model_to_build]
 
     for variant in variants:
-        excluded_pins_x=() ##no pin excluded
-        excluded_pins_xmirror=() ##no pin excluded
         place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
 
         FreeCAD.Console.PrintMessage('\r\n'+variant)

@@ -154,6 +154,10 @@ def make_qfn(params):
     mN  = params.modelName
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
+    if params.excluded_pins:
+        excluded_pins = params.excluded_pins
+    else:
+        excluded_pins=() ##no pin excluded 
 
     if params.epad:
         D2 = params.epad[0]
@@ -173,6 +177,10 @@ def make_qfn(params):
     case=case.translate((0,0,A2/2+A1)).rotate((0,0,0), (0,0,1), 0)
 
     # first pin indicator is created with a spherical pocket
+    if fp_r == 0:
+        global place_pinMark
+        place_pinMark=False
+        fp_r = 0.1
     sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
     sphere_z = A + sphere_r * 2 - fp_z - sphere_r
 
@@ -205,25 +213,35 @@ def make_qfn(params):
 
     pins = []
     # create top, bottom side pins
-    first_pos = -(npx-1)*e/2
+    pincounter = 1
+    first_pos_x = (npx-1)*e/2
     for i in range(npx):
-        if i not in excluded_pins_xmirror:
-            pin = bpin.translate((first_pos+i*e, -m, 0))
-            pins.append(pin)
-        if i not in excluded_pins_x:
-            pin = bpin.translate((first_pos+i*e, -m, 0)).\
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_x-i*e, 0, 0)).\
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
-
-    # create right, left side pins
-    first_pos = -(npy-1)*e/2
+        pincounter += 1
+    
+    first_pos_y = (npy-1)*e/2
     for i in range(npy):
-        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
-            rotate((0,0,0), (0,0,1), 90)
-        pins.append(pin)
-        pin = bpin.translate((first_pos+i*e, (D-E)/2-m, 0)).\
-            rotate((0,0,0), (0,0,1), 270)
-        pins.append(pin)
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+                rotate((0,0,0), (0,0,1), 270)
+            pins.append(pin)
+        pincounter += 1
+
+    for i in range(npx):
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_x-i*e, 0, 0))
+            pins.append(pin)
+        pincounter += 1
+    
+    for i in range(npy):
+        if pincounter not in excluded_pins:
+            pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
+                rotate((0,0,0), (0,0,1), 90)
+            pins.append(pin)
+        pincounter += 1
 
     # create exposed thermal pad if requested
     if params.epad:
