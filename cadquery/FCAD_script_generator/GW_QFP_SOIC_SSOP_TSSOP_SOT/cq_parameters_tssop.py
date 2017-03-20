@@ -42,7 +42,8 @@ all_params_tssop = {
         npx = 7,   # number of pins along X axis (width)
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
-        modelName = 'tssop_14_50x44_p065', #modelName
+        excluded_pins = None, #no pin excluded
+        modelName = 'qfp20_4x4_p032', #modelName 'tssop_14_50x44_p065', #modelName
         rotation = 0, # rotation if required
         dest_dir_prefix = 'TSSOP'
         ),
