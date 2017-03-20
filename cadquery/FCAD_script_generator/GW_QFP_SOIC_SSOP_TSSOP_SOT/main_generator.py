@@ -486,11 +486,12 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=False
             else:
                 color_pin_mark=True
-    #if model_to_build == "all":
+    close_doc=False
+    if model_to_build == "all":
+        expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
     #    variants = all_params.keys()
     #elif model_to_build == "SOIC":
-    close_doc=False
-    if model_to_build == "allSOIC":
+    elif model_to_build == "allSOIC":
         variants = kicad_naming_params_soic.keys()
     elif model_to_build == "allQFP":
         variants = kicad_naming_params_qfp.keys()
