@@ -590,15 +590,17 @@ if __name__ == "__main__" or __name__ == "main_generator":
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
+
         if close_doc: #closing doc to avoid memory leak
             expVRML.say("closing doc to save memory")
             App.closeDocument(doc.Name)
             App.setActiveDocument("")
             App.ActiveDocument=None
             Gui.ActiveDocument=None
+        else:
+            Gui.activateWorkbench("PartWorkbench")
+            Gui.SendMsgToActiveView("ViewFit")
+            Gui.activeDocument().activeView().viewAxometric()
         
         
     #sys.exit()  #to create model and exit
