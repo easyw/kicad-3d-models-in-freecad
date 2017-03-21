@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="generated_cap"
+destination_dir="/Capacitors_Radial_THT"
 # destination_dir="./"
 
 Params = namedtuple("Params", [
@@ -40,7 +40,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'c_el_th_L16_D5_p05', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
     "L10_D5_p05" : Params(
         L = 10.,
@@ -52,7 +52,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'c_el_th_L10_D5_p05', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
     "L11_5_D08_p05" : Params(
         L = 11.5,
@@ -64,7 +64,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'c_el_th_L11_5_D08_p05', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
     "L18_D15_p075" : Params(
         L = 18,
@@ -76,7 +76,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'c_el_th_L18_D15_p075', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
     "L18_D20_p075" : Params(
         L = 18,
@@ -88,9 +88,9 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'c_el_th_L18_D20_p075', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
-    "L35_D12_5_p05" : Params(
+    "L35_D12.5_p05" : Params(
         L = 35,
         D = 12.5,
         d = 0.8,
@@ -98,9 +98,9 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         ll = 2.0,
         la = 0.0,
         bs = 0.,
-        modelName = 'c_el_th_L35_D12_5_p05', #modelName
+        modelName = 'c_el_th_L35_D12.5_p05', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
     "CP_Radial_D10.0mm_P5.00mm" : Params(
         L = 12.5,
@@ -112,7 +112,7 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         bs = 0.,
         modelName = 'CP_Radial_D10.0mm_P5.00mm', #modelName
         rotation  = 180, # rotation if required
-        dest_dir_prefix = 'cap_El_th'
+        dest_dir_prefix = ''
     ),
 }
 
