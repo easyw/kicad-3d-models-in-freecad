@@ -62,7 +62,7 @@ from collections import namedtuple
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("./exportVRML")
+sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -91,36 +91,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        msg="missing CadQuery Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-
-#######################################################################
-
-from Gui.Command import *
-
 outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
@@ -130,34 +100,38 @@ from cq_cad_tools import say, sayw, saye
 
 # Reload tools
 reload(cq_cad_tools)
+
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors
+ CutObjs_wColors, checkRequirements
 
-# Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+
+# from export_x3d import exportX3D, Mesh
+try:
+    # Gui.SendMsgToActiveView("Run")
+    # cq Gui
+    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
+#checking requirements
+checkRequirements(cq)
 
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "example not present"
+    print "CQ 030 doesn't open example file"
 
-# from export_x3d import exportX3D, Mesh
-import cadquery as cq
-from Helpers import show
-# maui end
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
+# import cq_parameters  # modules parameters
+# from cq_parameters import *
 
 from collections import namedtuple
 
@@ -272,11 +246,11 @@ headers = {
     ),
 }
 
-destination_dir="./generated_pinheaders/"
-if not os.path.exists(destination_dir):
-    os.makedirs(destination_dir)
-
-outdir = "" # handled below
+#destination_dir="./generated_pinheaders/"
+#if not os.path.exists(destination_dir):
+#    os.makedirs(destination_dir)
+#
+#outdir = "" # handled below
 
 #Make a single plastic base block (chamfered if required)
 def MakeBaseBlock(params):
@@ -337,10 +311,30 @@ def MakeHeader(n, params):
     global LIST_license
     name = HeaderName(n,params)
     
+    destination_dir="/Pin_Headers"
+    
+    full_path=os.path.realpath(__file__)
+    expVRML.say(full_path)
+    scriptdir=os.path.dirname(os.path.realpath(__file__))
+    expVRML.say(scriptdir)
+    sub_path = full_path.split(scriptdir)
+    expVRML.say(sub_path)
+    sub_dir_name =full_path.split(os.sep)[-2]
+    expVRML.say(sub_dir_name)
+    sub_path = full_path.split(sub_dir_name)[0]
+    expVRML.say(sub_path)
+    models_dir=sub_path+"_3Dmodels"
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    #models_dir=script_dir+"/../_3Dmodels"
+    expVRML.say(models_dir)
+    out_dir=models_dir+destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
     #having a period '.' character in the model name REALLY messes with things.
     docname = name.replace(".","")
-    
-    newdoc = FreeCAD.newDocument(docname)
+   
+    newdoc = App.newDocument(docname)
     App.setActiveDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
     
@@ -391,7 +385,7 @@ def MakeHeader(n, params):
     if (params.rot !=0):
         z_RotateObject(doc, params.rot)
     
-    out_dir = "./generated_pinheaders/"
+    #out_dir = models_dir+"/generated_pinheaders"
     
     doc.Label = docname
     
@@ -411,7 +405,7 @@ def MakeHeader(n, params):
     expVRML.say(objs)
     expVRML.say("######################################################################")
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-    export_file_name=destination_dir+os.sep+name+'.wrl'
+    export_file_name=out_dir+os.sep+name+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
@@ -429,58 +423,58 @@ def MakeHeader(n, params):
     
 import add_license as Lic
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "main_generator":
     
     global LIST_license
     models = []
     pins = []
     
     if len(sys.argv) < 3:
-        say("Nothing to build...")
-        say("Specify name and pins")
-        
+        say("Nothing specified to build...")
+        model = "254single"
     else:
         model = sys.argv[2]
         
-        if model == 'all':
-            models = [headers[model] for model in headers.keys()]
-            pins = range(2,41)
-        else:
-            models = [headers[i] for i in model.split(',') if i in headers.keys()]#separate model types with comma
+    if model == 'all':
+        models = [headers[model] for model in headers.keys()]
+        pins = range(2,41)
+    else:
+        models = [headers[i] for i in model.split(',') if i in headers.keys()]#separate model types with comma
             
     #say(models)
     if len(sys.argv) < 4:
-        say("No pins specifed. if not all then not building")
+        say("No pins specified, building 254single 1")
+        p = "1"
     else:
         p = sys.argv[3].strip()
         
-        #comma separarated pin numberings
-        if ',' in p:
-            try:
-                pins = map(int,p.split(','))
-            except:
-                say("Pin argument '",p,"' is invalid ,")
-                pins = []
+    #comma separarated pin numberings
+    if ',' in p:
+        try:
+            pins = map(int,p.split(','))
+        except:
+            say("Pin argument '",p,"' is invalid ,")
+            pins = []
+    
+    #range of pins x-y
+    elif '-' in p and len(p.split('-')) == 2:
+        ps = p.split('-')
         
-        #range of pins x-y
-        elif '-' in p and len(p.split('-')) == 2:
-            ps = p.split('-')
+        try:
+            p1, p2 = int(ps[0]),int(ps[1])
+            pins = range(p1,p2+1)
+        except:
+            say("Pin argument '",p,"' is invalid -")
+            pins = []
             
-            try:
-                p1, p2 = int(ps[0]),int(ps[1])
-                pins = range(p1,p2+1)
-            except:
-                say("Pin argument '",p,"' is invalid -")
-                pins = []
-                
-        #otherwise try for a single pin
-        else:
-            try:
-                pin = int(p)
-                pins = [pin]
-            except:
-                say("Pin argument '",p,"' is invalid")
-                pins = []
+    #otherwise try for a single pin
+    else:
+        try:
+            pin = int(p)
+            pins = [pin]
+        except:
+            say("Pin argument '",p,"' is invalid")
+            pins = []
                 
     #make all the seleted models
     for model in models:
