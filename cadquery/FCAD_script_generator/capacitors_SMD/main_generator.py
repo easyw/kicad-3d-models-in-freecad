@@ -74,7 +74,7 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
-from Gui.Command import *
+#from Gui.Command import *
 
 import logging
 logging.getLogger('builder').addHandler(logging.NullHandler())
@@ -116,6 +116,7 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 # from export_x3d import exportX3D, Mesh
 try:
     # Gui.SendMsgToActiveView("Run")
+    from Gui.Command import *                             
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show

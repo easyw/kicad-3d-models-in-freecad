@@ -32,7 +32,9 @@ ___ver___ = "1.2.3 16/08/2015"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
-from Gui.Command import *
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+#from Gui.Command import *
 import os
 
 #helper funcs for displaying messages in FreeCAD

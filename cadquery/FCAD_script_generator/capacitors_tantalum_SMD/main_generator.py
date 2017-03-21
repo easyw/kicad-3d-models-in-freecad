@@ -76,7 +76,7 @@ mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
-from Gui.Command import *
+#from Gui.Command import *
 
 
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
@@ -108,6 +108,7 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 
 try:
     # Gui.SendMsgToActiveView("Run")
+    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
