@@ -10,5 +10,5 @@
 - [x] qfn
    - [x] cq 0.3.0
    - [x] VRML small size & with materials
-   - [ ] improve CQ check (Gui.Command w/o CQ)
+   - [x] improve CQ check (Gui.Command w/o CQ)
    - [ ] cq 0.5.2 for molded models
