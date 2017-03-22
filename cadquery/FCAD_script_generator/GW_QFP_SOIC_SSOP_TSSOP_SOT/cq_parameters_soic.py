@@ -25,7 +25,7 @@ Params = namedtuple("Params", [
     'R2',   # pin lower corner, inner radius
     'S',    # pin top flat part length (excluding corner arc)
 # automatic calculated    'L',    # pin bottom flat part length (including corner arc)
-    'fp_r', # first pin indicator radius
+    'fp_r', # first pin indicator radius, set to 0.0 to remove first pin indicator
     'fp_d', # first pin indicator distance from edge
     'fp_z', # first pin indicator depth
     'ef',   # fillet of edges
@@ -42,7 +42,7 @@ Params = namedtuple("Params", [
 
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
-    'epad',  # exposed pad, None or the dimensions as tuple: (width, length)
+    'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required

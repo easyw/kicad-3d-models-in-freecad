@@ -20,7 +20,7 @@ Params = namedtuple("Params", [
     'c',    # pin thickness, body center part height
 #    'K',    # Fillet radius for pin edges
     'L',    # pin top flat part length (including fillet radius)
-    'fp_r', # first pin indicator radius
+    'fp_r', # first pin indicator radius, set to 0.0 to remove first pin indicator
     'fp_d', # first pin indicator distance from edge
     'fp_z', # first pin indicator depth
     'ef',   # fillet of edges
@@ -35,7 +35,7 @@ Params = namedtuple("Params", [
     'sq',   # square pads True/False
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
-    'epad',  # exposed pad, None or the dimensions as tuple: (width, length)
+    'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
@@ -1181,7 +1181,7 @@ kicad_naming_params_qfn = {
         sq = False,   # square pads
         npx = 12,  # number of pins along X axis (width)
         npy = 12,  # number of pins along y axis (length)
-        epad = (4.5,4.5), # e Pad #epad = None, # e Pad
+        epad = 2.1, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
