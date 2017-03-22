@@ -781,7 +781,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'DFN-8-1EP_6x5mm_Pitch1.27mm_LargeFlag': Params( # from http://www.onsemi.com/pub/Collateral/506CG.PDF
+    'DFN-8-1EP_6x5mm_Pitch1.27mm': Params( # from http://www.onsemi.com/pub/Collateral/506CG.PDF
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.4,        # pin top flat part length (including fillet radius)
@@ -802,32 +802,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (4.0,4.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm_LargeFlag', #modelName
-        rotation = -90, # rotation if required
-        dest_dir_prefix = ''
-        ),
-    'DFN-8-1EP_6x5mm_Pitch1.27mm_SmallFlag': Params( # from http://www.onsemi.com/pub/Collateral/506CG.PDF
-        c = 0.2,        # pin thickness, body center part height
-#        K=0.2,          # Fillet radius for pin edges
-        L = 0.4,        # pin top flat part length (including fillet radius)
-        fp_r = 0.5,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.01,     # first pin indicator depth
-        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
-        D = 5.0,       # body overall length
-        E = 6.0,       # body overall width
-        A1 = 0.02,  # body-board separation  maui to check
-        A2 = 0.85,  # body height
-        b = 0.4,  # pin width
-        e = 0.8,  # pin (center-to-center) distance
-        m = 0.0,  # margin between pins and body  
-        sq = False,   # square pads
-        npx = 4,  # number of pins along X axis (width)
-        npy = 0,  # number of pins along y axis (length)
-        epad = (2.0,2.0), # e Pad #epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
-        modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm_SmallFlag', #modelName
+        modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
