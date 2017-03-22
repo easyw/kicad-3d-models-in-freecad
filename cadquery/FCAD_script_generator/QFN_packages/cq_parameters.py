@@ -1181,7 +1181,7 @@ kicad_naming_params_qfn = {
         sq = False,   # square pads
         npx = 12,  # number of pins along X axis (width)
         npy = 12,  # number of pins along y axis (length)
-        epad = 2.1, # e Pad #epad = None, # e Pad
+        epad = (4.5,4.5), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
