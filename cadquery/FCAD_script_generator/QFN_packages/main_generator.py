@@ -161,8 +161,13 @@ def make_qfn(params):
         excluded_pins=() ##no pin excluded 
 
     if params.epad:
-        D2 = params.epad[0]
-        E2 = params.epad[1]
+        if isinstance(params.epad, float):
+            sq_epad = False
+            epad_r = params.epad
+        else:
+            sq_epad = True
+            D2 = params.epad[0]
+            E2 = params.epad[1]
 
     A = A1 + A2
 
@@ -246,15 +251,24 @@ def make_qfn(params):
 
     # create exposed thermal pad if requested
     if params.epad:
-        #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
-        epad = cq.Workplane("XY", (0,0,A1/2)). \
-        moveTo(-D2/2+cce, -E2/2). \
-        lineTo(D2/2, -E2/2). \
-        lineTo(D2/2, E2/2). \
-        lineTo(-D2/2, E2/2). \
-        lineTo(-D2/2, -E2/2+cce). \
-        close().extrude(A1+A1/10)
-        pins.append(epad)
+        if sq_epad:
+            #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+            epad = cq.Workplane("XY", (0,0,A1/2)). \
+            moveTo(-D2/2+cce, -E2/2). \
+            lineTo(D2/2, -E2/2). \
+            lineTo(D2/2, E2/2). \
+            lineTo(-D2/2, E2/2). \
+            lineTo(-D2/2, -E2/2+cce). \
+            close().extrude(A1+A1/10)
+            pins.append(epad)
+        
+        else:
+            #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+            epad = cq.Workplane("XY", (0,0,A1/2)). \
+            circle(epad_r). \
+            extrude(A1+A1/10)
+            pins.append(epad)
+
 
     # merge all pins to a single object
     merged_pins = pins[0]
