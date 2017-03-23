@@ -199,7 +199,8 @@ def make_gw(params):
         excluded_pins=() ##no pin excluded 
 
     if params.epad:
-        if isinstance(params.epad, float):
+        #if isinstance(params.epad, float):
+        if not isinstance(params.epad, tuple):                                              
             sq_epad = False
             epad_r = params.epad
         else:
@@ -450,9 +451,11 @@ def make_gw(params):
         if sq_epad:
             pins.append(cq.Workplane("XY").box(D2, E2, A1).translate((0,0,A1/2)))
         else:
-            epad = cq.Workplane("XY", (0,0,A1/2)). \
+            #epad = cq.Workplane("XY", (0,0,A1/2)). \
+            epad = cq.Workplane("XY"). \
             circle(epad_r). \
-            extrude(A1+A1/10)
+            extrude(A1)#.translate((0,0,A1/2))
+            #extrude(A1+A1/10)
             pins.append(epad)
     # merge all pins to a single object
     merged_pins = pins[0]
