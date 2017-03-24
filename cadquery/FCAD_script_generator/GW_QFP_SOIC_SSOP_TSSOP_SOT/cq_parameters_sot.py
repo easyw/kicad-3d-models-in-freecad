@@ -637,7 +637,7 @@ kicad_naming_params_sot = {
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SOT'
         ),
-    'SOT-23-8': Params( # http://cds.linear.com/docs/en/packaging/SOT_8_05-08-1637.pdf
+    'TSOT-23-8': Params( # http://cds.linear.com/docs/en/packaging/SOT_8_05-08-1637.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
         c = 0.15,        # pin thickness, body center part height
@@ -661,7 +661,7 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'SOT-23-8', #modelName
+        modelName = 'TSOT-23-8', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SOT'
         ),
