@@ -395,7 +395,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         script_dir=os.path.dirname(os.path.realpath(__file__))
         #models_dir=script_dir+"/../_3Dmodels"
         expVRML.say(models_dir)
-        out_dir=models_dir+destination_dir+os.sep+all_params[variant].dest_dir_prefix
+        if len(all_params[variant].dest_dir_prefix)>=1:
+            out_dir=models_dir+destination_dir+os.sep+all_params[variant].dest_dir_prefix
+        else:
+            out_dir=models_dir+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"
