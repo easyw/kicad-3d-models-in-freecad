@@ -2509,7 +2509,7 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = ''
         ),
     'SOT-886': Params( # from http://www.nxp.com/documents/outline_drawing/SOT886.pdf
-        c = 0.01,        # pin thickness, body center part height
+        c = 0.1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.3,        # pin top flat part length (including fillet radius)
         fp_r = 0.3,     # first pin indicator radius
@@ -2534,7 +2534,7 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = 'SOT'
         ),
     'SOT-383F': Params( # from http://www.comchiptech.com/cms/UserFiles/CPDVR085V0UA-HF-RevA.pdf
-        c = 0.01,        # pin thickness, body center part height
+        c = 0.1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.35,        # pin top flat part length (including fillet radius)
         fp_r = 0.3,     # first pin indicator radius
@@ -2552,7 +2552,7 @@ kicad_naming_params_qfn = {
         sq = True,   # square pads
         npx = 4,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = (0.45,1.5), # e Pad #epad = None, # e Pad
+        epad = (1.5,0.45), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'SOT-383F', #modelName
         rotation = -90, # rotation if required
