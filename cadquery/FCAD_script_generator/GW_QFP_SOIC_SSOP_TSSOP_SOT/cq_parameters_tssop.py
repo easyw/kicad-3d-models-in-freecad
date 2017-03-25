@@ -27,6 +27,7 @@ all_params_tssop = {
         R2 = 0.1,       # pin lower corner, inner radius
         S = 0.3,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
         fp_r = 0.65,     # first pin indicator radius
         fp_d = 0.25,     # first pin indicator distance from edge
         fp_z = 0.15,     # first pin indicator depth

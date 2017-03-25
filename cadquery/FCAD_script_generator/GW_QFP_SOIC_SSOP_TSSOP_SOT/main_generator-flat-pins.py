@@ -150,9 +150,6 @@ from cq_parameters_tssop import *
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
-import cq_parameters_sod  # modules parameters
-from cq_parameters_sod import *
-
 # all_params= all_params_soic.copy()
 # all_params.update(all_params_qfp)
 
@@ -166,7 +163,6 @@ all_params.update(kicad_naming_params_qfp)
 all_params.update(all_params_ssop)
 all_params.update(all_params_tssop)
 all_params.update(kicad_naming_params_sot)  
-all_params.update(kicad_naming_params_sod)  
 
 
 # all_params = dict(all_params1.items() | all_params2.items())
@@ -178,7 +174,6 @@ def make_gw(params):
     tb_s  = params.tb_s
     ef  = params.ef
     cc1 = params.cc1
-    fp_s = params.fp_s
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
@@ -367,27 +362,21 @@ def make_gw(params):
             case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
             case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
             case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
-    #fp_s = True
-    if fp_s == False:
-        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
-        #translate the object  
-        pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
-    else:
-        # first pin indicator is created with a spherical pocket
-        if fp_r == 0:
-            global place_pinMark
-            place_pinMark=False
-            fp_r = 0.1
-        sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
-        sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-        # Revolve a cylinder from a rectangle
-        # Switch comments around in this section to try the revolve operation with different parameters
-        ##cylinder =
-        #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
-        pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
-    
-    
 
+    # first pin indicator is created with a spherical pocket
+    if fp_r == 0:
+        global place_pinMark
+        place_pinMark=False
+        fp_r = 0.1
+    sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
+    sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+    
+    
+    # Revolve a cylinder from a rectangle
+    # Switch comments around in this section to try the revolve operation with different parameters
+    ##cylinder =
+    #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
+    pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length, False).revolve(angle_degrees)
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5))
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5, -5),(-5, 5))
@@ -408,23 +397,26 @@ def make_gw(params):
     R2_o = R2+c # pin lower corner, outer radius
 
     # Create a pin object at the center of top side.
-    bpin = cq.Workplane("YZ", (0,E1/2,0)). \
-        moveTo(-tb_s, A1+A2_b). \
-        line(S+tb_s, 0). \
-        threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
-                      (S+R1, A1+A2_b-R1)). \
-        line(0, -(A1+A2_b-R1-R2_o)). \
-        threePointArc((S+R1+R2_o*(1-1/sqrt(2)), R2_o*(1-1/sqrt(2))),
-                      (S+R1+R2_o, 0)). \
-        line(L-R2_o, 0). \
-        line(0, c). \
-        line(-(L-R2_o), 0). \
-        threePointArc((S+R1+R2_o-R2/sqrt(2), c+R2*(1-1/sqrt(2))),
-                      (S+R1+R2_o-R1, c+R2)). \
-        lineTo(S+R1+c, A1+A2_b-R1). \
-        threePointArc((S+R1_o/sqrt(2), A1+A2_b+c-R1_o*(1-1/sqrt(2))),
-                      (S, A1+A2_b+c)). \
-        line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
+    if 0:
+        bpin = cq.Workplane("YZ", (0,E1/2,0)). \
+            moveTo(-tb_s, A1+A2_b). \
+            line(S+tb_s, 0). \
+            threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
+                        (S+R1, A1+A2_b-R1)). \
+            line(0, -(A1+A2_b-R1-R2_o)). \
+            threePointArc((S+R1+R2_o*(1-1/sqrt(2)), R2_o*(1-1/sqrt(2))),
+                        (S+R1+R2_o, 0)). \
+            line(L-R2_o, 0). \
+            line(0, c). \
+            line(-(L-R2_o), 0). \
+            threePointArc((S+R1+R2_o-R2/sqrt(2), c+R2*(1-1/sqrt(2))),
+                        (S+R1+R2_o-R1, c+R2)). \
+            lineTo(S+R1+c, A1+A2_b-R1). \
+            threePointArc((S+R1_o/sqrt(2), A1+A2_b+c-R1_o*(1-1/sqrt(2))),
+                        (S, A1+A2_b+c)). \
+            line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
+    
+    bpin = cq.Workplane("XY").box((E-E1)/2, b, A1).translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
 
     pins = []
     pincounter = 1
@@ -476,10 +468,7 @@ def make_gw(params):
 
     # extract pins from case
     case = case.cut(pins)
-    #show(case)
-    #show(pinmark)
-    #show(pins)
-    #stop
+
     return (case, pins, pinmark)
 
 #################################################
@@ -529,9 +518,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
     elif model_to_build == "allSOT":
-        variants = kicad_naming_params_sot.keys() 
-    elif model_to_build == "allSOD":
-        variants = kicad_naming_params_sod.keys()        
+        variants = kicad_naming_params_sot.keys()        
     else:
         variants = [model_to_build]
 
