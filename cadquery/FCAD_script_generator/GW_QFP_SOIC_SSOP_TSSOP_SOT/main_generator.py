@@ -174,6 +174,7 @@ def make_gw(params):
     tb_s  = params.tb_s
     ef  = params.ef
     cc1 = params.cc1
+    fp_s = params.fp_s
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
@@ -362,21 +363,29 @@ def make_gw(params):
             case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
             case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
             case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
+    if fp_s == False:
+        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).rect(D1_t1, fp_r). \
+                workplane(offset=fp_r).rect(D1_t1, fp_r). \
+                loft(ruled=True)
 
-    # first pin indicator is created with a spherical pocket
-    if fp_r == 0:
-        global place_pinMark
-        place_pinMark=False
-        fp_r = 0.1
-    sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
-    sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+        #translate the object  
+        pinmark=pinmark.translate((0,D1/2.-fp_r/2.-E1_t1/2.-D1_t1/2.,0)).rotate((0,0,0), (0,1,0), 0)    
+    else:
+        # first pin indicator is created with a spherical pocket
+        if fp_r == 0:
+            global place_pinMark
+            place_pinMark=False
+            fp_r = 0.1
+        sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
+        sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+        # Revolve a cylinder from a rectangle
+        # Switch comments around in this section to try the revolve operation with different parameters
+        ##cylinder =
+        #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
+        pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
     
     
-    # Revolve a cylinder from a rectangle
-    # Switch comments around in this section to try the revolve operation with different parameters
-    ##cylinder =
-    #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
-    pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
+
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length, False).revolve(angle_degrees)
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5))
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5, -5),(-5, 5))
