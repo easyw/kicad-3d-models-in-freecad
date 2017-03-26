@@ -53,7 +53,7 @@ ___ver___ = "1.1 12/04/2016"
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("../exportVRML")
+sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
@@ -132,7 +132,7 @@ outdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 
 # Import cad_tools
-sys.path.append("../")
+#sys.path.append("../_tools")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
