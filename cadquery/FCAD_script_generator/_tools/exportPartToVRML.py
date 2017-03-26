@@ -170,13 +170,13 @@ def shapeToMesh(shape, color, transp, scale=None):
                 color = color, transp=transp)
     return newMesh
 
-def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None):
+def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None, creaseAngle=creaseAngle_default):
     """Export given list of Mesh objects to a VRML file.
 
     `Mesh` structure is defined at root."""
     used_colors = None
     
-    creaseAngle=creaseAngle_default #creaseAngle=0.5 good compromise
+    #creaseAngle=creaseAngle_default #creaseAngle=0.5 good compromise
     
     if used_color_keys is not None:
         used_colors = { x: shaderColors.named_colors[x] for x in used_color_keys }
