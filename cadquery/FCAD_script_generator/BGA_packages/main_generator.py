@@ -229,33 +229,48 @@ def make_qfn(params):
     # create top, bottom side pins
     pincounter = 1
     first_pos_x = (npx-1)*e/2
-    for i in range(npx):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0)).\
-                rotate((0,0,0), (0,0,1), 180)
-            pins.append(pin)
-        pincounter += 1
-
-    first_pos_y = (npy-1)*e/2
-    for i in range(npy):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
-                rotate((0,0,0), (0,0,1), 270)
-            pins.append(pin)
-        pincounter += 1
-
-    for i in range(npx):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0))
-            pins.append(pin)
-        pincounter += 1
-    
-    for i in range(npy):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
-                rotate((0,0,0), (0,0,1), 90)
-            pins.append(pin)
-        pincounter += 1
+    for j in range(npy):
+        for i in range(npx):
+            if params.excluded_pins:
+                if j==0 or j==npy-1 or i==0 or i==npx-1:
+                    pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
+                            rotate((0,0,0), (0,0,1), 180)
+                    pins.append(pin)
+            else:
+                pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
+                        rotate((0,0,0), (0,0,1), 180)
+                pins.append(pin)
+                #expVRML.say(j)
+            pincounter += 1
+    expVRML.say(pincounter-1)
+    #first_pos_x = (npx-1)*e/2
+    #for i in range(npx):
+    #    if pincounter not in excluded_pins:
+    #        pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0)).\
+    #            rotate((0,0,0), (0,0,1), 180)
+    #        pins.append(pin)
+    #    pincounter += 1
+    #
+    #first_pos_y = (npy-1)*e/2
+    #for i in range(npy):
+    #    if pincounter not in excluded_pins:
+    #        pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
+    #            rotate((0,0,0), (0,0,1), 270)
+    #        pins.append(pin)
+    #    pincounter += 1
+    #
+    #for i in range(npx):
+    #    if pincounter not in excluded_pins:
+    #        pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0))
+    #        pins.append(pin)
+    #    pincounter += 1
+    #
+    #for i in range(npy):
+    #    if pincounter not in excluded_pins:
+    #        pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
+    #            rotate((0,0,0), (0,0,1), 90)
+    #        pins.append(pin)
+    #    pincounter += 1
 
     # create exposed thermal pad if requested
 
