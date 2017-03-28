@@ -34,7 +34,7 @@ Params = namedtuple("Params", [
     'sp',   # seating plane (pcb penetration)
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
-    'excluded_pins', #pins to exclude
+    'excluded_pins', #pins to exclude -> None or "internals"
     'modelName', #modelName
     'rotation', #rotation if required
     'dest_dir_prefix' #destination dir prefixD2 = params.epad[0]
@@ -59,7 +59,7 @@ kicad_naming_params_qfn = {
         sp = 0.0, #seating plane (pcb penetration)
         npx = 8,  # number of pins along X axis (width)
         npy = 6,  # number of pins along y axis (length)
-        excluded_pins = "internals", #no pin excluded
+        excluded_pins = "internals", #pins to exclude -> None or "internals"
         modelName = 'BGA-48_6x8_8.0x9.0mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
@@ -82,7 +82,7 @@ kicad_naming_params_qfn = {
         sp = 0.0, #seating plane (pcb penetration)
         npx = 16,  # number of pins along X axis (width)
         npy = 16,  # number of pins along y axis (length)
-        excluded_pins = "internals", #no pin excluded
+        excluded_pins = None, #pins to exclude -> None or "internals"
         modelName = 'BGA-256_pitch1mm_dia0.4mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
