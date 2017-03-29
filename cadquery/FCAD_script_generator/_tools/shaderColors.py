@@ -159,6 +159,15 @@ named_colors = {
         specularColor= (0.176, 0.105, 0.195),
         shininess= 0.25
     ),
+    
+    "dark green body":shaderColor(
+        name="PLASTIC-GREEN-27",
+        ambientIntensity= 0.248407,
+        diffuseColor= (0.135944, 0.190588, 0.122239),
+        specularColor= (0.209184, 0.113842, 0.111328),
+        shininess= 0.086735
+    ),
+    
     "orange body":shaderColor(
         name="PLASTIC-ORANGE-01",
         ambientIntensity= 0.284,
