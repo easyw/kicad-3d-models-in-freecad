@@ -13,4 +13,4 @@ to be completed:
 added in molded the option to write only needed parameters (i.e. molded None default, True option)
 
 
-NB for loading fp a folder with kicad_mod files need to be placed as sub-folder
+### NB for loading fp a folder with kicad_mod files needs to be placed as sub-folder
