@@ -54,6 +54,11 @@ ___ver___ = "1.0.5 25/Feb/2017"
 
 # maui import cadquery as cq
 # maui from Helpers import show
+
+import argparse
+global save_memory
+save_memory=False #reducing memory consuming for all generation params
+
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -248,12 +253,12 @@ def make_qfn(params):
         #case = case.edges(BS((-D1/2, -E1/2, c+0.001), (D1/2, E1/2, A+0.001+A1/2))).fillet(ef)
     case = case.translate((0,0,c-A1-0.01))
     ##show(case)
-    if params.molded is not None:
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewFront()
-    else:
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxonometric()
+    ##if params.molded is not None:
+    ##    Gui.SendMsgToActiveView("ViewFit")
+    ##    Gui.activeDocument().activeView().viewFront()
+    ##else:
+    ##    Gui.SendMsgToActiveView("ViewFit")
+    ##    Gui.activeDocument().activeView().viewAxonometric()
     
     #stop
     #case=case.union(case_bot)
@@ -409,6 +414,8 @@ import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
+    
+    global save_memory #reducing memory consuming for all generation params 
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -437,9 +444,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
             else:
                 color_pin_mark=True
 
-
+    save_memory=False #reducing memory consuming for all generation params
     if model_to_build == "all":
         variants = all_params.keys()
+        save_memory=True
     else:
         variants = [model_to_build]
 
@@ -548,7 +556,45 @@ if __name__ == "__main__" or __name__ == "main_generator":
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        #Gui.activeDocument().activeView().viewBottom()
-        Gui.activeDocument().activeView().viewAxometric()
+        
+        #FreeCADGui.open(script_dir+os.sep+"ModelName.kicad_mod")
+        #import kicadStepUptools
+        #FreeCAD.addImportType("Kicad pcb board/mod File Type (*.kicad_pcb *.emn *.kicad_mod)","kicadStepUptools") 
+        if footprints_dir is not None:
+            #expVRML.say (ModelName)
+            #stop
+            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName]
+            #setup = get_setup_file()  # << You need the parentheses
+            expVRML.say(sys.argv[2])
+            ksu_already_loaded=False
+            ksu_present=False
+            for i in QtGui.qApp.topLevelWidgets():
+                if i.objectName() == "kicadStepUp":
+                    ksu_already_loaded=True
+            if ksu_already_loaded!=True:
+                try:
+                    import kicadStepUptools
+                    ksu_present=True
+                    kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                    kicadStepUptools.form.destroy()
+                    #for i in QtGui.qApp.topLevelWidgets():
+                    #    if i.objectName() == "kicadStepUp":
+                    #        i.deleteLater()
+                    ksu_already_loaded=True
+                except:
+                    ksu_present=False
+                    expVRML.say("ksu not present")
+            else:
+                reload(kicadStepUptools)
+                kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                kicadStepUptools.form.destroy()
+            
+        #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
+        FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
+        if save_memory == False:
+            Gui.activateWorkbench("PartWorkbench")
+            Gui.SendMsgToActiveView("ViewFit")
+            #Gui.activeDocument().activeView().viewBottom()
+            Gui.activeDocument().activeView().viewAxometric()
+        #sys.argv = ["fc", "dummy", all]
+        
