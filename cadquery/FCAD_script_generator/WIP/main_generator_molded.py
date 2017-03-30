@@ -553,7 +553,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
         
@@ -596,5 +595,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
             Gui.SendMsgToActiveView("ViewFit")
             #Gui.activeDocument().activeView().viewBottom()
             Gui.activeDocument().activeView().viewAxometric()
+        saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #sys.argv = ["fc", "dummy", all]
         
