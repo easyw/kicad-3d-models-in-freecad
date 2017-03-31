@@ -24,7 +24,7 @@ link:http://bazaar.launchpad.net/~easyw/kicad-stepup/trunk/files/[kicadStepUp at
 link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
 
 .REQUIREMENTS
-* FreeCAD 0.15 (best for step single object result)
+* FreeCAD 0.15 or FreeCAD 0.17 >= 10647 (best for step single object result)
 * CadQuery 0.5.2 
 
 <<<
@@ -54,10 +54,10 @@ Running the scripts
 to run the script just move to the scripts dir and do: +
 freecad ./main_generator.py modelName +
 examples in win: +
-+c:\freecad\bin\freecad main_generator.py QFN-28-1EP_6x6mm_Pitch0.65mm+ +
++c:\freecad\bin\freecad main_generator.py BGA-48_6x8_8.0x9.0mm_Pitch0.8mm+ +
 +c:\freecad\bin\freecad main_generator.py all+ +
 in linux: +
-+freecad ./main_generator.py QFN-28-1EP_6x6mm_Pitch0.65mm+ +
++freecad ./main_generator.py BGA-48_6x8_8.0x9.0mm_Pitch0.8mm+ +
 +freecad ./main_generator.py all+ +
 or simply run the 'create_model' script/batch +
 
@@ -65,6 +65,8 @@ or simply run the 'create_model' script/batch +
 modelName and parameters are described in: +
 1. cq_parameters.py file in their relative DIR
 all data in parameter files are collected from components data sheets +
+in the '.pretty' DIR put the footprints to be used inside FC to check the 3D model +
+Kicad StepUp Mod for FreeCAD is needed +
 ##the script will generate STEP and VRML parametric models##
 ready to be used with kicad StepUp script 
 

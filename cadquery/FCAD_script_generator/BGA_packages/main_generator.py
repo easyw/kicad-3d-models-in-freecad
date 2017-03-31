@@ -54,6 +54,10 @@ ___ver___ = "1.0.5 25/Feb/2017"
 
 # maui import cadquery as cq
 # maui from Helpers import show
+import argparse
+global save_memory
+save_memory=False #reducing memory consuming for all generation params
+
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -325,8 +329,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=True
 
 
+    save_memory=False #reducing memory consuming for all generation params
     if model_to_build == "all":
         variants = all_params.keys()
+        save_memory=True
     else:
         variants = [model_to_build]
 
@@ -428,10 +434,44 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #expVRML.writeVRMLFile added creaeAngle
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license, 0.9)
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        #saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewBottom()
-        #Gui.activeDocument().activeView().viewAxometric()
+        if footprints_dir is not None:
+            #expVRML.say (ModelName)
+            #stop
+            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+            #setup = get_setup_file()  # << You need the parentheses
+            expVRML.say(sys.argv[2])
+            ksu_already_loaded=False
+            ksu_present=False
+            for i in QtGui.qApp.topLevelWidgets():
+                if i.objectName() == "kicadStepUp":
+                    ksu_already_loaded=True
+            if ksu_already_loaded!=True:
+                try:
+                    import kicadStepUptools
+                    ksu_present=True
+                    kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                    kicadStepUptools.form.destroy()
+                    #for i in QtGui.qApp.topLevelWidgets():
+                    #    if i.objectName() == "kicadStepUp":
+                    #        i.deleteLater()
+                    ksu_already_loaded=True
+                except:
+                    ksu_present=False
+                    expVRML.say("ksu not present")
+            else:
+                reload(kicadStepUptools)
+                kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                kicadStepUptools.form.destroy()
+            
+        #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
+        #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
+        if save_memory == False:
+            Gui.activateWorkbench("PartWorkbench")
+            Gui.SendMsgToActiveView("ViewFit")
+            Gui.activeDocument().activeView().viewBottom()
+            #Gui.activeDocument().activeView().viewAxometric()
+        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        #sys.argv = ["fc", "dummy", all]
