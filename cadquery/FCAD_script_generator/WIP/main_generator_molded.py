@@ -589,7 +589,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 kicadStepUptools.form.destroy()
             
         #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
-        FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
+        #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
         if save_memory == False:
             Gui.activateWorkbench("PartWorkbench")
             Gui.SendMsgToActiveView("ViewFit")
