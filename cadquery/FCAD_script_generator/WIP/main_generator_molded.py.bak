@@ -562,7 +562,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         if footprints_dir is not None:
             #expVRML.say (ModelName)
             #stop
-            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName]
             #setup = get_setup_file()  # << You need the parentheses
             expVRML.say(sys.argv[2])
             ksu_already_loaded=False
