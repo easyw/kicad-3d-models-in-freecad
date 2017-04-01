@@ -114,7 +114,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'BGA-1156_34x34_35.0x35.0mm_Pitch1.0mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
+    'BGA-1156_34x34_35.0x35.0mm_Pitch1.0mm': Params( # from https://www.xilinx.com/support/documentation/package_specs/pk401_FF_G_1156.pdf
         fp_r = 0.8,     # first pin indicator radius
         fp_d = 0.12,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
