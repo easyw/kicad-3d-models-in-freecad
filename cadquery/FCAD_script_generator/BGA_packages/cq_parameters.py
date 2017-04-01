@@ -57,25 +57,7 @@ Params =namedtuple_with_defaults ("Params", [
 ])
     
 kicad_naming_params_qfn = {
-    'BGA-48': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
-        fp_r = 0.4,     # first pin indicator radius
-        fp_d = 0.08,     # first pin indicator distance from edge
-        fp_z = 0.01,     # first pin indicator depth
-        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        D = 9.0,       # body overall length
-        E = 8.0,       # body overall width
-        A1 = 0.22,  # body-board separation 
-        A = 0.77,  # body height
-        b = 0.505,  # ball pin width diameter with a small extra to obtain a union of balls and case
-        e = 0.8,  # pin (center-to-center) distance
-        sp = 0.0, #seating plane (pcb penetration)
-        npx = 8,  # number of pins along X axis (width)
-        npy = 6,  # number of pins along y axis (length)
-        modelName = 'BGA-48', #modelName
-        rotation = -90, # rotation if required
-        dest_dir_prefix = ''
-        ),
-#    'BGA-48_6x8_8.0x9.0mm_Pitch0.8mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
+#    'BGA-48': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
 #        fp_r = 0.4,     # first pin indicator radius
 #        fp_d = 0.08,     # first pin indicator distance from edge
 #        fp_z = 0.01,     # first pin indicator depth
@@ -89,11 +71,31 @@ kicad_naming_params_qfn = {
 #        sp = 0.0, #seating plane (pcb penetration)
 #        npx = 8,  # number of pins along X axis (width)
 #        npy = 6,  # number of pins along y axis (length)
-#        modelName = 'BGA-48_6x8_8.0x9.0mm_Pitch0.8mm', #modelName
+#        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+#        modelName = 'BGA-48', #modelName
 #        rotation = -90, # rotation if required
 #        dest_dir_prefix = ''
 #        ),
-    'BGA-256_pitch1mm_dia0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
+    'BGA-48_6x8_8.0x9.0mm_Pitch0.8mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 9.0,       # body overall length
+        E = 8.0,       # body overall width
+        A1 = 0.22,  # body-board separation 
+        A = 0.77,  # body height
+        b = 0.505,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 8,  # number of pins along X axis (width)
+        npy = 6,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        modelName = 'BGA-48_6x8_8.0x9.0mm_Pitch0.8mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'BGA-256_16x16_17.0x17.0mm_Pitch1.0mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
         fp_r = 0.5,     # first pin indicator radius
         fp_d = 0.12,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
@@ -108,11 +110,11 @@ kicad_naming_params_qfn = {
         npx = 16,  # number of pins along X axis (width)
         npy = 16,  # number of pins along y axis (length)
         excluded_pins = ("internals",), #pins to exclude -> None or "internals"
-        modelName = 'BGA-256_pitch1mm_dia0.4mm', #modelName
+        modelName = 'BGA-256_16x16_17.0x17.0mm_Pitch1.0mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'BGA-400-1mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
+    'BGA-400_20x20_21.0x21.0mm_Pitch1.0mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
         fp_r = 0.5,     # first pin indicator radius
         fp_d = 0.12,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
@@ -127,16 +129,16 @@ kicad_naming_params_qfn = {
         npx = 20,  # number of pins along X axis (width)
         npy = 20,  # number of pins along y axis (length)
         excluded_pins = ("internals",), #"internals", #pins to exclude -> None or "internals"
-        modelName = 'BGA-400-1mm', #modelName
+        modelName = 'BGA-400_20x20_21.0x21.0mm_Pitch1.0mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'BGA-1023-1mm': Params( # from https://www.idt.com/document/psc/hmrm-1023-package-outline-33-x-33-mm-body-100-mm-pitch-fcbga IDT_PSC-4260.pdf
+    'BGA-1023_32x32_33.0x33.0mm_Pitch1.0mm': Params( # from https://www.idt.com/document/psc/hmrm-1023-package-outline-33-x-33-mm-body-100-mm-pitch-fcbga IDT_PSC-4260.pdf
         fp_r = 1.0,     # first pin indicator radius
         fp_d = 0.25,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.2    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cff = 1.5,      #0.5 chamfer of the 1st pin corner
+        cff = 0.8,      #0.5 chamfer of the 1st pin corner
         cf = 0.5,      #0.5 chamfer of the others corner
         D = 33.2,       # body overall length
         E = 33.2,       # body overall width
@@ -152,7 +154,7 @@ kicad_naming_params_qfn = {
         npx = 32,  # number of pins along X axis (width)
         npy = 32,  # number of pins along y axis (length)
         excluded_pins = ("internals",1), #"internals", #pins to exclude -> None or "internals"
-        modelName = 'BGA-1023-1mm', #modelName
+        modelName = 'BGA-1023_32x32_33.0x33.0mm_Pitch1.0mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -161,11 +163,12 @@ kicad_naming_params_qfn = {
         fp_d = 0.25,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.2    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cff = 0.3,      #0.5 chamfer of the 1st pin corner
+        cff = 0.7,      #0.5 chamfer of the 1st pin corner
+        cf = 0.2,      #0.5 chamfer of the others corner
         D = 35.5,       # body overall length
         E = 35.5,       # body overall width
-        D1 = 32.0,       # top body overall length
-        E1 = 32.0,       # top body overall width
+        D1 = 30.0,       # top body overall length
+        E1 = 30.0,       # top body overall width
         A1 = 0.5,  # body-board separation 
         A2 = 1.0,  # body bottom height optional, needed for molded
         A  = 2.7,  # body  overall height
