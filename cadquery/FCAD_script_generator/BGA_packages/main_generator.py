@@ -68,6 +68,8 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
+body_bot_color_key = "dark green body"
+body_bot_color = shaderColors.named_colors[body_bot_color_key].getDiffuseFloat()
 body_color_key = "black body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 pins_color_key = "metal grey pins"
@@ -136,20 +138,48 @@ from cq_parameters import *
 #all_params= all_params_qfn
 all_params= kicad_naming_params_qfn
 
-def make_qfn(params):
+def make_plg(wp, rw, rh, cv1, cv):
+    """
+    Creates a rectangle with chamfered corners.
+    wp: workplane object
+    rw: rectangle width
+    rh: rectangle height
+    cv1: chamfer value for 1st corner (lower left)
+    cv: chamfer value for other corners
+    """
+    points = [
+        (-rw/2., -rh/2.+cv1),
+        (-rw/2., rh/2.-cv),
+        (-rw/2.+cv, rh/2.),
+        (rw/2.-cv, rh/2.),
+        (rw/2., rh/2.-cv),
+        (rw/2., -rh/2.+cv),
+        (rw/2.-cv, -rh/2.),
+        (-rw/2.+cv1, -rh/2.)#,
+        #(-rw/2., -rh/2.+cv1)
+    ]
+    #return wp.polyline(points)
+    sp = points.pop()
+    wp=wp.moveTo(sp[0],sp[1])
+    wp=wp.polyline(points).close().wire()
+    
+    return wp
+    #return wp.polyline(points).wire() #, forConstruction=True)
+##
 
-    c  = params.c
+def make_case(params):
+
     ef  = params.ef
     cce = params.cce
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
-#    K  = params.K
-    L  = params.L
     D  = params.D
     E   = params.E
     A1  = params.A1
     A2  = params.A2
+    A  = params.A
+    molded = params.molded
     b   = params.b
     e   = params.e
     sp   = params.sp
@@ -163,71 +193,11 @@ def make_qfn(params):
     else:
         excluded_pins=() ##no pin excluded 
 
-    A = A1 + A2
-
-    #if m == 0:
-    #    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
-    #else:
-    case = cq.Workplane("XY").box(D, E, A2)  #NO margin, pins don't emerge
-    if ef!=0:
-        case.edges("|X").fillet(ef)
-        case.edges("|Z").fillet(ef)
-    #translate the object
-    case=case.translate((0,0,A2/2+A1+b/2-sp)).rotate((0,0,0), (0,0,1), 0)
-
-    # first pin indicator is created with a spherical pocket
-    if fp_r == 0:
-        global place_pinMark
-        place_pinMark=False
-        fp_r = 0.1
-    #sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
-    #sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-
-    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
-    pinmark=pinmark.translate((0,0,b/2-sp))
-    #stop
-    if (color_pin_mark==False) and (place_pinMark==True):
-        case = case.cut(pinmark)
-    # show(pinmark)
-    # show(case)
-    # stop
-    
-    # first pin indicator is created with a spherical pocket
-    #sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
-    #sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-    #sphere_x = -D1_t2/2.+cc1_t/2.+(fp_d+fp_r)/sqrt(2)
-    #sphere_y = -E1_t2/2.+cc1_t/2.+(fp_d+fp_r)/sqrt(2)
-    #sphere = cq.Workplane("XY", (sphere_x, sphere_y, sphere_z)). \
-    #         sphere(sphere_r)
-    #show(sphere)
-    #case = case.cut(sphere)
-    
     sphere_r = b/2
     s_center =(0,0,0)
     sphere = cq.Workplane("XY", s_center). \
              sphere(sphere_r)
     bpin=sphere.translate((0,0,b/2-sp))
-    #sphere = cq.Solid.makeSphere(2, pnt1, pnt2, 0, 360)
-    #show(sphere)
-    #show(case)
-    #stop    
-    #if sq: #square pins
-    #    bpin1 = cq.Workplane("XY"). \
-    #        moveTo(b, 0). \
-    #        lineTo(b, L). \
-    #        lineTo(0, L). \
-    #        lineTo(0, 0). \
-    #        close().extrude(c).translate((b/2,E/2,0))
-    #        #close().extrude(c).translate((b/2,E/2,A1/2))
-    #else:
-    #    bpin1 = cq.Workplane("XY"). \
-    #        moveTo(b, 0). \
-    #        lineTo(b, L-b/2). \
-    #        threePointArc((b/2,L),(0, L-b/2)). \
-    #        lineTo(0, 0). \
-    #        close().extrude(c).translate((b/2,E/2,0))
-    #        #close().extrude(c).translate((b/2,E/2,A1/2))
-    #bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
 
     pins = []
     # create top, bottom side pins
@@ -247,36 +217,6 @@ def make_qfn(params):
                 #expVRML.say(j)
             pincounter += 1
     expVRML.say(pincounter-1)
-    #first_pos_x = (npx-1)*e/2
-    #for i in range(npx):
-    #    if pincounter not in excluded_pins:
-    #        pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0)).\
-    #            rotate((0,0,0), (0,0,1), 180)
-    #        pins.append(pin)
-    #    pincounter += 1
-    #
-    #first_pos_y = (npy-1)*e/2
-    #for i in range(npy):
-    #    if pincounter not in excluded_pins:
-    #        pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
-    #            rotate((0,0,0), (0,0,1), 270)
-    #        pins.append(pin)
-    #    pincounter += 1
-    #
-    #for i in range(npx):
-    #    if pincounter not in excluded_pins:
-    #        pin = bpin.translate((first_pos_x-i*e, npy*e/2-e/2, 0))
-    #        pins.append(pin)
-    #    pincounter += 1
-    #
-    #for i in range(npy):
-    #    if pincounter not in excluded_pins:
-    #        pin = bpin.translate((first_pos_y-i*e, npx*e/2-e/2, 0)).\
-    #            rotate((0,0,0), (0,0,1), 90)
-    #        pins.append(pin)
-    #    pincounter += 1
-
-    # create exposed thermal pad if requested
 
     # merge all pins to a single object
     merged_pins = pins[0]
@@ -284,16 +224,95 @@ def make_qfn(params):
         merged_pins = merged_pins.union(p)
     pins = merged_pins
 
+    # first pin indicator is created with a spherical pocket
+    if fp_r == 0:
+        global place_pinMark
+        place_pinMark=False
+        fp_r = 0.1
+    if molded is not None:
+        the=24
+        D1=D*(1-0.13)
+        E1=E*(1-0.13)
+    
+        D1_t = D1-2*tan(radians(the))*(A-A1-A2)
+        E1_t = E1-2*tan(radians(the))*(A-A1-A2)
+        # draw the case
+        cw = D-2*A1
+        cl = E-2*A1
+        case_bot = cq.Workplane("XY").workplane(offset=0)
+        case_bot= make_plg(case_bot, cw, cl, cce, cce)
+        case_bot = case_bot.extrude(A2-0.01)
+        case_bot = case_bot.translate((0,0,A1))
+        #show(case_bot)
+        #stop
+            
+        case = cq.Workplane("XY").workplane(offset=A1)
+        #case = make_plg(case, cw, cl, cce, cce)
+        case = make_plg(case, D1, E1, 3*cce, 3*cce)
+        #case = case.extrude(c-A1)
+        case = case.extrude(0.01)
+        case = case.faces(">Z").workplane()
+        case = make_plg(case, D1, E1, 3*cce, 3*cce).\
+            workplane(offset=A-A2-A1)
+        case = make_plg(case, D1_t, E1_t, 3*cce, 3*cce).\
+            loft(ruled=True)
+        # fillet the bottom vertical edges
+        if ef!=0:
+            case = case.edges("|Z").fillet(ef)    
+        # fillet top and side faces of the top molded part
+        if ef!=0:
+            BS = cq.selectors.BoxSelector
+            case = case.edges(BS((-D1/2, -E1/2, A2+0.001), (D1/2, E1/2, A+0.001))).fillet(ef)
+            #case = case.edges(BS((-D1/2, -E1/2, c+0.001), (D1/2, E1/2, A+0.001+A1/2))).fillet(ef)
+        case = case.translate((0,0,A2-0.01))
+        #show(case)
+        #stop
+        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
+        pinmark=pinmark.translate((10*cce+fp_d,10*cce+fp_d,-sp))
+        #stop
+        if (color_pin_mark==False) and (place_pinMark==True):
+            case = case.cut(pinmark)
+        # extract pins from case
+        #case = case.cut(pins)
+        case_bot = case_bot.cut(pins)
+        ##
+
+    else:
+        A2 = A - A1
+        #if m == 0:
+        #    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
+        #else:
+        case = cq.Workplane("XY").box(D, E, A2)  #NO margin, pins don't emerge
+        if ef!=0:
+            case.edges("|X").fillet(ef)
+            case.edges("|Z").fillet(ef)
+        #translate the object
+        case=case.translate((0,0,A2/2+A1+b/2-sp)).rotate((0,0,0), (0,0,1), 0)
+    
+        #sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
+        #sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+    
+        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
+        pinmark=pinmark.translate((0,0,b/2-sp))
+        #stop
+        if (color_pin_mark==False) and (place_pinMark==True):
+            case = case.cut(pinmark)
+        # extract pins from case
+        case = case.cut(pins)
+        case_bot = None
+        # show(pinmark)
+        # show(case)
+        # stop
+    
+
     #show(pins)
     #show(case)
     #Gui.SendMsgToActiveView("ViewFit")
     #Gui.activeDocument().activeView().viewBottom()
     #stop
     #sleep
-    # extract pins from case
-    case = case.cut(pins)
-    
-    return (case, pins, pinmark)
+
+    return (case_bot, case, pins, pinmark)
 
 #import step_license as L
 import add_license as Lic
@@ -351,8 +370,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        case, pins, pinmark = make_qfn(all_params[variant])
+        #case, pins, pinmark = make_case(all_params[variant])
+        case_bot, case, pins, pinmark = make_case(all_params[variant])
 
+        if case_bot is not None:
+            show(case_bot)
         show(case)
         show(pins)
         show(pinmark)
@@ -361,19 +383,64 @@ if __name__ == "__main__" or __name__ == "main_generator":
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
 
-        Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
-        Color_Objects(Gui,objs[2],marking_color)
-
-        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_mark[:-1]:marking_color_key
-        }
-        expVRML.say(material_substitutions)
+        if case_bot is not None:
+            Color_Objects(Gui,objs[0],body_bot_color)
+            Color_Objects(Gui,objs[1],body_color)
+            Color_Objects(Gui,objs[2],pins_color)
+            Color_Objects(Gui,objs[3],marking_color)
+    
+            col_body_bot=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+            col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+            col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+            col_mark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
+            material_substitutions={
+                col_body_bot[:-1]:body_bot_color_key,
+                col_body[:-1]:body_color_key,
+                col_pin[:-1]:pins_color_key,
+                col_mark[:-1]:marking_color_key
+            }
+            expVRML.say(material_substitutions)
+            if (color_pin_mark==True) and (place_pinMark==True):
+                CutObjs_wColors(FreeCAD, FreeCADGui,
+                            doc.Name, objs[1].Name, objs[3].Name)
+            else:
+                #removing pinMark
+                App.getDocument(doc.Name).removeObject(objs[3].Name)
+            ###
+            #sleep
+            del objs
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui,
+                            doc.Name, objs[0].Name, objs[1].Name)
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui,
+                            doc.Name, objs[0].Name, objs[1].Name)
+        else:
+            Color_Objects(Gui,objs[0],body_color)
+            Color_Objects(Gui,objs[1],pins_color)
+            Color_Objects(Gui,objs[2],marking_color)
+    
+            col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+            col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+            col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+            material_substitutions={
+                col_body[:-1]:body_color_key,
+                col_pin[:-1]:pins_color_key,
+                col_mark[:-1]:marking_color_key
+            }
+            expVRML.say(material_substitutions)
+            if (color_pin_mark==True) and (place_pinMark==True):
+                CutObjs_wColors(FreeCAD, FreeCADGui,
+                            doc.Name, objs[0].Name, objs[2].Name)
+            else:
+                #removing pinMark
+                App.getDocument(doc.Name).removeObject(objs[2].Name)
+            ###
+            #sleep
+            del objs
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui,
+                            doc.Name, objs[0].Name, objs[1].Name)
         ## objs[0].Label='body'
         ## objs[1].Label='pins'
         ## objs[2].Label='mark'
@@ -381,19 +448,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
         ## print objs[0].Name, objs[1].Name, objs[2].Name
 
         ## sleep
-        #if place_pinMark==True:
-        if (color_pin_mark==True) and (place_pinMark==True):
-            CutObjs_wColors(FreeCAD, FreeCADGui,
-                           doc.Name, objs[0].Name, objs[2].Name)
-        else:
-            #removing pinMark
-            App.getDocument(doc.Name).removeObject(objs[2].Name)
-        ###
-        #sleep
-        del objs
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name)
         doc.Label=ModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label=ModelName
