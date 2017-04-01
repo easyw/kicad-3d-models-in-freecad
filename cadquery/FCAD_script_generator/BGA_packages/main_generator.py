@@ -13,7 +13,7 @@
 ##   https://github.com/jmwright/cadquery-freecad-module
 
 ## to run the script just do: freecad main_generator.py modelName
-## e.g. c:\freecad\bin\freecad main_generator.py QFN-28-1EP_6x6mm_Pitch0.65mm
+## e.g. c:\freecad\bin\freecad main_generator.py BGA-1156_34x34_35.0x35.0mm_Pitch1.0mm
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -44,13 +44,12 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make QFN ICs 3D models"
+__title__ = "make BGA ICs 3D models"
 __author__ = "maurice and hyOzd"
-__Comment__ = 'make QFN ICs 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make BGA ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.0.5 25/Feb/2017"
 
-###ToDo: QFN with ARC pad, exposed pad with chamfer
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -170,12 +169,15 @@ def make_plg(wp, rw, rh, cv1, cv):
 def make_case(params):
 
     ef  = params.ef
-    cce = params.cce
+    cff = params.cff
+    cf = params.cf
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
     D  = params.D
     E   = params.E
+    D1  = params.D1
+    E1  = params.E1
     A1  = params.A1
     A2  = params.A2
     A  = params.A
@@ -188,8 +190,21 @@ def make_case(params):
     mN  = params.modelName
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
-    if params.excluded_pins:
-        excluded_pins = params.excluded_pins
+    
+    if cf is None:
+        cf = cff
+        
+    if params.excluded_pins is not None:
+        epl = list(params.excluded_pins)
+        #expVRML.say(epl)
+        i=0
+        for i in range (0, len(epl)):           
+            if isinstance(epl[i], ( int, long )):
+                epl[i]=str(int(epl[i]))
+                i=i+1
+        excluded_pins=tuple(epl)
+        #expVRML.say(excluded_pins)
+        #stop
     else:
         excluded_pins=() ##no pin excluded 
 
@@ -205,12 +220,13 @@ def make_case(params):
     first_pos_x = (npx-1)*e/2
     for j in range(npy):
         for i in range(npx):
-            if params.excluded_pins:
-                if j==0 or j==npy-1 or i==0 or i==npx-1:
-                    pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
-                            rotate((0,0,0), (0,0,1), 180)
-                    pins.append(pin)
-            else:
+            if "internals" in excluded_pins:
+                if str(int(pincounter)) not in excluded_pins:
+                    if j==0 or j==npy-1 or i==0 or i==npx-1:
+                        pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
+                                rotate((0,0,0), (0,0,1), 180)
+                        pins.append(pin)
+            elif str(int(pincounter)) not in excluded_pins:
                 pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
                         rotate((0,0,0), (0,0,1), 180)
                 pins.append(pin)
@@ -231,16 +247,16 @@ def make_case(params):
         fp_r = 0.1
     if molded is not None:
         the=24
-        D1=D*(1-0.13)
-        E1=E*(1-0.13)
-    
+        if D1 is None:
+            D1=D*(1-0.065)
+            E1=E*(1-0.065)
         D1_t = D1-2*tan(radians(the))*(A-A1-A2)
         E1_t = E1-2*tan(radians(the))*(A-A1-A2)
         # draw the case
         cw = D-2*A1
         cl = E-2*A1
         case_bot = cq.Workplane("XY").workplane(offset=0)
-        case_bot= make_plg(case_bot, cw, cl, cce, cce)
+        case_bot= make_plg(case_bot, cw, cl, cff, cf)
         case_bot = case_bot.extrude(A2-0.01)
         case_bot = case_bot.translate((0,0,A1))
         #show(case_bot)
@@ -248,13 +264,13 @@ def make_case(params):
             
         case = cq.Workplane("XY").workplane(offset=A1)
         #case = make_plg(case, cw, cl, cce, cce)
-        case = make_plg(case, D1, E1, 3*cce, 3*cce)
+        case = make_plg(case, D1, E1, 3*cf, 3*cf)
         #case = case.extrude(c-A1)
         case = case.extrude(0.01)
         case = case.faces(">Z").workplane()
-        case = make_plg(case, D1, E1, 3*cce, 3*cce).\
+        case = make_plg(case, D1, E1, 3*cf, 3*cf).\
             workplane(offset=A-A2-A1)
-        case = make_plg(case, D1_t, E1_t, 3*cce, 3*cce).\
+        case = make_plg(case, D1_t, E1_t, 3*cf, 3*cf).\
             loft(ruled=True)
         # fillet the bottom vertical edges
         if ef!=0:
@@ -268,7 +284,7 @@ def make_case(params):
         #show(case)
         #stop
         pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
-        pinmark=pinmark.translate((10*cce+fp_d,10*cce+fp_d,-sp))
+        pinmark=pinmark.translate(((D-D1_t)/2+fp_d,(E-E1_t)/2+fp_d,-sp))
         #stop
         if (color_pin_mark==False) and (place_pinMark==True):
             case = case.cut(pinmark)
