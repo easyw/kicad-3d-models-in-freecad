@@ -409,7 +409,7 @@ def make_gw(params):
     R2_o = R2+c # pin lower corner, outer radius
 
     # Create a pin object at the center of top side.
-    bpin = cq.Workplane("YZ", (0,E1/2,0)). \
+    bpin = cq.Workplane("YZ", (0,E1/2,0,)). \
         moveTo(-tb_s, A1+A2_b). \
         line(S+tb_s, 0). \
         threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
