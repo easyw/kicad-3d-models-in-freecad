@@ -55,6 +55,7 @@ ___ver___ = "1.3.9 14/02/2017"
 import argparse
 global save_memory
 save_memory=False #reducing memory consuming for all generation params
+footprints_dir=None
 
 from math import tan, radians, sqrt
 from collections import namedtuple
@@ -626,40 +627,37 @@ if __name__ == "__main__" or __name__ == "main_generator":
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
-        try:
-            if footprints_dir is not None:
-                #expVRML.say (ModelName)
-                #stop
-                sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
-                #setup = get_setup_file()  # << You need the parentheses
-                expVRML.say(sys.argv[2])
-                ksu_already_loaded=False
-                ksu_present=False
-                for i in QtGui.qApp.topLevelWidgets():
-                    if i.objectName() == "kicadStepUp":
-                        ksu_already_loaded=True
-                if ksu_already_loaded!=True:
-                    try:
-                        import kicadStepUptools
-                        ksu_present=True
-                        kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
-                        kicadStepUptools.form.destroy()
-                        #for i in QtGui.qApp.topLevelWidgets():
-                        #    if i.objectName() == "kicadStepUp":
-                        #        i.deleteLater()
-                        ksu_already_loaded=True
-                    except:
-                        ksu_present=False
-                        expVRML.say("ksu not present")
-                else:
-                    reload(kicadStepUptools)
+        if footprints_dir is not None:
+            #expVRML.say (ModelName)
+            #stop
+            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+            #setup = get_setup_file()  # << You need the parentheses
+            expVRML.say(sys.argv[2])
+            ksu_already_loaded=False
+            ksu_present=False
+            for i in QtGui.qApp.topLevelWidgets():
+                if i.objectName() == "kicadStepUp":
+                    ksu_already_loaded=True
+            if ksu_already_loaded!=True:
+                try:
+                    import kicadStepUptools
+                    ksu_present=True
                     kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
                     kicadStepUptools.form.destroy()
-                
-            #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
-            #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
-        except:
-            pass
+                    #for i in QtGui.qApp.topLevelWidgets():
+                    #    if i.objectName() == "kicadStepUp":
+                    #        i.deleteLater()
+                    ksu_already_loaded=True
+                except:
+                    ksu_present=False
+                    expVRML.say("ksu not present")
+            else:
+                reload(kicadStepUptools)
+                kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                kicadStepUptools.form.destroy()
+            
+        #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
+        #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
         if save_memory == False:
             Gui.activateWorkbench("PartWorkbench")
             Gui.SendMsgToActiveView("ViewFit")
