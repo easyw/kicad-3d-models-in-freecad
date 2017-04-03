@@ -252,35 +252,6 @@ kicad_naming_params_sot = {
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SOT'
         ),
-    'D_SOT-23': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
-        the = 8.0,      # body angle in degrees
-        tb_s = 0.05,    # top part of body is that much smaller
-        c = 0.20,        # pin thickness, body center part height
-        R1 = 0.18,       # pin upper corner, inner radius
-        R2 = 0.18,       # pin lower corner, inner radius
-        S = 0.0,       # pin top flat part length (excluding corner arc)
-#        L = 0.4,       # pin bottom flat part length (including corner arc)
-        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.0,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.03,     # first pin indicator depth
-        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.12, #0.45 chamfer of the 1st pin corner
-        D1 = 2.9,       # body length
-        E1 = 1.6,       # body width
-        E = 2.8,        # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,  # body-board separation
-        A2 = 1.45,  # body height
-        b = 0.5,  # pin width
-        e = 0.95,  # pin (center-to-center) distance
-        npx = 0,   # number of pins along X axis (width)
-        npy = 1,   # number of pins along y axis (length)
-        epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
-        modelName = 'D_SOT-23', #modelName
-        rotation = -90, # rotation if required
-        dest_dir_prefix = 'SOT/diodes'
-        ),
 	'SOT-23-5': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller

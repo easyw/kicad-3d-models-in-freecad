@@ -150,6 +150,9 @@ from cq_parameters_tssop import *
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
+import cq_parameters_diode  # modules parameters
+from cq_parameters_diode import *
+
 # all_params= all_params_soic.copy()
 # all_params.update(all_params_qfp)
 
@@ -162,7 +165,8 @@ all_params= kicad_naming_params_soic.copy()
 all_params.update(kicad_naming_params_qfp)
 all_params.update(all_params_ssop)
 all_params.update(all_params_tssop)
-all_params.update(kicad_naming_params_sot)  
+all_params.update(kicad_naming_params_sot)
+all_params.update(kicad_naming_params_diode)  
 
 
 # all_params = dict(all_params1.items() | all_params2.items())
@@ -518,7 +522,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
     elif model_to_build == "allSOT":
-        variants = kicad_naming_params_sot.keys()        
+        variants = kicad_naming_params_sot.keys()
+    elif model_to_build == "allDiodes":
+        variants = kicad_naming_params_diode.keys()        
     else:
         variants = [model_to_build]
 

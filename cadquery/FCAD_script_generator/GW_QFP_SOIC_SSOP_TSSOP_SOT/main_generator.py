@@ -150,8 +150,8 @@ from cq_parameters_tssop import *
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
-import cq_parameters_sod  # modules parameters
-from cq_parameters_sod import *
+import cq_parameters_diode  # modules parameters
+from cq_parameters_diode import *
 
 # all_params= all_params_soic.copy()
 # all_params.update(all_params_qfp)
@@ -166,7 +166,7 @@ all_params.update(kicad_naming_params_qfp)
 all_params.update(all_params_ssop)
 all_params.update(all_params_tssop)
 all_params.update(kicad_naming_params_sot)  
-all_params.update(kicad_naming_params_sod)  
+all_params.update(kicad_naming_params_diode)  
 
 
 # all_params = dict(all_params1.items() | all_params2.items())
@@ -368,16 +368,17 @@ def make_gw(params):
             case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
             case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
     #fp_s = True
+    if fp_r == 0:
+            global place_pinMark
+            place_pinMark=False
+            fp_r = 0.1
     if fp_s == False:
         pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
         #translate the object  
         pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
     else:
         # first pin indicator is created with a spherical pocket
-        if fp_r == 0:
-            global place_pinMark
-            place_pinMark=False
-            fp_r = 0.1
+        
         sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
         sphere_z = A + sphere_r * 2 - fp_z - sphere_r
         # Revolve a cylinder from a rectangle
@@ -408,7 +409,7 @@ def make_gw(params):
     R2_o = R2+c # pin lower corner, outer radius
 
     # Create a pin object at the center of top side.
-    bpin = cq.Workplane("YZ", (0,E1/2,0)). \
+    bpin = cq.Workplane("YZ", (0,E1/2,0,)). \
         moveTo(-tb_s, A1+A2_b). \
         line(S+tb_s, 0). \
         threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
@@ -530,8 +531,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
         variants = all_params_tssop.keys()
     elif model_to_build == "allSOT":
         variants = kicad_naming_params_sot.keys() 
-    elif model_to_build == "allSOD":
-        variants = kicad_naming_params_sod.keys()        
+    elif model_to_build == "allDiodes":
+        variants = kicad_naming_params_diode.keys()        
     else:
         variants = [model_to_build]
 
