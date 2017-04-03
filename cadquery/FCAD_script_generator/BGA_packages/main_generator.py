@@ -208,6 +208,7 @@ def make_case(params):
     else:
         excluded_pins=() ##no pin excluded 
 
+        
     sphere_r = b/2
     s_center =(0,0,0)
     sphere = cq.Workplane("XY", s_center). \
@@ -260,7 +261,6 @@ def make_case(params):
         case_bot = case_bot.extrude(A2-0.01)
         case_bot = case_bot.translate((0,0,A1))
         #show(case_bot)
-        #stop
             
         case = cq.Workplane("XY").workplane(offset=A1)
         #case = make_plg(case, cw, cl, cce, cce)
@@ -284,7 +284,7 @@ def make_case(params):
         #show(case)
         #stop
         pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
-        pinmark=pinmark.translate(((D-D1_t)/2+fp_d,(E-E1_t)/2+fp_d,-sp))
+        pinmark=pinmark.translate(((D-D1_t)/2+fp_d+cff,(E-E1_t)/2+fp_d+cff,-sp))
         #stop
         if (color_pin_mark==False) and (place_pinMark==True):
             case = case.cut(pinmark)
@@ -294,7 +294,7 @@ def make_case(params):
         ##
 
     else:
-        A2 = A - A1
+        A2 = A - A1 #body height
         #if m == 0:
         #    case = cq.Workplane("XY").box(D-A1, E-A1, A2)  #margin to see fused pins
         #else:
@@ -303,22 +303,23 @@ def make_case(params):
             case.edges("|X").fillet(ef)
             case.edges("|Z").fillet(ef)
         #translate the object
-        case=case.translate((0,0,A2/2+A1+b/2-sp)).rotate((0,0,0), (0,0,1), 0)
+        case=case.translate((0,0,A2/2+A1-sp)).rotate((0,0,0), (0,0,1), 0)
     
         #sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
         #sphere_z = A + sphere_r * 2 - fp_z - sphere_r
     
-        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
-        pinmark=pinmark.translate((0,0,b/2-sp))
+        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A2+A1-sp))#+fp_z))
+        #pinmark=pinmark.translate((0,0,A1-sp))
         #stop
         if (color_pin_mark==False) and (place_pinMark==True):
             case = case.cut(pinmark)
         # extract pins from case
         case = case.cut(pins)
         case_bot = None
-        # show(pinmark)
-        # show(case)
-        # stop
+        #show(pins)
+        #show(pinmark)
+        #show(case)
+        #stop
     
 
     #show(pins)
