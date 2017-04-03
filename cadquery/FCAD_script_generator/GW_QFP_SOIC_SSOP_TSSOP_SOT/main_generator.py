@@ -52,8 +52,10 @@ ___ver___ = "1.3.9 14/02/2017"
 
 # thanks to Frank Severinsen Shack for including vrml materials
 
-# maui import cadquery as cq
-# maui from Helpers import show
+import argparse
+global save_memory
+save_memory=False #reducing memory consuming for all generation params
+
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -515,24 +517,30 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=False
             else:
                 color_pin_mark=True
-    close_doc=False
+    save_memory=False #reducing memory consuming for all generation params
     if model_to_build == "all":
         expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
     #    variants = all_params.keys()
     #elif model_to_build == "SOIC":
     elif model_to_build == "allSOIC":
         variants = kicad_naming_params_soic.keys()
+        save_memory=True
     elif model_to_build == "allQFP":
         variants = kicad_naming_params_qfp.keys()
-        close_doc=True #QFP are too many ... closing doc is requied to avoid memory leak
+        save_memory=True
     elif model_to_build == "allSSOP":
         variants = all_params_ssop.keys()
+        save_memory=True
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
+        save_memory=True
     elif model_to_build == "allSOT":
         variants = kicad_naming_params_sot.keys() 
+        save_memory=True
     elif model_to_build == "allDiodes":
-        variants = kicad_naming_params_diode.keys()        
+        variants = kicad_naming_params_diode.keys()  
+        footprints_dir="Diodes_SMD.pretty"
+        save_memory=True
     else:
         variants = [model_to_build]
 
@@ -618,20 +626,62 @@ if __name__ == "__main__" or __name__ == "main_generator":
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        #display BBox
-        #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-
-        if close_doc: #closing doc to avoid memory leak
-            expVRML.say("closing doc to save memory")
-            App.closeDocument(doc.Name)
-            App.setActiveDocument("")
-            App.ActiveDocument=None
-            Gui.ActiveDocument=None
-        else:
+        try:
+            if footprints_dir is not None:
+                #expVRML.say (ModelName)
+                #stop
+                sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+                #setup = get_setup_file()  # << You need the parentheses
+                expVRML.say(sys.argv[2])
+                ksu_already_loaded=False
+                ksu_present=False
+                for i in QtGui.qApp.topLevelWidgets():
+                    if i.objectName() == "kicadStepUp":
+                        ksu_already_loaded=True
+                if ksu_already_loaded!=True:
+                    try:
+                        import kicadStepUptools
+                        ksu_present=True
+                        kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                        kicadStepUptools.form.destroy()
+                        #for i in QtGui.qApp.topLevelWidgets():
+                        #    if i.objectName() == "kicadStepUp":
+                        #        i.deleteLater()
+                        ksu_already_loaded=True
+                    except:
+                        ksu_present=False
+                        expVRML.say("ksu not present")
+                else:
+                    reload(kicadStepUptools)
+                    kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
+                    kicadStepUptools.form.destroy()
+                
+            #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
+            #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
+        except:
+            pass
+        if save_memory == False:
             Gui.activateWorkbench("PartWorkbench")
             Gui.SendMsgToActiveView("ViewFit")
-            Gui.activeDocument().activeView().viewAxometric()
+            Gui.activeDocument().activeView().viewBottom()
+            #Gui.activeDocument().activeView().viewAxometric()
+        saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        #sys.argv = ["fc", "dummy", all]
+
+        #saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        ##display BBox
+        ##FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+        #
+        #if close_doc: #closing doc to avoid memory leak
+        #    expVRML.say("closing doc to save memory")
+        #    App.closeDocument(doc.Name)
+        #    App.setActiveDocument("")
+        #    App.ActiveDocument=None
+        #    Gui.ActiveDocument=None
+        #else:
+        #    Gui.activateWorkbench("PartWorkbench")
+        #    Gui.SendMsgToActiveView("ViewFit")
+        #    Gui.activeDocument().activeView().viewAxometric()
         
         
     #sys.exit()  #to create model and exit
