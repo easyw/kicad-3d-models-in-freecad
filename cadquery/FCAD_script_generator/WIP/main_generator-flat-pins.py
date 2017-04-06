@@ -137,16 +137,6 @@ except: # catch *all* exceptions
 import cq_parameters_soic  # modules parameters
 from cq_parameters_soic import *
 
-
-import cq_parameters_qfp  # modules parameters
-from cq_parameters_qfp import *
-
-import cq_parameters_ssop  # modules parameters
-from cq_parameters_ssop import *
-
-import cq_parameters_tssop  # modules parameters
-from cq_parameters_tssop import *
-
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
@@ -159,9 +149,6 @@ from cq_parameters_sot import *
 # all_params.update(all_params_ssop)
 
 all_params= kicad_naming_params_soic.copy()
-all_params.update(kicad_naming_params_qfp)
-all_params.update(all_params_ssop)
-all_params.update(all_params_tssop)
 all_params.update(kicad_naming_params_sot)  
 
 
