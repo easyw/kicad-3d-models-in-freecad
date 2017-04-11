@@ -531,6 +531,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         save_memory=True
     elif model_to_build == "allSSOP":
         variants = all_params_ssop.keys()
+        footprints_dir="Housings_SSOP.pretty"
         save_memory=True
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
