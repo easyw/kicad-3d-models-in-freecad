@@ -76,6 +76,7 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+import FreeCADGui as Gui
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
