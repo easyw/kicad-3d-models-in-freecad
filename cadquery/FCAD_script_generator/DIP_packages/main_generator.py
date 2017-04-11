@@ -602,8 +602,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #case, pins = make_dip(all_params[variant])
 
         ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '')
-        CheckedModelName = CheckedModelName.replace('-', '_')
+        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
@@ -643,14 +642,14 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
         FuseObjs_wColors(FreeCAD, FreeCADGui,
                         doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label=ModelName
+        doc.Label = CheckedModelName
         del objs
         #objs=GetListOfObjects(FreeCAD, doc)
         #FuseObjs_wColors(FreeCAD, FreeCADGui,
         #                doc.Name, objs[0].Name, objs[1].Name)
         #doc.Label=ModelName
         objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label=ModelName
+        objs[0].Label = CheckedModelName
         restore_Main_Tools()
 
         # objs=GetListOfObjects(FreeCAD, doc)

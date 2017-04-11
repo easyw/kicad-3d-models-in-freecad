@@ -166,7 +166,7 @@ from cq_parameters_diode import *
 
 all_params= kicad_naming_params_soic.copy()
 all_params.update(kicad_naming_params_qfp)
-all_params.update(all_params_ssop)
+all_params.update(kicad_naming_params_ssop)
 all_params.update(all_params_tssop)
 all_params.update(kicad_naming_params_sot)  
 all_params.update(kicad_naming_params_diode)  
@@ -530,7 +530,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         variants = kicad_naming_params_qfp.keys()
         save_memory=True
     elif model_to_build == "allSSOP":
-        variants = all_params_ssop.keys()
+        variants = kicad_naming_params_ssop.keys()
         save_memory=True
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
@@ -553,8 +553,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
         ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '')
-        CheckedModelName = CheckedModelName.replace('-', '_')
+        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
@@ -590,9 +589,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label=ModelName
+        doc.Label=CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label=ModelName
+        objs[0].Label=CheckedModelName
         restore_Main_Tools()
         #rotate if required
         if (all_params[variant].rotation!=0):
