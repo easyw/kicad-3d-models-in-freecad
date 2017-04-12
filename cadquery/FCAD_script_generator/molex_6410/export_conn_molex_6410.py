@@ -97,13 +97,6 @@ body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
-# TODO Remove redundant code
-
-insert_color_key = "gold pins"
-insert_color = shaderColors.named_colors[insert_color_key].getDiffuseInt()
-screw_color_key = "metal grey pins"
-screw_color = shaderColors.named_colors[screw_color_key].getDiffuseInt()
-
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
@@ -241,28 +234,13 @@ if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
-# TODO Remove redundant code below
-
     series_to_build = []
     modelfilter = ""
     with_plug = False
 
-    for arg in sys.argv[1:]:
-        # if arg.startswith("series="):
-            # series_to_build += arg[len("series="):].split(',')
-        if arg.startswith("filter="):
-            modelfilter = arg[len("filter="):]
-        if arg.lower() == 'with_plug':
-            with_plug = True;
-
-
-    if len(series_to_build) == 0:
-        series_to_build = ['mc', 'mstb']
-
-    if len(modelfilter) == 0:
-        modelfilter = "*"
 
     series = [KK_6410]
+    modelfilter = "*"
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
     for typ in series:
