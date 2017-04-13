@@ -532,7 +532,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
     elif model_to_build == "allSSOP":
         variants = kicad_naming_params_ssop.keys()
         #variants = all_params_ssop.keys()
-        footprints_dir="Housings_SSOP.pretty"
+        try:
+            footprints_dir=footprints_dir_SSOP
+        except:
+            pass
         save_memory=True
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
@@ -542,7 +545,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         save_memory=True
     elif model_to_build == "allDiodes":
         variants = kicad_naming_params_diode.keys()  
-        footprints_dir="Diodes_SMD.pretty"
+        try:
+            footprints_dir=footprints_dir_diodes
+        except:
+            pass
         save_memory=True
     else:
         variants = [model_to_build]
@@ -639,23 +645,30 @@ if __name__ == "__main__" or __name__ == "main_generator":
             for i in QtGui.qApp.topLevelWidgets():
                 if i.objectName() == "kicadStepUp":
                     ksu_already_loaded=True
+            ksu_tab = FreeCADGui.getMainWindow().findChild(QtGui.QDockWidget, "kicadStepUp") #"kicad StepUp 3D tools")
+            if ksu_tab:
+                ksu_already_loaded=True
             if ksu_already_loaded!=True:
                 try:
                     import kicadStepUptools
                     ksu_present=True
-                    kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
-                    kicadStepUptools.form.destroy()
+                    ksu_already_loaded=True
+                    kicadStepUptools.KSUWidget.close()
+                    #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+                    #kicadStepUptools.KSUWidget.destroy()
                     #for i in QtGui.qApp.topLevelWidgets():
                     #    if i.objectName() == "kicadStepUp":
                     #        i.deleteLater()
-                    ksu_already_loaded=True
+                    kicadStepUptools.KSUWidget.close()
                 except:
                     ksu_present=False
                     expVRML.say("ksu not present")
             else:
+                kicadStepUptools.KSUWidget.close()
                 reload(kicadStepUptools)
-                kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
-                kicadStepUptools.form.destroy()
+                kicadStepUptools.KSUWidget.close()
+                #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+                #kicadStepUptools.KSUWidget.destroy()
             
         #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
         #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
@@ -676,8 +689,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #    App.closeDocument(doc.Name)
         #    App.setActiveDocument("")
         #    App.ActiveDocument=None
-        #    Gui.ActiveDocument=None
-        #else:
+        #    Gui.ActiveDocument=None#else:
         #    Gui.activateWorkbench("PartWorkbench")
         #    Gui.SendMsgToActiveView("ViewFit")
         #    Gui.activeDocument().activeView().viewAxometric()
