@@ -150,20 +150,29 @@ from Helpers import show
 from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+
 sys.path.append("cq_models")
+
+
+full_path=os.path.realpath(__file__)
+script_dir_name =full_path.split(os.sep)[-2]
+parent_path = full_path.split(script_dir_name)[0]
+destination_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
+
+sys.path.append(parent_path + "_tools")
 
 import conn_molex_6410 as KK_6410
 
-import step_license as L
+import add_license as L
+
+from cq_helpers import v_add
+
+
 
 def export_one_part(modul, variant, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
-    full_path=os.path.realpath(__file__)
-    script_dir_name =full_path.split(os.sep)[-2]
-    parent_path = full_path.split(script_dir_name)[0]
-    destination_dir = parent_path +"_3Dmodels" + "/" + script_dir_name
     ModelName = variant
     ModelName = ModelName.replace(".","_")
     FileName = modul.all_params[variant].file_name
