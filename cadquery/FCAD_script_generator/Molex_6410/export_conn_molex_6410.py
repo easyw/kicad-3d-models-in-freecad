@@ -160,9 +160,10 @@ def export_one_part(modul, variant, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
-    destination_dir="Connectors_Molex.3dshapes"
-    if with_plug:
-        destination_dir="Connectors_Phoenix__with_plug.3dshapes"
+    full_path=os.path.realpath(__file__)
+    script_dir_name =full_path.split(os.sep)[-2]
+    parent_path = full_path.split(script_dir_name)[0]
+    destination_dir = parent_path +"_3Dmodels" + "/" + script_dir_name
     ModelName = variant
     ModelName = ModelName.replace(".","_")
     FileName = modul.all_params[variant].file_name
@@ -170,8 +171,6 @@ def export_one_part(modul, variant, with_plug=False):
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    #App.setActiveDocument(ModelName)
-    #Gui.ActiveDocument=Gui.getDocument(ModelName)
     (pins, body) = modul.generate_part(variant, with_plug)
 
     color_attr = body_color + (0,)
