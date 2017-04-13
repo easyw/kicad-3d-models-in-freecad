@@ -16,6 +16,8 @@ from cq_parameters_soic import *
 
 destination_dir="/GullWings_packages"
 # destination_dir="./"
+footprints_dir_diodes="Housings_SSOP.pretty"
+##footprints_dir=None #to exclude importing of footprints
 
 
 all_params_ssop = {        
