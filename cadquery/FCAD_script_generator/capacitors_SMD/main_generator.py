@@ -221,8 +221,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             continue
 
         ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '')
-        CheckedModelName = CheckedModelName.replace('-', '_')
+        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
@@ -250,9 +249,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label=ModelName
+        doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label=ModelName
+        objs[0].Label = CheckedModelName
         restore_Main_Tools()
         #rotate if required
         if (all_params[variant].rotation!=0):
