@@ -44,9 +44,9 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of Molex KK 6410 series connectors"
+__title__ = "make 3D models of 4UCON 17809 series connectors"
 __author__ = "scripts: maurice and hyOzd; models: hackscribble"
-__Comment__ = '''make 3D models of Molex KK 6410 series connectors'''
+__Comment__ = '''make 3D models of 4UCON 17809 series connectors'''
 
 ___ver___ = "0.1 12/04/2017"
 
@@ -92,7 +92,7 @@ LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAut
                 ]
 #################################################################################################
 
-body_color_key = "white body"
+body_color_key = "black body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
@@ -161,7 +161,7 @@ destination_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
 
 sys.path.append(parent_path + "_tools")
 
-import conn_molex_6410 as KK_6410
+import conn_4ucon_17809 as UCON_17809
 
 import add_license as L
 
@@ -176,6 +176,9 @@ def export_one_part(modul, variant, with_plug=False):
     ModelName = variant
     ModelName = ModelName.replace(".","_")
     FileName = modul.all_params[variant].file_name
+
+    FreeCAD.Console.PrintMessage(FileName)
+
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
@@ -247,7 +250,7 @@ if __name__ == "__main__":
     with_plug = False
 
 
-    series = [KK_6410]
+    series = [UCON_17809]
     modelfilter = "*"
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))

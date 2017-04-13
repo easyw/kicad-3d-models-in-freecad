@@ -84,28 +84,27 @@ def generate_straight_pin(params):
     pin = pin.faces("<Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
     return pin
 
-def generate_4_pin_group(params):
+
+def generate_2_pin_group(params, pin_1_side):
     pin_pitch=params.pin_pitch
     pin_y_pitch=params.pin_y_pitch
     num_pins=params.num_pins
-    pin0 = generate_straight_pin(params)
-    pin1 = pin0.translate(( 0, -pin_y_pitch, 0))
-    pin2 = pin0.translate(( pin_pitch, -pin_y_pitch/2, 0))
-    pin3 = pin0.translate(( pin_pitch, -3 * pin_y_pitch/2, 0))
-    pin_group = pin0.union(pin1.union(pin2.union(pin3)))
+    pin_a = generate_straight_pin(params)
+    pin_b = pin_a.translate((0, -2 * pin_y_pitch, 0))
+    pin_group = pin_a.union(pin_b)
+    if not pin_1_side:
+        pin_group = pin_group.translate((0, -pin_y_pitch, 0))
     return pin_group
 
-"""
-    pin1 = pin0
-    pin2 = pin0.translate(( pin_pitch,         -pin_y_pitch / 2,     0)))
-    pin3 = pin0.translate(( pin_pitch,         -pin_y_pitch / 2,     0)))
-"""
 
 def generate_pins(params):
     pin_pitch=params.pin_pitch
     num_pins=params.num_pins
-    pins = generate_4_pin_group(params)
+    pins = generate_2_pin_group(params, pin_1_side=True)
+    for i in range(1, num_pins / 2):
+        pins = pins.union(generate_2_pin_group(params, i % 2 == 0).translate((i*pin_pitch,0,0)))
     return pins
+
 
 """
     for i in range(0, num_pins / 4):
@@ -125,6 +124,11 @@ def generate_body(params ,calc_dim, with_details=False):
     body_height = seriesParams.body_height
     body_fillet_radius = seriesParams.body_fillet_radius
 
+    marker_x_inside = seriesParams.marker_x_inside
+    marker_y_inside = seriesParams.marker_y_inside
+    marker_size = seriesParams.marker_size
+    marker_depth = seriesParams.marker_depth
+
     foot_height = seriesParams.foot_height
     foot_width = seriesParams.foot_width
     foot_length = seriesParams.foot_length
@@ -142,11 +146,14 @@ def generate_body(params ,calc_dim, with_details=False):
     ramp_offset = calc_dim.ramp_offset
 
     x_offset = (((num_pins / 2) - 1)*pin_pitch)/2.0
-    y_offset = -(3*pin_y_pitch/4)
+    y_offset = -(1.5*pin_y_pitch)
 
     body = cq.Workplane("XY").workplane(offset=foot_height).moveTo(x_offset, y_offset)\
         .rect(body_length, body_width).extrude(body_height)\
         .edges("|Z").fillet(body_fillet_radius).edges(">Z").fillet(body_fillet_radius)
+
+    body = body.faces(">Z").workplane().moveTo(-(body_length/2)+marker_x_inside, (body_width/2)-marker_y_inside)\
+        .line(-marker_size,-marker_size/2).line(0, marker_size).close().cutBlind(-marker_depth)
 
     foot = cq.Workplane("YZ").workplane(offset=(body_length/2)-foot_inside_distance)\
         .moveTo(y_offset - foot_length/2, 0)\
@@ -204,7 +211,7 @@ def generate_part(part_key, with_plug=False):
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = '17809_02x40_1.27mm'
+    part_to_build = 'ucon_17809_02x20_1.27mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")

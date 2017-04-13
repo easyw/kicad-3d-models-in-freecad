@@ -23,8 +23,9 @@ def generate_params(num_pins, series_name, pin_pitch, pin_y_pitch):
 
 
 all_params = {								
-    '17809_02x02_1.27mm' : generate_params( 4, "17809", 1.27, 2.54),
-    '17809_02x40_1.27mm' : generate_params(80, "17809", 1.27, 2.54)
+    'ucon_17809_02x02_1.27mm' : generate_params( 4, "17809", 1.27, 2.54),
+    'ucon_17809_02x20_1.27mm' : generate_params(40, "17809", 1.27, 2.54),
+    'ucon_17809_02x40_1.27mm' : generate_params(80, "17809", 1.27, 2.54)
 }
 
 
@@ -32,24 +33,29 @@ class seriesParams():
 
 # UPDATED
 
+    pin_width = 0.5
+    pin_chamfer_long = 0.1
+    pin_chamfer_short = 0.1
+    pin_height = 5
+    pin_inside_distance = 3.685				# (DIMENSION C-DIMENSION A)/2 distance between centre of end pin and end of body
+
     body_width = 8.88
     body_height = 14.0					# Excluding feet
     body_fillet_radius = 0.5
-
-    pin_inside_distance = 3.685				# (DIMENSION C-DIMENSION A)/2 distance between centre of end pin and end of body
 
     foot_height = 1.5
     foot_width = 1.7
     foot_length = 7.62
     foot_inside_distance = 0.5 				# Distance between outside edge of foot and end of body
 
+    marker_x_inside = pin_inside_distance - 1
+    marker_y_inside = 1.2
+    marker_size = 1.0
+    marker_depth = 0.5
+
 
 # OLD
 
-    pin_width = 0.5
-    pin_chamfer_long = 0.1
-    pin_chamfer_short = 0.1
-    pin_height = 14.22					# DIMENSION C
     pin_depth = 3.56					# DIMENSION F depth below bottom surface of base
 
     body_channel_depth = 0.6
