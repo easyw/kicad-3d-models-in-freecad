@@ -57,7 +57,6 @@ import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-# from cq_helpers import *
 from conn_4ucon_17809_params import *
 
 
@@ -73,17 +72,26 @@ def generate_straight_pin(params, pin_1_side):
     sign = -1 if not pin_1_side else 1
     pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
         .moveTo(0, foot_height+1)\
+        .line(0,-1)\
+        .line(sign*pin_thickness/2,0)\
+        .line(sign*1.27,-foot_height)\
+        .line(0, -2.54)\
+        .line(sign*-pin_thickness,0)\
+        .line(0, 2.54)\
+        .line(sign*-1.27, foot_height)\
+        .line(0,1)\
+        .close()\
+        .extrude(pin_width).edges("|X").fillet(0.07)
+    return pin
+
+"""
         .line(sign*pin_thickness/2, 0)\
         .line(0, -pin_height)\
         .line(sign*2, 0)\
         .line(0,-pin_thickness)\
         .line(sign*(-2-pin_thickness),0)\
         .line(0,pin_height+pin_thickness)\
-        .close()\
-        .extrude(pin_width).edges("|X").fillet(0.1)
-    return pin
 
-"""
     pin = pin.faces(">Z").edges(">X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces(">Z").edges("<X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces(">Z").edges(">Y").chamfer(chamfer_long,chamfer_short)
@@ -102,8 +110,6 @@ def generate_2_pin_group(params, pin_1_side):
     pin_a = generate_straight_pin(params, pin_1_side).translate((0, -pin_y_pitch/2, 0))
     pin_b = pin_a.translate((0, -2 * pin_y_pitch, 0))
     pin_group = pin_a.union(pin_b)
-    # if not pin_1_side:
-        # pin_group = pin_group.translate((0, -pin_y_pitch, 0))
     return pin_group
 
 
@@ -122,7 +128,7 @@ def generate_pins(params):
 """
 
 
-def generate_body(params, calc_dim, with_details=False):
+def generate_body(params, calc_dim):
     pin_inside_distance = seriesParams.pin_inside_distance
     pin_width = seriesParams.pin_width
     num_pins = params.num_pins
@@ -152,6 +158,11 @@ def generate_body(params, calc_dim, with_details=False):
     hole_width = seriesParams.hole_width
     hole_length = seriesParams.hole_length
     hole_offset = seriesParams.hole_offset
+
+    recess_depth = seriesParams.recess_depth
+    recess_large_width = seriesParams.recess_large_width
+    recess_small_width = seriesParams.recess_small_width
+    recess_height = seriesParams.recess_height
 
 
 
@@ -210,6 +221,14 @@ def generate_body(params, calc_dim, with_details=False):
         .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
         .cutBlind(-2)
 
+    body = body.faces(">Z").workplane().center(body_length/2-recess_depth/2, 0)\
+        .rect(recess_depth, recess_small_width).cutBlind(-recess_height)
+
+    recess = cq.Workplane("XY").workplane(offset=foot_height+body_height).center(-body_length/2+recess_depth, y_offset)\
+        .rect(recess_depth, recess_large_width).extrude(-recess_height).edges(">X").edges("|Z").fillet(0.3)
+
+    body = body.cut(recess)
+
     void = cq.Workplane("YZ").workplane(offset=0).moveTo(0, body_height+foot_height-7.62)\
         .line(3.25,0).line(0,7.62-1.3).line(-6.5,0).line(0,-7.62+1.3).close().extrude(slot_length/2)
 
@@ -219,7 +238,7 @@ def generate_body(params, calc_dim, with_details=False):
 
     body = body.cut(void)
 
-    return body, None
+    return body
 
 """
     body = body.faces("<Z").workplane().rarray(pin_pitch, 1, num_pins, 1)\
@@ -247,21 +266,21 @@ def generate_body(params, calc_dim, with_details=False):
  """
 
 
-def generate_part(part_key, with_plug=False):
+def generate_part(part_key):
     params = all_params[part_key]
     calc_dim = dimensions(params)
     pins = generate_pins(params)
-    body, insert = generate_body(params, calc_dim, not with_plug)
+    body = generate_body(params, calc_dim)
     return (pins, body)
 
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'ucon_17809_02x20_1.27mm'
+    part_to_build = 'ucon_17809_02x02_1.27mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
-    (pins, body) = generate_part(part_to_build, True)
+    (pins, body) = generate_part(part_to_build)
 
     show(pins)
     show(body)

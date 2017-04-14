@@ -62,6 +62,11 @@ class seriesParams():
     hole_length = 1.46
     hole_offset = 2.52
 
+    recess_depth = pin_inside_distance - 1.27 - 1.28
+    recess_large_width = 4
+    recess_small_width = 3
+    recess_height = 11.43
+
 
 # OLD
 
