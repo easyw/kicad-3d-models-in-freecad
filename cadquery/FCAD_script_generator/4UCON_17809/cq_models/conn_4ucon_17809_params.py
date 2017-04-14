@@ -33,11 +33,12 @@ class seriesParams():
 
 # UPDATED
 
-    pin_width = 0.5
+    pin_width = 0.6
     pin_chamfer_long = 0.1
     pin_chamfer_short = 0.1
     pin_height = 5
     pin_inside_distance = 3.685				# (DIMENSION C-DIMENSION A)/2 distance between centre of end pin and end of body
+    pin_thickness = 0.3
 
     body_width = 8.88
     body_height = 14.0					# Excluding feet

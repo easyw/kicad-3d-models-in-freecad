@@ -61,19 +61,29 @@ import FreeCAD
 from conn_4ucon_17809_params import *
 
 
-def generate_straight_pin(params):
+def generate_straight_pin(params, pin_1_side):
+    foot_height = seriesParams.foot_height
     pin_width=seriesParams.pin_width
     pin_depth=seriesParams.pin_depth
     pin_height=seriesParams.pin_height
     pin_inside_distance=seriesParams.pin_inside_distance
+    pin_thickness  =seriesParams.pin_thickness
     chamfer_long = seriesParams.pin_chamfer_long
     chamfer_short = seriesParams.pin_chamfer_short
-
+    sign = -1 if not pin_1_side else 1
     pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
-        .moveTo(-pin_width/2.0, -pin_depth)\
-        .rect(pin_width, pin_height, False)\
-        .extrude(pin_width)
+        .moveTo(0, foot_height+1)\
+        .line(sign*pin_thickness/2, 0)\
+        .line(0, -pin_height)\
+        .line(sign*2, 0)\
+        .line(0,-pin_thickness)\
+        .line(sign*(-2-pin_thickness),0)\
+        .line(0,pin_height+pin_thickness)\
+        .close()\
+        .extrude(pin_width).edges("|X").fillet(0.1)
+    return pin
 
+"""
     pin = pin.faces(">Z").edges(">X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces(">Z").edges("<X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces(">Z").edges(">Y").chamfer(chamfer_long,chamfer_short)
@@ -82,18 +92,18 @@ def generate_straight_pin(params):
     pin = pin.faces("<Z").edges("<X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces("<Z").edges(">Y").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces("<Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
-    return pin
+"""
 
 
 def generate_2_pin_group(params, pin_1_side):
     pin_pitch=params.pin_pitch
     pin_y_pitch=params.pin_y_pitch
     num_pins=params.num_pins
-    pin_a = generate_straight_pin(params)
+    pin_a = generate_straight_pin(params, pin_1_side).translate((0, -pin_y_pitch/2, 0))
     pin_b = pin_a.translate((0, -2 * pin_y_pitch, 0))
     pin_group = pin_a.union(pin_b)
-    if not pin_1_side:
-        pin_group = pin_group.translate((0, -pin_y_pitch, 0))
+    # if not pin_1_side:
+        # pin_group = pin_group.translate((0, -pin_y_pitch, 0))
     return pin_group
 
 
