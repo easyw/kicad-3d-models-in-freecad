@@ -50,14 +50,13 @@ __title__ = "model description for Molex KK 6410 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for Molex KK 6410 series connectors using cadquery'
 
-___ver___ = "0.1 11/04/2017"
+___ver___ = "0.2 14/04/2017"
 
 
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from cq_helpers import *
 from conn_molex_6410_params import *
 
 
