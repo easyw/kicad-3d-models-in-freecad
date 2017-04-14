@@ -112,7 +112,7 @@ def generate_pins(params):
 """
 
 
-def generate_body(params ,calc_dim, with_details=False):
+def generate_body(params, calc_dim, with_details=False):
     pin_inside_distance = seriesParams.pin_inside_distance
     pin_width = seriesParams.pin_width
     num_pins = params.num_pins
@@ -133,6 +133,18 @@ def generate_body(params ,calc_dim, with_details=False):
     foot_width = seriesParams.foot_width
     foot_length = seriesParams.foot_length
     foot_inside_distance = seriesParams.foot_inside_distance
+
+    slot_length = calc_dim.slot_length
+    slot_outside_pin = seriesParams.slot_outside_pin
+    slot_width = seriesParams.slot_width
+    slot_chamfer = seriesParams.slot_chamfer
+
+    hole_width = seriesParams.hole_width
+    hole_length = seriesParams.hole_length
+    hole_offset = seriesParams.hole_offset
+
+
+
 
     body_channel_depth = seriesParams.body_channel_depth
     body_channel_width = seriesParams.body_channel_width
@@ -172,6 +184,30 @@ def generate_body(params ,calc_dim, with_details=False):
     foot = foot.union(foot_mirror).translate((x_offset, 0, 0))
 
     body = body.union(foot)
+
+    body = body.faces(">Z").workplane().rect(slot_length, slot_width).cutBlind(-2)
+
+    chamfer = cq.Workplane("XY").workplane(offset=foot_height+body_height).moveTo(x_offset, y_offset) \
+    .rect(slot_length+2*slot_chamfer, slot_width+2*slot_chamfer) \
+    .workplane(offset=-slot_chamfer).rect(slot_length, slot_width) \
+    .loft(combine=True)
+
+    body = body.cut(chamfer)
+
+    body = body.faces(">Z").workplane().center(0, hole_offset)\
+        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+        .center(0, -2*hole_offset)\
+        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+        .cutBlind(-2)
+
+    void = cq.Workplane("YZ").workplane(offset=0).moveTo(0, body_height+foot_height-7.62)\
+        .line(3.25,0).line(0,7.62-1.3).line(-6.5,0).line(0,-7.62+1.3).close().extrude(slot_length/2)
+
+    void_mirror = void.mirror("YZ")
+
+    void = void.union(void_mirror).translate((x_offset,y_offset,0))
+
+    body = body.cut(void)
 
     return body, None
 

@@ -53,6 +53,14 @@ class seriesParams():
     marker_size = 1.0
     marker_depth = 0.5
 
+    slot_outside_pin = 1.27
+    slot_width = 1.9
+    slot_chamfer = 0.5
+
+    hole_width = 0.8
+    hole_length = 1.46
+    hole_offset = 2.52
+
 
 # OLD
 
@@ -68,11 +76,12 @@ class seriesParams():
     ramp_chamfer_y = 0.7
 
 
-calcDim = namedtuple( 'calcDim', ['length', 'ramp_height', 'ramp_width', 'ramp_offset'])
+calcDim = namedtuple( 'calcDim', ['length', 'slot_length', 'ramp_height', 'ramp_width', 'ramp_offset'])
 
 
 def dimensions(params):
     length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.pin_inside_distance
+    slot_length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.slot_outside_pin
     ramp_height = 11.7 - seriesParams.body_height
     if params.num_pins > seriesParams.ramp_split_breakpoint:
         ramp_width = params.pin_pitch * 2
@@ -80,6 +89,6 @@ def dimensions(params):
     else:
         ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
         ramp_offset = 0
-    return calcDim(length = length, ramp_height = ramp_height, ramp_width = ramp_width, ramp_offset = ramp_offset)
+    return calcDim(length = length, slot_length=slot_length, ramp_height = ramp_height, ramp_width = ramp_width, ramp_offset = ramp_offset)
 
 
