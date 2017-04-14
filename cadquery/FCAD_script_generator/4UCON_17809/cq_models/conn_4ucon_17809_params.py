@@ -23,9 +23,8 @@ def generate_params(num_pins, series_name, pin_pitch, pin_y_pitch):
 
 
 all_params = {								
-    'ucon_17809_02x02_1.27mm' : generate_params( 4, "17809", 1.27, 2.54),
-    'ucon_17809_02x20_1.27mm' : generate_params(40, "17809", 1.27, 2.54),
-    'ucon_17809_02x40_1.27mm' : generate_params(80, "17809", 1.27, 2.54)
+    'ucon_17809_02x02_1.27mm' : generate_params(  4, "17809", 1.27, 2.54),
+    'ucon_17809_02x40_1.27mm' : generate_params( 80, "17809", 1.27, 2.54)
 }
 
 
