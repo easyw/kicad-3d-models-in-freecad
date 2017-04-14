@@ -6,5 +6,5 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-FreeCAD export_conn_molex_6410.py all
+FreeCAD main_generator.py all
 
