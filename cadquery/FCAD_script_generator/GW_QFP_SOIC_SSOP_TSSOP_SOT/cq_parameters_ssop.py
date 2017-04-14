@@ -16,7 +16,7 @@ from cq_parameters_soic import *
 
 destination_dir="/GullWings_packages"
 # destination_dir="./"
-#footprints_dir_SSOP="Housings_SSOP.pretty"
+footprints_dir_SSOP="Housings_SSOP.pretty"
 ##footprints_dir=None #to exclude importing of footprints
 
 
@@ -1506,14 +1506,14 @@ kicad_naming_params_ssop = {
         the = 12.0,      # body angle in degrees
         tb_s = 0.1,    # top part of body is that much smaller
         c = 0.15,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.2,       # pin top flat part length (excluding corner arc)
+        R1 = 0.05,       # pin upper corner, inner radius
+        R2 = 0.05,       # pin lower corner, inner radius
+        S = 0.05,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
         fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.5,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.1,     # first pin indicator depth
+        fp_r = 0.25,     # first pin indicator radius
+        fp_d = 0.05,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
         ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
         cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 2.0,       # body length
@@ -1540,9 +1540,9 @@ kicad_naming_params_ssop = {
         S = 0.05,       # pin top flat part length (excluding corner arc)
 #        L = 0.6,       # pin bottom flat part length (including corner arc)
         fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.5,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.1,     # first pin indicator depth
+        fp_r = 0.25,     # first pin indicator radius
+        fp_d = 0.05,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
         ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
         cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 2.1,       # body length

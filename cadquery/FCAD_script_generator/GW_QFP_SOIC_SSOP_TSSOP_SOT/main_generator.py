@@ -144,6 +144,7 @@ from cq_parameters_soic import *
 import cq_parameters_qfp  # modules parameters
 from cq_parameters_qfp import *
 
+footprints_dir_SSOP=None
 import cq_parameters_ssop  # modules parameters
 from cq_parameters_ssop import *
 
@@ -153,6 +154,7 @@ from cq_parameters_tssop import *
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
+footprints_dir_diodes=None
 import cq_parameters_diode  # modules parameters
 from cq_parameters_diode import *
 
@@ -532,10 +534,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     elif model_to_build == "allSSOP":
         variants = kicad_naming_params_ssop.keys()
         #variants = all_params_ssop.keys()
-        try:
-            footprints_dir=footprints_dir_SSOP
-        except:
-            pass
+        footprints_dir=footprints_dir_SSOP
         save_memory=True
     elif model_to_build == "allTSSOP":
         variants = all_params_tssop.keys()
@@ -545,10 +544,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         save_memory=True
     elif model_to_build == "allDiodes":
         variants = kicad_naming_params_diode.keys()  
-        try:
-            footprints_dir=footprints_dir_diodes
-        except:
-            pass
+        footprints_dir=footprints_dir_diodes
         save_memory=True
     else:
         variants = [model_to_build]
@@ -634,7 +630,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
-        if footprints_dir is not None:
+        if footprints_dir is not None and os.path.isdir(footprints_dir):
             #expVRML.say (ModelName)
             #stop
             sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
