@@ -79,10 +79,12 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 contacts_color_key = "metal grey pins"
 contacts_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
+#################################################################################################
+
 
 import add_license as L
 
-# Licence information of the generated models.
+# Licence information of the generated models
 #################################################################################################
 
 L.STR_int_licAuthor = "Ray Benitez"
@@ -157,6 +159,10 @@ def export_one_part(modul, variant):
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
+
+    # Model details
+    #################################################################################################
+
     (pins, body, contacts) = modul.generate_part(variant)
 
     color_attr = body_color + (0,)
@@ -203,6 +209,9 @@ def export_one_part(modul, variant):
             shape_color=contacts_color_key,
             face_colors=None))
     i+=1
+
+    #################################################################################################
+
 
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
