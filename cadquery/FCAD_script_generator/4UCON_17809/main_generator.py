@@ -76,6 +76,8 @@ body_color_key = "dark grey body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
+contacts_color_key = "metal grey pins"
+contacts_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
 
 import add_license as L
@@ -155,13 +157,16 @@ def export_one_part(modul, variant):
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = modul.generate_part(variant)
+    (pins, body, contacts) = modul.generate_part(variant)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
 
     color_attr = pins_color + (0,)
     show(pins, color_attr)
+
+    color_attr = contacts_color + (0,)
+    show(contacts, color_attr)
 
     doc = FreeCAD.ActiveDocument
     doc.Label=ModelName
@@ -173,13 +178,15 @@ def export_one_part(modul, variant):
     i+=1
     objs[i].Label = ModelName + "__pins"
     i+=1
+    objs[i].Label = ModelName + "__contacts"
+    i+=1
 
     restore_Main_Tools()
 
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    used_color_keys = [body_color_key, pins_color_key]
+    used_color_keys = [body_color_key, pins_color_key, contacts_color_key]
     export_file_name=out_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
@@ -190,6 +197,10 @@ def export_one_part(modul, variant):
     i+=1
     export_objects.append(expVRML.exportObject(freecad_object = objs[i],
             shape_color=pins_color_key,
+            face_colors=None))
+    i+=1
+    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+            shape_color=contacts_color_key,
             face_colors=None))
     i+=1
 
