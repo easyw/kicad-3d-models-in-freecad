@@ -23,7 +23,7 @@ def generate_params(num_pins, series_name, pin_pitch, pin_y_pitch):
 
 
 all_params = {								
-    'ucon_17809_02x02_1.27mm' : generate_params(  4, "17809", 1.27, 2.54),
+    # 'ucon_17809_02x02_1.27mm' : generate_params(  4, "17809", 1.27, 2.54),
     # 'ucon_17809_02x03_1.27mm' : generate_params(  6, "17809", 1.27, 2.54),
     # 'ucon_17809_02x04_1.27mm' : generate_params(  8, "17809", 1.27, 2.54),
     # 'ucon_17809_02x05_1.27mm' : generate_params( 10, "17809", 1.27, 2.54),
@@ -31,7 +31,7 @@ all_params = {
     # 'ucon_17809_02x07_1.27mm' : generate_params( 14, "17809", 1.27, 2.54),
     # 'ucon_17809_02x08_1.27mm' : generate_params( 16, "17809", 1.27, 2.54),
     # 'ucon_17809_02x09_1.27mm' : generate_params( 18, "17809", 1.27, 2.54),
-    # 'ucon_17809_02x10_1.27mm' : generate_params( 20, "17809", 1.27, 2.54),
+    'ucon_17809_02x10_1.27mm' : generate_params( 20, "17809", 1.27, 2.54),
     # 'ucon_17809_02x11_1.27mm' : generate_params( 22, "17809", 1.27, 2.54),
     # 'ucon_17809_02x12_1.27mm' : generate_params( 24, "17809", 1.27, 2.54),
     # 'ucon_17809_02x13_1.27mm' : generate_params( 26, "17809", 1.27, 2.54),

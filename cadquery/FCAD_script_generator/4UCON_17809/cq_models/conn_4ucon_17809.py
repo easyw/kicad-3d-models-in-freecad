@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-# CadQuery script returning JST XH Connectors
+# CadQuery script to generate connector models
 
 ## requirements
 ## freecad (v1.5 and v1.6 have been tested)
@@ -50,7 +50,7 @@ __title__ = "model description for 4UCON 17809 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for 4UCON 17809 series connectors using cadquery'
 
-___ver___ = "0.1 15/04/2017"
+___ver___ = "0.2 16/04/2017"
 
 
 import cadquery as cq
@@ -71,7 +71,7 @@ def generate_straight_pin(params, pin_1_side):
     pin_thickness = seriesParams.pin_thickness
     chamfer_long = seriesParams.pin_chamfer_long
     chamfer_short = seriesParams.pin_chamfer_short
-    sign = -1 if not pin_1_side else 1
+    sign = 1 if pin_1_side else -1
     pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
         .moveTo(0, foot_height)\
         .line(sign*pin_thickness/2,0)\
@@ -84,24 +84,6 @@ def generate_straight_pin(params, pin_1_side):
         .close()\
         .extrude(pin_width).edges("|X").fillet(0.07)
     return pin
-
-"""
-        .line(sign*pin_thickness/2, 0)\
-        .line(0, -pin_height)\
-        .line(sign*2, 0)\
-        .line(0,-pin_thickness)\
-        .line(sign*(-2-pin_thickness),0)\
-        .line(0,pin_height+pin_thickness)\
-
-    pin = pin.faces(">Z").edges(">X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces(">Z").edges("<X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces(">Z").edges(">Y").chamfer(chamfer_long,chamfer_short)
-    pin = pin.faces(">Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Z").edges(">X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Z").edges("<X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Z").edges(">Y").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
-"""
 
 
 def generate_2_pin_group(params, pin_1_side):
@@ -140,11 +122,9 @@ def generate_2_contact_group(params):
         ('line', {'length': 2.8}),
     ]
     ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0), c_list)
-    contact1 = ribbon.drawRibbon()
-    contact1 = contact1.extrude(pin_width)
+    contact1 = ribbon.drawRibbon().extrude(pin_width)
     contact2 = contact1.mirror("XZ")
     contact1 = contact1.union(contact2).translate((0,-3*pin_y_pitch/2.0,0))
-    print("finished 2 contact group")
     return contact1
 
 
@@ -155,7 +135,6 @@ def generate_contacts(params):
     contacts = pair
     for i in range(0, num_pins / 2):
         contacts = contacts.union(pair.translate((i*pin_pitch,0,0)))
-    print("finished contacts")
     return contacts
 
 
@@ -201,25 +180,8 @@ def generate_body(params, calc_dim):
     recess_small_width = seriesParams.recess_small_width
     recess_height = seriesParams.recess_height
 
-
-
-
-
-
-    body_channel_depth = seriesParams.body_channel_depth
-    body_channel_width = seriesParams.body_channel_width
-    body_cutout_length = seriesParams.body_cutout_length
-    body_cutout_width = seriesParams.body_cutout_width
-
-    ramp_chamfer_x = seriesParams.ramp_chamfer_x
-    ramp_chamfer_y = seriesParams.ramp_chamfer_y
-    ramp_height = calc_dim.ramp_height
-    ramp_width = calc_dim.ramp_width 
-    ramp_offset = calc_dim.ramp_offset
-
     x_offset = (((num_pins / 2) - 1)*pin_pitch)/2.0
     y_offset = -(1.5*pin_y_pitch)
-
 
     # body
     body = cq.Workplane("XY").workplane(offset=foot_height).moveTo(x_offset, y_offset)\
@@ -287,18 +249,6 @@ def generate_body(params, calc_dim):
     return body
 
 
-"""
-    void = cq.Workplane("YZ").workplane(offset=0).moveTo(0, body_height+foot_height-7.62)\
-        .line(3.25,0).line(0,7.62-1.3).line(-6.5,0).line(0,-7.62+1.3).close().extrude(slot_length/2)
-
-    void_mirror = void.mirror("YZ")
-
-    void = void.union(void_mirror).translate((x_offset,y_offset,0))
-
-    body = body.cut(void)
-"""
-
-
 def generate_part(part_key):
     params = all_params[part_key]
     calc_dim = dimensions(params)
@@ -310,7 +260,7 @@ def generate_part(part_key):
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'ucon_17809_02x40_1.27mm'
+    part_to_build = 'ucon_17809_02x10_1.27mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
