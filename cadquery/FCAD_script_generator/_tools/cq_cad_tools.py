@@ -520,21 +520,6 @@ def checkRequirements(cq):
     if int(FC_majorV) <= 0:
         if int(FC_minorV) < 15:
             reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-    
-    
-    # FreeCAD.Console.PrintMessage(all_params_soic)
-    FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-    file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-    if os.path.exists(file_path_cq):
-        FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-    else:
-        file_path_cq=FreeCAD.ConfigGet("UserAppData")+'Mod/CadQuery'
-        if os.path.exists(file_path_cq):
-            FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-        else:
-            msg="missing CadQuery Module!\r\n\r\n"
-            msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-            reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
     #check version
     cqv=cq.__version__.split(".")
@@ -551,8 +536,4 @@ def checkRequirements(cq):
         msg+="actual CQ version "+cq.__version__
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
-
-
-
-            
     return 0
