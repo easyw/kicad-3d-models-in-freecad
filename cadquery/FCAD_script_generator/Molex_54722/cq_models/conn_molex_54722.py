@@ -238,7 +238,6 @@ def generate_body(params, calc_dim):
     pin_inside_distance = seriesParams.pin_inside_distance
     num_pins = params.num_pins
     pin_pitch = params.pin_pitch
-    # pin_width = seriesParams.pin_width
 
     pocket_inside_distance = seriesParams.pocket_inside_distance
     pocket_width = seriesParams.pocket_width
@@ -263,11 +262,12 @@ def generate_body(params, calc_dim):
     notch_width = seriesParams.notch_width
     notch_depth = seriesParams.notch_depth
 
-    # x_offset = 0.0
-    # y_offset = 0.0
-    # z_offset = 0.0
-    # x_offset = (((num_pins / 2) - 1)*pin_pitch)/2.0
-    # y_offset = -(1.5*pin_y_pitch)
+    housing_height = seriesParams.housing_height
+    housing_width = seriesParams.housing_width
+    housing_depth = seriesParams.housing_depth
+    num_housings = calc_dim.num_housings
+    housing_offset = calc_dim.housing_offset
+    housing_pitch = seriesParams.housing_pitch
 
     # body
     body = cq.Workplane("XY")\
@@ -275,6 +275,10 @@ def generate_body(params, calc_dim):
         .faces(">Z").edges("|Y").chamfer(body_chamfer)\
         .edges("|Z").fillet(body_fillet_radius)
 
+    if num_housings > 0:
+        body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
+        body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
+    
     pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
@@ -303,7 +307,6 @@ def generate_body(params, calc_dim):
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
        .cutBlind(-2)
 
-
     # ribs recess
     body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)\
         .rect(rib_group_outer_width, rib_depth/2)\
@@ -329,9 +332,7 @@ def generate_body(params, calc_dim):
 
     body = body.cut(slot_cutter)
 
-
     # notches
-
     notch1 = cq.Workplane("XY").workplane(offset=body_height).moveTo(body_length/2.0, 0)\
         .rect(1, notch_width).extrude(-notch_depth)
 
@@ -464,7 +465,9 @@ def generate_part(part_key):
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'molex_54722_02x08_0.5mm'
+    # part_to_build = 'molex_54722_02x08_0.5mm'
+    # part_to_build = 'molex_54722_02x15_0.5mm'
+    part_to_build = 'molex_54722_02x17_0.5mm'
     # part_to_build = 'molex_54722_02x40_0.5mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +

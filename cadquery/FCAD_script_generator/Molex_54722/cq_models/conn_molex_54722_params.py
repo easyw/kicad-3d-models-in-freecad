@@ -38,8 +38,6 @@ all_params = {
 
 class seriesParams():
 
-# UPDATED
-
     pin_inside_distance = 1.05 + 0.5				# Distance between centre of end pin and end of body
     pocket_inside_distance = (10.1 - (8.95 + 0.5)) / 2.0 	# Distance between end of pocket and end of body
     island_inside_distance = (10.1 - 8.0) / 2.0         	# Distance between end of island and end of body
@@ -58,7 +56,6 @@ class seriesParams():
     hole_width = 0.3
     hole_length = 0.3
     hole_offset = (body_width + pocket_width) / 4.0
-    # hole_depth = 1.3
 
     rib_width = 0.25
     rib_depth = 2.0 * body_chamfer
@@ -72,10 +69,14 @@ class seriesParams():
     pin_width = 0.15
     pin_thickness = 0.075
 
+    housing_breakpoint = 29					# Above this number of pins, the body has housings on the side
+    housing_width = 2.0
+    housing_height = 0.575
+    housing_depth = 0.05
+    housing_pitch = 2.5
 
 
-
-calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width'])
+calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width', 'num_housings', 'housing_offset'])
 
 
 def dimensions(params):
@@ -85,17 +86,14 @@ def dimensions(params):
     island_length = length - 2.0 * seriesParams.island_inside_distance
     rib_group_outer_width = pin_group_width + params.pin_pitch + seriesParams.rib_width
     slot_width = params.pin_pitch - seriesParams.rib_width
-  # length = 
-    # slot_length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.slot_outside_pin
-    # bottom_void_width = 2 * (params.pin_y_pitch + seriesParams.pin_thickness/2.0)
-    # ramp_height = 11.7 - seriesParams.body_height
-    # if params.num_pins > seriesParams.ramp_split_breakpoint:
-        # ramp_width = params.pin_pitch * 2
-        # ramp_offset = params.pin_pitch * (params.num_pins -5) / 2
-    # else:
-        # ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
-        # ramp_offset = 0
-    return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width, slot_width=slot_width)
+    if params.num_pins > seriesParams.housing_breakpoint:
+        num_housings = params.num_pins // 10
+        housing_offset = (params.num_pins % 10) * params.pin_pitch / 4.0  # TODO calculate correct value for 0344
+    else:
+        num_housings = housing_offset = 0
+    return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length,
+                   island_length = island_length, rib_group_outer_width=rib_group_outer_width,
+                   slot_width=slot_width, num_housings=num_housings, housing_offset=housing_offset)
 
 
 """
