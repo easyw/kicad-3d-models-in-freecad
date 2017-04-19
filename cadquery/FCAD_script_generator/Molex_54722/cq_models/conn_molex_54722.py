@@ -235,7 +235,7 @@ def generate_body(params, calc_dim):
 
     body = body.cut(pocket_chamfer)
 
-    island = cq.Workplane("XY").workplane(offset=body_height).moveTo(x_offset, y_offset)\
+    island = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * island_inside_distance, island_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
 
@@ -259,7 +259,7 @@ def generate_body(params, calc_dim):
         .cutBlind(-(body_height-pocket_base_thickness))
 
     # ribs
-    ribs = cq.Workplane("XY").workplane(offset=z_offset).moveTo(x_offset, y_offset)
+    ribs = cq.Workplane("XY")
 
     ribs = my_rarray(ribs, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
         .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
@@ -267,7 +267,7 @@ def generate_body(params, calc_dim):
     body = body.union(ribs)
 
     # slots for contacts
-    slot_cutter = cq.Workplane("XY").workplane(offset=z_offset + pocket_base_thickness).center(x_offset, y_offset + island_width / 2.0)
+    slot_cutter = cq.Workplane("XY").workplane(offset=pocket_base_thickness).center(0, y_offset + island_width / 2.0)
 
     slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)\
        .center(x_offset, y_offset - island_width)
@@ -279,7 +279,7 @@ def generate_body(params, calc_dim):
 
     # notches
 
-    notch1 = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset + body_length/2.0, y_offset)\
+    notch1 = cq.Workplane("XY").workplane(offset=body_height).moveTo(body_length/2.0, 0)\
         .rect(1, notch_width).extrude(-notch_depth)
 
     notch2 = notch1.mirror("YZ")
@@ -290,25 +290,10 @@ def generate_body(params, calc_dim):
 
     return body
 
-"""
-
-    # ribs recess
-    ribs_recess = cq.Workplane("XY").workplane(offset=z_offset).moveTo(x_offset, y_offset)
-
-    ribs_recess = my_rarray(ribs_recess, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(pin_pitch,0.2).extrude(body_height*2)
-
-    body = body.cut(ribs_recess)
-
-    return body
 
 
-    return body
-"""
 
 """
-
-     
-
 
     # pin 1 marker
     body = body.faces(">Z").workplane().moveTo(-(body_length/2)+marker_x_inside, (body_width/2)-marker_y_inside)\
