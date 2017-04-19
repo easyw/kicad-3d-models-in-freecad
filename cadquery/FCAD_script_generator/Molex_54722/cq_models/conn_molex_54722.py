@@ -141,6 +141,39 @@ def generate_contacts(params):
 
 """
 
+def my_rarray(self, xSpacing, ySpacing, xCount, yCount, center=True):
+        """
+        Creates an array of points and pushes them onto the stack.
+        If you want to position the array at another point, create another workplane
+        that is shifted to the position you would like to use as a reference
+
+        :param xSpacing: spacing between points in the x direction ( must be > 0)
+        :param ySpacing: spacing between points in the y direction ( must be > 0)
+        :param xCount: number of points ( > 0 )
+        :param yCount: number of points ( > 0 )
+        :param center: if true, the array will be centered at the center of the workplane. if
+            false, the lower left corner will be at the center of the work plane
+        """
+
+        if xSpacing <= 0 or ySpacing <= 0 or xCount < 1 or yCount < 1:
+            raise ValueError("Spacing and count must be > 0 ")
+
+        lpoints = []  # coordinates relative to bottom left point
+        for x in range(xCount):
+            for y in range(yCount):
+                lpoints.append((xSpacing * x, ySpacing * y))
+
+        #shift points down and left relative to origin if requested
+        if center:
+            xc = xSpacing*(xCount-1) * 0.5
+            yc = ySpacing*(yCount-1) * 0.5
+            cpoints = []
+            for p in lpoints:
+                cpoints.append((p[0] - xc, p[1] - yc))
+            lpoints = list(cpoints)
+
+        return self.pushPoints(lpoints)
+
 
 def generate_body(params, calc_dim):
 
@@ -162,6 +195,17 @@ def generate_body(params, calc_dim):
     island_inside_distance = seriesParams.island_inside_distance
     island_width = seriesParams.island_width
 
+    hole_width = seriesParams.hole_width
+    hole_length = seriesParams.hole_length
+    hole_offset = seriesParams.hole_offset
+
+    rib_group_outer_width = calc_dim.rib_group_outer_width
+    rib_depth = seriesParams.rib_depth
+    rib_width = seriesParams.rib_width
+
+    notch_width = seriesParams.notch_width
+    notch_depth = seriesParams.notch_depth
+
     x_offset = 0.0
     y_offset = 0.0
     z_offset = 0.0
@@ -181,7 +225,7 @@ def generate_body(params, calc_dim):
     body = body.cut(pocket)
 
     pocket_chamfer = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset, y_offset)\
-        .rect(body_length - 2.0 * pocket_inside_distance, pocket_width + body_chamfer)\
+        .rect(body_length - 2.0 * pocket_inside_distance + body_chamfer / 2.0, pocket_width + body_chamfer)\
         .workplane(offset=-body_chamfer).rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .loft(combine=True)
 
@@ -193,9 +237,66 @@ def generate_body(params, calc_dim):
 
     body = body.union(island)
 
+    print(pin_pitch, num_pins)
+
+    # contact holes
+    body = body.faces(">Z").workplane().center(0, hole_offset)
+
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+        .center(0, -2*hole_offset)
+
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+       .cutBlind(-2)
+
+
+    # ribs recess
+
+    body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)\
+        .rect(rib_group_outer_width, rib_depth/2)\
+        .center(0, -pocket_width)\
+        .rect(rib_group_outer_width, rib_depth/2)\
+        .cutBlind(-(body_height-pocket_base_thickness))
+
+    # ribs
+    ribs = cq.Workplane("XY").workplane(offset=z_offset).moveTo(x_offset, y_offset)
+
+    ribs = my_rarray(ribs, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
+        .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
+    
+    body = body.union(ribs)
+
+    # notches
+
+    notch1 = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset + body_length/2.0, y_offset)\
+        .rect(1, notch_width).extrude(-notch_depth)
+
+    notch2 = notch1.mirror("YZ")
+
+    notches = notch1.union(notch2)
+
+    body = body.cut(notches)
+
     return body
 
 """
+
+    # ribs recess
+    ribs_recess = cq.Workplane("XY").workplane(offset=z_offset).moveTo(x_offset, y_offset)
+
+    ribs_recess = my_rarray(ribs_recess, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(pin_pitch,0.2).extrude(body_height*2)
+
+    body = body.cut(ribs_recess)
+
+    return body
+
+
+    return body
+"""
+
+"""
+
+     
+
 
     # pin 1 marker
     body = body.faces(">Z").workplane().moveTo(-(body_length/2)+marker_x_inside, (body_width/2)-marker_y_inside)\
@@ -314,6 +415,7 @@ def generate_part(part_key):
 # opened from within freecad
 if "module" in __name__:
     part_to_build = 'molex_54722_02x08_0.5mm'
+    # part_to_build = 'molex_54722_02x40_0.5mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")

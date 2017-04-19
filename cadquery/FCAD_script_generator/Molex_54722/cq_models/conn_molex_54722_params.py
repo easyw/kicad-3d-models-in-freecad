@@ -23,7 +23,8 @@ def generate_params(num_pins, series_name, part_name, pin_pitch):
 
 
 all_params = {
-    'molex_54722_02x08_0.5mm' : generate_params(16, '54722', '0164', 0.5)								
+    'molex_54722_02x08_0.5mm' : generate_params(16, '54722', '0164', 0.5),								
+    'molex_54722_02x40_0.5mm' : generate_params(80, '54722', '0804', 0.5)								
 }
 
 
@@ -42,9 +43,21 @@ class seriesParams():
 
     pocket_width = 2.8
     pocket_base_thickness = 0.2
-    pocket_fillet_radius = 0.075
+    pocket_fillet_radius = 0.05
 
     island_width = 1.65
+
+    hole_width = 0.3
+    hole_length = 0.3
+    hole_offset = (body_width + pocket_width) / 4.0
+    # hole_depth = 1.3
+
+    rib_width = 0.25
+    rib_depth = 1.5 * body_chamfer
+
+    notch_width = 1.2
+    notch_depth = 0.1
+    
 
 # OLD
 
@@ -70,11 +83,6 @@ class seriesParams():
     slot_depth = 7.62
     slot_chamfer = 0.5
 
-    hole_width = 0.8
-    hole_length = 1.46
-    hole_offset = 2.52
-    hole_depth = 1.3
-
     top_void_depth = 4.0
     top_void_width = 6.5
 
@@ -97,13 +105,15 @@ class seriesParams():
     ramp_chamfer_y = 0.7
 
 
-calcDim = namedtuple( 'calcDim', ['length', 'pocket_length', 'island_length'])
+calcDim = namedtuple( 'calcDim', ['length', 'pocket_length', 'island_length', 'rib_group_outer_width'])
 
 
 def dimensions(params):
-    length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.pin_inside_distance
+    pin_group_width = ((params.num_pins / 2) - 1) * params.pin_pitch
+    length =  pin_group_width + 2 * seriesParams.pin_inside_distance
     pocket_length = length - 2.0 * seriesParams.pocket_inside_distance
     island_length = length - 2.0 * seriesParams.island_inside_distance
+    rib_group_outer_width = pin_group_width + params.pin_pitch + seriesParams.rib_width
     # length = 
     # slot_length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.slot_outside_pin
     # bottom_void_width = 2 * (params.pin_y_pitch + seriesParams.pin_thickness/2.0)
@@ -114,6 +124,6 @@ def dimensions(params):
     # else:
         # ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
         # ramp_offset = 0
-    return calcDim(length = length, pocket_length=pocket_length, island_length = island_length)
+    return calcDim(length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width)
 
 
