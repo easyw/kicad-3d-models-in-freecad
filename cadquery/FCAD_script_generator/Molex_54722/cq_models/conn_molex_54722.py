@@ -238,6 +238,7 @@ def generate_body(params, calc_dim):
     pin_inside_distance = seriesParams.pin_inside_distance
     num_pins = params.num_pins
     pin_pitch = params.pin_pitch
+    # pin_width = seriesParams.pin_width
 
     pocket_inside_distance = seriesParams.pocket_inside_distance
     pocket_width = seriesParams.pocket_width
@@ -262,9 +263,9 @@ def generate_body(params, calc_dim):
     notch_width = seriesParams.notch_width
     notch_depth = seriesParams.notch_depth
 
-    x_offset = 0.0
-    y_offset = 0.0
-    z_offset = 0.0
+    # x_offset = 0.0
+    # y_offset = 0.0
+    # z_offset = 0.0
     # x_offset = (((num_pins / 2) - 1)*pin_pitch)/2.0
     # y_offset = -(1.5*pin_y_pitch)
 
@@ -319,12 +320,12 @@ def generate_body(params, calc_dim):
     body = body.union(ribs)
 
     # slots for contacts
-    slot_cutter = cq.Workplane("XY").center(0, y_offset + island_width / 2.0)
+    slot_cutter = cq.Workplane("XY").center(-slot_width/2.0, (island_width / 2.0) - slot_depth)
 
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)\
-       .center(x_offset, y_offset - island_width)
+    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)\
+       .center(0, -island_width-slot_depth)
 
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)
+    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)
 
     body = body.cut(slot_cutter)
 

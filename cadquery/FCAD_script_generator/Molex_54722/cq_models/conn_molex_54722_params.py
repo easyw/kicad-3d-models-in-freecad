@@ -56,7 +56,7 @@ class seriesParams():
     rib_depth = 2.0 * body_chamfer
 
     slot_height = body_height - 0.05
-    slot_depth = 0.4
+    slot_depth = 0.3
 
     notch_width = 1.2
     notch_depth = 0.1
