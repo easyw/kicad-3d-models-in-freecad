@@ -62,6 +62,58 @@ from conn_molex_54722_params import *
 from ribbon import Ribbon
 
 
+def generate_contact(params, calc_dim):
+    pin_group_width = calc_dim.pin_group_width
+    pin_width = seriesParams.pin_width
+    pin_thickness = seriesParams.pin_thickness
+    pin_pitch = params.pin_pitch
+    body_width = seriesParams.body_width
+    hole_length = seriesParams.hole_length
+    hole_offset = seriesParams.hole_offset
+    MIN_RAD = 0.08
+    c_list = [
+        ('start', {'position': ((-body_width/2 - 0.5, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
+        ('line', {'length': 0.5}),
+        ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
+        ('arc', {'radius': MIN_RAD, 'angle': -45.0}),
+        ('line', {'length': 0.7}),
+        ('arc', {'radius': MIN_RAD, 'angle': -45.0}),
+        ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
+        ('line', {'length': 0.7}),
+        ('arc', {'radius': 0.15, 'angle': 95.0}),
+        ('line', {'length': 0.7}),
+        ('arc', {'radius': 0.15, 'angle': 85.0})
+    ]
+    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c_list)
+    contact1 = ribbon.drawRibbon().extrude(pin_width)
+    return contact1
+
+
+def generate_contacts(params, calc_dim):
+    num_pins=params.num_pins
+    pin_pitch=params.pin_pitch
+    contact1 = generate_contact(params, calc_dim)
+    contact2=contact1.mirror("XZ")
+    contact_pair = contact1.union(contact2)
+    contacts = contact_pair
+    for i in range(0, num_pins / 2):
+        contacts = contacts.union(contact_pair.translate((i*pin_pitch,0,0)))
+    return contacts
+
+
+
+"""
+    pair = generate_2_contact_group(params)
+    contacts = pair
+    for i in range(0, num_pins / 2):
+        contacts = contacts.union(pair.translate((i*pin_pitch,0,0)))
+    return contacts
+"""
+
+
+
+
+
 """
 def generate_straight_pin(params, pin_1_side):
     foot_height = seriesParams.foot_height
@@ -267,7 +319,7 @@ def generate_body(params, calc_dim):
     body = body.union(ribs)
 
     # slots for contacts
-    slot_cutter = cq.Workplane("XY").workplane(offset=pocket_base_thickness).center(0, y_offset + island_width / 2.0)
+    slot_cutter = cq.Workplane("XY").center(0, y_offset + island_width / 2.0)
 
     slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)\
        .center(x_offset, y_offset - island_width)
@@ -404,9 +456,9 @@ def generate_part(part_key):
     calc_dim = dimensions(params)
     # pins = generate_pins(params)
     body = generate_body(params, calc_dim)
-    # contacts = generate_contacts(params)
+    contacts = generate_contacts(params, calc_dim)
     # return (pins,body, contacts)
-    return (body)
+    return (body, contacts)
 
 
 # opened from within freecad
@@ -416,11 +468,11 @@ if "module" in __name__:
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
-    body = generate_part(part_to_build)
+    (body, contacts) = generate_part(part_to_build)
     # (pins, body, contacts) = generate_part(part_to_build)
 
     # show(pins)
     show(body)
-    # show(contacts)
+    show(contacts)
 
 

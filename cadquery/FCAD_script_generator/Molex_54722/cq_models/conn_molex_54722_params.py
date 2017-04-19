@@ -55,17 +55,19 @@ class seriesParams():
     rib_width = 0.25
     rib_depth = 2.0 * body_chamfer
 
-    slot_height = body_height - pocket_base_thickness - 0.05
+    slot_height = body_height - 0.05
     slot_depth = 0.4
 
     notch_width = 1.2
     notch_depth = 0.1
     
+    pin_width = 0.15
+    pin_thickness = 0.075
 
 
 
 
-calcDim = namedtuple( 'calcDim', ['length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width'])
+calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width'])
 
 
 def dimensions(params):
@@ -85,7 +87,7 @@ def dimensions(params):
     # else:
         # ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
         # ramp_offset = 0
-    return calcDim(length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width, slot_width=slot_width)
+    return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width, slot_width=slot_width)
 
 
 """
