@@ -53,14 +53,42 @@ class seriesParams():
     # hole_depth = 1.3
 
     rib_width = 0.25
-    rib_depth = 1.5 * body_chamfer
+    rib_depth = 2.0 * body_chamfer
+
+    slot_height = body_height - pocket_base_thickness - 0.05
+    slot_depth = 0.4
 
     notch_width = 1.2
     notch_depth = 0.1
     
 
-# OLD
 
+
+
+calcDim = namedtuple( 'calcDim', ['length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width'])
+
+
+def dimensions(params):
+    pin_group_width = ((params.num_pins / 2) - 1) * params.pin_pitch
+    length =  pin_group_width + 2 * seriesParams.pin_inside_distance
+    pocket_length = length - 2.0 * seriesParams.pocket_inside_distance
+    island_length = length - 2.0 * seriesParams.island_inside_distance
+    rib_group_outer_width = pin_group_width + params.pin_pitch + seriesParams.rib_width
+    slot_width = params.pin_pitch - seriesParams.rib_width
+  # length = 
+    # slot_length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.slot_outside_pin
+    # bottom_void_width = 2 * (params.pin_y_pitch + seriesParams.pin_thickness/2.0)
+    # ramp_height = 11.7 - seriesParams.body_height
+    # if params.num_pins > seriesParams.ramp_split_breakpoint:
+        # ramp_width = params.pin_pitch * 2
+        # ramp_offset = params.pin_pitch * (params.num_pins -5) / 2
+    # else:
+        # ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
+        # ramp_offset = 0
+    return calcDim(length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width, slot_width=slot_width)
+
+
+"""
     pin_width = 0.7
     pin_chamfer_long = 0.1
     pin_chamfer_short = 0.1
@@ -103,27 +131,4 @@ class seriesParams():
     ramp_split_breakpoint = 6				# Above this number of pins, the tab is split into two parts
     ramp_chamfer_x = 0.3
     ramp_chamfer_y = 0.7
-
-
-calcDim = namedtuple( 'calcDim', ['length', 'pocket_length', 'island_length', 'rib_group_outer_width'])
-
-
-def dimensions(params):
-    pin_group_width = ((params.num_pins / 2) - 1) * params.pin_pitch
-    length =  pin_group_width + 2 * seriesParams.pin_inside_distance
-    pocket_length = length - 2.0 * seriesParams.pocket_inside_distance
-    island_length = length - 2.0 * seriesParams.island_inside_distance
-    rib_group_outer_width = pin_group_width + params.pin_pitch + seriesParams.rib_width
-    # length = 
-    # slot_length = ((params.num_pins / 2) - 1) * params.pin_pitch + 2 * seriesParams.slot_outside_pin
-    # bottom_void_width = 2 * (params.pin_y_pitch + seriesParams.pin_thickness/2.0)
-    # ramp_height = 11.7 - seriesParams.body_height
-    # if params.num_pins > seriesParams.ramp_split_breakpoint:
-        # ramp_width = params.pin_pitch * 2
-        # ramp_offset = params.pin_pitch * (params.num_pins -5) / 2
-    # else:
-        # ramp_width = (params.num_pins - 1) * params.pin_pitch / 2
-        # ramp_offset = 0
-    return calcDim(length = length, pocket_length=pocket_length, island_length = island_length, rib_group_outer_width=rib_group_outer_width)
-
-
+"""

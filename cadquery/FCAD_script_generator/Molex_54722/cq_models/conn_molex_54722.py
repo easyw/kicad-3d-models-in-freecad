@@ -203,6 +203,10 @@ def generate_body(params, calc_dim):
     rib_depth = seriesParams.rib_depth
     rib_width = seriesParams.rib_width
 
+    slot_width = calc_dim.slot_width
+    slot_height = seriesParams.slot_height
+    slot_depth = seriesParams.slot_depth
+
     notch_width = seriesParams.notch_width
     notch_depth = seriesParams.notch_depth
 
@@ -213,31 +217,29 @@ def generate_body(params, calc_dim):
     # y_offset = -(1.5*pin_y_pitch)
 
     # body
-    body = cq.Workplane("XY").workplane(offset=z_offset).moveTo(x_offset, y_offset)\
+    body = cq.Workplane("XY")\
         .rect(body_length, body_width).extrude(body_height)\
         .faces(">Z").edges("|Y").chamfer(body_chamfer)\
         .edges("|Z").fillet(body_fillet_radius)
 
-    pocket = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset, y_offset)\
+    pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
 
     body = body.cut(pocket)
 
-    pocket_chamfer = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset, y_offset)\
+    pocket_chamfer = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance + body_chamfer / 2.0, pocket_width + body_chamfer)\
         .workplane(offset=-body_chamfer).rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .loft(combine=True)
 
     body = body.cut(pocket_chamfer)
 
-    island = cq.Workplane("XY").workplane(offset=z_offset + body_height).moveTo(x_offset, y_offset)\
+    island = cq.Workplane("XY").workplane(offset=body_height).moveTo(x_offset, y_offset)\
         .rect(body_length - 2.0 * island_inside_distance, island_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
 
     body = body.union(island)
-
-    print(pin_pitch, num_pins)
 
     # contact holes
     body = body.faces(">Z").workplane().center(0, hole_offset)
@@ -250,7 +252,6 @@ def generate_body(params, calc_dim):
 
 
     # ribs recess
-
     body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)\
         .rect(rib_group_outer_width, rib_depth/2)\
         .center(0, -pocket_width)\
@@ -264,6 +265,17 @@ def generate_body(params, calc_dim):
         .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
     
     body = body.union(ribs)
+
+    # slots for contacts
+    slot_cutter = cq.Workplane("XY").workplane(offset=z_offset + pocket_base_thickness).center(x_offset, y_offset + island_width / 2.0)
+
+    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)\
+       .center(x_offset, y_offset - island_width)
+
+    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, 2*slot_depth).extrude(slot_height)
+
+    body = body.cut(slot_cutter)
+
 
     # notches
 
