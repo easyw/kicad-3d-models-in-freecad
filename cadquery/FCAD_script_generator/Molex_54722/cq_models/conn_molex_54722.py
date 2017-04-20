@@ -261,7 +261,7 @@ def generate_body(params, calc_dim):
 
     # notches
     notch1 = cq.Workplane("XY").workplane(offset=body_height).moveTo(body_length/2.0, 0)\
-        .rect(1, notch_width).extrude(-notch_depth)
+        .rect(1, notch_width).extrude(-notch_depth).faces("<Z").edges("<Z").chamfer(notch_depth-0.001)
 
     notch2 = notch1.mirror("YZ")
 
