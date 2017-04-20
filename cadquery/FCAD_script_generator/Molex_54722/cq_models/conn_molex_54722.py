@@ -70,8 +70,9 @@ def generate_contact(params, calc_dim):
     body_width = seriesParams.body_width
     hole_length = seriesParams.hole_length
     hole_offset = seriesParams.hole_offset
+    slot_height = seriesParams.slot_height
     MIN_RAD = 0.08
-    c_list = [
+    c1_list = [
         ('start', {'position': ((-body_width/2 - 0.5, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
         ('line', {'length': 0.5}),
         ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
@@ -81,11 +82,26 @@ def generate_contact(params, calc_dim):
         ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
         ('line', {'length': 0.7}),
         ('arc', {'radius': 0.15, 'angle': 95.0}),
-        ('line', {'length': 0.7}),
-        ('arc', {'radius': 0.15, 'angle': 85.0})
+        ('line', {'length': 0.49}),
+        ('arc', {'radius': 0.1, 'angle': 85.0})
     ]
-    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c_list)
+    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c1_list)
     contact1 = ribbon.drawRibbon().extrude(pin_width)
+    c2_list = [
+        ('start', {'position': ((-hole_offset-hole_length/2.0+pin_thickness/2.0, slot_height-MIN_RAD-pin_thickness/2.0)), 'direction': 90.0, 'width':pin_thickness}),
+        ('arc', {'radius': MIN_RAD, 'angle': -90.0}),
+        ('line', {'length': hole_length-2.0*MIN_RAD-pin_thickness}),
+        ('arc', {'radius': MIN_RAD, 'angle': -90.0}),
+        ('line', {'length': slot_height - 4.0 * MIN_RAD}),
+        ('arc', {'radius': MIN_RAD, 'angle': 90.0}),
+        ('line', {'length': 0.2}),
+        ('arc', {'radius': 0.15, 'angle': 90.0}),
+        ('line', {'length': 0.4}),
+        ('arc', {'radius': 0.1, 'angle': -90.0})
+    ]
+    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c2_list)
+    contact2 = ribbon.drawRibbon().extrude(pin_width)
+    contact1 = contact1.union(contact2)
     return contact1
 
 
@@ -278,7 +294,7 @@ def generate_body(params, calc_dim):
     if num_housings > 0:
         body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
         body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
-    
+
     pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
@@ -319,7 +335,7 @@ def generate_body(params, calc_dim):
 
     ribs = my_rarray(ribs, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
         .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
-    
+
     body = body.union(ribs)
 
     # slots for contacts
@@ -465,9 +481,9 @@ def generate_part(part_key):
 
 # opened from within freecad
 if "module" in __name__:
-    # part_to_build = 'molex_54722_02x08_0.5mm'
+    part_to_build = 'molex_54722_02x08_0.5mm'
     # part_to_build = 'molex_54722_02x15_0.5mm'
-    part_to_build = 'molex_54722_02x17_0.5mm'
+    # part_to_build = 'molex_54722_02x17_0.5mm'
     # part_to_build = 'molex_54722_02x40_0.5mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
@@ -478,5 +494,3 @@ if "module" in __name__:
     # show(pins)
     show(body)
     show(contacts)
-
-

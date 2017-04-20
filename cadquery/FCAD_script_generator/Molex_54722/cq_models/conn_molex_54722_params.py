@@ -88,7 +88,7 @@ def dimensions(params):
     slot_width = params.pin_pitch - seriesParams.rib_width
     if params.num_pins > seriesParams.housing_breakpoint:
         num_housings = params.num_pins // 10
-        housing_offset = (params.num_pins % 10) * params.pin_pitch / 4.0  # TODO calculate correct value for 0344
+        housing_offset = (params.num_pins % 10) * params.pin_pitch / 4.0
     else:
         num_housings = housing_offset = 0
     return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length,
