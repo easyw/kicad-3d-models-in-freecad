@@ -44,11 +44,11 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of 4UCON 17809 series connectors"
+__title__ = "make 3D models of Molex SlimStack 54722 series connectors"
 __author__ = "scripts: maurice and hyOzd; models: hackscribble"
-__Comment__ = '''make 3D models of 4UCON 17809 series connectors'''
+__Comment__ = '''make 3D models of Molex SlimStack 54722 series connectors'''
 
-___ver___ = "0.1 14/04/2017"
+___ver___ = "0.1 20/04/2017"
 
 
 import sys
@@ -68,16 +68,14 @@ import shaderColors
 # Model details
 #################################################################################################
 
-import conn_4ucon_17809 as UCON_17809
+import conn_molex_54722 as MOLEX_54722
 
-series = [UCON_17809]
+series = [MOLEX_54722]
 
 body_color_key = "dark grey body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
-pins_color_key = "metal grey pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
-contacts_color_key = "metal grey pins"
-contacts_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
+contacts_color_key = "gold pins"
+contacts_color = shaderColors.named_colors[contacts_color_key].getDiffuseInt()
 
 #################################################################################################
 
@@ -163,13 +161,10 @@ def export_one_part(modul, variant):
     # Model details
     #################################################################################################
 
-    (pins, body, contacts) = modul.generate_part(variant)
+    (body, contacts) = modul.generate_part(variant)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
-
-    color_attr = pins_color + (0,)
-    show(pins, color_attr)
 
     color_attr = contacts_color + (0,)
     show(contacts, color_attr)
@@ -182,8 +177,6 @@ def export_one_part(modul, variant):
     i=0
     objs[i].Label = ModelName + "__body"
     i+=1
-    objs[i].Label = ModelName + "__pins"
-    i+=1
     objs[i].Label = ModelName + "__contacts"
     i+=1
 
@@ -192,17 +185,13 @@ def export_one_part(modul, variant):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    used_color_keys = [body_color_key, pins_color_key, contacts_color_key]
+    used_color_keys = [body_color_key, contacts_color_key]
     export_file_name=out_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
     i=0
     export_objects.append(expVRML.exportObject(freecad_object = objs[i],
             shape_color=body_color_key,
-            face_colors=None))
-    i+=1
-    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
-            shape_color=pins_color_key,
             face_colors=None))
     i+=1
     export_objects.append(expVRML.exportObject(freecad_object = objs[i],

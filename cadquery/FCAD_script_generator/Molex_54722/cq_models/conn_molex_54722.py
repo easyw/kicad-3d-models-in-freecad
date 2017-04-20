@@ -50,7 +50,7 @@ __title__ = "model description for Molex SlimStack 54722 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for Molex SlimStack 54722 series connectors using cadquery'
 
-___ver___ = "0.1 19/04/2017"
+___ver___ = "0.1 20/04/2017"
 
 
 import cadquery as cq
