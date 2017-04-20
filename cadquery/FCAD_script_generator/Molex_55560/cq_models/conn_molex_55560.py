@@ -46,18 +46,18 @@
 #*   exception statement from your version.                                 *
 #****************************************************************************
 
-__title__ = "model description for Molex SlimStack 54722 series connectors"
+__title__ = "model description for Molex SlimStack 55560 series connectors"
 __author__ = "hackscribble"
-__Comment__ = 'model description for Molex SlimStack 54722 series connectors using cadquery'
+__Comment__ = 'model description for Molex SlimStack 55560 series connectors using cadquery'
 
-___ver___ = "0.1 20/04/2017"
+___ver___ = "0.1 21/04/2017"
 
 
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from conn_molex_54722_params import *
+from conn_molex_55560_params import *
 
 from ribbon import Ribbon
 
@@ -287,11 +287,9 @@ def generate_part(part_key):
 
 # opened from within freecad
 if "module" in __name__:
-    # part_to_build = 'molex_54722_02x08_0.5mm'
-    part_to_build = 'molex_54722_02x15_0.5mm'
-    # part_to_build = 'molex_54722_02x17_0.5mm'
-    # part_to_build = 'molex_54722_02x40_0.5mm'
-
+    # part_to_build = 'molex_55560_2x08'
+    part_to_build = 'molex_55560_2x15'
+    
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
     (body, contacts) = generate_part(part_to_build)

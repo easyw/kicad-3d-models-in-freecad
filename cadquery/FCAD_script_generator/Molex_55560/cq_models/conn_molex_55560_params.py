@@ -23,7 +23,7 @@ def generate_params(num_pins, series_name, part_name, pin_pitch):
 
 
 all_params = {
-    'molex_54722_02x08_0.5mm' : generate_params(16, '54722', '0164', 0.5),								
+    'molex_55560_2x08' : generate_params(16, '55560', '0161', 0.5),								
     'molex_54722_02x10_0.5mm' : generate_params(20, '54722', '0204', 0.5),								
     'molex_54722_02x11_0.5mm' : generate_params(22, '54722', '0224', 0.5),								
     'molex_54722_02x12_0.5mm' : generate_params(24, '54722', '0244', 0.5),								

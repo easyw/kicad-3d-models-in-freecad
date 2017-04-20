@@ -48,7 +48,7 @@ __title__ = "make 3D models of Molex SlimStack 55560 series connectors"
 __author__ = "scripts: maurice and hyOzd; models: hackscribble"
 __Comment__ = '''make 3D models of Molex SlimStack 55560 series connectors'''
 
-___ver___ = "0.1 20/04/2017"
+___ver___ = "0.1 21/04/2017"
 
 
 import sys
