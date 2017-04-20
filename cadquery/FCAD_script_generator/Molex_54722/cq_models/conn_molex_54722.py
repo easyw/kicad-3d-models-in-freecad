@@ -118,99 +118,10 @@ def generate_contacts(params, calc_dim):
 
 
 
-"""
-    pair = generate_2_contact_group(params)
-    contacts = pair
-    for i in range(0, num_pins / 2):
-        contacts = contacts.union(pair.translate((i*pin_pitch,0,0)))
-    return contacts
-"""
-
-
-
-
-
-"""
-def generate_straight_pin(params, pin_1_side):
-    foot_height = seriesParams.foot_height
-    pin_width=seriesParams.pin_width
-    pin_depth=seriesParams.pin_depth
-    pin_height=seriesParams.pin_height
-    pin_inside_distance=seriesParams.pin_inside_distance
-    pin_thickness = seriesParams.pin_thickness
-    chamfer_long = seriesParams.pin_chamfer_long
-    chamfer_short = seriesParams.pin_chamfer_short
-    sign = 1 if pin_1_side else -1
-    pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
-        .moveTo(0, foot_height)\
-        .line(sign*pin_thickness/2,0)\
-        .line(sign*1.27,-foot_height)\
-        .line(0, -2.54)\
-        .line(sign*-pin_thickness,0)\
-        .line(0, 2.54)\
-        .line(sign*-1.27, foot_height)\
-        .line(0,1)\
-        .close()\
-        .extrude(pin_width).edges("|X").fillet(0.07)
-    return pin
-
-
-def generate_2_pin_group(params, pin_1_side):
-    pin_pitch=params.pin_pitch
-    pin_y_pitch=params.pin_y_pitch
-    num_pins=params.num_pins
-    pin_a = generate_straight_pin(params, pin_1_side).translate((0, -pin_y_pitch/2, 0))
-    pin_b = pin_a.translate((0, -2 * pin_y_pitch, 0))
-    pin_group = pin_a.union(pin_b)
-    return pin_group
-
-
-def generate_pins(params):
-    pin_pitch=params.pin_pitch
-    num_pins=params.num_pins
-    pins = generate_2_pin_group(params, pin_1_side=True)
-    for i in range(1, num_pins / 2):
-        pins = pins.union(generate_2_pin_group(params, i % 2 == 0).translate((i*pin_pitch,0,0)))
-    return pins
-
-
-def generate_2_contact_group(params):
-    pin_y_pitch=params.pin_y_pitch
-    foot_height = seriesParams.foot_height
-    pin_thickness = seriesParams.pin_thickness
-    pin_width=seriesParams.pin_width
-    y_offset = -(2*pin_y_pitch)
-    c_list = [
-        ('start', {'position': (pin_y_pitch, foot_height), 'direction': 90.0, 'width':pin_thickness}),
-        ('line', {'length': 4.5}),
-        ('arc', {'radius': 0.2, 'angle': 35.0}),
-        ('line', {'length': 3}),
-        ('arc', {'radius': 2.0, 'angle': -70.0}),
-        ('line', {'length': 2}),
-        ('arc', {'radius': 0.2, 'angle': 35.0}),
-        ('line', {'length': 2.8}),
-    ]
-    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0), c_list)
-    contact1 = ribbon.drawRibbon().extrude(pin_width)
-    contact2 = contact1.mirror("XZ")
-    contact1 = contact1.union(contact2).translate((0,-3*pin_y_pitch/2.0,0))
-    return contact1
-
-
-def generate_contacts(params):
-    num_pins=params.num_pins
-    pin_pitch=params.pin_pitch
-    pair = generate_2_contact_group(params)
-    contacts = pair
-    for i in range(0, num_pins / 2):
-        contacts = contacts.union(pair.translate((i*pin_pitch,0,0)))
-    return contacts
-
-
-"""
-
 def my_rarray(self, xSpacing, ySpacing, xCount, yCount, center=True):
         """
+        Local version of rarray() function to fix bug in handling of pitch values below 1.0
+
         Creates an array of points and pushes them onto the stack.
         If you want to position the array at another point, create another workplane
         that is shifted to the position you would like to use as a reference
@@ -361,136 +272,24 @@ def generate_body(params, calc_dim):
     return body
 
 
-
-
-"""
-
-    # pin 1 marker
-    body = body.faces(">Z").workplane().moveTo(-(body_length/2)+marker_x_inside, (body_width/2)-marker_y_inside)\
-        .line(-marker_size,-marker_size/2).line(0, marker_size).close().cutBlind(-marker_depth)
-
-    # foot
-    foot = cq.Workplane("YZ").workplane(offset=(body_length/2)-foot_inside_distance)\
-        .moveTo(y_offset - foot_length/2, 0)\
-        .line(foot_length*0.2,0)\
-        .line(0,foot_height/2)\
-        .line(foot_length*0.6,0)\
-        .line(0,-foot_height/2)\
-        .line(foot_length*0.2,0)\
-        .line(0,foot_height)\
-        .line(-foot_length,0)\
-        .close()\
-        .extrude(-foot_width)
-
-    foot_mirror = foot.mirror("YZ")
-
-    foot = foot.union(foot_mirror).translate((x_offset, 0, 0))
-
-    body = body.union(foot)
-
-    # slot
-    body = body.faces(">Z").workplane().rect(slot_length, slot_width).cutBlind(-slot_depth)
-
-    chamfer = cq.Workplane("XY").workplane(offset=foot_height+body_height).moveTo(x_offset, y_offset) \
-    .rect(slot_length+2*slot_chamfer, slot_width+2*slot_chamfer) \
-    .workplane(offset=-slot_chamfer).rect(slot_length, slot_width) \
-    .loft(combine=True)
-
-    body = body.cut(chamfer)
-
-    # contact holes
-    body = body.faces(">Z").workplane().center(0, hole_offset)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
-        .center(0, -2*hole_offset)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
-        .cutBlind(-2)
-
-    # internal void
-    body = body.faces(">Z").workplane(offset=-hole_depth)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, top_void_width)\
-        .cutBlind(-(top_void_depth-hole_depth))
-
-    body = body.faces(">Z").workplane(offset=-top_void_depth)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, bottom_void_width)\
-        .cutBlind(-(body_height-top_void_depth))
-
-    # body end recesses
-    body = body.faces(">Z").workplane().center(body_length/2-recess_depth/2, 0)\
-        .rect(recess_depth, recess_small_width).cutBlind(-recess_height)
-
-    recess = cq.Workplane("XY").workplane(offset=foot_height+body_height).center(x_offset-body_length/2.0+recess_depth/2.0, y_offset)\
-        .rect(recess_depth, recess_large_width).extrude(-recess_height).edges(">X").edges("|Z").fillet(0.3)
-
-    body = body.cut(recess)
-
-    return body
-
-"""
-
-
-"""
-
-# OLD
-
-    pin_width = seriesParams.pin_width
-    pin_y_pitch=params.pin_y_pitch
-
-
-    marker_x_inside = seriesParams.marker_x_inside
-    marker_y_inside = seriesParams.marker_y_inside
-    marker_size = seriesParams.marker_size
-    marker_depth = seriesParams.marker_depth
-
-    foot_height = seriesParams.foot_height
-    foot_width = seriesParams.foot_width
-    foot_length = seriesParams.foot_length
-    foot_inside_distance = seriesParams.foot_inside_distance
-
-    slot_length = calc_dim.slot_length
-    slot_outside_pin = seriesParams.slot_outside_pin
-    slot_width = seriesParams.slot_width
-    slot_depth = seriesParams.slot_depth
-    slot_chamfer = seriesParams.slot_chamfer
-
-    hole_width = seriesParams.hole_width
-    hole_length = seriesParams.hole_length
-    hole_offset = seriesParams.hole_offset
-    hole_depth = seriesParams.hole_depth
-
-    top_void_depth = seriesParams.top_void_depth
-    top_void_width = seriesParams.top_void_width
-    bottom_void_width = calc_dim.bottom_void_width
-
-    recess_depth = seriesParams.recess_depth
-    recess_large_width = seriesParams.recess_large_width
-    recess_small_width = seriesParams.recess_small_width
-    recess_height = seriesParams.recess_height
-
-"""
-
-
 def generate_part(part_key):
     params = all_params[part_key]
     calc_dim = dimensions(params)
-    # pins = generate_pins(params)
     body = generate_body(params, calc_dim)
     contacts = generate_contacts(params, calc_dim)
-    # return (pins,body, contacts)
     return (body, contacts)
 
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'molex_54722_02x08_0.5mm'
-    # part_to_build = 'molex_54722_02x15_0.5mm'
+    # part_to_build = 'molex_54722_02x08_0.5mm'
+    part_to_build = 'molex_54722_02x15_0.5mm'
     # part_to_build = 'molex_54722_02x17_0.5mm'
     # part_to_build = 'molex_54722_02x40_0.5mm'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
     (body, contacts) = generate_part(part_to_build)
-    # (pins, body, contacts) = generate_part(part_to_build)
-
-    # show(pins)
+    
     show(body)
     show(contacts)
