@@ -46,6 +46,7 @@ class seriesParams():
     body_height = 1.15				
     body_fillet_radius = 0.15
     body_chamfer = 0.1
+    pin_housing_height = 0.2
 
     pocket_width = 2.8
     pocket_base_thickness = 0.2
@@ -96,47 +97,3 @@ def dimensions(params):
                    slot_width=slot_width, num_housings=num_housings, housing_offset=housing_offset)
 
 
-"""
-    pin_width = 0.7
-    pin_chamfer_long = 0.1
-    pin_chamfer_short = 0.1
-    pin_height = 5
-    pin_thickness = 0.3
-
-
-    foot_height = 1.5
-    foot_width = 1.7
-    foot_length = 7.62
-    foot_inside_distance = 0.5 				# Distance between outside edge of foot and end of body
-
-    marker_x_inside = pin_inside_distance - 1
-    marker_y_inside = 1.2
-    marker_size = 1.0
-    marker_depth = 0.5
-
-    slot_outside_pin = 1.27
-    slot_width = 1.9
-    slot_depth = 7.62
-    slot_chamfer = 0.5
-
-    top_void_depth = 4.0
-    top_void_width = 6.5
-
-    recess_depth = pin_inside_distance - 1.27 - 1.28
-    recess_large_width = 4
-    recess_small_width = 3
-    recess_height = 11.43
-
-
-
-    pin_depth = 3.56					# DIMENSION F depth below bottom surface of base
-
-    body_channel_depth = 0.6
-    body_channel_width = 1.5
-    body_cutout_length = 1.2
-    body_cutout_width = 0.6
-
-    ramp_split_breakpoint = 6				# Above this number of pins, the tab is split into two parts
-    ramp_chamfer_x = 0.3
-    ramp_chamfer_y = 0.7
-"""
