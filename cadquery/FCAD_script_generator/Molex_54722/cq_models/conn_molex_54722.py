@@ -75,12 +75,13 @@ def generate_contact(params, calc_dim):
     c1_list = [
         ('start', {'position': ((-body_width/2 - 0.5, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
         ('line', {'length': 0.5}),
-        ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
+        ('arc', {'radius': MIN_RAD, 'angle': 60.0}),
+        ('line', {'length': 0.05}),
+        ('arc', {'radius': MIN_RAD, 'angle': -60.0}),
+        ('line', {'length': 0.6}),
         ('arc', {'radius': MIN_RAD, 'angle': -45.0}),
-        ('line', {'length': 0.7}),
-        ('arc', {'radius': MIN_RAD, 'angle': -45.0}),
         ('arc', {'radius': MIN_RAD, 'angle': 45.0}),
-        ('line', {'length': 0.7}),
+        ('line', {'length': 0.73}),
         ('arc', {'radius': 0.15, 'angle': 95.0}),
         ('line', {'length': 0.49}),
         ('arc', {'radius': 0.1, 'angle': 85.0})
@@ -92,11 +93,11 @@ def generate_contact(params, calc_dim):
         ('arc', {'radius': MIN_RAD, 'angle': -90.0}),
         ('line', {'length': hole_length-2.0*MIN_RAD-pin_thickness}),
         ('arc', {'radius': MIN_RAD, 'angle': -90.0}),
-        ('line', {'length': slot_height - 4.0 * MIN_RAD}),
+        ('line', {'length': slot_height - 0.45}),
         ('arc', {'radius': MIN_RAD, 'angle': 90.0}),
         ('line', {'length': 0.2}),
         ('arc', {'radius': 0.15, 'angle': 90.0}),
-        ('line', {'length': 0.4}),
+        ('line', {'length': 0.35}),
         ('arc', {'radius': 0.1, 'angle': -90.0})
     ]
     ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c2_list)
@@ -161,6 +162,7 @@ def generate_body(params, calc_dim):
     body_height = seriesParams.body_height
     body_fillet_radius = seriesParams.body_fillet_radius
     body_chamfer = seriesParams.body_chamfer
+    pin_housing_height = seriesParams.pin_housing_height
 
     pin_inside_distance = seriesParams.pin_inside_distance
     num_pins = params.num_pins
@@ -201,6 +203,9 @@ def generate_body(params, calc_dim):
         .rect(body_length, body_width).extrude(body_height)\
         .faces(">Z").edges("|Y").chamfer(body_chamfer)\
         .edges("|Z").fillet(body_fillet_radius)
+
+    body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+    body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
 
     if num_housings > 0:
         body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
