@@ -23,16 +23,16 @@ def generate_params(num_pins, series_name, part_name, pin_pitch):
 
 
 all_params = {
-    'molex_54722_02x08_0.5mm' : generate_params(16, '54722', '0164', 0.5),								
-    'molex_54722_02x10_0.5mm' : generate_params(20, '54722', '0204', 0.5),								
-    'molex_54722_02x11_0.5mm' : generate_params(22, '54722', '0224', 0.5),								
-    'molex_54722_02x12_0.5mm' : generate_params(24, '54722', '0244', 0.5),								
-    'molex_54722_02x15_0.5mm' : generate_params(30, '54722', '0304', 0.5),								
-    'molex_54722_02x17_0.5mm' : generate_params(34, '54722', '0344', 0.5),								
-    'molex_54722_02x20_0.5mm' : generate_params(40, '54722', '0404', 0.5),								
-    'molex_54722_02x25_0.5mm' : generate_params(50, '54722', '0504', 0.5),								
-    'molex_54722_02x30_0.5mm' : generate_params(60, '54722', '0604', 0.5),								
-    'molex_54722_02x40_0.5mm' : generate_params(80, '54722', '0804', 0.5)								
+    'molex_54722_2x08' : generate_params(16, '54722', '0164', 0.5),								
+    'molex_54722_2x10' : generate_params(20, '54722', '0204', 0.5),								
+    'molex_54722_2x11' : generate_params(22, '54722', '0224', 0.5),								
+    'molex_54722_2x12' : generate_params(24, '54722', '0244', 0.5),								
+    'molex_54722_2x15' : generate_params(30, '54722', '0304', 0.5),								
+    'molex_54722_2x17' : generate_params(34, '54722', '0344', 0.5),								
+    'molex_54722_2x20' : generate_params(40, '54722', '0404', 0.5),								
+    'molex_54722_2x25' : generate_params(50, '54722', '0504', 0.5),								
+    'molex_54722_2x30' : generate_params(60, '54722', '0604', 0.5),								
+    'molex_54722_2x40' : generate_params(80, '54722', '0804', 0.5)								
 }
 
 

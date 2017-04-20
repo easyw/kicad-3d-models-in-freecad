@@ -287,10 +287,10 @@ def generate_part(part_key):
 
 # opened from within freecad
 if "module" in __name__:
-    # part_to_build = 'molex_54722_02x08_0.5mm'
-    part_to_build = 'molex_54722_02x15_0.5mm'
-    # part_to_build = 'molex_54722_02x17_0.5mm'
-    # part_to_build = 'molex_54722_02x40_0.5mm'
+    # part_to_build = 'molex_54722_2x08'
+    part_to_build = 'molex_54722_2x15'
+    # part_to_build = 'molex_54722_2x17'
+    # part_to_build = 'molex_54722_2x40'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
