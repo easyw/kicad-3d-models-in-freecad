@@ -72,7 +72,7 @@ class seriesParams():
     contact_width = 0.2
 
     contact_thickness = 0.15
-    contact_slot_width = contact_width + 0.05
+    contact_slot_width = 0.3
     top_slot_offset = (body_width + pocket_width) / 4.0
     
 

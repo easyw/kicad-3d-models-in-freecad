@@ -238,8 +238,6 @@ def generate_body(params, calc_dim):
 
     body = body_A.union(body_B)
 
-
-
     # cut slots for contacts
     body = body.faces(">Z").workplane().center(0, top_slot_offset)
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 1)\
@@ -262,6 +260,14 @@ def generate_body(params, calc_dim):
 
     body = body.cut(cutter_A.union(cutter_B))
 
+    # cut lock housings in all positions
+    cutter = cq.Workplane("XY").workplane(offset=0.49).center(0, body_width / 2.0)
+    cutter = my_rarray(cutter, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 0.25)\
+        .center(0, -body_width)
+    cutter = my_rarray(cutter, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 0.25)\
+       .extrude(0.25)
+    # show(cutter)
+    body = body.cut(cutter)
 
     return body
 
