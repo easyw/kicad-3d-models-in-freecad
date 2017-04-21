@@ -48,7 +48,7 @@ class seriesParams():
     body_height = 1.15				
     body_fillet_radius = 0.15
     body_chamfer = 0.1
-    pin_housing_height = 0.4
+    pin_recess_height = 0.4
 
     pocket_width = 1.65
     pocket_base_thickness = 0.2
@@ -56,9 +56,12 @@ class seriesParams():
 
     pin_width = 0.15
     pin_thickness = 0.075
-    contact_width = 0.2
+    pin_minimum_radius = 0.005 + pin_thickness / 2.0
+    pin_x_offset = 0.735
 
+    contact_width = 0.2
     contact_thickness = 0.15
+    contact_minimum_radius = 0.005 + contact_thickness / 2.0
     contact_slot_width = 0.3
     top_slot_offset = (body_width + pocket_width) / 4.0
     

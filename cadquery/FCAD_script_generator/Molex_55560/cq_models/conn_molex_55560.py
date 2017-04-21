@@ -67,16 +67,14 @@ def generate_pin(params, calc_dim):
     pin_thickness = seriesParams.pin_thickness
     pin_pitch = params.pin_pitch
     body_width = seriesParams.body_width
-    # hole_length = seriesParams.hole_length
-    # hole_offset = seriesParams.hole_offset
-    # slot_height = seriesParams.slot_height
-    MIN_RAD = 0.08
+    pin_minimum_radius = seriesParams.pin_minimum_radius
+    pin_x_offset = seriesParams.pin_x_offset
     p_list = [
-        ('start', {'position': ((-body_width/2 - 0.735, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
-        ('line', {'length': 0.735}),
-        ('arc', {'radius': MIN_RAD, 'angle': 60.0}),
+        ('start', {'position': ((-body_width/2 - pin_x_offset, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
+        ('line', {'length': pin_x_offset}),
+        ('arc', {'radius': pin_minimum_radius, 'angle': 60.0}),
         ('line', {'length': 0.05}),
-        ('arc', {'radius': MIN_RAD, 'angle': -60.0}),
+        ('arc', {'radius': pin_minimum_radius, 'angle': -60.0}),
         ('line', {'length': 0.4})
     ]
     ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), p_list)
@@ -100,15 +98,15 @@ def generate_contact(params, calc_dim):
     pin_group_width = calc_dim.pin_group_width
     contact_width = seriesParams.contact_width
     contact_thickness = seriesParams.contact_thickness
+    contact_minimum_radius = seriesParams.contact_minimum_radius
     pin_pitch = params.pin_pitch
     pocket_width = seriesParams.pocket_width
     body_height = seriesParams.body_height
     pocket_base_thickness = seriesParams.pocket_base_thickness
-    MIN_RAD = 0.08
     c_list = [
         ('start', {'position': ((-pocket_width/2 - contact_thickness / 2.0, pocket_base_thickness)), 'direction': 90.0, 'width':contact_thickness}),
-        ('line', {'length': body_height  - pocket_base_thickness - MIN_RAD - contact_thickness / 2.0}),
-        ('arc', {'radius': MIN_RAD, 'angle': 90.0}),
+        ('line', {'length': body_height  - pocket_base_thickness - contact_minimum_radius - contact_thickness / 2.0}),
+        ('arc', {'radius': contact_minimum_radius, 'angle': 90.0}),
         ('line', {'length': 0.25})
     ]
     ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-contact_width/2.0 - pin_group_width/2.0), c_list)
@@ -172,7 +170,7 @@ def generate_body(params, calc_dim):
     body_height = seriesParams.body_height
     body_fillet_radius = seriesParams.body_fillet_radius
     body_chamfer = seriesParams.body_chamfer
-    pin_housing_height = seriesParams.pin_housing_height
+    pin_recess_height = seriesParams.pin_recess_height
 
     pin_inside_distance = seriesParams.pin_inside_distance
     num_pins = params.num_pins
@@ -195,8 +193,8 @@ def generate_body(params, calc_dim):
     body_A = cq.Workplane("XY")\
         .rect(body_length, body_width).extrude(body_height)\
         .edges("|Z").fillet(body_fillet_radius)
-    body_A = body_A.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-    body_A = body_A.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+    body_A = body_A.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_recess_height*2.0).cutBlind(-body_fillet_radius)
+    body_A = body_A.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_recess_height*2.0).cutBlind(-body_fillet_radius)
     body_A = body_A.faces(">Z").chamfer(body_chamfer)
 
     body_B = cq.Workplane("XY")\
@@ -224,14 +222,14 @@ def generate_body(params, calc_dim):
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 2 * contact_thickness)\
        .cutBlind(-body_height + pocket_base_thickness)
 
-   # cut overall side housing
+   # cut overall side profile
     cutter_A = cq.Workplane("YZ").workplane(offset=(body_length - 2.0 * pocket_inside_distance) / 2.0).center(body_width / 2.0 - 0.2, body_height)\
         .line(0.05, -0.1).line(0,-0.1).line(0.05, -0.1).line(0,-0.3).line(0.06,-0.06)\
         .line(1,0).line(0, body_height).close().extrude(-(body_length - 2.0 * pocket_inside_distance))
     cutter_B = cutter_A.mirror("XZ")
     body = body.cut(cutter_A.union(cutter_B))
 
-    # cut lock housings in all positions
+    # cut lock pockets in all positions
     cutter = cq.Workplane("XY").workplane(offset=0.49).center(0, body_width / 2.0)
     cutter = my_rarray(cutter, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 0.25)\
         .center(0, -body_width)
@@ -239,17 +237,17 @@ def generate_body(params, calc_dim):
        .extrude(0.25)
     body = body.cut(cutter)
 
-    # overcut to remove selected lock housings
+    # overcut to remove selected lock pockets
     overcut = []
     if 'all' in lock_positions:
-        # no need to overcut any lock housings
+        # no need to overcut any lock pockets
         pass
     else:
         if 'none' in lock_positions:
-            # need to overcut all lock housings
+            # need to overcut all lock pockets
             overcut = range(1, 1 + num_pins / 2)
         else:
-            # need to overcut the housings not in lock_positions
+            # need to overcut those pockets not in lock_positions list
             overcut = [i for i in range(1, 1 + num_pins / 2) if i not in lock_positions]
         cut = cq.Workplane("XY").workplane(offset=0.49).center(-pin_group_width / 2.0, body_width / 2.0)\
             .rect(contact_slot_width, 0.25)\
