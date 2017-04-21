@@ -74,6 +74,8 @@ series = [MOLEX_55560]
 
 body_color_key = "dark grey body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
+pins_color_key = "gold pins"
+pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 contacts_color_key = "gold pins"
 contacts_color = shaderColors.named_colors[contacts_color_key].getDiffuseInt()
 
@@ -161,10 +163,13 @@ def export_one_part(modul, variant):
     # Model details
     #################################################################################################
 
-    (body, contacts) = modul.generate_part(variant)
+    (body, pins, contacts) = modul.generate_part(variant)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
+
+    color_attr = body_color + (0,)
+    show(pins, color_attr)
 
     color_attr = contacts_color + (0,)
     show(contacts, color_attr)
@@ -176,6 +181,8 @@ def export_one_part(modul, variant):
 
     i=0
     objs[i].Label = ModelName + "__body"
+    i+=1
+    objs[i].Label = ModelName + "__pins"
     i+=1
     objs[i].Label = ModelName + "__contacts"
     i+=1
@@ -192,6 +199,10 @@ def export_one_part(modul, variant):
     i=0
     export_objects.append(expVRML.exportObject(freecad_object = objs[i],
             shape_color=body_color_key,
+            face_colors=None))
+    i+=1
+    export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+            shape_color=pins_color_key,
             face_colors=None))
     i+=1
     export_objects.append(expVRML.exportObject(freecad_object = objs[i],
