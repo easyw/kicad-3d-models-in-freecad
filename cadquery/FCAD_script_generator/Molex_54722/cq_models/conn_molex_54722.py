@@ -204,12 +204,13 @@ def generate_body(params, calc_dim):
         .faces(">Z").edges("|Y").chamfer(body_chamfer)\
         .edges("|Z").fillet(body_fillet_radius)
 
-    body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-    body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-
     if num_housings > 0:
         body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
         body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
+
+    cutter_A = cq.Workplane("XZ").workplane(offset=body_width/2.0).center(0, pin_housing_height/2.0).rect(body_length,pin_housing_height).extrude(-body_fillet_radius)
+    cutter_B = cutter_A.mirror("XZ")
+    body = body.cut(cutter_A).cut(cutter_B)
 
     pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
