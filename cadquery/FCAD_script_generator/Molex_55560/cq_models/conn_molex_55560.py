@@ -71,15 +71,15 @@ def generate_pin(params, calc_dim):
     # hole_offset = seriesParams.hole_offset
     # slot_height = seriesParams.slot_height
     MIN_RAD = 0.08
-    c1_list = [
-        ('start', {'position': ((-body_width/2 - 0.5, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
-        ('line', {'length': 0.5}),
+    p_list = [
+        ('start', {'position': ((-body_width/2 - 0.735, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
+        ('line', {'length': 0.735}),
         ('arc', {'radius': MIN_RAD, 'angle': 60.0}),
         ('line', {'length': 0.05}),
         ('arc', {'radius': MIN_RAD, 'angle': -60.0}),
         ('line', {'length': 0.4})
     ]
-    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c1_list)
+    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), p_list)
     pin = ribbon.drawRibbon().extrude(pin_width)
     return pin
 
@@ -212,30 +212,28 @@ def generate_body(params, calc_dim):
     contact_slot_width = seriesParams.contact_slot_width
     top_slot_offset = seriesParams.top_slot_offset
 
+    lock_positions = params.lock_positions
+    pin_group_width = calc_dim.pin_group_width
+
 
     # body
     body_A = cq.Workplane("XY")\
         .rect(body_length, body_width).extrude(body_height)\
         .edges("|Z").fillet(body_fillet_radius)
-
     body_A = body_A.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
     body_A = body_A.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-
     body_A = body_A.faces(">Z").chamfer(body_chamfer)
-    
+
     body_B = cq.Workplane("XY")\
         .rect(body_length-0.4, body_width-0.4).extrude(body_height)
-
     body_A = body_A.cut(body_B)
 
     pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
-
     body_B = body_B.cut(pocket)
 
     body_B = body_B.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
-
     body = body_A.union(body_B)
 
     # cut slots for contacts
@@ -255,9 +253,7 @@ def generate_body(params, calc_dim):
     cutter_A = cq.Workplane("YZ").workplane(offset=(body_length - 2.0 * pocket_inside_distance) / 2.0).center(body_width / 2.0 - 0.2, body_height)\
         .line(0.05, -0.1).line(0,-0.1).line(0.05, -0.1).line(0,-0.3).line(0.06,-0.06)\
         .line(1,0).line(0, body_height).close().extrude(-(body_length - 2.0 * pocket_inside_distance))
-
     cutter_B = cutter_A.mirror("XZ")
-
     body = body.cut(cutter_A.union(cutter_B))
 
     # cut lock housings in all positions
@@ -266,93 +262,31 @@ def generate_body(params, calc_dim):
         .center(0, -body_width)
     cutter = my_rarray(cutter, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 0.25)\
        .extrude(0.25)
-    # show(cutter)
     body = body.cut(cutter)
+
+    # overcut to remove selected lock housings
+    overcut = []
+    if 'all' in lock_positions:
+        # no need to overcut any lock housings
+        pass
+    else:
+        if 'none' in lock_positions:
+            # need to overcut all lock housings
+            overcut = range(1, 1 + num_pins / 2)
+        else:
+            # need to overcut the housings not in lock_positions
+            overcut = [i for i in range(1, 1 + num_pins / 2) if i not in lock_positions]
+        cut = cq.Workplane("XY").workplane(offset=0.49).center(-pin_group_width / 2.0, body_width / 2.0)\
+            .rect(contact_slot_width, 0.25)\
+            .center(0, -body_width)\
+            .rect(contact_slot_width, 0.25)\
+            .extrude(3)
+        for i in overcut:
+            cutter = cutter.union(cut.translate(((i-1)*pin_pitch,0,0)))
+        body = body.cut(cutter)
 
     return body
 
-
-"""
-    island_inside_distance = seriesParams.island_inside_distance
-    island_width = seriesParams.island_width
-
-    hole_width = seriesParams.hole_width
-    hole_length = seriesParams.hole_length
-    hole_offset = seriesParams.hole_offset
-
-    rib_group_outer_width = calc_dim.rib_group_outer_width
-    rib_depth = seriesParams.rib_depth
-    rib_width = seriesParams.rib_width
-
-    slot_width = calc_dim.slot_width
-    slot_height = seriesParams.slot_height
-    slot_depth = seriesParams.slot_depth
-
-    notch_width = seriesParams.notch_width
-    notch_depth = seriesParams.notch_depth
-
-    housing_height = seriesParams.housing_height
-    housing_width = seriesParams.housing_width
-    housing_depth = seriesParams.housing_depth
-    num_housings = calc_dim.num_housings
-    housing_offset = calc_dim.housing_offset
-    housing_pitch = seriesParams.housing_pitch
-
-
-
-    pocket_chamfer = cq.Workplane("XY").workplane(offset=body_height)\
-        .rect(body_length - 2.0 * pocket_inside_distance + body_chamfer / 2.0, pocket_width + body_chamfer)\
-        .workplane(offset=-body_chamfer).rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
-        .loft(combine=True)
-
-    body = body.cut(pocket_chamfer)
-    if num_housings > 0:
-        body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
-        body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
-
-    island = cq.Workplane("XY").workplane(offset=body_height)\
-        .rect(body_length - 2.0 * island_inside_distance, island_width)\
-        .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
-
-    body = body.union(island)
-
-    # ribs recess
-    body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)\
-        .rect(rib_group_outer_width, rib_depth/2)\
-        .center(0, -pocket_width)\
-        .rect(rib_group_outer_width, rib_depth/2)\
-        .cutBlind(-(body_height-pocket_base_thickness))
-
-    # ribs
-    ribs = cq.Workplane("XY")
-
-    ribs = my_rarray(ribs, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
-        .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
-
-    body = body.union(ribs)
-
-    # slots for contacts
-    slot_cutter = cq.Workplane("XY").center(-slot_width/2.0, (island_width / 2.0) - slot_depth)
-
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)\
-       .center(0, -island_width-slot_depth)
-
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)
-
-    body = body.cut(slot_cutter)
-
-    # notches
-    notch1 = cq.Workplane("XY").workplane(offset=body_height).moveTo(body_length/2.0, 0)\
-        .rect(1, notch_width).extrude(-notch_depth).faces("<Z").edges("<Z").chamfer(notch_depth-0.001)
-
-    notch2 = notch1.mirror("YZ")
-
-    notches = notch1.union(notch2)
-
-    body = body.cut(notches)
-
-
-"""
 
 def generate_part(part_key):
     params = all_params[part_key]
@@ -366,8 +300,17 @@ def generate_part(part_key):
 # opened from within freecad
 if "module" in __name__:
     # part_to_build = 'molex_55560_2x08'
-    part_to_build = 'molex_55560_2x08'
-    
+    # part_to_build = 'molex_55560_2x10'
+    # part_to_build = 'molex_55560_2x11'
+    # part_to_build = 'molex_55560_2x12'
+    # part_to_build = 'molex_55560_2x15'
+    part_to_build = 'molex_55560_2x17'
+    # part_to_build = 'molex_55560_2x20'
+    # part_to_build = 'molex_55560_2x23'
+    # part_to_build = 'molex_55560_2x25'
+    # part_to_build = 'molex_55560_2x30'
+    # part_to_build = 'molex_55560_2x40'
+
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
     (body, pins) = generate_part(part_to_build)
