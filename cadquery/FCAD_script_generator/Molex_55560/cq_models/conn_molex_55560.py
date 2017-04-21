@@ -61,7 +61,42 @@ from conn_molex_55560_params import *
 
 from ribbon import Ribbon
 
+def generate_pin(params, calc_dim):
+    pin_group_width = calc_dim.pin_group_width
+    pin_width = seriesParams.pin_width
+    pin_thickness = seriesParams.pin_thickness
+    pin_pitch = params.pin_pitch
+    body_width = seriesParams.body_width
+    # hole_length = seriesParams.hole_length
+    # hole_offset = seriesParams.hole_offset
+    # slot_height = seriesParams.slot_height
+    MIN_RAD = 0.08
+    c1_list = [
+        ('start', {'position': ((-body_width/2 - 0.5, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
+        ('line', {'length': 0.5}),
+        ('arc', {'radius': MIN_RAD, 'angle': 60.0}),
+        ('line', {'length': 0.05}),
+        ('arc', {'radius': MIN_RAD, 'angle': -60.0}),
+        ('line', {'length': 0.4})
+    ]
+    ribbon = Ribbon(cq.Workplane("YZ").workplane(offset=-pin_width/2.0 - pin_group_width/2.0), c1_list)
+    pin = ribbon.drawRibbon().extrude(pin_width)
+    return pin
 
+
+def generate_pins(params, calc_dim):
+    num_pins=params.num_pins
+    pin_pitch=params.pin_pitch
+    pin_A = generate_pin(params, calc_dim)
+    pin_B = pin_A.mirror("XZ")
+    pin_pair = pin_A.union(pin_B)
+    pins = pin_pair
+    for i in range(0, num_pins / 2):
+        pins = pins.union(pin_pair.translate((i*pin_pitch,0,0)))
+    return pins
+
+
+"""
 def generate_contact(params, calc_dim):
     pin_group_width = calc_dim.pin_group_width
     pin_width = seriesParams.pin_width
@@ -117,7 +152,7 @@ def generate_contacts(params, calc_dim):
         contacts = contacts.union(contact_pair.translate((i*pin_pitch,0,0)))
     return contacts
 
-
+"""
 
 def my_rarray(self, xSpacing, ySpacing, xCount, yCount, center=True):
         """
@@ -173,6 +208,47 @@ def generate_body(params, calc_dim):
     pocket_base_thickness = seriesParams.pocket_base_thickness
     pocket_fillet_radius = seriesParams.pocket_fillet_radius
 
+    contact_thickness = seriesParams.contact_thickness
+    contact_slot_width = seriesParams.contact_slot_width
+    top_slot_offset = seriesParams.top_slot_offset
+
+
+    # body
+    body = cq.Workplane("XY")\
+        .rect(body_length, body_width).extrude(body_height)\
+        .edges("|Z").fillet(body_fillet_radius)
+
+    body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+    body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+
+    pocket = cq.Workplane("XY").workplane(offset=body_height)\
+        .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
+        .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
+
+    body = body.cut(pocket)
+
+    body = body.faces(">Z").chamfer(body_chamfer)
+
+    # cut slots for contacts
+    body = body.faces(">Z").workplane().center(0, top_slot_offset)
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 1)\
+        .center(0, -2 * top_slot_offset)
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 1)\
+       .cutBlind(-contact_thickness)
+    body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 2 * contact_thickness)\
+        .center(0, -pocket_width)
+    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 2 * contact_thickness)\
+       .cutBlind(-body_height + pocket_base_thickness)
+
+
+
+
+
+    return body
+
+
+"""
     island_inside_distance = seriesParams.island_inside_distance
     island_width = seriesParams.island_width
 
@@ -198,24 +274,7 @@ def generate_body(params, calc_dim):
     housing_offset = calc_dim.housing_offset
     housing_pitch = seriesParams.housing_pitch
 
-    # body
-    body = cq.Workplane("XY")\
-        .rect(body_length, body_width).extrude(body_height)\
-        .faces(">Z").edges("|Y").chamfer(body_chamfer)\
-        .edges("|Z").fillet(body_fillet_radius)
 
-    body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-    body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-
-    if num_housings > 0:
-        body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
-        body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
-
-    pocket = cq.Workplane("XY").workplane(offset=body_height)\
-        .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
-        .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
-
-    body = body.cut(pocket)
 
     pocket_chamfer = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance + body_chamfer / 2.0, pocket_width + body_chamfer)\
@@ -223,21 +282,15 @@ def generate_body(params, calc_dim):
         .loft(combine=True)
 
     body = body.cut(pocket_chamfer)
+    if num_housings > 0:
+        body = body.faces("<Y").workplane().center(-housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
+        body = body.faces(">Y").workplane().center(housing_offset, (body_height - housing_height)/2.0).rarray(housing_pitch, 1, num_housings, 1).rect(housing_width, housing_height).cutBlind(-housing_depth)
 
     island = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * island_inside_distance, island_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
 
     body = body.union(island)
-
-    # contact holes
-    body = body.faces(">Z").workplane().center(0, hole_offset)
-
-    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
-        .center(0, -2*hole_offset)
-
-    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
-       .cutBlind(-2)
 
     # ribs recess
     body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)\
@@ -274,25 +327,27 @@ def generate_body(params, calc_dim):
 
     body = body.cut(notches)
 
-    return body
 
+"""
 
 def generate_part(part_key):
     params = all_params[part_key]
     calc_dim = dimensions(params)
     body = generate_body(params, calc_dim)
-    contacts = generate_contacts(params, calc_dim)
-    return (body, contacts)
+    pins = generate_pins(params, calc_dim)
+    # contacts = generate_contacts(params, calc_dim)
+    return (body, pins)
 
 
 # opened from within freecad
 if "module" in __name__:
     # part_to_build = 'molex_55560_2x08'
-    part_to_build = 'molex_55560_2x15'
+    part_to_build = 'molex_55560_2x08'
     
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  part_to_build + "\n")
-    (body, contacts) = generate_part(part_to_build)
+    (body, pins) = generate_part(part_to_build)
     
     show(body)
-    show(contacts)
+    show(pins)
+    # show(contacts)
