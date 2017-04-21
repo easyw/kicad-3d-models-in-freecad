@@ -68,10 +68,10 @@ def generate_pin(params, calc_dim):
     pin_pitch = params.pin_pitch
     body_width = seriesParams.body_width
     pin_minimum_radius = seriesParams.pin_minimum_radius
-    pin_x_offset = seriesParams.pin_x_offset
+    pin_y_offset = seriesParams.pin_y_offset
     p_list = [
-        ('start', {'position': ((-body_width/2 - pin_x_offset, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
-        ('line', {'length': pin_x_offset}),
+        ('start', {'position': ((-body_width/2 - pin_y_offset, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
+        ('line', {'length': pin_y_offset}),
         ('arc', {'radius': pin_minimum_radius, 'angle': 60.0}),
         ('line', {'length': 0.05}),
         ('arc', {'radius': pin_minimum_radius, 'angle': -60.0}),

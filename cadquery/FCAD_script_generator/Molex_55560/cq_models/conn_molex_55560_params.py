@@ -57,7 +57,7 @@ class seriesParams():
     pin_width = 0.15
     pin_thickness = 0.075
     pin_minimum_radius = 0.005 + pin_thickness / 2.0
-    pin_x_offset = 0.735
+    pin_y_offset = 0.735
 
     contact_width = 0.2
     contact_thickness = 0.15
