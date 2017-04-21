@@ -168,7 +168,7 @@ def export_one_part(modul, variant):
     color_attr = body_color + (0,)
     show(body, color_attr)
 
-    color_attr = body_color + (0,)
+    color_attr = pins_color + (0,)
     show(pins, color_attr)
 
     color_attr = contacts_color + (0,)
