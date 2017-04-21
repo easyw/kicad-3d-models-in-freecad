@@ -46,7 +46,7 @@ class seriesParams():
     body_height = 1.15				
     body_fillet_radius = 0.15
     body_chamfer = 0.1
-    pin_housing_height = 0.4
+    pin_recess_height = 0.4
 
     pocket_width = 2.8
     pocket_base_thickness = 0.2
@@ -69,15 +69,17 @@ class seriesParams():
     
     pin_width = 0.15
     pin_thickness = 0.075
+    pin_minimum_radius = 0.005 + pin_thickness / 2.0
+    pin_y_offset = 0.5
 
-    housing_breakpoint = 29					# Above this number of pins, the body has housings on the side
-    housing_width = 2.0
-    housing_height = 0.575
-    housing_depth = 0.05
-    housing_pitch = 2.5
+    recess_breakpoint = 29					# Above this number of pins, the body has housings on the side
+    recess_width = 2.0
+    recess_height = 0.575
+    recess_depth = 0.05
+    recess_pitch = 2.5
 
 
-calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width', 'num_housings', 'housing_offset'])
+calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width', 'num_recesses', 'recess_offset'])
 
 
 def dimensions(params):
@@ -87,13 +89,13 @@ def dimensions(params):
     island_length = length - 2.0 * seriesParams.island_inside_distance
     rib_group_outer_width = pin_group_width + params.pin_pitch + seriesParams.rib_width
     slot_width = params.pin_pitch - seriesParams.rib_width
-    if params.num_pins > seriesParams.housing_breakpoint:
-        num_housings = params.num_pins // 10
-        housing_offset = (params.num_pins % 10) * params.pin_pitch / 4.0
+    if params.num_pins > seriesParams.recess_breakpoint:
+        num_recesses = params.num_pins // 10
+        recess_offset = (params.num_pins % 10) * params.pin_pitch / 4.0
     else:
-        num_housings = housing_offset = 0
+        num_recesses = recess_offset = 0
     return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length,
                    island_length = island_length, rib_group_outer_width=rib_group_outer_width,
-                   slot_width=slot_width, num_housings=num_housings, housing_offset=housing_offset)
+                   slot_width=slot_width, num_recesses=num_recesses, recess_offset=recess_offset)
 
 
