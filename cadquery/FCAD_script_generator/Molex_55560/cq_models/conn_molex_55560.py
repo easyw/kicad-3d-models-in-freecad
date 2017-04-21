@@ -214,22 +214,31 @@ def generate_body(params, calc_dim):
 
 
     # body
-    body = cq.Workplane("XY")\
+    body_A = cq.Workplane("XY")\
         .rect(body_length, body_width).extrude(body_height)\
         .edges("|Z").fillet(body_fillet_radius)
 
-    #body = body.faces(">Z").chamfer(body_chamfer)
+    body_A = body_A.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+    body_A = body_A.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length-2*pocket_inside_distance,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+
+    body_A = body_A.faces(">Z").chamfer(body_chamfer)
     
-    body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
-    body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
+    body_B = cq.Workplane("XY")\
+        .rect(body_length-0.4, body_width-0.4).extrude(body_height)
+
+    body_A = body_A.cut(body_B)
 
     pocket = cq.Workplane("XY").workplane(offset=body_height)\
         .rect(body_length - 2.0 * pocket_inside_distance, pocket_width)\
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
 
-    body = body.cut(pocket)
+    body_B = body_B.cut(pocket)
 
-    body = body.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
+    body_B = body_B.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
+
+    body = body_A.union(body_B)
+
+
 
     # cut slots for contacts
     body = body.faces(">Z").workplane().center(0, top_slot_offset)
@@ -245,11 +254,13 @@ def generate_body(params, calc_dim):
        .cutBlind(-body_height + pocket_base_thickness)
 
    # cut overall side housing
-    cutter = cq.Workplane("YZ").workplane(offset=(body_length - 2.0 * pocket_inside_distance) / 2.0).center(body_width / 2.0 - 0.1, body_height)\
-        .line(0.05, -0.1).line(0,-0.1).line(0.05, -0.1).line(0,-0.3).line(0.05,-0.05)\
+    cutter_A = cq.Workplane("YZ").workplane(offset=(body_length - 2.0 * pocket_inside_distance) / 2.0).center(body_width / 2.0 - 0.2, body_height)\
+        .line(0.05, -0.1).line(0,-0.1).line(0.05, -0.1).line(0,-0.3).line(0.06,-0.06)\
         .line(1,0).line(0, body_height).close().extrude(-(body_length - 2.0 * pocket_inside_distance))
 
-    body = body.cut(cutter)
+    cutter_B = cutter_A.mirror("XZ")
+
+    body = body.cut(cutter_A.union(cutter_B))
 
 
     return body
