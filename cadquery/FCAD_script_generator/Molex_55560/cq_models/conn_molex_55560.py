@@ -218,6 +218,8 @@ def generate_body(params, calc_dim):
         .rect(body_length, body_width).extrude(body_height)\
         .edges("|Z").fillet(body_fillet_radius)
 
+    #body = body.faces(">Z").chamfer(body_chamfer)
+    
     body = body.faces("<Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
     body = body.faces(">Y").workplane().center(0, -body_height/2.0).rect(body_length,pin_housing_height*2.0).cutBlind(-body_fillet_radius)
 
@@ -227,7 +229,7 @@ def generate_body(params, calc_dim):
 
     body = body.cut(pocket)
 
-    body = body.faces(">Z").chamfer(body_chamfer)
+    body = body.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
 
     # cut slots for contacts
     body = body.faces(">Z").workplane().center(0, top_slot_offset)
@@ -235,14 +237,19 @@ def generate_body(params, calc_dim):
         .center(0, -2 * top_slot_offset)
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 1)\
        .cutBlind(-contact_thickness)
+
     body = body.faces(">Z").workplane().center(0, pocket_width / 2.0)
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 2 * contact_thickness)\
         .center(0, -pocket_width)
     body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(contact_slot_width, 2 * contact_thickness)\
        .cutBlind(-body_height + pocket_base_thickness)
 
+   # cut overall side housing
+    cutter = cq.Workplane("YZ").workplane(offset=(body_length - 2.0 * pocket_inside_distance) / 2.0).center(body_width / 2.0 - 0.1, body_height)\
+        .line(0.05, -0.1).line(0,-0.1).line(0.05, -0.1).line(0,-0.3).line(0.05,-0.05)\
+        .line(1,0).line(0, body_height).close().extrude(-(body_length - 2.0 * pocket_inside_distance))
 
-
+    body = body.cut(cutter)
 
 
     return body

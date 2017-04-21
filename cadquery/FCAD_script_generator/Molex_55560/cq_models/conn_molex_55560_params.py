@@ -46,7 +46,7 @@ class seriesParams():
     body_height = 1.15				
     body_fillet_radius = 0.15
     body_chamfer = 0.1
-    pin_housing_height = 0.2
+    pin_housing_height = 0.4
 
     pocket_width = 1.65
     pocket_base_thickness = 0.2
