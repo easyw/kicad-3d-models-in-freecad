@@ -507,7 +507,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
         #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        if footprints_dir is not None:
+        if footprints_dir is not None and os.path.isdir(footprints_dir):
             #expVRML.say (ModelName)
             #stop
             sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
@@ -518,23 +518,30 @@ if __name__ == "__main__" or __name__ == "main_generator":
             for i in QtGui.qApp.topLevelWidgets():
                 if i.objectName() == "kicadStepUp":
                     ksu_already_loaded=True
+            ksu_tab = FreeCADGui.getMainWindow().findChild(QtGui.QDockWidget, "kicadStepUp") #"kicad StepUp 3D tools")
+            if ksu_tab:
+                ksu_already_loaded=True
             if ksu_already_loaded!=True:
                 try:
                     import kicadStepUptools
                     ksu_present=True
-                    kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
-                    kicadStepUptools.form.destroy()
+                    ksu_already_loaded=True
+                    kicadStepUptools.KSUWidget.close()
+                    #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+                    #kicadStepUptools.KSUWidget.destroy()
                     #for i in QtGui.qApp.topLevelWidgets():
                     #    if i.objectName() == "kicadStepUp":
                     #        i.deleteLater()
-                    ksu_already_loaded=True
+                    kicadStepUptools.KSUWidget.close()
                 except:
                     ksu_present=False
                     expVRML.say("ksu not present")
             else:
+                kicadStepUptools.KSUWidget.close()
                 reload(kicadStepUptools)
-                kicadStepUptools.form.setWindowState(QtCore.Qt.WindowMinimized)
-                kicadStepUptools.form.destroy()
+                kicadStepUptools.KSUWidget.close()
+                #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+                #kicadStepUptools.KSUWidget.destroy()
             
         #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
         #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
