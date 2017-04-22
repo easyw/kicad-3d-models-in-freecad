@@ -108,7 +108,8 @@ from Gui.Command import *
 import cq_cad_tools
 reload(cq_cad_tools)
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors, \
+ checkRequirements
 
 Gui.activateWorkbench("CadQueryWorkbench")
 
@@ -119,28 +120,25 @@ if FreeCAD.GuiUp:
 
 # checking requirements
 
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
+try:
+    # Gui.SendMsgToActiveView("Run")
+    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
+checkRequirements(cq)
 
 try:
     close_CQ_Example(App, Gui)
-except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+except: # catch *all* exceptions
+    print "CQ 030 doesn't open example file"
 
 
 def export_one_part(modul, variant):
