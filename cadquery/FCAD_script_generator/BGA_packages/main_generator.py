@@ -333,9 +333,13 @@ def make_case(params):
 
 #import step_license as L
 import add_license as Lic
+global ksu_present
+ksu_present=False
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
+    global ksu_present
+
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -513,19 +517,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
             sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
             #setup = get_setup_file()  # << You need the parentheses
             expVRML.say(sys.argv[2])
-            ksu_already_loaded=False
-            ksu_present=False
-            for i in QtGui.qApp.topLevelWidgets():
-                if i.objectName() == "kicadStepUp":
-                    ksu_already_loaded=True
-            ksu_tab = FreeCADGui.getMainWindow().findChild(QtGui.QDockWidget, "kicadStepUp") #"kicad StepUp 3D tools")
-            if ksu_tab:
-                ksu_already_loaded=True
-            if ksu_already_loaded!=True:
+            if not ksu_present:
                 try:
                     import kicadStepUptools
                     ksu_present=True
-                    ksu_already_loaded=True
+                    expVRML.say("ksu present!")
                     kicadStepUptools.KSUWidget.close()
                     #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
                     #kicadStepUptools.KSUWidget.destroy()
