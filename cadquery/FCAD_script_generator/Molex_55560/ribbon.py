@@ -4,6 +4,21 @@ import numpy as np
 
 
 class Ribbon:
+    """Constructs a CadQuery closed wire that is a constant-width
+       expansion of line represented by a list of "turtle graphics" style
+       plotting commands.  From the starting position, the left hand side of
+       of the ribbon is drawn by parsing the commmands from start to finish.
+       The right hand side of the ribbon is then drawn by parsing the commands 
+       in reverse order.
+
+       Arguments:
+       cq -- CadQuery object
+       commands -- list of plotting commands
+
+       Returns:
+       cq -- CadQuery object with closed wire added    
+       """
+
     def __init__(self, cq, commands):
         self.cq = cq
         self.commands = commands
@@ -79,8 +94,6 @@ class Ribbon:
         for c in commands:
             if c[0] == 'start':
                 pass
-            elif c[0] == 'steer':  # DEPRECATED
-                self.direction = c[1]['angle']
             elif c[0] == 'line':
                 vx = c[1]['length'] * np.cos(np.deg2rad(self.direction))
                 vy = c[1]['length'] * np.sin(np.deg2rad(self.direction))
@@ -106,20 +119,6 @@ class Ribbon:
         return self.cq
 
     def drawRibbon(self):
-        """Constructs a CadQuery closed wire that is a constant-width
-           expansion of line represented by a list of "turtle graphics" style
-           plotting commands.  From the starting position, the left hand side of
-           of the ribbon is drawn by parsing the commmands from start to finish.
-           The right hand side of the ribbon is then drawn by parsing the commands 
-           in reverse order.
-    
-           Arguments:
-           cq -- CadQuery object
-           commands -- list of plotting commands
-    
-           Returns:
-           cq -- CadQuery object with closed wire added    
-           """
         if self.commands[0][0] == 'start':
             self.direction = self.commands[0][1]['direction']
             half_width = self.commands[0][1]['width'] / 2.0
@@ -136,7 +135,6 @@ class Ribbon:
         self.current_y += 2 * half_width * np.sin(np.deg2rad(self.direction + 90))
         self.cq = self.cq.lineTo(self.current_x, self.current_y)
         print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
-        self.commands.reverse()
-        self.cq = self.parseCommands(self.commands[:-1], half_width, -1)
+        self.cq = self.parseCommands(self.commands[:0:-1], half_width, -1)
         self.cq = self.cq.close()
         return self.cq
