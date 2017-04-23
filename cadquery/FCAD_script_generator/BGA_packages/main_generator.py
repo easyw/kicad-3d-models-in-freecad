@@ -209,7 +209,7 @@ def make_case(params):
         excluded_pins=() ##no pin excluded 
 
         
-    sphere_r = b/2
+    sphere_r = b/2 *(1.05) #added extra 0.5% diameter for fusion
     s_center =(0,0,0)
     sphere = cq.Workplane("XY", s_center). \
              sphere(sphere_r)
