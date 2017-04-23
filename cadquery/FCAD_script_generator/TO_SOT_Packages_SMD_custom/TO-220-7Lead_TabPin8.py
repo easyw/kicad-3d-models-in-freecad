@@ -1,5 +1,9 @@
 import cadquery as cq
 from Helpers import show
+
+import sys
+sys.path.append('./')
+
 from ribbon import Ribbon
 
 
