@@ -129,6 +129,18 @@ kicad_naming_params_res = {
         modelName = 'R_0603',  # Model Name
         rotation = 0   # rotation
     ),
+    "R_0612" : Params(
+        L = 1.6,  # package length
+        W = 3.2,  # package width
+        T = 0.55,  # package height
+
+        pb = 0.3,  # pin band
+        pt = 0.025,   # pin thickness
+
+        ef = 0.020, # fillet of edges
+        modelName = 'R_0612',  # Model Name
+        rotation = 0   # rotation
+    ),
     "R_0805" : Params(
         L = 2.00,  # package length
         W = 1.25,  # package width
