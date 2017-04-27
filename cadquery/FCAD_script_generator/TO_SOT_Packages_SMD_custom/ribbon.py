@@ -100,7 +100,7 @@ class Ribbon:
                 self.current_x += vx
                 self.current_y += vy
                 self.cq = self.cq.lineTo(self.current_x, self.current_y)
-                print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
+                # print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
             elif c[0] == 'arc':
                 angle = c[1]['angle'] * direction_multiplier
                 radius = c[1]['radius']
@@ -113,7 +113,7 @@ class Ribbon:
                 self.cq = self.cq.threePointArc((mid_x, mid_y), (turn_x, turn_y))
                 self.direction += angle
                 self.current_x, self.current_y = turn_x, turn_y
-                print("arc to {0} {1} {2} {3} {4}".format(self.current_x, self.current_y, self.direction, radius, angle))
+                # print("arc to {0} {1} {2} {3} {4}".format(self.current_x, self.current_y, self.direction, radius, angle))
             else:
                 print('Unrecognised command: {0}'.format(c))
         return self.cq
@@ -125,7 +125,7 @@ class Ribbon:
             self.current_x = self.commands[0][1]['position'][0] + half_width * np.cos(np.deg2rad(self.direction + 90))
             self.current_y = self.commands[0][1]['position'][1] + half_width * np.sin(np.deg2rad(self.direction + 90))
             self.cq = self.cq.moveTo(self.current_x, self.current_y)
-            print("move to {0} {1}".format(self.current_x, self.current_y))
+            # print("move to {0} {1}".format(self.current_x, self.current_y))
         else:
             print('start command not found')
             return
@@ -134,7 +134,8 @@ class Ribbon:
         self.current_x += 2 * half_width * np.cos(np.deg2rad(self.direction + 90))
         self.current_y += 2 * half_width * np.sin(np.deg2rad(self.direction + 90))
         self.cq = self.cq.lineTo(self.current_x, self.current_y)
-        print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
+        # print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
         self.cq = self.parseCommands(self.commands[:0:-1], half_width, -1)
         self.cq = self.cq.close()
         return self.cq
+
