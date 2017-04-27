@@ -211,11 +211,11 @@ class DPAK(object):
         base = self.config['base']
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
-                print(variant['pins'])
+                print('uncut: {:d}'.format(variant['pins']))
                 (body, tab, pins) = self.build_model(base, variant, verbose=verbose)
                 yield (body, tab, pins)
             if 'cut' in variant['centre_pin']:
-                print(variant['pins'])
+                print('cut: {:d}'.format(variant['pins']))
                 (body, tab, pins) = self.build_model(base, variant, cut_pin=True, verbose=verbose)
                 yield (body, tab, pins)
 

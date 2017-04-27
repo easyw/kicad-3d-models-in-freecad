@@ -112,7 +112,6 @@ if __name__ == "__main__":
             doc = FreeCAD.ActiveDocument
             doc.Label=ModelName
             objs=FreeCAD.ActiveDocument.Objects
-            FreeCAD.Console.PrintMessage(objs)
             i=0
             objs[i].Label = ModelName + "__body"
             i+=1
