@@ -21,17 +21,12 @@ import ImportGui
 
 class Dimensions(object):
 
-    def __init__(self, base, variant, cut_pin=False):
+    def __init__(self, base, variant, cut_pin=False, tab_linked=False):
         # FROM KLC
-        self.fab_line_width_mm = 0.1
-        self.silk_line_width_mm = 0.12
-        self.courtyard_line_width_mm = 0.05
-        self.courtyard_clearance_mm = 0.25
-        self.courtyard_precision_mm = 0.01
 
         # PIN NUMBERING
         self.centre_pin = 1 + variant['pins'] // 2
-        self.tab_pin_number= self.centre_pin if (cut_pin) else variant['pins'] + 1
+        self.tab_pin_number= self.centre_pin if (tab_linked or cut_pin) else variant['pins'] + 1
 
         # NAME
         self.name = self.footprint_name(base['package'], (variant['pins'] - 1) if cut_pin else variant['pins'],
@@ -41,7 +36,6 @@ class Dimensions(object):
         self.pad_1_centre_y_mm = -variant['pitch_mm'] * (variant['pins'] - 1) / 2.0
         self.tab_centre_x_mm = (base['footprint']['x_mm'] - base['footprint']['tab']['x_mm']) / 2.0
         self.tab_centre_y_mm = 0.0
-        self.split_paste = (base['footprint']['split_paste'] == 'on')
 
         # FAB OUTLINE
         self.device_offset_x_mm = base['device']['x_mm'] / 2.0  # x coordinate of RHS of device
@@ -50,19 +44,6 @@ class Dimensions(object):
         self.body_x_mm = base['device']['body']['x_mm']
         self.body_offset_y_mm = base['device']['body']['y_mm'] / 2.0  # y coordinate of bottom of body
         self.corner_mm = 1.0  #  x and y size of chamfered corner on top left of body -- from KLC
-
-        # COURTYARD
-        self.biggest_x_mm = base['footprint']['x_mm']
-        self.biggest_y_mm = max(base['footprint']['tab']['y_mm'], base['device']['body']['y_mm'],
-                                       2.0 * self.pad_1_centre_y_mm + variant['pad']['y_mm'])
-        self.courtyard_offset_x_mm = self.round_to(self.courtyard_clearance_mm + self.biggest_x_mm / 2.0,
-                                                   self.courtyard_precision_mm)
-        self.courtyard_offset_y_mm = self.round_to(self.courtyard_clearance_mm + self.biggest_y_mm / 2.0,
-                                                   self.courtyard_precision_mm)
-        # SILKSCREEN
-        self.label_centre_x_mm = 0
-        self.label_centre_y_mm = self.courtyard_offset_y_mm + 1
-        self.silk_line_nudge_mm = 0.20  #  amount to shift to stop silkscreen lines overlapping fab lines
 
 
     def round_to(self, n, precision):
@@ -99,7 +80,7 @@ class DPAK(object):
         return config
 
 
-    def build_model(self, base, variant, cut_pin=False, verbose=False):
+    def build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
 
 #												KEY:
 #												[Y] = already in config file
@@ -164,7 +145,7 @@ class DPAK(object):
 
 
         # calculate dimensions and other attributes specific to this variant
-        dim = Dimensions(base, variant, cut_pin)
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
 
         body = cq.Workplane("XY").workplane(offset=NUDGE).moveTo(0, BODY_OFFSET)\
             .rect(BODY_WIDTH, BODY_LENGTH).extrude(BODY_HEIGHT)
@@ -217,7 +198,12 @@ class DPAK(object):
 
         pins = pins.union(fat_pins)
 
-        return body, tab, pins
+        model = {'name': dim.name,
+                 'body': {'part': body, 'colour': base['device']['body']['colour']},                 
+                 'tab':  {'part': tab,  'colour': base['device']['tab']['colour']},
+                 'pins': {'part': pins, 'colour': base['device']['pins']['colour']}
+                 }
+        return model
 
 
     def build_family(self, verbose=False):
@@ -226,12 +212,17 @@ class DPAK(object):
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
                 print('uncut: {:d}'.format(variant['pins']))
-                (body, tab, pins) = self.build_model(base, variant, verbose=verbose)
-                yield (body, tab, pins)
+                print('tab not linked')
+                model = self.build_model(base, variant, verbose=verbose)
+                yield model
+                print('tab linked')
+                model = self.build_model(base, variant, tab_linked=True, verbose=verbose)
+                yield model
             if 'cut' in variant['centre_pin']:
                 print('cut: {:d}'.format(variant['pins']))
-                (body, tab, pins) = self.build_model(base, variant, cut_pin=True, verbose=verbose)
-                yield (body, tab, pins)
+                model = self.build_model(base, variant, cut_pin=True, verbose=verbose)
+                yield model
+
 
 class TO263(DPAK):
 

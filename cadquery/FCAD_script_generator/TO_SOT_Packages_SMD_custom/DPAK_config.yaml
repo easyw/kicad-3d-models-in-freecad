@@ -15,9 +15,13 @@ base:
         body:
             x_mm: 6.22
             y_mm: 6.5
+            colour: 'black body'                                     # 3D
         tab:
             x_mm: 1.0
             y_mm: 5.4
+            colour: 'metal grey pins'                                # 3D
+        pins:
+            colour: 'metal grey pins'                                # 3D
     3d_prefix: '${KISYS3DMOD}/TO_SOT_Packages_SMD.3dshapes'
 variants:
     - pins: 3
@@ -63,9 +67,13 @@ base:
         body:
             x_mm: 9.25
             y_mm: 10.0
+            colour: 'black body'                                     # 3D
         tab:
             x_mm: 1.0
             y_mm: 10.0
+            colour: 'metal grey pins'                                # 3D
+        pins:
+            colour: 'metal grey pins'                                # 3D
     3d_prefix: '${KISYS3DMOD}/TO_SOT_Packages_SMD.3dshapes'
 variants:
     - pins: 3
@@ -122,9 +130,13 @@ base:
         body:
             x_mm: 14.0
             y_mm: 15.9
+            colour: 'black body'                                     # 3D
         tab:
             x_mm: 1.1
             y_mm: 15.9
+            colour: 'metal grey pins'                                # 3D
+        pins:
+            colour: 'metal grey pins'                                # 3D
     3d_prefix: '${KISYS3DMOD}/TO_SOT_Packages_SMD.3dshapes'
 variants:
     - pins: 3

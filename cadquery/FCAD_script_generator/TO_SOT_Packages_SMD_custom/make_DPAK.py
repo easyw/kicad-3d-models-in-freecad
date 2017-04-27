@@ -99,25 +99,26 @@ if __name__ == "__main__":
 
     for package in build_list:
         n = 0
-        for (body, tab, pins) in package.build_family(verbose=True):
-            ModelName = 'foobar_{:d}'.format(n)
+        for model in package.build_family(verbose=True):
+            FC_name = model['name'].replace('-', '_')
+            print(FC_name)
             n += 1
-            Newdoc = FreeCAD.newDocument(ModelName)
-            App.setActiveDocument(ModelName)
-            App.ActiveDocument = App.getDocument(ModelName)
-            Gui.ActiveDocument = Gui.getDocument(ModelName)
-            show(body)
-            show(tab)
-            show(pins)
+            Newdoc = FreeCAD.newDocument(FC_name)
+            App.setActiveDocument(FC_name)
+            App.ActiveDocument = App.getDocument(FC_name)
+            Gui.ActiveDocument = Gui.getDocument(FC_name)
+            for key in model.keys():
+                if key is not 'name':
+                    show(model[key]['part'])
             doc = FreeCAD.ActiveDocument
-            doc.Label=ModelName
+            doc.Label=FC_name
             objs=FreeCAD.ActiveDocument.Objects
             i=0
-            objs[i].Label = ModelName + "__body"
+            objs[i].Label = FC_name + "__body"
             i+=1
-            objs[i].Label = ModelName + "__tab"
+            objs[i].Label = FC_name + "__tab"
             i+=1
-            objs[i].Label = ModelName + "__pins"
+            objs[i].Label = FC_name + "__pins"
             i+=1
             restore_Main_Tools()
             FreeCAD.activeDocument().recompute()
