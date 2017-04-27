@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     # args = get_args()
 
-    from DPAK import DPAK, TO263
+    from DPAK import DPAK, TO252, TO263
 
     CONFIG = 'DPAK_config.yaml'
 
@@ -95,12 +95,12 @@ if __name__ == "__main__":
             # print('ERROR: family not recognised')
             # build_list = []
     # else:
-    build_list = [TO263(CONFIG)]
+    build_list = [TO252(CONFIG)]
 
     for package in build_list:
         n = 0
         for model in package.build_family(verbose=True):
-            FC_name = model['name'].replace('-', '_')
+            FC_name = model['__name'].replace('-', '_')
             print(FC_name)
             n += 1
             Newdoc = FreeCAD.newDocument(FC_name)
@@ -108,21 +108,25 @@ if __name__ == "__main__":
             App.ActiveDocument = App.getDocument(FC_name)
             Gui.ActiveDocument = Gui.getDocument(FC_name)
             for key in model.keys():
-                if key is not 'name':
-                    show(model[key]['part'])
+                if key is not '__name':
+                    colour_key = model[key]['colour']
+                    colour = shaderColors.named_colors[colour_key].getDiffuseInt()
+                    colour_attr = colour + (0,)
+                    show(model[key]['part'], colour_attr)
             doc = FreeCAD.ActiveDocument
             doc.Label=FC_name
             objs=FreeCAD.ActiveDocument.Objects
-            i=0
-            objs[i].Label = FC_name + "__body"
-            i+=1
-            objs[i].Label = FC_name + "__tab"
-            i+=1
-            objs[i].Label = FC_name + "__pins"
-            i+=1
+            i = 0
+            for key in model.keys():
+                if key is not '__name':
+                    objs[i].Label = FC_name + "__" + key
+                    i += 1
             restore_Main_Tools()
             FreeCAD.activeDocument().recompute()
             FreeCADGui.SendMsgToActiveView("ViewFit")
-            FreeCADGui.activeDocument().activeView().viewAxometric()
+            FreeCADGui.activeDocument().activeView().viewTop()
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
+
+
+
