@@ -101,40 +101,47 @@ class DPAK(object):
 
     def build_model(self, base, variant, cut_pin=False, verbose=False):
 
-        LENGTH = 13.85  # Y axis
+#												KEY:
+#												[Y] = already in config file
+#												[A] = add to config file
+#												[C] = calculate in Dimensions
+#												[K] = constant in Dimensions
 
-        BODY_LENGTH = 9.25  # Y axis
-        BODY_WIDTH = 10.0  # X axis
-        BODY_HEIGHT = 4.4
-        BODY_WAIST = 2.4  # Z axis distance from PCB to bottom of chamfers
 
-        TAB_HEIGHT = 1.27  # Z axis thickness of tab
+        LENGTH = 13.85  # Y axis 								[Y]
 
-        CHAMFER_1 = 0.5  # horizontal part of top side chamfers
-        CHAMFER_2 = BODY_HEIGHT - BODY_WAIST  # vertical part of top side chamfers
-        CHAMFER_3 = 0.2  # horizontal part of bottom front chamfer
+        BODY_LENGTH = 9.25  # Y axis 								[Y]
+        BODY_WIDTH = 10.0  # X axis 								[Y]
+        BODY_HEIGHT = 4.4  #									[A]
+        BODY_WAIST = 2.4  # Z axis distance from PCB to bottom of chamfers			[A]
 
-        TAB_LENGTH = 7.55
-        TAB_PROJECT = 1.0  # Y axis distance from end of tab to end of body
-        TAB_TOP_WIDTH = 10.0  # width of part of tab that is outside body
-        TAB_BOTTOM_WIDTH = 8.5  # width of part of tab that is underneath body
-        TAB_SMALL = 0.5  # approximation used for tab chamfers and shoulders
-        TAB_LARGE = 1.5  # approximation used for tab chamfers and shoulders
+        TAB_HEIGHT = 1.27  # Z axis thickness of tab						[A]
+
+        CHAMFER_1 = 0.5  # horizontal part of top side chamfers					[K]
+        CHAMFER_2 = BODY_HEIGHT - BODY_WAIST  # vertical part of top side chamfers		[C]
+        CHAMFER_3 = 0.2  # horizontal part of bottom front chamfer				[K]
+
+        TAB_LENGTH = 7.55  #									[A]
+        TAB_PROJECT = 1.0  # Y axis distance from end of tab to end of body			[Y]
+        TAB_TOP_WIDTH = 10.0  # width of part of tab that is outside body			[Y]
+        TAB_BOTTOM_WIDTH = 8.5  # width of part of tab that is underneath body			[A] [b]
+        TAB_SMALL = 0.5  # approximation used for tab chamfers and shoulders			[K]
+        TAB_LARGE = 1.5  # approximation used for tab chamfers and shoulders			[K]
 
         # Y axis offset of body centre so that whole device is centred on (0, 0)
-        BODY_OFFSET = (LENGTH / 2.0) - (BODY_LENGTH / 2.0) - TAB_PROJECT
+        BODY_OFFSET = (LENGTH / 2.0) - (BODY_LENGTH / 2.0) - TAB_PROJECT  #			[C]
 
-        NUM_PINS = 7
-        PIN_PITCH = 1.27
-        PIN_WIDTH = 0.6
-        PIN_THICKNESS = 0.5
-        PIN_OFFSET = LENGTH / 2.0  # Y axis offset of end of pin
-        PIN_RADIUS = 0.5
-        PIN_FAT_WIDTH = PIN_WIDTH + 0.24  # Extra width of wide part on pins
-        PIN_FAT_LENGTH = 0.75  # Length of wide part on pins
-        PIN_FAT_CUT = 4.6  # Used to produce wide part of pins
+        NUM_PINS = 7  #										[Y]
+        PIN_PITCH = 1.27  #									[Y]
+        PIN_WIDTH = 0.6  #									[Y]
+        PIN_THICKNESS = 0.5  #									[A]
+        PIN_OFFSET = LENGTH / 2.0  # Y axis offset of end of pin				[K]
+        PIN_RADIUS = 0.5  #									[K] [a]
+        PIN_FAT_WIDTH = PIN_WIDTH + 0.24  # Extra width of wide part on pins			[K] [a]
+        PIN_FAT_LENGTH = 0.75  # Length of wide part on pins					[K] [a]
+        PIN_FAT_CUT = 4.6  # Used to produce wide part of pins					[K] [a]
 
-        PIN_PROFILE = [
+        PIN_PROFILE = [  #									[C] [a]
             ('start', {'position': (-PIN_OFFSET, PIN_THICKNESS / 2.0),
                        'direction': 0.0, 'width': PIN_THICKNESS}),
             ('line', {'length': 2.1 - PIN_RADIUS - PIN_THICKNESS / 2.0}),
@@ -144,10 +151,17 @@ class DPAK(object):
             ('line', {'length': 3})
         ]
 
-        HOLE_DIAMETER = 2.5
-        HOLE_DEPTH = 0.1
+        HOLE_DIAMETER = 2.5  #									[A] [b]
+        HOLE_DEPTH = 0.1  #									[K]
 
-        NUDGE = 0.02
+        NUDGE = 0.02  #										[K]
+
+#												NOTES:
+#												[a] maybe override in class if required?
+#												[b] or calculate?
+
+
+
 
         # calculate dimensions and other attributes specific to this variant
         dim = Dimensions(base, variant, cut_pin)
