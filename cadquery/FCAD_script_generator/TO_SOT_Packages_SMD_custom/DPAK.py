@@ -221,15 +221,11 @@ class DPAK(object):
         base = self.config['base']
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
-                print('uncut: {:d}'.format(variant['pins']))
-                print('tab not linked')
                 model = self.build_model(base, variant, verbose=verbose)
                 yield model
-                print('tab linked')
                 model = self.build_model(base, variant, tab_linked=True, verbose=verbose)
                 yield model
             if 'cut' in variant['centre_pin']:
-                print('cut: {:d}'.format(variant['pins']))
                 model = self.build_model(base, variant, cut_pin=True, verbose=verbose)
                 yield model
 

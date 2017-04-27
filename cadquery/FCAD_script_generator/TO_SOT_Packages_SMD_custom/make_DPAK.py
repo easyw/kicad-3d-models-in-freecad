@@ -75,6 +75,17 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
+import add_license as L
+
+# Licence information of the generated models
+#################################################################################################
+
+L.STR_int_licAuthor = "Ray Benitez"
+L.STR_int_licEmail = "hackscribble@outlook.com"
+
+#################################################################################################
+
+
 
 
 if __name__ == "__main__":
@@ -100,33 +111,59 @@ if __name__ == "__main__":
     for package in build_list:
         n = 0
         for model in package.build_family(verbose=True):
-            FC_name = model['__name'].replace('-', '_')
-            print(FC_name)
+            file_name = model['__name']
+            parts_list = model.keys()
+            parts_list.remove('__name')
+            # create document
+            safe_name = file_name.replace('-', '_')
+            FreeCAD.Console.PrintMessage('Model: {:s}\r\n'.format(file_name))
             n += 1
-            Newdoc = FreeCAD.newDocument(FC_name)
-            App.setActiveDocument(FC_name)
-            App.ActiveDocument = App.getDocument(FC_name)
-            Gui.ActiveDocument = Gui.getDocument(FC_name)
-            for key in model.keys():
-                if key is not '__name':
-                    colour_key = model[key]['colour']
-                    colour = shaderColors.named_colors[colour_key].getDiffuseInt()
-                    colour_attr = colour + (0,)
-                    show(model[key]['part'], colour_attr)
+            Newdoc = FreeCAD.newDocument(safe_name)
+            App.setActiveDocument(safe_name)
+            App.ActiveDocument = App.getDocument(safe_name)
+            Gui.ActiveDocument = Gui.getDocument(safe_name)
+            # colour model
+            used_colour_keys = []
+            for part in parts_list:
+                colour_key = model[part]['colour']
+                used_colour_keys.append(colour_key)
+                colour = shaderColors.named_colors[colour_key].getDiffuseInt()
+                colour_attr = colour + (0,)
+                show(model[part]['part'], colour_attr)
             doc = FreeCAD.ActiveDocument
-            doc.Label=FC_name
+            doc.Label=safe_name
             objs=FreeCAD.ActiveDocument.Objects
             i = 0
-            for key in model.keys():
-                if key is not '__name':
-                    objs[i].Label = FC_name + "__" + key
-                    i += 1
+            for part in parts_list:
+                objs[i].Label = '{n:s}__{p:s}'.format(n=safe_name, p=part)
+                i += 1
             restore_Main_Tools()
             FreeCAD.activeDocument().recompute()
             FreeCADGui.SendMsgToActiveView("ViewFit")
             FreeCADGui.activeDocument().activeView().viewTop()
+            # create output folder
+            if not os.path.exists(out_dir):
+                os.makedirs(out_dir)
+            # export VRML
+            export_file_name = '{d:s}{s:s}{n:s}.wrl'.format(d=out_dir, s=os.sep, n=file_name)
+            export_objects = []
+            i = 0
+            for part in parts_list:
+                export_objects.append(expVRML.exportObject(freecad_object=objs[i],
+                                      shape_color=model[part]['colour'],
+                                      face_colors=None))
+                i += 1
+            scale = 1 / 2.54
+            coloured_meshes = expVRML.getColoredMesh(Gui, export_objects, scale)
+            expVRML.writeVRMLFile(coloured_meshes, export_file_name, used_colour_keys, L.LIST_int_license)
+            # export STEP
+            fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui, safe_name, objs, keepOriginals=True)
+            exportSTEP(doc, file_name, out_dir, fusion)
+            print('in STEP')
+            L.addLicenseToStep('{d:s}/'.format(d=out_dir), '{n:s}.step'.format(n=file_name), L.LIST_int_license,
+                               L.STR_int_licAuthor, L.STR_int_licEmail, L.STR_int_licOrgSys, L.STR_int_licPreProc)
+            # save FreeCAD models
+            saveFCdoc(App, Gui, doc, file_name, out_dir)
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
-
-
 
