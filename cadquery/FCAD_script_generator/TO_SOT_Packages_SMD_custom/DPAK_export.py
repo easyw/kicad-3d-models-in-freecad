@@ -114,8 +114,8 @@ if __name__ == "__main__":
 
 
     # TODO device dependent
-    # build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
-    build_list = [TO268(CONFIG)]
+    build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
+    # build_list = [TO268(CONFIG)]
 
     n = 0
     for package in build_list:

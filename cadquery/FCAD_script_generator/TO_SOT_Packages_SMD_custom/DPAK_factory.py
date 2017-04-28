@@ -28,6 +28,7 @@ class Dimensions(object):
         self.body_y_mm = base['device']['body']['y_mm']
         self.body_z_mm = base['device']['body']['z_mm']
         self.body_waist_z_mm = base['device']['body']['waist_z_mm']
+        self.marker_offset_x_mm = base['device']['body']['marker_offset_x_mm']
         self.tab_x_mm = base['device']['tab']['x_mm']
         self.tab_z_mm = base['device']['tab']['z_mm']
         self.chamfer_1 = 0.5  # horizontal part of top side chamfers
@@ -115,9 +116,9 @@ class DPAK(object):
             .faces(">Z").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces(">Z").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces("<Z").edges("<X").chamfer(dim.body_waist_z_mm - dim.nudge_mm, dim.chamfer_3)
-
-        body = body.faces(">Z").hole(dim.marker_x_mm, depth=dim.marker_z_mm)
-
+        print('DEBUG: {x:2f}'.format(x=dim.marker_offset_x_mm))
+        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        # 
         return body
 
 
