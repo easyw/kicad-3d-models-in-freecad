@@ -114,13 +114,14 @@ if __name__ == "__main__":
 
 
     # TODO device dependent
-    # build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
-    build_list = [TO252(CONFIG)]
+    build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
+    # build_list = [TO252(CONFIG)]
+    # build_list = [TO263(CONFIG)]
     # build_list = [TO268(CONFIG)]
 
     n = 0
-    for package in build_list:
-        for model in package.build_family(verbose=True):
+    for series in build_list:
+        for model in series.build_series(verbose=True):
             file_name = model['__name']
             parts_list = model.keys()
             parts_list.remove('__name')

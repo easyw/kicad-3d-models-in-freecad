@@ -20,7 +20,7 @@ class Dimensions(object):
         self.tab_pin_number= self.centre_pin if (tab_linked or cut_pin) else variant['pins'] + 1
 
         # NAME
-        self.name = self.footprint_name(base['package'], (variant['pins'] - 1) if cut_pin else variant['pins'],
+        self.name = self.footprint_name(base['series'], (variant['pins'] - 1) if cut_pin else variant['pins'],
                                         not cut_pin, self.tab_pin_number)
         # 3D
         self.device_x_mm = base['device']['x_mm']
@@ -41,7 +41,7 @@ class Dimensions(object):
 
         self.tab_inner_y_mm = self.tab_y_mm * 0.8
         self.tab_large_mm = self.tab_y_mm * 0.15
-        self.tab_small_mm = self.tab_project_x_mm * 0.2
+        self.tab_small_mm = self.tab_project_x_mm * 0.3
 
         self.body_centre_x_mm = self.device_x_mm / 2.0 - self.tab_project_x_mm - self.body_x_mm / 2.0
 
@@ -76,18 +76,18 @@ class Dimensions(object):
         return int(n / precision + correction) * precision
 
 
-    def footprint_name(self, package, num_pins, add_tab, tab_number):
+    def footprint_name(self, series, num_pins, add_tab, tab_number):
         tab_suffix = '_TabPin' if add_tab else ''
         pins = str(num_pins)
         tab = str(tab_number) if add_tab else ''
-        name = '{p:s}-{ps:s}{ts:s}{tn:s}'.format(p=package, ps=pins, ts=tab_suffix, tn=tab)
+        name = '{s:s}-{ps:s}{ts:s}{tn:s}'.format(s=series, ps=pins, ts=tab_suffix, tn=tab)
         return name
 
 
 class DPAK(object):
 
     def __init__(self, config_file):
-        self.PACKAGE = None
+        self.SERIES = None
         self.config = None
 
 
@@ -99,7 +99,7 @@ class DPAK(object):
             return
         config = None
         for dev in devices:
-            if dev['base']['package'] == self.PACKAGE:
+            if dev['base']['series'] == self.SERIES:
                 config = dev
                 break
         return config
@@ -193,8 +193,8 @@ class DPAK(object):
         return model
 
 
-    def build_family(self, verbose=False):
-        print('Building {p:s}'.format(p=self.config['base']['description']))
+    def build_series(self, verbose=False):
+        print('Building series {p:s}'.format(p=self.config['base']['description']))
         base = self.config['base']
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
@@ -210,7 +210,7 @@ class DPAK(object):
 class TO252(DPAK):
 
     def __init__(self, config_file):
-        self.PACKAGE = 'TO-252'
+        self.SERIES = 'TO-252'
         self.config = self._load_config(config_file)
 
 
@@ -250,14 +250,14 @@ class TO252(DPAK):
 class TO263(DPAK):
 
     def __init__(self, config_file):
-        self.PACKAGE = 'TO-263'
+        self.SERIES = 'TO-263'
         self.config = self._load_config(config_file)
 
 
 class TO268(DPAK):
 
     def __init__(self, config_file):
-        self.PACKAGE = 'TO-268'
+        self.SERIES = 'TO-268'
         self.config = self._load_config(config_file)
 
 
@@ -269,8 +269,8 @@ if "module" in __name__:
     from DPAK import *
 
     CONFIG = '/home/ray/KiCad Contributing/kicad-3d-models-in-freecad/cadquery/FCAD_script_generator/TO_SOT_Packages_SMD_custom/DPAK_config.yaml'
-    package = TO252(CONFIG)
-    model = package.build_family(verbose=True).next()
+    series = TO252(CONFIG)
+    model = series.build_series(verbose=True).next()
 
     for key in model.keys():
         if key is not '__name':
