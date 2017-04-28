@@ -16,16 +16,21 @@ import add_license as L
 
 ##########################################################################################
 
+# MODEL LICENCE CONFIGURATION
+
+# Details to be included in the generated models
+L.STR_int_licAuthor = "Ray Benitez"
+L.STR_int_licEmail = "hackscribble@outlook.com"
+
+##########################################################################################
+
+##########################################################################################
+
 # DEVICE-DEPENDENT CONFIGURATION
 
 # Models
 from DPAK_factory import *
 CONFIG = 'DPAK_config.yaml'
-
-
-# Licence information included in the generated models
-L.STR_int_licAuthor = "Ray Benitez"
-L.STR_int_licEmail = "hackscribble@outlook.com"
 
 ##########################################################################################
 
@@ -33,17 +38,6 @@ L.STR_int_licEmail = "hackscribble@outlook.com"
 import argparse
 import yaml
 import pprint
-
-
-# TODO device dependent
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--family', help='device type to build: TO-263  (default is all)',
-                        type=str, nargs=1)
-    parser.add_argument('-v', '--verbose', help='show extra information while generating the footprint',
-                        action='store_true')
-    return parser.parse_args()
-
 
 import shaderColors
 
@@ -97,28 +91,13 @@ except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
 
-
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nExport started ...\r\n')
-
-    # args = get_args()
-
-    # if args.family:
-        # if args.family[0] == 'TO263':
-            # build_list = [TO263(CONFIG)]
-        # else:
-            # print('ERROR: family not recognised')
-            # build_list = []
-    # else:
-
-
-    # TODO device dependent
-    build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
-    # build_list = [TO252(CONFIG)]
-    # build_list = [TO263(CONFIG)]
-    # build_list = [TO268(CONFIG)]
-
+    FreeCAD.Console.PrintMessage('\r\nEXPORT STARTED ...\r\n')
+    print('DEBUG: before get_build_list()')
+    build_list = Factory(CONFIG).get_build_list()
+    print('DEBUG: before get_build_list()')
+    
     n = 0
     for series in build_list:
         for model in series.build_series(verbose=True):
@@ -176,5 +155,5 @@ if __name__ == "__main__":
             # save FreeCAD models
             saveFCdoc(App, Gui, doc, file_name, out_dir)
 
-    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
+    FreeCAD.Console.PrintMessage('\r\nEXPORT FINISHED.\r\n')
 

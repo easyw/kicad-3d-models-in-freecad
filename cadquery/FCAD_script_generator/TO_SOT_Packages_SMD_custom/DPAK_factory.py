@@ -116,9 +116,7 @@ class DPAK(object):
             .faces(">Z").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces(">Z").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces("<Z").edges("<X").chamfer(dim.body_waist_z_mm - dim.nudge_mm, dim.chamfer_3)
-        print('DEBUG: {x:2f}'.format(x=dim.marker_offset_x_mm))
         body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
-        # 
         return body
 
 
@@ -259,6 +257,36 @@ class TO268(DPAK):
     def __init__(self, config_file):
         self.SERIES = 'TO-268'
         self.config = self._load_config(config_file)
+
+
+class Factory(object):
+
+    def __init__(self, config_file):
+        self.config_file = config_file
+
+    def _parse_command_line(self):
+        parser = argparse.ArgumentParser(description='Select which packages to build')
+        parser.add_argument('package', nargs=argparse.REMAINDER, help='package type to build (e.g. TO252) (default is all types)')
+        args = parser.parse_args()
+        return args
+
+
+    def get_build_list(self):
+        args = self._parse_command_line()
+        packages = args.package[1:]  # remove program name, which is returned as first argument
+        if not packages:
+            # print('DEBUG: no packages')
+            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file)]
+        else:
+            # print('DEBUG: >>{p:s}<<'.format(p=packages))
+            build_list = []
+            if 'TO252' in packages:
+                build_list.append(TO252(self.config_file))
+            if 'TO263' in packages:
+                build_list.append(TO263(self.config_file))
+            if 'TO268' in packages:
+                build_list.append(TO268(self.config_file))
+        return build_list
 
 
 # opened from within freecad
