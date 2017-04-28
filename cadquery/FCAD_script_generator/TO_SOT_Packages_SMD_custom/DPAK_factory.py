@@ -214,6 +214,39 @@ class TO252(DPAK):
         self.config = self._load_config(config_file)
 
 
+    def _build_tab(self, dim):  # overrides DPAK._build_tab()
+
+        CUTOUT_Y_MM = dim.tab_y_mm * 0.70
+        CUTOUT_RADIUS_MM = 0.08
+        tab = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .line(0, -(dim.tab_y_mm/2.0))\
+            .line(-dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(-(dim.tab_x_mm - dim.tab_project_x_mm), 0)\
+            .line(0, dim.tab_inner_y_mm)\
+            .line(dim.tab_x_mm - dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(dim.tab_project_x_mm, 0)\
+            .close().extrude(dim.tab_z_mm)\
+            .faces(">X").edges("|Z").fillet(CUTOUT_RADIUS_MM / 2.0)
+        c1 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .rect(CUTOUT_RADIUS_MM * 2.0, CUTOUT_Y_MM)\
+            .extrude(dim.tab_z_mm)
+        c2 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, CUTOUT_Y_MM / 2.0)\
+            .circle(CUTOUT_RADIUS_MM)\
+            .extrude(dim.tab_z_mm+1)
+        c3 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, -CUTOUT_Y_MM / 2.0)\
+            .circle(CUTOUT_RADIUS_MM)\
+            .extrude(dim.tab_z_mm+1)
+        cutter = c1.union(c2).union(c3)
+        tab = tab.cut(cutter)
+        return tab
+
+
 class TO263(DPAK):
 
     def __init__(self, config_file):
