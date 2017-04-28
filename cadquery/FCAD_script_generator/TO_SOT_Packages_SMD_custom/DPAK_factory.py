@@ -165,21 +165,23 @@ class DPAK(object):
         return tab
 
 
-    def build_pins(self, dim):
+    def build_pins(self, dim, cut_pin):
 
         pin = cq.Workplane("XZ")\
             .workplane(offset=-(dim.pin_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
         pin = Ribbon(pin, dim.pin_profile).drawRibbon().extrude(dim.pin_y_mm)
         pins = pin
         for i in range(0, dim.number_pins):
-            pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+            if not (cut_pin and i == dim.centre_pin -1):
+                pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
 
         fat_pin = cq.Workplane("XZ")\
             .workplane(offset=-(dim.pin_fat_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
         fat_pin = Ribbon(fat_pin, dim.pin_profile).drawRibbon().extrude(dim.pin_fat_y_mm)
         fat_pins = fat_pin
         for i in range(0, dim.number_pins):
-            fat_pins = fat_pins.union(fat_pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+            if not (cut_pin and i == dim.centre_pin -1):
+                fat_pins = fat_pins.union(fat_pin.translate((0, -i * dim.pin_pitch_mm, 0)))
 
         cutter = cq.Workplane("XY").moveTo(-dim.pin_offset_x_mm, 0)\
             .rect(dim.pin_fat_cut_mm, dim.body_y_mm).extrude(dim.body_z_mm)
@@ -211,7 +213,7 @@ class DPAK(object):
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         body = self.build_body(dim)
         tab = self.build_tab(dim)
-        pins = self.build_pins(dim)
+        pins = self.build_pins(dim, cut_pin)
         model = self.assemble_model(base, dim, body, tab, pins)
         return model
 

@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     # args = get_args()
 
-    from DPAK import DPAK, TO252, TO263
+    from DPAK_factory import *
 
     CONFIG = 'DPAK_config.yaml'
 
@@ -106,10 +106,10 @@ if __name__ == "__main__":
             # print('ERROR: family not recognised')
             # build_list = []
     # else:
-    build_list = [TO252(CONFIG)]
+    build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
 
+    n = 0
     for package in build_list:
-        n = 0
         for model in package.build_family(verbose=True):
             file_name = model['__name']
             parts_list = model.keys()
