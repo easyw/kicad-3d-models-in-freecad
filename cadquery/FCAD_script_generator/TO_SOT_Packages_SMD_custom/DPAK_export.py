@@ -1,17 +1,4 @@
-import sys
-import os
-import argparse
-import yaml
-import pprint
-
-
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--family', help='device type to build: TO-263  (default is all)',
-                        type=str, nargs=1)
-    parser.add_argument('-v', '--verbose', help='show extra information while generating the footprint',
-                        action='store_true')
-    return parser.parse_args()
+# TODO add software licence
 
 import sys
 import os
@@ -23,6 +10,40 @@ out_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
 
 sys.path.append("../_tools")
 sys.path.append("cq_models")
+
+import add_license as L
+
+
+##########################################################################################
+
+# DEVICE-DEPENDENT CONFIGURATION
+
+# Models
+from DPAK_factory import *
+CONFIG = 'DPAK_config.yaml'
+
+
+# Licence information included in the generated models
+L.STR_int_licAuthor = "Ray Benitez"
+L.STR_int_licEmail = "hackscribble@outlook.com"
+
+##########################################################################################
+
+
+import argparse
+import yaml
+import pprint
+
+
+# TODO device dependent
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--family', help='device type to build: TO-263  (default is all)',
+                        type=str, nargs=1)
+    parser.add_argument('-v', '--verbose', help='show extra information while generating the footprint',
+                        action='store_true')
+    return parser.parse_args()
+
 
 import shaderColors
 
@@ -75,29 +96,13 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-import add_license as L
-
-# Licence information of the generated models
-#################################################################################################
-
-L.STR_int_licAuthor = "Ray Benitez"
-L.STR_int_licEmail = "hackscribble@outlook.com"
-
-#################################################################################################
-
-
 
 
 if __name__ == "__main__":
 
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
-    print('Building DPAK')
+    FreeCAD.Console.PrintMessage('\r\nExport started ...\r\n')
 
     # args = get_args()
-
-    from DPAK_factory import *
-
-    CONFIG = 'DPAK_config.yaml'
 
     # if args.family:
         # if args.family[0] == 'TO263':
@@ -106,7 +111,11 @@ if __name__ == "__main__":
             # print('ERROR: family not recognised')
             # build_list = []
     # else:
-    build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
+
+
+    # TODO device dependent
+    # build_list = [TO252(CONFIG), TO263(CONFIG), TO268(CONFIG)]
+    build_list = [TO268(CONFIG)]
 
     n = 0
     for package in build_list:

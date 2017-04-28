@@ -1,31 +1,18 @@
-import cadquery as cq
-from Helpers import show
-
 import sys
+
 sys.path.append('./')
 
-from ribbon import Ribbon
-
-import os
-import argparse
-import yaml
-import pprint
 import cadquery as cq
 from Helpers import show
-from collections import namedtuple
-import FreeCAD
-import Draft
-import ImportGui
+from ribbon import Ribbon
 
+import argparse
+import yaml
 
 
 class Dimensions(object):
 
     def __init__(self, base, variant, cut_pin=False, tab_linked=False):
-
-        # TODO remove redundant items / sort remaining items
-
-        # FROM KLC
 
         # PIN NUMBERING
         self.number_pins = variant['pins']
@@ -35,26 +22,13 @@ class Dimensions(object):
         # NAME
         self.name = self.footprint_name(base['package'], (variant['pins'] - 1) if cut_pin else variant['pins'],
                                         not cut_pin, self.tab_pin_number)
-        # PADS
-        self.pad_1_centre_x_mm = (variant['pad']['x_mm'] / 2.0) - (base['footprint']['x_mm'] / 2.0)
-        self.pad_1_centre_y_mm = -variant['pitch_mm'] * (variant['pins'] - 1) / 2.0
-        self.tab_centre_x_mm = (base['footprint']['x_mm'] - base['footprint']['tab']['x_mm']) / 2.0
-        self.tab_centre_y_mm = 0.0
-
-        # FAB OUTLINE
-        self.device_offset_x_mm = base['device']['x_mm'] / 2.0  # x coordinate of RHS of device
-        self.tab_x_mm = base['device']['tab']['x_mm']
-        self.tab_offset_y_mm = base['device']['tab']['y_mm'] / 2.0  # y coordinate of bottom of tab
-        self.body_x_mm = base['device']['body']['x_mm']
-        self.body_offset_y_mm = base['device']['body']['y_mm'] / 2.0  # y coordinate of bottom of body
-        self.corner_mm = 1.0  #  x and y size of chamfered corner on top left of body -- from KLC
-
         # 3D
         self.device_x_mm = base['device']['x_mm']
         self.body_x_mm = base['device']['body']['x_mm']
         self.body_y_mm = base['device']['body']['y_mm']
         self.body_z_mm = base['device']['body']['z_mm']
         self.body_waist_z_mm = base['device']['body']['waist_z_mm']
+        self.tab_x_mm = base['device']['tab']['x_mm']
         self.tab_z_mm = base['device']['tab']['z_mm']
         self.chamfer_1 = 0.5  # horizontal part of top side chamfers
         self.chamfer_2 = self.body_z_mm - self.body_waist_z_mm  # vertical part of top side chamfers
@@ -76,12 +50,12 @@ class Dimensions(object):
         self.pin_offset_x_mm = self.device_x_mm / 2.0
 
         # TODO improve calculation? override in specific classes?
-        self.pin_radius_mm = 0.5  #                                    [K] [a]
-        self.pin_fat_y_mm = self.pin_y_mm + 0.24  # Extra width of wide part on pins            [K] [a]
-        self.pin_fat_x_mm = 0.75  # Length of wide part on pins                    [K] [a]
-        self.pin_fat_cut_mm = 4.6  # Used to produce wide part of pins                    [K] [a]
+        self.pin_radius_mm = 0.5
+        self.pin_fat_y_mm = self.pin_y_mm + 0.24
+        self.pin_fat_x_mm = 0.75  # Length of wide part on pins                    
+        self.pin_fat_cut_mm = 4.6  # Used to produce wide part of pins
 
-        self.pin_profile = [  #                                    [C] [a]
+        self.pin_profile = [
             ('start', {'position': (-self.pin_offset_x_mm, self.pin_z_mm / 2.0),
                        'direction': 0.0, 'width': self.pin_z_mm}),
             ('line', {'length': 2.1 - self.pin_radius_mm - self.pin_z_mm / 2.0}),
@@ -116,7 +90,7 @@ class DPAK(object):
         self.config = None
 
 
-    def load_config(self, config_file):
+    def _load_config(self, config_file):
         try:
             devices = yaml.load_all(open(config_file))
         except Exception as fnfe:
@@ -130,7 +104,7 @@ class DPAK(object):
         return config
 
 
-    def build_body(self, dim):
+    def _build_body(self, dim):
 
         body = cq.Workplane("XY").workplane(offset=dim.nudge_mm).moveTo(dim.body_centre_x_mm, 0)\
             .rect(dim.body_x_mm, dim.body_y_mm).extrude(dim.body_z_mm)
@@ -147,7 +121,7 @@ class DPAK(object):
         return body
 
 
-    def build_tab(self, dim):
+    def _build_tab(self, dim):
 
         tab = cq.Workplane("XY")\
             .moveTo(dim.device_x_mm / 2.0, 0)\
@@ -165,7 +139,7 @@ class DPAK(object):
         return tab
 
 
-    def build_pins(self, dim, cut_pin):
+    def _build_pins(self, dim, cut_pin):
 
         pin = cq.Workplane("XZ")\
             .workplane(offset=-(dim.pin_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
@@ -199,7 +173,7 @@ class DPAK(object):
         return pins
 
 
-    def assemble_model(self, base, dim, body, tab, pins):
+    def _assemble_model(self, base, dim, body, tab, pins):
         model = {'__name': dim.name,
                  'body': {'part': body, 'colour': base['device']['body']['colour']},
                  'tab':  {'part': tab,  'colour': base['device']['tab']['colour']},
@@ -208,13 +182,13 @@ class DPAK(object):
         return model
  
 
-    def build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
-        body = self.build_body(dim)
-        tab = self.build_tab(dim)
-        pins = self.build_pins(dim, cut_pin)
-        model = self.assemble_model(base, dim, body, tab, pins)
+        body = self._build_body(dim)
+        tab = self._build_tab(dim)
+        pins = self._build_pins(dim, cut_pin)
+        model = self._assemble_model(base, dim, body, tab, pins)
         return model
 
 
@@ -223,12 +197,12 @@ class DPAK(object):
         base = self.config['base']
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
-                model = self.build_model(base, variant, verbose=verbose)
+                model = self._build_model(base, variant, verbose=verbose)
                 yield model
-                model = self.build_model(base, variant, tab_linked=True, verbose=verbose)
+                model = self._build_model(base, variant, tab_linked=True, verbose=verbose)
                 yield model
             if 'cut' in variant['centre_pin']:
-                model = self.build_model(base, variant, cut_pin=True, verbose=verbose)
+                model = self._build_model(base, variant, cut_pin=True, verbose=verbose)
                 yield model
 
 
@@ -236,29 +210,29 @@ class TO252(DPAK):
 
     def __init__(self, config_file):
         self.PACKAGE = 'TO-252'
-        self.config = self.load_config(config_file)
+        self.config = self._load_config(config_file)
 
 
 class TO263(DPAK):
 
     def __init__(self, config_file):
         self.PACKAGE = 'TO-263'
-        self.config = self.load_config(config_file)
+        self.config = self._load_config(config_file)
 
 
 class TO268(DPAK):
 
     def __init__(self, config_file):
         self.PACKAGE = 'TO-268'
-        self.config = self.load_config(config_file)
+        self.config = self._load_config(config_file)
 
 
 # opened from within freecad
 if "module" in __name__:
 
-    FreeCAD.Console.PrintMessage("Started from CadQuery:")
+    FreeCAD.Console.PrintMessage("Started from CadQuery ...")
 
-    from DPAK import DPAK, TO252, TO263, TO268
+    from DPAK import *
 
     CONFIG = '/home/ray/KiCad Contributing/kicad-3d-models-in-freecad/cadquery/FCAD_script_generator/TO_SOT_Packages_SMD_custom/DPAK_config.yaml'
     package = TO252(CONFIG)
@@ -268,10 +242,3 @@ if "module" in __name__:
         if key is not '__name':
             show(model[key]['part'])
 
-
-
-
-"""
-
-
-"""
