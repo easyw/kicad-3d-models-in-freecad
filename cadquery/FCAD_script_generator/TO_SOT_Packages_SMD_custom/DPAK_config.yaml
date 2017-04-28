@@ -1,7 +1,7 @@
-# TO-252 / DPAK
+# TO-252/DPAK SMD packages
 base:
-    package: TO-252
-    description: 'TO-252 / DPAK SMD package'
+    series: TO-252
+    description: 'TO-252/DPAK SMD package'
     keywords: 'DPAK TO-252'
     footprint:
         x_mm: 10.6
@@ -57,10 +57,10 @@ variants:
       keywords: 'DPAK-5 TO-252-5'
       datasheet: http://www.infineon.com/cms/en/product/packages/PG-TO252/PG-TO252-5-11/
 ---
-# TO-263 / D2PAK
+# TO-263/D2PAK SMD packages
 base:
-    package: TO-263
-    description: 'TO-263 / D2PAK / DDPAK SMD package'
+    series: TO-263
+    description: 'TO-263/D2PAK/DDPAK SMD package'
     keywords: 'D2PAK DDPAK TO-263'
     footprint:
         x_mm: 16.15
@@ -131,10 +131,10 @@ variants:
       keywords: 'D2PAK-7 TO-263-7 SOT-427'
       datasheet: http://www.infineon.com/cms/en/product/packages/PG-TO263/PG-TO263-7-1/
 ---
-# TO-268 / D3PAK
+# TO-268/D3PAK SMD packages
 base:
-    package: TO-268
-    description: 'TO-268 / D3PAK SMD package'
+    series: TO-268
+    description: 'TO-268/D3PAK SMD package'
     keywords: 'D3PAK TO-268'
     footprint:
         x_mm: 21.95
