@@ -1,4 +1,72 @@
-# TODO add software licence
+# -*- coding: utf8 -*-
+#!/usr/bin/python
+
+
+"""
+#############################################################################
+
+CadQuery script returning JST XH Connectors
+
+
+## requirements
+## freecad (v1.5 and v1.6 have been tested)
+## cadquery FreeCAD plugin (v0.3.0 and v0.2.0 have been tested)
+##   https://github.com/jmwright/cadquery-freecad-module
+
+## This script can be run from within the cadquery module of freecad.
+## To generate VRML/ STEP files for, use export_conn_jst_xh
+## script of the parrent directory.
+
+#This is a cadquery script for the generation of MCAD Models.             *
+#*                                                                          *
+
+#############################################################################
+
+Original script: 
+    Copyright (c) 2016 Rene Poeschl https://github.com/poeschlr
+
+Refactored to be model-independent:
+    Copyright (c) 2017 Ray Benitez https://github.com/hackscribble
+
+#############################################################################
+
+    This program is free software; you can redistribute it and/or modify   
+    it under the terms of the GNU General Public License (GPL)             
+    as published by the Free Software Foundation; either version 2 of      
+    the License, or (at your option) any later version.                    
+    for detail see the LICENCE text file.                                  
+                                                                          
+    This program is distributed in the hope that it will be useful,        
+    but WITHOUT ANY WARRANTY; without even the implied warranty of         
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          
+    GNU Library General Public License for more details.                   
+                                                                          
+    You should have received a copy of the GNU Library General Public      
+    License along with this program; if not, write to the Free Software    
+    Foundation, Inc.,                                                      
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA           
+                                                                          
+    The models generated with this script add the following exception:       
+    As a special exception, if you create a design which uses this symbol, 
+    and embed this symbol or unaltered portions of this symbol into the    
+    design, this symbol does not by itself cause the resulting design to   
+    be covered by the GNU General Public License. This exception does not  
+    however invalidate any other reasons why the design itself might be    
+    covered by the GNU General Public License. If you modify this symbol,  
+    you may extend this exception to your version of the symbol, but you   
+    are not obligated to do so. If you do not wish to do so, delete this   
+    exception statement from your version.                                 
+
+#############################################################################
+
+"""
+
+__title__ = 'factory export script'
+__author__ = 'hackscribble'
+__Comment__ = 'TBA'
+
+___ver___ = '0.1 28/04/2017'
+
 
 import sys
 import os
@@ -37,24 +105,17 @@ CONFIG = 'DPAK_config.yaml'
 
 import argparse
 import yaml
-import pprint
+from datetime import datetime
 
 import shaderColors
-
-from datetime import datetime
 import exportPartToVRML as expVRML
-import re
-import fnmatch
-
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
 import Draft
 import ImportGui
-
 from Gui.Command import *
-
 import cq_cad_tools
 reload(cq_cad_tools)
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
@@ -94,16 +155,16 @@ except: # catch *all* exceptions
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nEXPORT STARTED ...\r\n')
-    print('DEBUG: before get_build_list()')
     build_list = Factory(CONFIG).get_build_list()
-    print('DEBUG: before get_build_list()')
     
     n = 0
     for series in build_list:
         for model in series.build_series(verbose=True):
+
             file_name = model['__name']
             parts_list = model.keys()
             parts_list.remove('__name')
+
             # create document
             safe_name = file_name.replace('-', '_')
             FreeCAD.Console.PrintMessage('Model: {:s}\r\n'.format(file_name))
@@ -112,6 +173,7 @@ if __name__ == "__main__":
             App.setActiveDocument(safe_name)
             App.ActiveDocument = App.getDocument(safe_name)
             Gui.ActiveDocument = Gui.getDocument(safe_name)
+
             # colour model
             used_colour_keys = []
             for part in parts_list:
@@ -131,9 +193,11 @@ if __name__ == "__main__":
             FreeCAD.activeDocument().recompute()
             FreeCADGui.SendMsgToActiveView("ViewFit")
             FreeCADGui.activeDocument().activeView().viewTop()
+
             # create output folder
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
+
             # export VRML
             export_file_name = '{d:s}{s:s}{n:s}.wrl'.format(d=out_dir, s=os.sep, n=file_name)
             export_objects = []
@@ -146,12 +210,13 @@ if __name__ == "__main__":
             scale = 1 / 2.54
             coloured_meshes = expVRML.getColoredMesh(Gui, export_objects, scale)
             expVRML.writeVRMLFile(coloured_meshes, export_file_name, used_colour_keys, L.LIST_int_license)
+
             # export STEP
             fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui, safe_name, objs, keepOriginals=True)
             exportSTEP(doc, file_name, out_dir, fusion)
-            print('in STEP')
             L.addLicenseToStep('{d:s}/'.format(d=out_dir), '{n:s}.step'.format(n=file_name), L.LIST_int_license,
                                L.STR_int_licAuthor, L.STR_int_licEmail, L.STR_int_licOrgSys, L.STR_int_licPreProc)
+
             # save FreeCAD models
             saveFCdoc(App, Gui, doc, file_name, out_dir)
 
