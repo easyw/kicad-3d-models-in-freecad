@@ -5,20 +5,7 @@
 """
 #############################################################################
 
-CadQuery script returning JST XH Connectors
-
-
-## requirements
-## freecad (v1.5 and v1.6 have been tested)
-## cadquery FreeCAD plugin (v0.3.0 and v0.2.0 have been tested)
-##   https://github.com/jmwright/cadquery-freecad-module
-
-## This script can be run from within the cadquery module of freecad.
-## To generate VRML/ STEP files for, use export_conn_jst_xh
-## script of the parrent directory.
-
-#This is a cadquery script for the generation of MCAD Models.             *
-#*                                                                          *
+CadQuery script to export KiCad 3D models from factory classes
 
 #############################################################################
 
