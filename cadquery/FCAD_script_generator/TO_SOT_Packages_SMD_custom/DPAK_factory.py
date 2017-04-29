@@ -209,10 +209,7 @@ class TO252(DPAK):
 
 
     def _build_tab(self, dim):  
-        # overrides DPAK._build_tab()
 
-        CUTOUT_Y_MM = dim.tab_y_mm * 0.70
-        CUTOUT_RADIUS_MM = 0.08
         tab = cq.Workplane("XY")\
             .moveTo(dim.device_x_mm / 2.0, 0)\
             .line(0, -(dim.tab_y_mm/2.0))\
@@ -224,18 +221,18 @@ class TO252(DPAK):
             .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
             .line(dim.tab_project_x_mm, 0)\
             .close().extrude(dim.tab_z_mm)\
-            .faces(">X").edges("|Z").fillet(CUTOUT_RADIUS_MM / 2.0)
+            .faces(">X").edges("|Z").fillet(dim.tab_cutout_radius_mm / 2.0)
         c1 = cq.Workplane("XY")\
             .moveTo(dim.device_x_mm / 2.0, 0)\
-            .rect(CUTOUT_RADIUS_MM * 2.0, CUTOUT_Y_MM)\
+            .rect(dim.tab_cutout_radius_mm * 2.0, dim.tab_cutout_y_mm)\
             .extrude(dim.tab_z_mm)
         c2 = cq.Workplane("XY")\
-            .moveTo(dim.device_x_mm / 2.0, CUTOUT_Y_MM / 2.0)\
-            .circle(CUTOUT_RADIUS_MM)\
+            .moveTo(dim.device_x_mm / 2.0, dim.tab_cutout_y_mm / 2.0)\
+            .circle(dim.tab_cutout_radius_mm)\
             .extrude(dim.tab_z_mm+1)
         c3 = cq.Workplane("XY")\
-            .moveTo(dim.device_x_mm / 2.0, -CUTOUT_Y_MM / 2.0)\
-            .circle(CUTOUT_RADIUS_MM)\
+            .moveTo(dim.device_x_mm / 2.0, -dim.tab_cutout_y_mm / 2.0)\
+            .circle(dim.tab_cutout_radius_mm)\
             .extrude(dim.tab_z_mm+1)
         cutter = c1.union(c2).union(c3)
         tab = tab.cut(cutter)
@@ -243,7 +240,6 @@ class TO252(DPAK):
 
 
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-        # overrides DPAK._build_model()
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_fat_cut_mm = 3.1  # Used to produce wide part of pins
@@ -256,6 +252,9 @@ class TO252(DPAK):
             ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
             ('line', {'length': 2.0})
         ]
+        dim.tab_cutout_y_mm = dim.tab_y_mm * 0.70
+        dim.tab_cutout_radius_mm = 0.08
+
         body = self._build_body(dim)
         tab = self._build_tab(dim)
         pins = self._build_pins(dim, cut_pin)
@@ -271,7 +270,6 @@ class TO263(DPAK):
 
 
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-        # overrides DPAK._build_model()
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_fat_cut_mm = 6.0  # Used to produce wide part of pins
@@ -301,38 +299,46 @@ class TO268(DPAK):
 
 
     def _build_body(self, dim):
-        # overrides DPAK._build_body()
 
         body = cq.Workplane("XY").workplane(offset=dim.nudge_mm).moveTo(dim.body_centre_x_mm, 0)\
             .rect(dim.body_x_mm, dim.body_y_mm).extrude(dim.body_z_mm)\
-            .faces(">X").edges("|Z").chamfer(2.0)
+            .faces(">X").edges("|Z").chamfer(dim.body_corner_mm)
 
-        body = body.edges(">Z").chamfer(dim.chamfer_1)
+        # chamfer each top edge individually and with "side face first" selectors
+        # to avoid FreeCAD asymmetric chamfer problem
+        body = body.faces(">Z").edges("not(<X or >X or <Y or >Y)").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces(">Z").edges("not(<X or >X or <Y or >Y)").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces(">Y").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces("<Y").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces(">X").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces("<X").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+
         body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        body = body.faces(">Z").workplane().center(-dim.marker_offset_x_mm, dim.body_y_mm / 4.0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        body = body.faces(">Z").workplane().center(-dim.marker_offset_x_mm, -dim.body_y_mm / 4.0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+
         return body
 
 
     def _build_tab(self, dim):
-        # overrides DPAK._build_tab()
 
         tab = cq.Workplane("XY")\
             .moveTo(dim.device_x_mm / 2.0, 0)\
-            .line(0, -(dim.tab_y_mm/2.0) + dim.tab_large_mm)\
-            .line(-dim.tab_small_mm, -dim.tab_large_mm)\
-            .line(-(dim.tab_project_x_mm - dim.tab_small_mm), 0)\
+            .line(0, -(dim.tab_y_mm/2.0) + dim.body_corner_mm)\
+            .line(-dim.body_corner_mm, -dim.body_corner_mm)\
+            .line(-(dim.tab_project_x_mm), 0)\
             .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
-            .line(-(dim.tab_x_mm - dim.tab_project_x_mm), 0)\
+            .line(-(dim.tab_x_mm - dim.tab_project_x_mm - dim.body_corner_mm), 0)\
             .line(0, dim.tab_inner_y_mm)\
-            .line(dim.tab_x_mm - dim.tab_project_x_mm, 0)\
+            .line(dim.tab_x_mm - dim.tab_project_x_mm - dim.body_corner_mm, 0)\
             .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
-            .line(dim.tab_project_x_mm - dim.tab_small_mm, 0)\
-            .line(dim.tab_small_mm, -dim.tab_large_mm)\
+            .line(dim.tab_project_x_mm, 0)\
+            .line(dim.body_corner_mm, -dim.body_corner_mm)\
             .close().extrude(dim.tab_z_mm)
         return tab
 
 
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-        # overrides DPAK._build_model()
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_profile = [
@@ -344,6 +350,7 @@ class TO268(DPAK):
             ('arc', {'radius': dim.pin_radius_mm, 'angle': -90}),
             ('line', {'length': 3})
         ]
+        dim.body_corner_mm = 2.0
         body = self._build_body(dim)
         tab = self._build_tab(dim)
         pins = self._build_pins(dim, cut_pin)
@@ -359,7 +366,6 @@ class ATPAK(DPAK):
 
 
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-        # overrides DPAK._build_model()
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_radius_mm = 0.3

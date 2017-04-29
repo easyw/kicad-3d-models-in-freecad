@@ -152,7 +152,7 @@ base:
             y_mm: 15.9
             z_mm: 5.0                                                 
             waist_z_mm: 2.8                                           
-            marker_offset_x_mm: -1.0                                  
+            marker_offset_x_mm: -4.5                                  
             colour: 'black body'                                     
         tab:
             x_mm: 12.5                                                
@@ -161,7 +161,7 @@ base:
             project_x_mm: 1.0
             colour: 'metal grey pins'                                
         marker:
-            x_mm: 2.5                                                 
+            x_mm: 1.6                                   
             z_mm: 0.1                                                 
         pins:
             colour: 'metal grey pins'                                
