@@ -32,6 +32,7 @@ DPAK_factory.py     # model building script
 DPAK_config.yaml    # model configuration file
 ribbon.py           # helper class
 ```
+The model configuration file is documented here: https://github.com/hackscribble/kicad-footprint-generator/blob/add_DPAK_script/scripts/TO_SOT_Packages_SMD/DPAK_README.md
 
 User licence details are configured in `DPAK_export.py`:
 
