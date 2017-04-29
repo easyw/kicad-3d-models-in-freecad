@@ -300,6 +300,37 @@ class TO268(DPAK):
         self.config = self._load_config(config_file)
 
 
+    def _build_body(self, dim):
+        # overrides DPAK._build_body()
+
+        body = cq.Workplane("XY").workplane(offset=dim.nudge_mm).moveTo(dim.body_centre_x_mm, 0)\
+            .rect(dim.body_x_mm, dim.body_y_mm).extrude(dim.body_z_mm)\
+            .faces(">X").edges("|Z").chamfer(2.0)
+
+        body = body.edges(">Z").chamfer(dim.chamfer_1)
+        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        return body
+
+
+    def _build_tab(self, dim):
+        # overrides DPAK._build_tab()
+
+        tab = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .line(0, -(dim.tab_y_mm/2.0) + dim.tab_large_mm)\
+            .line(-dim.tab_small_mm, -dim.tab_large_mm)\
+            .line(-(dim.tab_project_x_mm - dim.tab_small_mm), 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(-(dim.tab_x_mm - dim.tab_project_x_mm), 0)\
+            .line(0, dim.tab_inner_y_mm)\
+            .line(dim.tab_x_mm - dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(dim.tab_project_x_mm - dim.tab_small_mm, 0)\
+            .line(dim.tab_small_mm, -dim.tab_large_mm)\
+            .close().extrude(dim.tab_z_mm)
+        return tab
+
+
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
         # overrides DPAK._build_model()
 
