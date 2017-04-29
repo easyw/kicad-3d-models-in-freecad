@@ -259,6 +259,13 @@ class TO268(DPAK):
         self.config = self._load_config(config_file)
 
 
+class ATPAK(DPAK):
+
+    def __init__(self, config_file):
+        self.SERIES = 'ATPAK'
+        self.config = self._load_config(config_file)
+
+
 class Factory(object):
 
     def __init__(self, config_file):
@@ -276,7 +283,7 @@ class Factory(object):
         packages = args.package[1:]  # remove program name, which is returned as first argument
         if not packages:
             # print('DEBUG: no packages')
-            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file)]
+            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file)]
         else:
             # print('DEBUG: >>{p:s}<<'.format(p=packages))
             build_list = []
@@ -286,6 +293,8 @@ class Factory(object):
                 build_list.append(TO263(self.config_file))
             if 'TO268' in packages:
                 build_list.append(TO268(self.config_file))
+            if 'ATPAK' in packages:
+                build_list.append(ATPAK(self.config_file))
         return build_list
 
 
