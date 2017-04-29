@@ -48,6 +48,7 @@ class Dimensions(object):
         self.pin_pitch_mm = variant['pitch_mm']
         self.pin_y_mm = variant['pin']['y_mm']
         self.pin_z_mm = variant['pin']['z_mm']
+        self.pin_cut_x_mm = variant['pin']['cut_x_mm']
         self.pin_offset_x_mm = self.device_x_mm / 2.0
 
         # TODO improve calculation? override in specific classes?
@@ -56,18 +57,9 @@ class Dimensions(object):
         self.pin_fat_x_mm = 0.75  # Length of wide part on pins                    
         self.pin_fat_cut_mm = 4.6  # Used to produce wide part of pins
 
-        self.pin_profile = [
-            ('start', {'position': (-self.pin_offset_x_mm, self.pin_z_mm / 2.0),
-                       'direction': 0.0, 'width': self.pin_z_mm}),
-            ('line', {'length': 2.1 - self.pin_radius_mm - self.pin_z_mm / 2.0}),
-            ('arc', {'radius': self.pin_radius_mm, 'angle': 90.0}),
-            ('line', {'length': 0.5}),
-            ('arc', {'radius': self.pin_radius_mm, 'angle': -90}),
-            ('line', {'length': 3})
-        ]
-
         self.marker_x_mm = base['device']['marker']['x_mm']
         self.marker_z_mm = base['device']['marker']['z_mm']
+
         self.nudge_mm = 0.02
 
 
@@ -145,16 +137,14 @@ class DPAK(object):
         pin = Ribbon(pin, dim.pin_profile).drawRibbon().extrude(dim.pin_y_mm)
         pins = pin
         for i in range(0, dim.number_pins):
-            if not (cut_pin and i == dim.centre_pin -1):
-                pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+            pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
 
         fat_pin = cq.Workplane("XZ")\
             .workplane(offset=-(dim.pin_fat_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
         fat_pin = Ribbon(fat_pin, dim.pin_profile).drawRibbon().extrude(dim.pin_fat_y_mm)
         fat_pins = fat_pin
         for i in range(0, dim.number_pins):
-            if not (cut_pin and i == dim.centre_pin -1):
-                fat_pins = fat_pins.union(fat_pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+            fat_pins = fat_pins.union(fat_pin.translate((0, -i * dim.pin_pitch_mm, 0)))
 
         cutter = cq.Workplane("XY").moveTo(-dim.pin_offset_x_mm, 0)\
             .rect(dim.pin_fat_cut_mm, dim.body_y_mm).extrude(dim.body_z_mm)
@@ -168,6 +158,12 @@ class DPAK(object):
         fat_pins = fat_pins.cut(cutter)
 
         pins = pins.union(fat_pins)
+
+        if cut_pin:
+            cutter = cq.Workplane("XY")\
+                .moveTo(dim.body_centre_x_mm -(dim.body_x_mm / 2.0) - dim.pin_cut_x_mm - 5.0, 0)\
+                .rect(2*5.0, dim.pin_fat_y_mm).extrude(dim.body_z_mm)
+            pins = pins.cut(cutter)
 
         return pins
 
@@ -212,7 +208,8 @@ class TO252(DPAK):
         self.config = self._load_config(config_file)
 
 
-    def _build_tab(self, dim):  # overrides DPAK._build_tab()
+    def _build_tab(self, dim):  
+        # overrides DPAK._build_tab()
 
         CUTOUT_Y_MM = dim.tab_y_mm * 0.70
         CUTOUT_RADIUS_MM = 0.08
@@ -245,11 +242,55 @@ class TO252(DPAK):
         return tab
 
 
+    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+        # overrides DPAK._build_model()
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_fat_cut_mm = 3.1  # Used to produce wide part of pins
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 0.51}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 70.0}),
+            ('line', {'length': 0.3}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
+            ('line', {'length': 2.0})
+        ]
+        body = self._build_body(dim)
+        tab = self._build_tab(dim)
+        pins = self._build_pins(dim, cut_pin)
+        model = self._assemble_model(base, dim, body, tab, pins)
+        return model
+
+
 class TO263(DPAK):
 
     def __init__(self, config_file):
         self.SERIES = 'TO-263'
         self.config = self._load_config(config_file)
+
+
+    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+        # overrides DPAK._build_model()
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_fat_cut_mm = 6.0  # Used to produce wide part of pins
+        dim.pin_fat_x_mm = 1.0  # Length of wide part on pins                    
+
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 2.7 - dim.pin_radius_mm - dim.pin_z_mm / 2.0}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 90.0}),
+            ('line', {'length': 1.45}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -90.0}),
+            ('line', {'length': 2.0})
+        ]
+        body = self._build_body(dim)
+        tab = self._build_tab(dim)
+        pins = self._build_pins(dim, cut_pin)
+        model = self._assemble_model(base, dim, body, tab, pins)
+        return model
 
 
 class TO268(DPAK):
@@ -259,11 +300,53 @@ class TO268(DPAK):
         self.config = self._load_config(config_file)
 
 
+    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+        # overrides DPAK._build_model()
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 2.1 - dim.pin_radius_mm - dim.pin_z_mm / 2.0}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 90.0}),
+            ('line', {'length': 0.5}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -90}),
+            ('line', {'length': 3})
+        ]
+        body = self._build_body(dim)
+        tab = self._build_tab(dim)
+        pins = self._build_pins(dim, cut_pin)
+        model = self._assemble_model(base, dim, body, tab, pins)
+        return model
+
+
 class ATPAK(DPAK):
 
     def __init__(self, config_file):
         self.SERIES = 'ATPAK'
         self.config = self._load_config(config_file)
+
+
+    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+        # overrides DPAK._build_model()
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_radius_mm = 0.3
+        dim.pin_fat_y_mm = dim.pin_y_mm + 0.24
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 0.6}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 70.0}),
+            ('line', {'length': 0.1}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
+            ('line', {'length': 2.0})
+        ]
+        body = self._build_body(dim)
+        tab = self._build_tab(dim)
+        pins = self._build_pins(dim, cut_pin)
+        model = self._assemble_model(base, dim, body, tab, pins)
+        return model
 
 
 class Factory(object):
