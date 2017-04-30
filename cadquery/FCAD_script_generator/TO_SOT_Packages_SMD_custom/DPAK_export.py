@@ -65,6 +65,7 @@ out_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
 
 sys.path.append("../_tools")
 sys.path.append("cq_models")
+sys.path.append("./")
 
 import add_license as L
 
