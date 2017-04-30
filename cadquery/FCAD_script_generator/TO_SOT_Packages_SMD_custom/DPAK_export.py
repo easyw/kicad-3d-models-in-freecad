@@ -63,6 +63,7 @@ script_dir_name =full_path.split(os.sep)[-2]
 parent_path = full_path.split(script_dir_name)[0]
 out_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
 
+sys.path.append("./")
 sys.path.append("../_tools")
 sys.path.append("cq_models")
 sys.path.append("./")
