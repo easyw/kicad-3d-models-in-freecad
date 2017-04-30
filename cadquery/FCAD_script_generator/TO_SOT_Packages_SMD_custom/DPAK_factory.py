@@ -1,4 +1,5 @@
 import sys
+import os
 
 sys.path.append('./')
 
@@ -87,7 +88,7 @@ class DPAK(object):
         try:
             devices = yaml.load_all(open(config_file))
         except Exception as fnfe:
-            print(fnfe)
+            print('FACTORY ERROR: when loading configuration: {e:s}'.format(e=fnfe))
             return
         config = None
         for dev in devices:
@@ -95,6 +96,12 @@ class DPAK(object):
                 config = dev
                 break
         return config
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        return dim
 
 
     def _build_body(self, dim):
@@ -179,7 +186,7 @@ class DPAK(object):
 
     def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
 
-        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim = self._get_dimensions(base, variant, cut_pin, tab_linked)
         body = self._build_body(dim)
         tab = self._build_tab(dim)
         pins = self._build_pins(dim, cut_pin)
@@ -188,7 +195,7 @@ class DPAK(object):
 
 
     def build_series(self, verbose=False):
-        print('Building series {p:s}'.format(p=self.config['base']['description']))
+        print('Building series {p:s}\r\n'.format(p=self.config['base']['description']))
         base = self.config['base']
         for variant in self.config['variants']:
             if 'uncut' in variant['centre_pin']:
@@ -206,6 +213,24 @@ class TO252(DPAK):
     def __init__(self, config_file):
         self.SERIES = 'TO-252'
         self.config = self._load_config(config_file)
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_fat_cut_mm = 3.1  # Used to produce wide part of pins
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 0.51}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 70.0}),
+            ('line', {'length': 0.3}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
+            ('line', {'length': 2.0})
+        ]
+        dim.tab_cutout_y_mm = dim.tab_y_mm * 0.70
+        dim.tab_cutout_radius_mm = 0.08
+        return dim
 
 
     def _build_tab(self, dim):  
@@ -239,28 +264,6 @@ class TO252(DPAK):
         return tab
 
 
-    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-
-        dim = Dimensions(base, variant, cut_pin, tab_linked)
-        dim.pin_fat_cut_mm = 3.1  # Used to produce wide part of pins
-        dim.pin_profile = [
-            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
-                       'direction': 0.0, 'width': dim.pin_z_mm}),
-            ('line', {'length': 0.51}),
-            ('arc', {'radius': dim.pin_radius_mm, 'angle': 70.0}),
-            ('line', {'length': 0.3}),
-            ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
-            ('line', {'length': 2.0})
-        ]
-        dim.tab_cutout_y_mm = dim.tab_y_mm * 0.70
-        dim.tab_cutout_radius_mm = 0.08
-
-        body = self._build_body(dim)
-        tab = self._build_tab(dim)
-        pins = self._build_pins(dim, cut_pin)
-        model = self._assemble_model(base, dim, body, tab, pins)
-        return model
-
 
 class TO263(DPAK):
 
@@ -269,12 +272,11 @@ class TO263(DPAK):
         self.config = self._load_config(config_file)
 
 
-    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_fat_cut_mm = 6.0  # Used to produce wide part of pins
         dim.pin_fat_x_mm = 1.0  # Length of wide part on pins                    
-
         dim.pin_profile = [
             ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
                        'direction': 0.0, 'width': dim.pin_z_mm}),
@@ -284,11 +286,7 @@ class TO263(DPAK):
             ('arc', {'radius': dim.pin_radius_mm, 'angle': -90.0}),
             ('line', {'length': 2.0})
         ]
-        body = self._build_body(dim)
-        tab = self._build_tab(dim)
-        pins = self._build_pins(dim, cut_pin)
-        model = self._assemble_model(base, dim, body, tab, pins)
-        return model
+        return dim
 
 
 class TO268(DPAK):
@@ -296,6 +294,22 @@ class TO268(DPAK):
     def __init__(self, config_file):
         self.SERIES = 'TO-268'
         self.config = self._load_config(config_file)
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 2.1 - dim.pin_radius_mm - dim.pin_z_mm / 2.0}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 90.0}),
+            ('line', {'length': 0.5}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -90}),
+            ('line', {'length': 3})
+        ]
+        dim.body_corner_mm = 2.0
+        return dim
 
 
     def _build_body(self, dim):
@@ -338,26 +352,6 @@ class TO268(DPAK):
         return tab
 
 
-    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
-
-        dim = Dimensions(base, variant, cut_pin, tab_linked)
-        dim.pin_profile = [
-            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
-                       'direction': 0.0, 'width': dim.pin_z_mm}),
-            ('line', {'length': 2.1 - dim.pin_radius_mm - dim.pin_z_mm / 2.0}),
-            ('arc', {'radius': dim.pin_radius_mm, 'angle': 90.0}),
-            ('line', {'length': 0.5}),
-            ('arc', {'radius': dim.pin_radius_mm, 'angle': -90}),
-            ('line', {'length': 3})
-        ]
-        dim.body_corner_mm = 2.0
-        body = self._build_body(dim)
-        tab = self._build_tab(dim)
-        pins = self._build_pins(dim, cut_pin)
-        model = self._assemble_model(base, dim, body, tab, pins)
-        return model
-
-
 class ATPAK(DPAK):
 
     def __init__(self, config_file):
@@ -365,7 +359,7 @@ class ATPAK(DPAK):
         self.config = self._load_config(config_file)
 
 
-    def _build_model(self, base, variant, cut_pin=False, tab_linked=False, verbose=False):
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
         dim.pin_radius_mm = 0.3
@@ -379,11 +373,7 @@ class ATPAK(DPAK):
             ('arc', {'radius': dim.pin_radius_mm, 'angle': -70}),
             ('line', {'length': 2.0})
         ]
-        body = self._build_body(dim)
-        tab = self._build_tab(dim)
-        pins = self._build_pins(dim, cut_pin)
-        model = self._assemble_model(base, dim, body, tab, pins)
-        return model
+        return dim
 
 
 class Factory(object):
@@ -402,10 +392,8 @@ class Factory(object):
         args = self._parse_command_line()
         packages = args.package[1:]  # remove program name, which is returned as first argument
         if not packages:
-            # print('DEBUG: no packages')
             build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file)]
         else:
-            # print('DEBUG: >>{p:s}<<'.format(p=packages))
             build_list = []
             if 'TO252' in packages:
                 build_list.append(TO252(self.config_file))
@@ -418,14 +406,12 @@ class Factory(object):
         return build_list
 
 
-# opened from within freecad
+# opened from within FreeCAD
 if "module" in __name__:
 
-    FreeCAD.Console.PrintMessage("Started from CadQuery ...")
+    print("Started from CadQuery workbench ...")
 
-    from DPAK import *
-
-    CONFIG = '/home/ray/KiCad Contributing/kicad-3d-models-in-freecad/cadquery/FCAD_script_generator/TO_SOT_Packages_SMD_custom/DPAK_config.yaml'
+    CONFIG = '{path:s}/DPAK_config.yaml'.format(path=os.environ.get("MYSCRIPT_DIR"))
     series = TO252(CONFIG)
     model = series.build_series(verbose=True).next()
 

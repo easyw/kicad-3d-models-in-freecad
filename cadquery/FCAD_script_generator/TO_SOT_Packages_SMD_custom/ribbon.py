@@ -1,3 +1,16 @@
+"""
+    ribbon
+    ======
+
+    A helper module for CadQuery and FreeCAD
+
+    This software is licensed by Ray Benitez under the MIT License.
+
+    git@hackscribble.com | http://www.hackscribble.com
+
+"""
+
+
 import cadquery as cq
 from Helpers import show
 import numpy as np
@@ -26,10 +39,8 @@ class Ribbon:
         self.current_y = 0
         self.direction = 0
 
-    def hello(self):
-        print('hello')
 
-    def rotate(self, sx, sy, cx, cy, theta_degrees):
+    def _rotate(self, sx, sy, cx, cy, theta_degrees):
         """Rotate a point about a centre through an angle.
 
            Arguments:
@@ -49,7 +60,8 @@ class Ribbon:
         ey = cy + vey
         return ex, ey
 
-    def turn(self, vx, vy, direction_degrees, r, turn_degrees):
+
+    def _turn(self, vx, vy, direction_degrees, r, turn_degrees):
         """Calculate an arc from the current position and direction
            that turns through an angle with a given radius.
 
@@ -74,11 +86,12 @@ class Ribbon:
             # turning right
             rx = vx + r * np.sin(direction)
             ry = vy - r * np.cos(direction)
-        qex, qey = self.rotate(vx, vy, rx, ry, turn_degrees)
-        qmx, qmy = self.rotate(vx, vy, rx, ry, turn_degrees / 2)
+        qex, qey = self._rotate(vx, vy, rx, ry, turn_degrees)
+        qmx, qmy = self._rotate(vx, vy, rx, ry, turn_degrees / 2)
         return qmx, qmy, qex, qey, rx, ry
 
-    def parseCommands(self, commands, offset, direction_multiplier):
+
+    def _parseCommands(self, commands, offset, direction_multiplier, debug=False):
         """Adds edges to a CadQuery object based on a list of "turtle graphics" style
            plotting commands.
 
@@ -100,7 +113,8 @@ class Ribbon:
                 self.current_x += vx
                 self.current_y += vy
                 self.cq = self.cq.lineTo(self.current_x, self.current_y)
-                # print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
+                if debug:
+                    print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
             elif c[0] == 'arc':
                 angle = c[1]['angle'] * direction_multiplier
                 radius = c[1]['radius']
@@ -109,33 +123,37 @@ class Ribbon:
                 else:
                     radius += offset
                 mid_x, mid_y, turn_x, turn_y, centre_x, centre_y =\
-                    self.turn(self.current_x, self.current_y, self.direction, radius, angle)
+                    self._turn(self.current_x, self.current_y, self.direction, radius, angle)
                 self.cq = self.cq.threePointArc((mid_x, mid_y), (turn_x, turn_y))
                 self.direction += angle
                 self.current_x, self.current_y = turn_x, turn_y
-                # print("arc to {0} {1} {2} {3} {4}".format(self.current_x, self.current_y, self.direction, radius, angle))
+                if debug:
+                    print("arc to {0} {1} {2} {3} {4}".format(self.current_x, self.current_y, self.direction, radius, angle))
             else:
-                print('Unrecognised command: {0}'.format(c))
+                print('RIBBON ERROR: unrecognised command: {0}'.format(c))
         return self.cq
 
-    def drawRibbon(self):
+
+    def drawRibbon(self, debug=False):
         if self.commands[0][0] == 'start':
             self.direction = self.commands[0][1]['direction']
             half_width = self.commands[0][1]['width'] / 2.0
             self.current_x = self.commands[0][1]['position'][0] + half_width * np.cos(np.deg2rad(self.direction + 90))
             self.current_y = self.commands[0][1]['position'][1] + half_width * np.sin(np.deg2rad(self.direction + 90))
             self.cq = self.cq.moveTo(self.current_x, self.current_y)
-            # print("move to {0} {1}".format(self.current_x, self.current_y))
+            if debug:
+                print("start at {0} {1}".format(self.current_x, self.current_y))
         else:
-            print('start command not found')
+            print('RIBBON ERROR: start command not found')
             return
-        self.cq = self.parseCommands(self.commands[1:], half_width, 1)
+        self.cq = self._parseCommands(self.commands[1:], half_width, 1, debug)
         self.direction += 180
         self.current_x += 2 * half_width * np.cos(np.deg2rad(self.direction + 90))
         self.current_y += 2 * half_width * np.sin(np.deg2rad(self.direction + 90))
         self.cq = self.cq.lineTo(self.current_x, self.current_y)
-        # print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
-        self.cq = self.parseCommands(self.commands[:0:-1], half_width, -1)
+        if debug:
+            print("line to {0} {1} {2}".format(self.current_x, self.current_y, self.direction))
+        self.cq = self._parseCommands(self.commands[:0:-1], half_width, -1, debug)
         self.cq = self.cq.close()
         return self.cq
 
