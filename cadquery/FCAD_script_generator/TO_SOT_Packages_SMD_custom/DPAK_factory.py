@@ -176,11 +176,13 @@ class DPAK(object):
 
 
     def _assemble_model(self, base, dim, body, tab, pins):
-        model = {'__name': dim.name,
-                 'body': {'part': body, 'colour': base['device']['body']['colour']},
-                 'tab':  {'part': tab,  'colour': base['device']['tab']['colour']},
-                 'pins': {'part': pins, 'colour': base['device']['pins']['colour']}
-                 }
+
+        model = {'metadata': {'name': dim.name},
+                 'parts':    {'body': {'name': body, 'colour': base['device']['body']['colour']},
+                              'tab':  {'name': tab,  'colour': base['device']['tab' ]['colour']},
+                              'pins': {'name': pins, 'colour': base['device']['pins']['colour']}
+                             }
+                }
         return model
  
 

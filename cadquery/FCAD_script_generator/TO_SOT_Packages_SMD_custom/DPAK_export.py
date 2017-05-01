@@ -52,7 +52,7 @@ __title__ = 'factory export script'
 __author__ = 'hackscribble'
 __Comment__ = 'TBA'
 
-___ver___ = '0.1 28/04/2017'
+___ver___ = '0.2 01/05/2017'
 
 
 import sys
@@ -65,8 +65,6 @@ out_dir = parent_path + "_3Dmodels" + "/" + script_dir_name
 
 sys.path.append("./")
 sys.path.append("../_tools")
-sys.path.append("cq_models")
-sys.path.append("./")
 
 import add_license as L
 
@@ -92,21 +90,11 @@ CONFIG = 'DPAK_config.yaml'
 ##########################################################################################
 
 
-import argparse
-import yaml
-from datetime import datetime
-
 import shaderColors
 import exportPartToVRML as expVRML
-import cadquery as cq
-from Helpers import show
-from collections import namedtuple
 import FreeCAD
 import Draft
 import ImportGui
-from Gui.Command import *
-import cq_cad_tools
-reload(cq_cad_tools)
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors, \
  checkRequirements
@@ -118,20 +106,18 @@ import FreeCADGui as Gui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
+
 # checking requirements
 
 try:
-    # Gui.SendMsgToActiveView("Run")
     from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
-    # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-    # maui end
 
 checkRequirements(cq)
 
@@ -150,9 +136,9 @@ if __name__ == "__main__":
     for series in build_list:
         for model in series.build_series(verbose=True):
 
-            file_name = model['__name']
-            parts_list = model.keys()
-            parts_list.remove('__name')
+            file_name = model['metadata']['name']
+            parts = model['parts']
+            parts_list = parts.keys()
 
             # create document
             safe_name = file_name.replace('-', '_')
@@ -166,20 +152,20 @@ if __name__ == "__main__":
             # colour model
             used_colour_keys = []
             for part in parts_list:
-                colour_key = model[part]['colour']
+                colour_key = parts[part]['colour']
                 used_colour_keys.append(colour_key)
                 colour = shaderColors.named_colors[colour_key].getDiffuseInt()
                 colour_attr = colour + (0,)
-                show(model[part]['part'], colour_attr)
+                show(parts[part]['name'], colour_attr)
             doc = FreeCAD.ActiveDocument
             doc.Label=safe_name
-            objs=FreeCAD.ActiveDocument.Objects
+            objects=doc.Objects
             i = 0
             for part in parts_list:
-                objs[i].Label = '{n:s}__{p:s}'.format(n=safe_name, p=part)
+                objects[i].Label = '{n:s}__{p:s}'.format(n=safe_name, p=part)
                 i += 1
             restore_Main_Tools()
-            FreeCAD.activeDocument().recompute()
+            doc.recompute()
             FreeCADGui.SendMsgToActiveView("ViewFit")
             FreeCADGui.activeDocument().activeView().viewTop()
 
@@ -192,8 +178,8 @@ if __name__ == "__main__":
             export_objects = []
             i = 0
             for part in parts_list:
-                export_objects.append(expVRML.exportObject(freecad_object=objs[i],
-                                      shape_color=model[part]['colour'],
+                export_objects.append(expVRML.exportObject(freecad_object=objects[i],
+                                      shape_color=parts[part]['colour'],
                                       face_colors=None))
                 i += 1
             scale = 1 / 2.54
@@ -201,7 +187,7 @@ if __name__ == "__main__":
             expVRML.writeVRMLFile(coloured_meshes, export_file_name, used_colour_keys, L.LIST_int_license)
 
             # export STEP
-            fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui, safe_name, objs, keepOriginals=True)
+            fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui, safe_name, objects, keepOriginals=True)
             exportSTEP(doc, file_name, out_dir, fusion)
             L.addLicenseToStep('{d:s}/'.format(d=out_dir), '{n:s}.step'.format(n=file_name), L.LIST_int_license,
                                L.STR_int_licAuthor, L.STR_int_licEmail, L.STR_int_licOrgSys, L.STR_int_licPreProc)
