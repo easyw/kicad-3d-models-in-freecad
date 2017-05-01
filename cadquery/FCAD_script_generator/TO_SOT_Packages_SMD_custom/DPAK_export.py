@@ -10,8 +10,10 @@ CadQuery script to export KiCad 3D models from factory classes
 #############################################################################
 
 Original script: 
-    Copyright (c) 2016 Rene Poeschl https://github.com/poeschlr
-
+    Copyright (c) 2016 Hasan Yavuz Özderya https://bitbucket.org/hyOzd
+                       Maurice https://github.com/easyw
+                       Rene Poeschl https://github.com/poeschlr
+                       
 Refactored to be model-independent:
     Copyright (c) 2017 Ray Benitez https://github.com/hackscribble
 
@@ -127,6 +129,9 @@ except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
 
+def export_model(model):
+
+
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nEXPORT STARTED ...\r\n')
@@ -157,6 +162,8 @@ if __name__ == "__main__":
                 colour = shaderColors.named_colors[colour_key].getDiffuseInt()
                 colour_attr = colour + (0,)
                 show(parts[part]['name'], colour_attr)
+
+            # label model and parts
             doc = FreeCAD.ActiveDocument
             doc.Label=safe_name
             objects=doc.Objects
