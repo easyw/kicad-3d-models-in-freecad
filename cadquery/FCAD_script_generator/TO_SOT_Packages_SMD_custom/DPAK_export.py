@@ -126,7 +126,7 @@ checkRequirements(cq)
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print("CQ 030 doesn't open example file")
 
 
 def export_model(model):
@@ -137,7 +137,7 @@ def export_model(model):
     # create document
     safe_name = file_name.replace('-', '_')
     FreeCAD.Console.PrintMessage('Model: {:s}\r\n'.format(file_name))
-    Newdoc = FreeCAD.newDocument(safe_name)
+    FreeCAD.newDocument(safe_name)
     App.setActiveDocument(safe_name)
     App.ActiveDocument = App.getDocument(safe_name)
     Gui.ActiveDocument = Gui.getDocument(safe_name)
