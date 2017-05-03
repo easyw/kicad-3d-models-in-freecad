@@ -137,6 +137,7 @@ def make_qfn(params):
     c  = params.c
     ef  = params.ef
     cce = params.cce
+    fp_s = params.fp_s
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
@@ -160,6 +161,10 @@ def make_qfn(params):
     else:
         excluded_pins=() ##no pin excluded 
 
+    epad_rotation = 0.0
+    epad_offset_x = 0.0
+    epad_offset_y = 0.0
+
     if params.epad:
         #if isinstance(params.epad, float):
         if not isinstance(params.epad, tuple):
@@ -169,7 +174,23 @@ def make_qfn(params):
             sq_epad = True
             D2 = params.epad[0]
             E2 = params.epad[1]
-
+            if len(params.epad) > 2:
+                epad_rotation = params.epad[2]
+            if len(params.epad) > 3:
+                if params.epad[3] in '-topin':
+                    epad_offset_x = (D1/2-D2/2) * -1
+                elif params.epad[3] in '+topin':
+                    epad_offset_x = D1/2-D2/2
+                else:
+                    epad_offset_x = params.epad[3]
+            if len(params.epad) > 4:
+                if params.epad[4] in '-topin':
+                    epad_offset_y = (E1/2-E2/2) * -1
+                elif params.epad[4] in '+topin':
+                    epad_offset_y = E1/2-E2/2
+                else:
+                    epad_offset_y = params.epad[4]
+                    
     A = A1 + A2
 
 
@@ -188,10 +209,15 @@ def make_qfn(params):
         global place_pinMark
         place_pinMark=False
         fp_r = 0.1
-    sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
-    sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-
-    pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
+    if fp_s == False:
+        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
+        #translate the object  
+        pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
+    else:
+        sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
+        sphere_z = A + sphere_r * 2 - fp_z - sphere_r
+    
+        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
 
     #stop
     if (color_pin_mark==False) and (place_pinMark==True):
@@ -261,7 +287,9 @@ def make_qfn(params):
             lineTo(D2/2, E2/2). \
             lineTo(-D2/2, E2/2). \
             lineTo(-D2/2, -E2/2+cce). \
-            close().extrude(A1) #+A1/2).translate((0,0,A1/2))
+            close().extrude(A1). \
+            translate((epad_offset_x,epad_offset_y,A1/2)). \
+            rotate((0,0,0), (0,0,1), epad_rotation) #+A1/2).translate((0,0,A1/2))
             #close().extrude(A1+A1/10)
             pins.append(epad)
         else:

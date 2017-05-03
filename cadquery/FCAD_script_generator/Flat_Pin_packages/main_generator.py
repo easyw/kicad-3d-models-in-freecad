@@ -137,40 +137,13 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-import cq_parameters_soic  # modules parameters
-from cq_parameters_soic import *
-
-
-import cq_parameters_qfp  # modules parameters
-from cq_parameters_qfp import *
-
-footprints_dir_SSOP=None
-import cq_parameters_ssop  # modules parameters
-from cq_parameters_ssop import *
-
-import cq_parameters_tssop  # modules parameters
-from cq_parameters_tssop import *
-
 import cq_parameters_sot  # modules parameters
 from cq_parameters_sot import *
 
-footprints_dir_diodes=None
 import cq_parameters_diode  # modules parameters
 from cq_parameters_diode import *
 
-# all_params= all_params_soic.copy()
-# all_params.update(all_params_qfp)
-
-# all_params1= all_params_soic.copy()
-# all_params1.update(all_params_qfp)
-# all_params= all_params1.copy()
-# all_params.update(all_params_ssop)
-
-all_params= kicad_naming_params_soic.copy()
-all_params.update(kicad_naming_params_qfp)
-all_params.update(kicad_naming_params_ssop)
-all_params.update(all_params_tssop)
-all_params.update(kicad_naming_params_sot)  
+all_params = kicad_naming_params_sot.copy()
 all_params.update(kicad_naming_params_diode)  
 
 
@@ -180,16 +153,11 @@ def make_gw(params):
 
     c  = params.c
     the  = params.the
-    tb_s  = params.tb_s
     ef  = params.ef
-    cc1 = params.cc1
     fp_s = params.fp_s
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
-    R1  = params.R1
-    R2  = params.R2
-    S  = params.S
 # automatically calculated    L  = params.L
     D1  = params.D1
     E1  = params.E1
@@ -209,19 +177,16 @@ def make_gw(params):
         excluded_pins=() ##no pin excluded 
 
     A = A1 + A2
-    A2_t = (A2-c)/2 # body top part height
-    A2_b = A2_t     # body bottom part height
+    A2_t = A-c # body top part height
+    A2_b = c-A1 # body bottom part height
+    D1_t = D1-2*tan(radians(the))*A2_t # top part upper width
+    E1_t = E1-2*tan(radians(the))*A2_t # top part upper length
     D1_b = D1-2*tan(radians(the))*A2_b # bottom width
     E1_b = E1-2*tan(radians(the))*A2_b # bottom length
-    D1_t1 = D1-tb_s # top part bottom width
-    E1_t1 = E1-tb_s # top part bottom length
-    D1_t2 = D1_t1-2*tan(radians(the))*A2_t # top part upper width
-    E1_t2 = E1_t1-2*tan(radians(the))*A2_t # top part upper length
 
     epad_rotation = 0.0
     epad_offset_x = 0.0
     epad_offset_y = 0.0
-
     if params.epad:
         #if isinstance(params.epad, float):
         if not isinstance(params.epad, tuple):                                              
@@ -251,158 +216,29 @@ def make_gw(params):
     # calculated dimensions for body    
     # checking pin lenght compared to overall width
     # d=(E-E1 -2*(S+L)-2*(R1))
-    L=(E-E1-2*(S+R1))/2
-    FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
+    FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+'\r\n')
 
-    ## d=(E-E1 -2*(S+L)-2*(R1))
-    ## FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+';d='+str(d)+'\r\n')
-    ## #if (d > 0):
-    ## if (d > c/10):  #tolerance
-    ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\nincreasing pin lenght\r\n')
-    ## if (d < -c/10):  #tolerance
-    ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
-
-
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
-    # sleep
-    ## if ef!=0:
-    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-    ##          loft(ruled=True).faces(">Z").fillet(ef)
-    ## else:
-    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-    ##          loft(ruled=True).faces(">Z")
-    ##
-    ## # fillet the corners
-    ## if ef!=0:
-    ##     BS = cq.selectors.BoxSelector    
-    ##     case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
-
-    ## cc1 = 0.25 #0.45 chamfer of the 1st pin corner
-    ## cc = 0.25  # chamfer of the other corners
-
-    # calculate chamfers
+    
     totpinwidthx = (npx-1)*e+b # total width of all pins on the X side
     totpinwidthy = (npy-1)*e+b # total width of all pins on the Y side
 
-    if cc1!=0:
-        cc1 = abs(min((D1-totpinwidthx)/2., (E1-totpinwidthy)/2.,cc1) - 0.5*tb_s)
-        cc1 = min(cc1, max_cc1)
-    # cc = cc1/2.
-    cc=cc1
+    case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+        workplane(offset=A2_b).rect(D1, E1).workplane(offset=A2_t).rect(D1_t,E1_t). \
+        loft(ruled=True).faces(">Z")
 
-    def crect(wp, rw, rh, cv1, cv):
-        """
-        Creates a rectangle with chamfered corners.
-        wp: workplane object
-        rw: rectangle width
-        rh: rectangle height
-        cv1: chamfer value for 1st corner (lower left)
-        cv: chamfer value for other corners
-        """
-        points = [
-        #    (-rw/2., -rh/2.+cv1),
-            (-rw/2., rh/2.-cv),
-            (-rw/2.+cv, rh/2.),
-            (rw/2.-cv, rh/2.),
-            (rw/2., rh/2.-cv),
-            (rw/2., -rh/2.+cv),
-            (rw/2.-cv, -rh/2.),
-            (-rw/2.+cv1, -rh/2.),
-            (-rw/2., -rh/2.+cv1)
-        ]
-        #return wp.polyline(points)
-        return wp.polyline(points).wire() #, forConstruction=True)
-     
-    def crect_old(wp, rw, rh, cv1, cv):
-        """
-        Creates a rectangle with chamfered corners.
-        wp: workplane object
-        rw: rectangle width
-        rh: rectangle height
-        cv1: chamfer value for 1st corner (lower left)
-        cv: chamfer value for other corners
-        """
-        
-        points = [
-            (-rw/2., -rh/2.+cv1),
-            (-rw/2., rh/2.-cv),
-            (-rw/2.+cv, rh/2.),
-            (rw/2.-cv, rh/2.),
-            (rw/2., rh/2.-cv),
-            (rw/2., -rh/2.+cv),
-            (rw/2.-cv, -rh/2.),
-            (-rw/2.+cv1, -rh/2.),
-            (-rw/2., -rh/2.+cv1)
-        ]
-        #print(points)
-        #vecs = [wp for p in points]
-        #w = Wire.makePolygon(vecs)
-        return wp.polyline(points).wire() #, forConstruction=True)
-        #return w
 
-    if cc1!=0:
-        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).moveTo(-D1_b/2., -E1_b/2.+(cc1-(D1-D1_b)/4.))
-        case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
-        #show(case)
-        case = case.pushPoints([(0,0)]).workplane(offset=A2_b).moveTo(-D1/2, -E1/2+cc1)
-        case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
-        #show(case)
-        case = case.pushPoints([(0,0)]).workplane(offset=c).moveTo(-D1/2,-E1/2+cc1)
-        case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
-        #show(case)
-        #case=cq.Workplane(cq.Plane.XY()).workplane(offset=c).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
-        case=case.pushPoints([(0,0)]).workplane(offset=0).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
-        case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
-        #show(case)
-        #stop
-        cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
-        case = case.pushPoints([(0,0)]).workplane(offset=A2_t).moveTo(-D1_t2/2,-E1_t2/2+cc1_t)
-        #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
-        case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
-        #show(case)
-        if ef!=0:
-            case = case.loft(ruled=True).faces(">Z").fillet(ef)
-        else:
-            case = case.loft(ruled=True).faces(">Z")
-    else:
-        if ef!=0:
-            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-                loft(ruled=True).faces(">Z").fillet(ef)
-        else:
-            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-                loft(ruled=True).faces(">Z")
-        # fillet the corners
-        if ef!=0:
-            BS = cq.selectors.BoxSelector
-            case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
-            case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
-            case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-            case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
+
+    #bottomrect = cq.Workplane("XY").rect(E1_t1,D1_t1).translate((0,0,A1))
+    #middlerect =cq.Workplane("XY").rect(E1,D1).translate((0,0,A1+c))
     #fp_s = True
     if fp_r == 0:
             global place_pinMark
             place_pinMark=False
             fp_r = 0.1
     if fp_s == False:
-        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
+        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
         #translate the object  
-        pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
+        pinmark=pinmark.translate((-D1_t/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
     else:
         # first pin indicator is created with a spherical pocket
         
@@ -412,7 +248,7 @@ def make_gw(params):
         # Switch comments around in this section to try the revolve operation with different parameters
         ##cylinder =
         #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
-        pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
+        pinmark=cq.Workplane("XZ", (-D1_t/2+fp_d+fp_r, -E1_t/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
     
     
 
@@ -431,28 +267,8 @@ def make_gw(params):
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
 
-    # calculated dimensions for pin
-    R1_o = R1+c # pin upper corner, outer radius
-    R2_o = R2+c # pin lower corner, outer radius
-
     # Create a pin object at the center of top side.
-    bpin = cq.Workplane("YZ", (0,E1/2,0,)). \
-        moveTo(-tb_s, A1+A2_b). \
-        line(S+tb_s, 0). \
-        threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
-                      (S+R1, A1+A2_b-R1)). \
-        line(0, -(A1+A2_b-R1-R2_o)). \
-        threePointArc((S+R1+R2_o*(1-1/sqrt(2)), R2_o*(1-1/sqrt(2))),
-                      (S+R1+R2_o, 0)). \
-        line(L-R2_o, 0). \
-        line(0, c). \
-        line(-(L-R2_o), 0). \
-        threePointArc((S+R1+R2_o-R2/sqrt(2), c+R2*(1-1/sqrt(2))),
-                      (S+R1+R2_o-R1, c+R2)). \
-        lineTo(S+R1+c, A1+A2_b-R1). \
-        threePointArc((S+R1_o/sqrt(2), A1+A2_b+c-R1_o*(1-1/sqrt(2))),
-                      (S, A1+A2_b+c)). \
-        line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
+    bpin = cq.Workplane("XY").box((E-E1_b)/2, b, c).translate((E1_b/2+(E-E1_b)/4,0,c/2)).rotate((0,0,0), (0,0,1), 90)
 
     pins = []
     pincounter = 1
@@ -493,7 +309,7 @@ def make_gw(params):
             #epad = cq.Workplane("XY", (0,0,A1/2)). \
             epad = cq.Workplane("XY"). \
             circle(epad_r). \
-            extrude(A1)#.translate((0,0,A1/2))
+            extrude(A1)
             #extrude(A1+A1/10)
             pins.append(epad)
     # merge all pins to a single object
@@ -532,8 +348,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
     
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building SOIC-8_3.9x4.9mm_Pitch1.27mm')
-        model_to_build='SOIC-8_3.9x4.9mm_Pitch1.27mm'
+        FreeCAD.Console.PrintMessage('No variant name is given! building D_SOD-323')
+        model_to_build='D_SOD-323F'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
@@ -544,23 +360,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=True
     save_memory=False #reducing memory consuming for all generation params
     if model_to_build == "all":
-        expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
+        expVRML.sayerr("'all' is not supported for this families\nuse 'allSOT' or 'allDiodes' instead")
     #    variants = all_params.keys()
     #elif model_to_build == "SOIC":
-    elif model_to_build == "allSOIC":
-        variants = kicad_naming_params_soic.keys()
-        save_memory=True
-    elif model_to_build == "allQFP":
-        variants = kicad_naming_params_qfp.keys()
-        save_memory=True
-    elif model_to_build == "allSSOP":
-        variants = kicad_naming_params_ssop.keys()
-        #variants = all_params_ssop.keys()
-        footprints_dir=footprints_dir_SSOP
-        save_memory=True
-    elif model_to_build == "allTSSOP":
-        variants = all_params_tssop.keys()
-        save_memory=True
     elif model_to_build == "allSOT":
         variants = kicad_naming_params_sot.keys() 
         save_memory=True
