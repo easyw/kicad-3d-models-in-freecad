@@ -129,7 +129,7 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-#all_params= all_params_qfn
+#   all_params= all_params_qfn
 all_params= kicad_naming_params_qfn
 
 def make_qfn(params):
@@ -150,7 +150,7 @@ def make_qfn(params):
     b   = params.b
     e   = params.e
     m   = params.m
-    sq  = params.sq
+    ps  = params.ps
     npx = params.npx
     npy = params.npy
     mN  = params.modelName
@@ -179,17 +179,17 @@ def make_qfn(params):
             if len(params.epad) > 3:
                 if isinstance (params.epad[3], str):
                     if params.epad[3] == '-topin':
-                        epad_offset_x = (D1/2-D2/2) * -1
+                        epad_offset_x = (D/2-D2/2) * -1
                     elif params.epad[3] == '+topin':
-                        epad_offset_x = D1/2-D2/2
+                        epad_offset_x = D2-D2/2
                 else:
                     epad_offset_x = params.epad[3]
             if len(params.epad) > 4:
                 if isinstance (params.epad[4], str):
                     if params.epad[4] == '-topin':
-                        epad_offset_y = (E1/2-E2/2) * -1
+                        epad_offset_y = (E/2-E2/2) * -1
                     elif params.epad[4] == '+topin':
-                        epad_offset_y = E1/2-E2/2
+                        epad_offset_y = E/2-E2/2
                 else:
                     epad_offset_y = params.epad[4]
                     
@@ -207,44 +207,53 @@ def make_qfn(params):
     case=case.translate((0,0,A2/2+A1)).rotate((0,0,0), (0,0,1), 0)
 
     # first pin indicator is created with a spherical pocket
+    fp_dx = fp_d
+    fp_dy = fp_d
+    if ps == 'concave':
+        if npy is not 0:
+            fp_dx = fp_d + L
+        if npx is not 0:
+            fp_dy = fp_d + L
     if fp_r == 0:
         global place_pinMark
         place_pinMark=False
         fp_r = 0.1
     if fp_s == False:
-        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
+        pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E-fp_dy*2, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
         #translate the object  
-        pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
+        pinmark=pinmark.translate((-D/2+fp_r/2+fp_dx,0,0)) #.rotate((0,0,0), (0,1,0), 0)
     else:
         sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
         sphere_z = A + sphere_r * 2 - fp_z - sphere_r
     
-        pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
+        pinmark=cq.Workplane("XZ", (-D/2+fp_dx+fp_r, -E/2+fp_dy+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
 
     #stop
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
-    # show(pinmark)
-    # show(case)
-    # stop
-    
-    if sq: #square pins
-        bpin1 = cq.Workplane("XY"). \
+    #stop
+    if ps == 'square': #square pins
+        bpin = cq.Workplane("XY"). \
             moveTo(b, 0). \
             lineTo(b, L). \
             lineTo(0, L). \
             lineTo(0, 0). \
-            close().extrude(c).translate((b/2,E/2,0))
+            close().extrude(c).translate((b/2,E/2,0)). \
+            rotate((b/2,E/2,A1/2), (0,0,1), 180)
             #close().extrude(c).translate((b/2,E/2,A1/2))
-    else:
-        bpin1 = cq.Workplane("XY"). \
+    elif ps == 'rounded':
+        bpin = cq.Workplane("XY"). \
             moveTo(b, 0). \
             lineTo(b, L-b/2). \
             threePointArc((b/2,L),(0, L-b/2)). \
             lineTo(0, 0). \
-            close().extrude(c).translate((b/2,E/2,0))
+            close().extrude(c).translate((b/2,E/2,0)). \
+            rotate((b/2,E/2,A1/2), (0,0,1), 180)            
             #close().extrude(c).translate((b/2,E/2,A1/2))
-    bpin=bpin1.rotate((b/2,E/2,A1/2), (0,0,1), 180)
+    elif ps == 'concave':
+        pincut = cq.Workplane("XY").box(b, L, A2+A1*2).translate((b/2,E/2-L/2,A2/2+A1))
+        bpin = cq.Workplane("XY").box(b, L, A2+A1*2).translate((b/2,E/2-L/2,A2/2+A1))
+        bpin = bpin.faces(">Z").edges(">Y").workplane().circle(b*0.3).cutThruAll()
 
     pins = []
     # create top, bottom side pins
@@ -252,30 +261,46 @@ def make_qfn(params):
     first_pos_x = (npx-1)*e/2
     for i in range(npx):
         if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, -m, 0)).\
-                rotate((0,0,0), (0,0,1), 180)
+            pin = bpin.translate((first_pos_x-i*e, -m, 0)). \
+            rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
+            if ps == 'concave':
+                pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0)). \
+                rotate((0,0,0), (0,0,1), 180)
+                case = case.cut(pinsubtract)
+
         pincounter += 1
     
     first_pos_y = (npy-1)*e/2
     for i in range(npy):
         if pincounter not in excluded_pins:
             pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
-                rotate((0,0,0), (0,0,1), 270)
+            rotate((0,0,0), (0,0,1), 270)
             pins.append(pin)
+            if ps == 'concave':
+                pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+                rotate((0,0,0), (0,0,1), 270)
+                case = case.cut(pinsubtract)
         pincounter += 1
 
     for i in range(npx):
         if pincounter not in excluded_pins:
             pin = bpin.translate((first_pos_x-i*e, -m, 0))
             pins.append(pin)
+            if ps == 'concave':
+                pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0))
+                case = case.cut(pinsubtract)
         pincounter += 1
     
     for i in range(npy):
         if pincounter not in excluded_pins:
             pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
-                rotate((0,0,0), (0,0,1), 90)
+            rotate((0,0,0), (0,0,1), 90)
             pins.append(pin)
+            if ps == 'concave':
+                pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+                rotate((0,0,0), (0,0,1), 90)
+                case = case.cut(pinsubtract)
         pincounter += 1
 
     # create exposed thermal pad if requested
