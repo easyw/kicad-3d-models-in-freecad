@@ -45,7 +45,7 @@ Params = namedtuple("Params", [
 ])
 
 kicad_naming_params_sot = {
-	'Analog_KS-4': Params( # from http://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/sc70ks/ks_4.pdf
+	'dummy-test': Params( # from http://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/sc70ks/ks_4.pdf
         the = 8.0,      # body angle in degrees
         c = 0.15,        # pin thickness, body center part height
 #        L = 0.4,       # pin bottom flat part length (including corner arc)
