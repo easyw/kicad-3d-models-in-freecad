@@ -177,17 +177,19 @@ def make_qfn(params):
             if len(params.epad) > 2:
                 epad_rotation = params.epad[2]
             if len(params.epad) > 3:
-                if params.epad[3] in '-topin':
-                    epad_offset_x = (D1/2-D2/2) * -1
-                elif params.epad[3] in '+topin':
-                    epad_offset_x = D1/2-D2/2
+                if isinstance (params.epad[3], str):
+                    if params.epad[3] == '-topin':
+                        epad_offset_x = (D1/2-D2/2) * -1
+                    elif params.epad[3] == '+topin':
+                        epad_offset_x = D1/2-D2/2
                 else:
                     epad_offset_x = params.epad[3]
             if len(params.epad) > 4:
-                if params.epad[4] in '-topin':
-                    epad_offset_y = (E1/2-E2/2) * -1
-                elif params.epad[4] in '+topin':
-                    epad_offset_y = E1/2-E2/2
+                if isinstance (params.epad[4], str):
+                    if params.epad[4] == '-topin':
+                        epad_offset_y = (E1/2-E2/2) * -1
+                    elif params.epad[4] == '+topin':
+                        epad_offset_y = E1/2-E2/2
                 else:
                     epad_offset_y = params.epad[4]
                     
