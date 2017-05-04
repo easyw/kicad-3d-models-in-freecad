@@ -32,7 +32,7 @@ Params = namedtuple("Params", [
 ])
 
 kicad_naming_params_tantalum = {
-    'D_SMA_Standard': Params( # from http://www.galco.com/techdoc/vish/10mq100n_ds.pdf
+    'D_SMA': Params( # from http://www.galco.com/techdoc/vish/10mq100n_ds.pdf
         L = 5.0,
         W = 2.7,
         H = 2.22,
@@ -41,11 +41,11 @@ kicad_naming_params_tantalum = {
         T = 0.22,
         G = 2.2,
         pml = 0.6,
-        modelName = 'D_SMA_Standard', #modelName
+        modelName = 'D_SMA', #modelName
         rotation = 90, # rotation if required
         dest_dir_prefix = 'Diodes_SMx'
         ),
-    'D_SMB_Standard': Params( # from http://www.vishay.com/docs/95017/smb.pdf
+    'D_SMB': Params( # from http://www.vishay.com/docs/95017/smb.pdf
         L = 5.3,
         W = 3.55,
         H = 2.15,
@@ -54,11 +54,11 @@ kicad_naming_params_tantalum = {
         T = 0.22,
         G = 2.6,
         pml = 0.6,
-        modelName = 'D_SMB_Standard', #modelName
+        modelName = 'D_SMB', #modelName
         rotation = 90, # rotation if required
         dest_dir_prefix = 'Diodes_SMx'
         ),
-    'D_SMC_Standard': Params( # from http://www.vishay.com/docs/95023/smc.pdf
+    'D_SMC': Params( # from http://www.vishay.com/docs/95023/smc.pdf
         L = 8.0,
         W = 5.9,
         H = 2.31,
@@ -67,7 +67,7 @@ kicad_naming_params_tantalum = {
         T = 0.22,
         G = 5.0,
         pml = 0.6,
-        modelName = 'D_SMC_Standard', #modelName
+        modelName = 'D_SMC', #modelName
         rotation = 90, # rotation if required
         dest_dir_prefix = 'Diodes_SMx'
         ),

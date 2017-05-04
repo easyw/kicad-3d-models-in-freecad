@@ -208,6 +208,20 @@ def make_gw(params):
     else:
         excluded_pins=() ##no pin excluded 
 
+    A = A1 + A2
+    A2_t = (A2-c)/2 # body top part height
+    A2_b = A2_t     # body bottom part height
+    D1_b = D1-2*tan(radians(the))*A2_b # bottom width
+    E1_b = E1-2*tan(radians(the))*A2_b # bottom length
+    D1_t1 = D1-tb_s # top part bottom width
+    E1_t1 = E1-tb_s # top part bottom length
+    D1_t2 = D1_t1-2*tan(radians(the))*A2_t # top part upper width
+    E1_t2 = E1_t1-2*tan(radians(the))*A2_t # top part upper length
+
+    epad_rotation = 0.0
+    epad_offset_x = 0.0
+    epad_offset_y = 0.0
+
     if params.epad:
         #if isinstance(params.epad, float):
         if not isinstance(params.epad, tuple):                                              
@@ -217,6 +231,24 @@ def make_gw(params):
             sq_epad = True
             D2 = params.epad[0]
             E2 = params.epad[1]
+            if len(params.epad) > 2:
+                epad_rotation = params.epad[2]
+            if len(params.epad) > 3:
+                if isinstance (params.epad[3], str):
+                    if params.epad[3] == '-topin':
+                        epad_offset_x = (D1_b/2-D2/2) * -1
+                    elif params.epad[3] == '+topin':
+                        epad_offset_x = D1_b/2-D2/2
+                else:
+                    epad_offset_x = params.epad[3]
+            if len(params.epad) > 4:
+                if isinstance (params.epad[4], str):
+                    if params.epad[4] == '-topin':
+                        epad_offset_y = (E1_b/2-E2/2) * -1
+                    elif params.epad[4] == '+topin':
+                        epad_offset_y = E1_b/2-E2/2
+                else:
+                    epad_offset_y = params.epad[4]
 
     # calculated dimensions for body    
     # checking pin lenght compared to overall width
@@ -233,15 +265,7 @@ def make_gw(params):
     ## if (d < -c/10):  #tolerance
     ##     L=L+d/2
     ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
-    A = A1 + A2
-    A2_t = (A2-c)/2 # body top part height
-    A2_b = A2_t     # body bottom part height
-    D1_b = D1-2*tan(radians(the))*A2_b # bottom width
-    E1_b = E1-2*tan(radians(the))*A2_b # bottom length
-    D1_t1 = D1-tb_s # top part bottom width
-    E1_t1 = E1-tb_s # top part bottom length
-    D1_t2 = D1_t1-2*tan(radians(the))*A2_t # top part upper width
-    E1_t2 = E1_t1-2*tan(radians(the))*A2_t # top part upper length
+
 
     # FreeCAD.Console.PrintMessage('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
     # FreeCAD.Console.PrintMessage('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
@@ -466,7 +490,7 @@ def make_gw(params):
     # create exposed thermal pad if requested
     if params.epad:
         if sq_epad:
-            pins.append(cq.Workplane("XY").box(D2, E2, A1).translate((0,0,A1/2)))
+            pins.append(cq.Workplane("XY").box(D2, E2, A1).translate((epad_offset_x,epad_offset_y,A1/2)).rotate((0,0,0), (0,0,1), epad_rotation))
         else:
             #epad = cq.Workplane("XY", (0,0,A1/2)). \
             epad = cq.Workplane("XY"). \
