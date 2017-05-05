@@ -129,8 +129,13 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
+footprints_dir_diodes=None
+import cq_parameters_diode  # modules parameters
+from cq_parameters_diode import *
+
 #   all_params= all_params_qfn
-all_params= kicad_naming_params_qfn
+all_params= kicad_naming_params_qfn.copy()
+all_params.update(kicad_naming_params_diode)
 
 def make_qfn(params):
 
@@ -181,7 +186,7 @@ def make_qfn(params):
                     if params.epad[3] == '-topin':
                         epad_offset_x = (D/2-D2/2) * -1
                     elif params.epad[3] == '+topin':
-                        epad_offset_x = D2-D2/2
+                        epad_offset_x = D/2-D2/2
                 else:
                     epad_offset_x = params.epad[3]
             if len(params.epad) > 4:
@@ -209,11 +214,11 @@ def make_qfn(params):
     # first pin indicator is created with a spherical pocket
     fp_dx = fp_d
     fp_dy = fp_d
-    if ps == 'concave':
+    if ps == 'concave' or 'cshaped':
         if npy is not 0:
-            fp_dx = fp_d + L
+            fp_dx = fp_d+L-A1/2
         if npx is not 0:
-            fp_dy = fp_d + L
+            fp_dy = fp_d+L-A1/2
     if fp_r == 0:
         global place_pinMark
         place_pinMark=False
@@ -251,9 +256,11 @@ def make_qfn(params):
             rotate((b/2,E/2,A1/2), (0,0,1), 180)            
             #close().extrude(c).translate((b/2,E/2,A1/2))
     elif ps == 'concave':
-        pincut = cq.Workplane("XY").box(b, L, A2+A1*2).translate((b/2,E/2-L/2,A2/2+A1))
-        bpin = cq.Workplane("XY").box(b, L, A2+A1*2).translate((b/2,E/2-L/2,A2/2+A1))
+        pincut = cq.Workplane("XY").box(b, L, A2+A1*2).translate((0,E/2-L/2,A2/2+A1))
+        bpin = cq.Workplane("XY").box(b, L, A2+A1*2).translate((0,E/2-L/2,A2/2+A1)).edges("|X").fillet(A1)
         bpin = bpin.faces(">Z").edges(">Y").workplane().circle(b*0.3).cutThruAll()
+    elif ps == 'cshaped':
+        bpin = cq.Workplane("XY").box(b, L, A2+A1*2).translate((0,E/2-L/2,A2/2+A1)).edges("|X").fillet(A1)
 
     pins = []
     # create top, bottom side pins
@@ -374,9 +381,15 @@ if __name__ == "__main__" or __name__ == "main_generator":
             else:
                 color_pin_mark=True
 
-
     if model_to_build == "all":
-        variants = all_params.keys()
+        expVRML.sayerr("'all' is not supported for this families\nuse 'allQFN' or allDiodes instead")
+    elif model_to_build == "allQFN":
+        variants = kicad_naming_params_qfn.keys() 
+        save_memory=True
+    elif model_to_build == "allDiodes":
+        variants = kicad_naming_params_diode.keys()  
+        footprints_dir=footprints_dir_diodes
+        save_memory=True
     else:
         variants = [model_to_build]
 
