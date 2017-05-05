@@ -55,10 +55,12 @@ to run the script just move to the scripts dir and do: +
 freecad ./main_generator.py modelName +
 examples in win: +
 +c:\freecad\bin\freecad main_generator.py QFN-28-1EP_6x6mm_Pitch0.65mm+ +
-+c:\freecad\bin\freecad main_generator.py all+ +
++c:\freecad\bin\freecad main_generator.py allQFN+ +
++c:\freecad\bin\freecad main_generator.py allDiodes+ +
 in linux: +
 +freecad ./main_generator.py QFN-28-1EP_6x6mm_Pitch0.65mm+ +
-+freecad ./main_generator.py all+ +
++freecad ./main_generator.py allQFN+ +
++freecad ./main_generator.py allDiodes+ +
 or simply run the 'create_model' script/batch +
 
 
