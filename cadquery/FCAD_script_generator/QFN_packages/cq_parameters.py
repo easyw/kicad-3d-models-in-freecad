@@ -523,7 +523,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-6-1EP_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-6-1EP_2x2mm_Pitch0.65mm': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1118D.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -549,7 +549,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-6-1EP_2x2mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-6-1EP_3x3mm_Pitch0.95mm': Params( # from https://www.onsemi.com/pub/Collateral/506AX.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -575,7 +575,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-6-1EP_3x3mm_Pitch0.95mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8_2x2mm_Pitch0.5mm': Params( # from https://www.onsemi.com/pub/Collateral/506AQ.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -601,7 +601,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_2x2mm_Pitch0.5mm': Params( # from https://www.onsemi.com/pub/Collateral/506AQ.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -627,7 +627,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_2x2mm_Pitch0.45mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_8_05-08-1719.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -653,7 +653,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_2x2mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_2x3mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081702_C_DDB8.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -679,7 +679,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_2x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_3x2mm_Pitch0.5mm': Params( # http://www.onsemi.com/pub/Collateral/517DH.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -705,7 +705,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_3x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_3x2mm_Pitch0.45mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_8_05-08-1718.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -731,7 +731,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_3x2mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_3x3mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_8_05-08-1698.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -757,7 +757,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_3x3mm_Pitch0.65mm': Params( # from https://www.onsemi.com/pub/Collateral/506BY.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -783,7 +783,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_3x3mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_4x4mm_Pitch0.8mm': Params( # from https://www.onsemi.com/pub/Collateral/488AF.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -809,7 +809,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_4x4mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-8-1EP_6x5mm_Pitch1.27mm': Params( # from http://www.onsemi.com/pub/Collateral/506CG.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -835,7 +835,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-8-1EP_6x5mm_Pitch1.27mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-10-1EP_2x3mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/506DH.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -861,7 +861,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-10-1EP_2x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-10-1EP_3x3mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_10_05-08-1699.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -887,7 +887,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-10-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-12-1EP_2x3mm_Pitch0.45mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_12_05-08-1723.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -913,7 +913,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-12-1EP_2x3mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-12-1EP_3x3mm_Pitch0.45mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_12_05-08-1725.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -939,7 +939,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-12-1EP_3x3mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-12-1EP_3x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_12_05-08-1695.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -965,7 +965,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-12-1EP_3x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-12-1EP_4x4mm_Pitch0.5mm': Params( # http://cds.linear.com/docs/en/packaging/05081733_A_DF12.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -991,7 +991,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-12-1EP_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-12-1EP_4x4mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub/Collateral/506CE.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1017,7 +1017,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-12-1EP_4x4mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-14-1EP_3x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_14_05-08-1708.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1043,7 +1043,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-14-1EP_3x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-14-1EP_4x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081963_0_DFN14%2812%29.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1069,7 +1069,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-14-1EP_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-16-1EP_3x4mm_Pitch0.45mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_16_05-08-1732.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1095,7 +1095,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-16-1EP_3x4mm_Pitch0.45mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-16-1EP_3x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_16_05-08-1706.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1121,7 +1121,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-16-1EP_3x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-16-1EP_4x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081707_A_DHD16.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1147,7 +1147,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-16-1EP_4x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-16-1EP_5x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_16_05-08-1709.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1173,7 +1173,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-16-1EP_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-18-1EP_3x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081955_0_DHC18.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1199,7 +1199,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-18-1EP_3x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-18-1EP_4x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081955_0_DHC18.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1225,7 +1225,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-18-1EP_4x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-20-1EP_5x6mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/505AB.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1251,7 +1251,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-20-1EP_5x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-22-1EP_5x6mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/506AF.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1277,7 +1277,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-22-1EP_5x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-24-1EP_4x7mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_24_05-08-1864.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1303,7 +1303,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-24-1EP_4x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-32-1EP_4x7mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/DFN_32_05-08-1734.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1329,7 +1329,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-32-1EP_4x7mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-44-1EP_5x8.9mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/506BU.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1355,7 +1355,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-44-1EP_5x8.9mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'DFN-S-8-1EP_6x5mm_Pitch1.27mm': Params( # from http://www.onsemi.com/pub/Collateral/506BG.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1381,7 +1381,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-S-8-1EP_6x5mm_Pitch1.27mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-12-1EP_3x3mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_12_%2005-08-1855.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1407,7 +1407,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-12-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-16-1EP_3x3mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_16_05-08-1700.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1433,7 +1433,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-16-1EP_3x3mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-16-1EP_4x4mm_Pitch0.65mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_16_05-08-1692.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1459,7 +1459,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-16-1EP_4x4mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-16-1EP_5x5mm_Pitch0.8mm': Params( # from http://www.onsemi.com/pub/Collateral/485AC.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1485,7 +1485,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-16-1EP_5x5mm_Pitch0.8mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-20-1EP_3x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_20_05-08-1742.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1511,7 +1511,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-20-1EP_3x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-20-1EP_4x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_20_05-08-1710.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1537,7 +1537,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-20-1EP_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-20-1EP_4x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_20_05-08-1711.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1563,7 +1563,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-20-1EP_4x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-20-1EP_5x5mm_Pitch0.65mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_20_05-08-1818.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1589,7 +1589,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-20-1EP_5x5mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24_3x3mm_Pitch0.4mm': Params( # from https://www.invensense.com/products/motion-tracking/9-axis/mpu-9250/
         c = 0.2,        # pin thickness, body center part height
@@ -1615,7 +1615,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24_3x3mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24_4x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/%28UF24%29%20QFN%2005-08-1697%20Rev%20B.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1641,7 +1641,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24-1EP_3x3mm_Pitch0.4mm': Params( # from https://www.invensense.com/products/motion-tracking/9-axis/mpu-9250/
         c = 0.2,        # pin thickness, body center part height
@@ -1667,7 +1667,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24-1EP_3x3mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24-1EP_3x4mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_24_05-08-1745.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1693,7 +1693,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24-1EP_3x4mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24-1EP_4x4mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/%28UF24%29%20QFN%2005-08-1697%20Rev%20B.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1719,7 +1719,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24-1EP_4x4mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24-1EP_4x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_24_05-08-1696.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1745,7 +1745,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24-1EP_4x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-24-1EP_5x5mm_Pitch0.65mm': Params( # from http://cds.linear.com/docs/en/packaging/%28UH24%29%20QFN%2005-08-1747%20Rev%20A.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1771,7 +1771,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-24-1EP_5x5mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_3x6mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081926_0_UDE28.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1797,7 +1797,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_3x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_4x4mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_28_05-08-1721.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1823,7 +1823,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_4x4mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_4x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081712_C_UFD28.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1849,7 +1849,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_4x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_5x5mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/485FH.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1875,7 +1875,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_5x6mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/485FH.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1901,7 +1901,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_5x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-28-1EP_6x6mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub/Collateral/560AC.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1927,7 +1927,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-28-1EP_6x6mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-32-1EP_4x4mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/485CD.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -1953,7 +1953,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-32-1EP_4x4mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-32-1EP_5x5mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_32_05-08-1693.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -1979,7 +1979,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-32-1EP_5x5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-32-1EP_7x7mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub/Collateral/485ED.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -2005,7 +2005,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-32-1EP_7x7mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-36-1EP_5x6mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/%28UHE36%29%20QFN%2005-08-1876%20Rev%20%C3%98.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2031,7 +2031,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-36-1EP_5x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-36-1EP_6x6mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/485EC.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -2057,7 +2057,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-36-1EP_6x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-38-1EP_4x6mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_38_05-08-1750.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2083,7 +2083,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-38-1EP_4x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-38-1EP_5x7mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_38_05-08-1701.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2109,7 +2109,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-38-1EP_5x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-40-1EP_5x5mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/05081746_B_UH40.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2135,7 +2135,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-40-1EP_5x5mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-40-1EP_6x6mm_Pitch0.5mm': Params( # 6x6, 0.5 pitch, 40 pins, 1.0mm height  QFN44 p005
         #datasheet example - http://www.ti.com/lit/ds/symlink/drv8308.pdf
@@ -2162,7 +2162,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-40-1EP_6x6mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-42-1EP_5x6mm_Pitch0.4mm': Params( # 5x6, 0.4 pitch, 42 pins, 1.0mm height  QFN42 p004
         #datasheet example - http://www.ti.com/lit/ds/symlink/drv8308.pdf
@@ -2189,7 +2189,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-42-1EP_5x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-44-1EP_7x7mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_44_05-08-1763.pdf 
         c = 0.2,        # pin thickness, body center part height
@@ -2215,7 +2215,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-44-1EP_7x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-44-1EP_8x8mm_Pitch0.65mm': Params( # 8x8, 0.65 pitch, 44 pins, 1.0mm height  QFN44 p065 microchip
         c = 0.2,        # pin thickness, body center part height
@@ -2241,7 +2241,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-44-1EP_8x8mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-48-1EP_7x7mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_48_05-08-1704.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2267,7 +2267,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-48-1EP_7x7mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-52-1EP_7x8mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_52_05-08-1729.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2293,7 +2293,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-52-1EP_7x8mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-56-1EP_7x7mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/485BT-01.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2319,7 +2319,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-56-1EP_7x7mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-56-1EP_7x7mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/485BT-01.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2345,7 +2345,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-56-1EP_7x7mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-64-1EP_9x9mm_Pitch0.5mm': Params( # 9x9, 0.5 pitch, 64 pins, 0.9mm height  QFN64 p05 microchip
         c = 0.2,        # pin thickness, body center part height
@@ -2371,7 +2371,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-64-1EP_9x9mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-10_1.4x1.8mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/523AQ.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -2397,7 +2397,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-10_1.4x1.8mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-16-1EP_3x3mm_Pitch0.5mm': Params( # from http://www.onsemi.com/pub/Collateral/523AJ.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -2423,7 +2423,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-16-1EP_3x3mm_Pitch0.5mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-16-1EP_4x4mm_Pitch0.65mm': Params( # from footprint
         c = 0.2,        # pin thickness, body center part height
@@ -2449,7 +2449,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-16-1EP_4x4mm_Pitch0.65mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-20-1EP_3x3mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/523AL.PDF
         c = 0.2,        # pin thickness, body center part height
@@ -2475,7 +2475,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-20-1EP_3x3mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-20-1EP_4x4mm_Pitch0.5mm': Params( # from footprint
         c = 0.2,        # pin thickness, body center part height
@@ -2501,7 +2501,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-20-1EP_4x4mm_Pitch0.5mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-28-1EP_4x4mm_Pitch0.4mm': Params( # from http://cds.linear.com/docs/en/packaging/%28PF28%29%20UTQFN%2005-08-1759%20Rev%20%C3%98.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2527,7 +2527,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-28-1EP_4x4mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-40-1EP_5x5mm_Pitch0.4mm': Params( # from http://ww1.microchip.com/downloads/en/DeviceDoc/41364E.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2553,7 +2553,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-40-1EP_5x5mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'UQFN-48-1EP_6x6mm_Pitch0.4mm': Params( # 9x9, 0.5 pitch, 64 pins, 0.9mm height  QFN64 p05 microchip
         c = 0.2,        # pin thickness, body center part height
@@ -2579,7 +2579,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName 'UQFN-48-1EP_6x6mm_Pitch0.4mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'VDFN-8-1EP_2x2mm_Pitch0.5mm': Params( # from http://www.s-manuals.com/pdf/datasheet/r/t/rt9012_richtek.pdf
         c = 0.2,        # pin thickness, body center part height
@@ -2605,7 +2605,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'VDFN-8-1EP_2x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = ''
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'SOT-886': Params( # from http://www.nxp.com/documents/outline_drawing/SOT886.pdf
         c = 0.1,        # pin thickness, body center part height
@@ -2631,7 +2631,7 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'SOT-886', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'SOT'
+        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-383F': Params( # from http://www.comchiptech.com/cms/UserFiles/CPDVR085V0UA-HF-RevA.pdf
         c = 0.1,        # pin thickness, body center part height
@@ -2657,33 +2657,58 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'SOT-383F', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'SOT'
+        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
-    'SOT-383FL': Params( # from http://www.comchiptech.com/cms/UserFiles/CPDVR085V0UA-HF-RevA.pdf
+    'SOT-1334-1': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1334-1.pdf
         c = 0.1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
-        L = 0.35,        # pin top flat part length (including fillet radius)
+        L = 0.8,        # pin top flat part length (including fillet radius)
         fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.05,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
         cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
-        D = 2.1,       # body overall length
-        E = 1.6,       # body overall width
+        D = 4.0,       # body overall length
+        E = 2.0,       # body overall width
         A1 = 0.02,  # body-board separation  maui to check
         A2 = 0.5,  # body height
-        b = 0.3,  # pin width
+        b = 0.2,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
         ps = 'square',   # square pads
-        npx = 4,  # number of pins along X axis (width)
+        npx = 8,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'SOT-383FL', #modelName
-        rotation = -90, # rotation if required
-        dest_dir_prefix = 'SOT'
+        modelName = 'SOT-1334-1', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
-
+    'SOT-1333-1': Params( # from http://www.nxp.com/documents/outline_drawing/SOT1333-1.pdf
+        c = 0.1,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.8,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.05,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 2.5,       # body overall length
+        E = 2.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.5,  # body height
+        b = 0.2,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # square pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'SOT-1333-1', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
+        ),
 }

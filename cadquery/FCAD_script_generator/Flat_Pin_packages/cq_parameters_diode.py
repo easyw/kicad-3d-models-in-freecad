@@ -28,6 +28,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 1.7,       # body length
         E1 = 1.25,       # body width
         E = 2.05,        # body overall width  E=E1+2*(S+L+c)
@@ -41,7 +42,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SOD-323F', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_PowerDI-123': Params( # from http://www.diodes.com/_files/datasheets/ds30497.pdf
         the = 4.0,      # body angle in degrees
@@ -52,6 +53,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 3.0,       # body length
         E1 = 1.93,       # body width
         E = 2.83,        # body overall width  E=E1+2*(S+L+c)
@@ -65,7 +67,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_PowerDI-123', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_SC-80': Params( # from http://www.infineon.com/dgdl/SCD80-Package_Overview.pdf?fileId=5546d462580663ef0158069ef94f041e
         the = 4.0,      # body angle in degrees
@@ -76,6 +78,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 1.3,       # body length
         E1 = 0.8,       # body width
         E = 1.2,        # body overall width  E=E1+2*(S+L+c)
@@ -89,7 +92,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SC-80', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_SOD-123F': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123F.pdf
         the = 4.0,      # body angle in degrees
@@ -100,6 +103,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 2.6,       # body length
         E1 = 1.6,       # body width
         E = 2.5,        # body overall width  E=E1+2*(S+L+c)
@@ -113,7 +117,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SOD-123F', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_SOD-523': Params( # from http://www.nxp.com/documents/outline_drawing/SOD523.pdf
         the = 4.0,      # body angle in degrees
@@ -124,6 +128,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 1.2,       # body length
         E1 = 0.8,       # body width
         E = 1.2,        # body overall width  E=E1+2*(S+L+c)
@@ -137,7 +142,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SOD-523', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_TUMD2': Params( # from http://rohmfs.rohm.com/en/products/databook/package/spec/discrete/diodepkg.pdf
         the = 4.0,      # body angle in degrees
@@ -148,6 +153,7 @@ kicad_naming_params_diode = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
         D1 = 1.9,       # body length
         E1 = 1.3,       # body width
         E = 1.9,        # body overall width  E=E1+2*(S+L+c)
@@ -161,6 +167,6 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_TUMD2', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
 }

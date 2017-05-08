@@ -49,7 +49,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SOD-123', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_SOD-323': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123.pdf
         the = 8.0,      # body angle in degrees
@@ -78,7 +78,7 @@ kicad_naming_params_diode = {
         excluded_pins = None, #no pin excluded
         modelName = 'D_SOD-323', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
         'D_SOT-23': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
         the = 8.0,      # body angle in degrees
@@ -107,6 +107,6 @@ kicad_naming_params_diode = {
         excluded_pins = (2,4,6), #no pin excluded
         modelName = 'D_SOT-23', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'Diodes'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
 }
