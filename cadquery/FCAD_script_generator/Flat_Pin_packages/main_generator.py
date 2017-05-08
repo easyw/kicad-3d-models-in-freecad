@@ -158,10 +158,10 @@ def make_gw(params):
     fp_r  = params.fp_r
     fp_d  = params.fp_d
     fp_z  = params.fp_z
-# automatically calculated    L  = params.L
     D1  = params.D1
     E1  = params.E1
     E   = params.E
+    
     A1  = params.A1
     A2  = params.A2
     b   = params.b
@@ -184,6 +184,11 @@ def make_gw(params):
     D1_b = D1-2*tan(radians(the))*A2_b # bottom width
     E1_b = E1-2*tan(radians(the))*A2_b # bottom length
 
+    if params.L:
+        L  = params.L
+    else:
+        L = (E-E1_b)/2
+
     epad_rotation = 0.0
     epad_offset_x = 0.0
     epad_offset_y = 0.0
@@ -201,17 +206,17 @@ def make_gw(params):
             if len(params.epad) > 3:
                 if isinstance (params.epad[3], str):
                     if params.epad[3] == '-topin':
-                        epad_offset_x = (D1_b/2-D2/2) * -1
+                        epad_offset_x = ((D1+E-E1)/2-L-D2/2) * -1
                     elif params.epad[3] == '+topin':
-                        epad_offset_x = D1_b/2-D2/2
+                        epad_offset_x = ((D1+E-E1)/2-L-D2/2)
                 else:
                     epad_offset_x = params.epad[3]
             if len(params.epad) > 4:
                 if isinstance (params.epad[4], str):
                     if params.epad[4] == '-topin':
-                        epad_offset_y = (E1_b/2-E2/2) * -1
+                        epad_offset_y = (E/2-L-E2/2) * -1
                     elif params.epad[4] == '+topin':
-                        epad_offset_y = E1_b/2-E2/2
+                        epad_offset_y = (E/2-L-E2/2)
                 else:
                     epad_offset_y = params.epad[4]
 
@@ -270,7 +275,7 @@ def make_gw(params):
         case = case.cut(pinmark)
 
     # Create a pin object at the center of top side.
-    bpin = cq.Workplane("XY").box((E-E1_b)/2, b, c).translate((E1_b/2+(E-E1_b)/4,0,c/2)).rotate((0,0,0), (0,0,1), 90)
+    bpin = cq.Workplane("XY").box(L, b, c).translate(((E-L)/2,0,c/2)).rotate((0,0,0), (0,0,1), 90)
 
     pins = []
     pincounter = 1

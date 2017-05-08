@@ -43,7 +43,7 @@ kicad_naming_params_tantalum = {
         pml = 0.6,
         modelName = 'D_SMA', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'Diodes_SMx'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
     'D_SMB': Params( # from http://www.vishay.com/docs/95017/smb.pdf
         L = 5.3,
@@ -56,7 +56,7 @@ kicad_naming_params_tantalum = {
         pml = 0.6,
         modelName = 'D_SMB', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'Diodes_SMx'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
     'D_SMC': Params( # from http://www.vishay.com/docs/95023/smc.pdf
         L = 8.0,
@@ -69,6 +69,6 @@ kicad_naming_params_tantalum = {
         pml = 0.6,
         modelName = 'D_SMC', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'Diodes_SMx'
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
 }

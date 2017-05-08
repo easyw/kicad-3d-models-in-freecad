@@ -214,7 +214,7 @@ def make_qfn(params):
     # first pin indicator is created with a spherical pocket
     fp_dx = fp_d
     fp_dy = fp_d
-    if ps == 'concave' or 'cshaped':
+    if ps == 'concave' or ps == 'cshaped':
         if npy is not 0:
             fp_dx = fp_d+L-A1/2
         if npx is not 0:
