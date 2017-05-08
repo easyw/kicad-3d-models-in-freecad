@@ -321,8 +321,8 @@ def make_qfn(params):
             lineTo(D2/2, E2/2). \
             lineTo(-D2/2, E2/2). \
             lineTo(-D2/2, -E2/2+cce). \
-            close().extrude(A1). \
-            translate((epad_offset_x,epad_offset_y,A1/2)). \
+            close().extrude(A1+A1/2). \
+            translate((epad_offset_x,epad_offset_y,0)). \
             rotate((0,0,0), (0,0,1), epad_rotation) #+A1/2).translate((0,0,A1/2))
             #close().extrude(A1+A1/10)
             pins.append(epad)

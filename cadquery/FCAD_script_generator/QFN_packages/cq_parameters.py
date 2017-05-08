@@ -2668,7 +2668,7 @@ kicad_naming_params_qfn = {
         fp_d = 0.05,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
         D = 4.0,       # body overall length
         E = 2.0,       # body overall width
         A1 = 0.02,  # body-board separation  maui to check
@@ -2679,7 +2679,7 @@ kicad_naming_params_qfn = {
         ps = 'square',   # square pads
         npx = 8,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = None, # e Pad #epad = None, # e Pad
+        epad = None,#(0.2, 1.0),  # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'SOT-1334-1', #modelName
         rotation = 0, # rotation if required
@@ -2694,7 +2694,7 @@ kicad_naming_params_qfn = {
         fp_d = 0.05,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
         D = 2.5,       # body overall length
         E = 2.0,       # body overall width
         A1 = 0.02,  # body-board separation  maui to check
@@ -2705,7 +2705,7 @@ kicad_naming_params_qfn = {
         ps = 'square',   # square pads
         npx = 5,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = None, # e Pad #epad = None, # e Pad
+        epad = (0.2, 1.0), #None, #(0.1,0.1), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'SOT-1333-1', #modelName
         rotation = 0, # rotation if required
