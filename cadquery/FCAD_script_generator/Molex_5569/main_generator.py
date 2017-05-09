@@ -2,10 +2,16 @@
 # Mini-Fit Jr. Header, Dual Row, Right Angle,
 # with Snap-in Plastic Peg PCB Lock
 
+import FreeCAD as App
+import FreeCADGui as Gui
 import cadquery as cq
 from Helpers import show
 
-# Body
+# import cq_parameters
+from cq_parameters import all_params_molex_5569
+
+
+# Body TODO move to cq_parameters
 body_height = 9.6
 body_width = 12.8
 body_length = (5.4, 9.6, 13.8, 18.0, 22.2, 26.4, 30.6, 34.8, 39.0)
@@ -135,10 +141,30 @@ def MakePinPairs(n):
         result = result.union(MakePinPair().translate((0, i*pitch, 0)))
     return result
 
-pairs = 3
 
-result = MakePinPairs(pairs)
-show(result)
+def MakePart(params):
+    pins = MakePinPairs(params.N/2)
+    body = MakeBody(params.N/2)
+    return pins, body
 
-body = MakeBody(pairs)
-show(body)
+variants = all_params_molex_5569.keys()
+
+for variant in variants:
+    ModelName = all_params_molex_5569[variant].modelName
+    CheckedModelName = ModelName.replace('.', '') \
+        .replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    Gui.ActiveDocument = Gui.getDocument(CheckedModelName)
+    pins, body = MakePart(all_params_molex_5569[variant])
+
+    show(pins)
+    show(body)
+
+# pairs = 3
+
+# result = MakePinPairs(pairs)
+# show(result)
+
+# body = MakeBody(pairs)
+# show(body)
