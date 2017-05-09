@@ -4,6 +4,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+
 import cadquery as cq
 from Helpers import show
 
@@ -40,14 +41,6 @@ pin_length = body_width/2 + 7.30 + 3        # FIXME
 pin_height = body_height + standoff + 3.6    # FIXME
 
 bx = -dia/2 - body_width/2  # TODO
-
-
-def MakeCavity():
-    cavity = body.cut(cq.Workplane("XY")
-                        .box(body_width, cavity_width, cavity_width)
-                        .translate((bx-1, dia/2, dia/2 + pitch))
-                      )
-    return cavity
 
 
 def MakeBody(n):
