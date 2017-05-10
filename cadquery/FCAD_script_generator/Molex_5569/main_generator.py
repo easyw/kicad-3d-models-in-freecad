@@ -46,8 +46,8 @@ bx = -dia/2 - body_width/2  # TODO
 def MakeBody(n):
     by = dia/2 + (n-1)*pitch/2
     bz = -pitch + (body_height/2 + pitch/2)
-    body = cq.Workplane("XY").box(body_width, body_length[n-1], body_height). \
-        translate((bx, by, bz))
+    body = cq.Workplane("XY").box(body_width, body_length[n-1], body_height) \
+        .translate((bx, by, bz))
 
     # Lock
     ls = 3.40
@@ -90,6 +90,7 @@ def MakeBody(n):
         offset = dia/2 + pitch*(i-1)
         body = body.cut(cq.Workplane("XY")
                         .box(body_width, cavity_width, cavity_width)
+                        .edges("|X").edges("<Z").chamfer(cavity_width/4)
                         .translate((bx-1, offset, dia/2 + pitch))
                         )
         body = body.cut(cq.Workplane("XY")
@@ -100,7 +101,7 @@ def MakeBody(n):
     # Side rib
     body = body.union(cq.Workplane("ZY").circle(0.4).extrude(body_width)
                         .translate((bx + body_width/2,
-                                    -body_length[n/2-1]/2 + dia/2,
+                                    by - (body_length[(n/2)-1])/2 + dia/2,
                                     bz - body_height/2 + 2.5))
                       )
 
