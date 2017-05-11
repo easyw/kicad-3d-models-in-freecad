@@ -124,7 +124,7 @@ def MakeBody(n):
     # Side rib
     body = body.union(cq.Workplane("ZY").circle(0.4).extrude(body_width)
                         .translate((bx + body_width/2,
-                                    by - by - (body_length[(n/2)-1])/2 + dia/2,
+                                    by - (body_length[n-1])/2,
                                     bz - body_height/2 + 2.5))
                       )
 
