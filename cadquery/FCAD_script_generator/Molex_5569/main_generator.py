@@ -31,6 +31,8 @@ peg_to_pin = 7.30
 
 # Cavity
 cavity_width = 3.8
+cavity_pattern = (0, 1, 1, 0)
+cavity_index = 0
 
 # Pin
 dia = 1.07        # pin diameter
@@ -41,6 +43,14 @@ pin_length = body_width/2 + 7.30 + 3        # FIXME
 pin_height = body_height + standoff + 3.6    # FIXME
 
 bx = -dia/2 - body_width/2  # TODO
+
+
+def NextCavity():
+    global cavity_index
+    cavity_index = cavity_index + 1
+    if cavity_index > 3:
+        cavity_index = 0
+    return cavity_index
 
 
 def MakeBody(n):
@@ -85,23 +95,36 @@ def MakeBody(n):
 
     body = body.union(peg)
 
+    global cavity_index
+    cavity_index = 0
     # Pin cavities
     for i in range(1, n+1):
         offset = dia/2 + pitch*(i-1)
-        body = body.cut(cq.Workplane("XY")
-                        .box(body_width, cavity_width, cavity_width)
-                        .edges("|X").edges("<Z").chamfer(cavity_width/4)
-                        .translate((bx-1, offset, dia/2 + pitch))
-                        )
-        body = body.cut(cq.Workplane("XY")
-                        .box(body_width, cavity_width, cavity_width)
-                        .translate((bx-1, offset, dia/2))
-                        )
+        cavity = cq.Workplane("XY").box(body_width,
+                                        cavity_width, cavity_width)
+        if cavity_pattern[cavity_index] < 1:
+            cavity = cavity.edges("|X").edges("<Z").chamfer(cavity_width/4)
+
+        cavity = cavity.translate((bx-1, offset, dia/2 + pitch))
+
+        body = body.cut(cavity)
+
+        # Bottom row
+        cavity = cq.Workplane("XY").box(body_width,
+                                        cavity_width, cavity_width)
+        if cavity_pattern[cavity_index] > 0:
+            cavity = cavity.edges("|X").edges("<Z").chamfer(cavity_width/4)
+
+        cavity = cavity.translate((bx-1, offset, dia/2))
+
+        body = body.cut(cavity)
+
+        NextCavity()
 
     # Side rib
     body = body.union(cq.Workplane("ZY").circle(0.4).extrude(body_width)
                         .translate((bx + body_width/2,
-                                    by - (body_length[(n/2)-1])/2 + dia/2,
+                                    by - by - (body_length[(n/2)-1])/2 + dia/2,
                                     bz - body_height/2 + 2.5))
                       )
 
