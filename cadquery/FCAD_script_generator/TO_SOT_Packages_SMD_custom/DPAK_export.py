@@ -92,6 +92,7 @@ CONFIG = 'DPAK_config.yaml'
 ##########################################################################################
 
 
+from datetime import datetime
 import shaderColors
 import exportPartToVRML as expVRML
 import FreeCAD
@@ -179,6 +180,8 @@ def export_model(model):
         i += 1
     scale = 1 / 2.54
     coloured_meshes = expVRML.getColoredMesh(Gui, export_objects, scale)
+
+    L.LIST_int_license[0] = "Copyright (C) " + datetime.now().strftime("%Y") + ", " + L.STR_int_licAuthor
     expVRML.writeVRMLFile(coloured_meshes, export_file_name, used_colour_keys, L.LIST_int_license)
 
     # export STEP
