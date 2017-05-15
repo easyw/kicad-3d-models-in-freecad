@@ -228,4 +228,52 @@ variants:
       centre_pin: ['cut']
       keywords: ''
       datasheet: http://www.onsemi.com/pub/Collateral/ENA2192-D.PDF
+---
+# Infineon TO-220 SMD packages
+base:
+    series: Infineon-TO-220                                               
+    description: 'Infineon TO-220 SMD package'
+    keywords: Infineone'
+    footprint:
+        x_mm: 16.15
+        tab:
+            x_mm: 9.4
+            y_mm: 10.8
+        split_paste: 'on'
+        paste_gutter_mm: 0.3
+    device:
+        x_mm: 13.85
+        body:
+            x_mm: 9.25
+            y_mm: 10.0
+            z_mm: 4.4                                                 
+            waist_z_mm: 2.4                                           
+            marker_offset_x_mm: 0.0                                  
+            colour: 'black body'                                     
+        tab:
+            x_mm: 7.55                                  
+            y_mm: 10.0
+            z_mm: 1.27                                               
+            project_x_mm: 1.0
+            colour: 'metal grey pins'                                
+        marker:
+            x_mm: 2.5                                         
+            z_mm: 0.1                                                 
+        pins:
+            colour: 'metal grey pins'                                
+    3d_prefix: '${KISYS3DMOD}/TO_SOT_Packages_SMD.3dshapes'
+variants:
+    - pins: 7                                                        
+      pitch_mm: 1.27
+      pad:
+          x_mm: 4.6
+          y_mm: 0.8
+      pin:
+          x_mm: 2.1
+          y_mm: 0.6
+          z_mm: 0.5                                                   
+          cut_x_mm: 0.0
+      centre_pin: ['uncut']
+      keywords: ''
+      datasheet: http://www.onsemi.com/pub/Collateral/ENA2192-D.PDF
 
