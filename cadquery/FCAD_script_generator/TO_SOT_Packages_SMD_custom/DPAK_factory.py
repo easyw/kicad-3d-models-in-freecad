@@ -382,7 +382,7 @@ class ATPAK(DPAK):
 class HSOF8(DPAK):
 
     def __init__(self, config_file):
-        self.SERIES = 'Infineon-HSOF-8'
+        self.SERIES = 'HSOF-8'
         self.config = self._load_config(config_file)
 
 
@@ -495,7 +495,7 @@ class HSOF8(DPAK):
 class SOT669(DPAK):
 
     def __init__(self, config_file):
-        self.SERIES = 'SOT669'
+        self.SERIES = 'SOT-669'
         self.config = self._load_config(config_file)
 
 
@@ -613,25 +613,3 @@ if "module" in __name__:
         if key is not '__name':
             show(model[key]['part'])
 
-"""
-
-
-        c1 = cq.Workplane("XY")\
-            .moveTo(dim.device_x_mm / 2.0, 0)\
-            .rect(dim.tab_cutout_radius_mm * 2.0, dim.tab_cutout_y_mm)\
-            .extrude(dim.tab_z_mm)
-        c2 = cq.Workplane("XY")\
-            .moveTo(dim.device_x_mm / 2.0, dim.tab_cutout_y_mm / 2.0)\
-            .circle(dim.tab_cutout_radius_mm)\
-            .extrude(dim.tab_z_mm+1)
-        c3 = cq.Workplane("XY")\
-            .moveTo(dim.device_x_mm / 2.0, -dim.tab_cutout_y_mm / 2.0)\
-            .circle(dim.tab_cutout_radius_mm)\
-            .extrude(dim.tab_z_mm+1)
-        cutter = c1.union(c2).union(c3)
-        tab = tab.cut(cutter)
-
-
-
-
-"""
