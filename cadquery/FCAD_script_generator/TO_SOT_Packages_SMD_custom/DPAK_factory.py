@@ -30,6 +30,7 @@ class Dimensions(object):
         self.body_z_mm = base['device']['body']['z_mm']
         self.body_waist_z_mm = base['device']['body']['waist_z_mm']
         self.marker_offset_x_mm = base['device']['body']['marker_offset_x_mm']
+        self.marker_offset_y_mm = base['device']['body']['marker_offset_y_mm']
         self.tab_x_mm = base['device']['tab']['x_mm']
         self.tab_z_mm = base['device']['tab']['z_mm']
         self.chamfer_1 = 0.5  # horizontal part of top side chamfers
@@ -115,7 +116,7 @@ class DPAK(object):
             .faces(">Z").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces(">Z").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
             .faces("<Z").edges("<X").chamfer(dim.body_waist_z_mm - dim.nudge_mm, dim.chamfer_3)
-        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, dim.marker_offset_y_mm).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
         return body
 
 
@@ -378,7 +379,7 @@ class ATPAK(DPAK):
         return dim
 
 
-class Infineon_HSOF_8(DPAK):
+class HSOF8(DPAK):
 
     def __init__(self, config_file):
         self.SERIES = 'Infineon-HSOF-8'
@@ -491,10 +492,84 @@ class Infineon_HSOF_8(DPAK):
                 yield model
 
 
+class SOT669(DPAK):
+
+    def __init__(self, config_file):
+        self.SERIES = 'SOT669'
+        self.config = self._load_config(config_file)
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.chamfer_1 = 0.1  # horizontal part of top side chamfers
+        dim.chamfer_3 = 0.01  # horizontal part of bottom front chamfer
+        dim.pin_fat_cut_mm = 3.1  # Used to produce wide part of pins
+        dim.pin_radius_mm = 0.2
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 0.4}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': 85.0}),
+            ('line', {'length': 0.16}),
+            ('arc', {'radius': dim.pin_radius_mm, 'angle': -85.0}),
+            ('line', {'length': 1.0})
+        ]
+        dim.tab_cutout_radius_mm = 0.4
+        dim.tab_cutout_y_mm = 2.1
+        dim.tab_cutout_x_mm = 0.8
+        dim.name = 'SOT-669_LFPAK'
+        return dim
+
+
+    def _build_tab(self, dim):  
+
+        tab = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .line(0, -(dim.tab_y_mm/2.0))\
+            .line(-dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(-(dim.tab_x_mm - dim.tab_project_x_mm), 0)\
+            .line(0, dim.tab_inner_y_mm)\
+            .line(dim.tab_x_mm - dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(dim.tab_project_x_mm, 0)\
+            .close().extrude(dim.tab_z_mm)\
+            .faces(">X").edges("|Z").fillet(dim.tab_cutout_radius_mm / 2.0)
+        projection = cq.Workplane("XY")\
+            .moveTo((dim.device_x_mm - dim.tab_project_x_mm) / 2.0, 0)\
+            .rect(dim.tab_project_x_mm / 2.5, dim.tab_y_mm + 0.2)\
+            .extrude(dim.tab_z_mm)
+        tab = tab.union(projection)
+        cutter = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0 - dim.tab_project_x_mm - 0.2, 0)\
+            .rect(dim.tab_cutout_x_mm, dim.tab_cutout_y_mm)\
+            .extrude(dim.tab_z_mm+5)\
+            .faces(">X").edges("|Z").fillet(dim.tab_cutout_radius_mm / 2.0)\
+            .faces("<X").edges("|Z").fillet(dim.tab_cutout_radius_mm / 2.0)
+        tab = tab.cut(cutter)
+        return tab
+
+
+    def build_series(self, verbose=False):
+        print('Building series {p:s}\r\n'.format(p=self.config['base']['description']))
+        base = self.config['base']
+        for variant in self.config['variants']:
+            if 'uncut' in variant['centre_pin']:
+                model = self._build_model(base, variant, verbose=verbose)
+                yield model
+                # model = self._build_model(base, variant, tab_linked=True, verbose=verbose)
+                # yield model
+            if 'cut' in variant['centre_pin']:
+                model = self._build_model(base, variant, cut_pin=True, verbose=verbose)
+                yield model
+
+
 class Factory(object):
 
     def __init__(self, config_file):
         self.config_file = config_file
+
 
     def _parse_command_line(self):
         parser = argparse.ArgumentParser(description='Select which packages to build')
@@ -507,7 +582,7 @@ class Factory(object):
         args = self._parse_command_line()
         packages = args.package[1:]  # remove program name, which is returned as first argument
         if not packages:
-            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file), Infineon_HSOF_8(self.config_file)]
+            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file), HSOF8(self.config_file), SOT669(self.config_file)]
         else:
             build_list = []
             if 'TO252' in packages:
@@ -518,8 +593,10 @@ class Factory(object):
                 build_list.append(TO268(self.config_file))
             if 'ATPAK' in packages:
                 build_list.append(ATPAK(self.config_file))
-            if 'Infineon-HSOF-8' in packages:
-                build_list.append(Infineon_HSOF_8(self.config_file))
+            if 'HSOF8' in packages:
+                build_list.append(HSOF8(self.config_file))
+            if 'SOT669' in packages:
+                build_list.append(SOT669(self.config_file))
         return build_list
 
 
@@ -529,20 +606,32 @@ if "module" in __name__:
     print("Started from CadQuery workbench ...")
 
     CONFIG = '{path:s}/DPAK_config.yaml'.format(path=os.environ.get("MYSCRIPT_DIR"))
-    series = Infineon_HSOF_8(CONFIG)
+    series = HSOF8(CONFIG)
     model = series.build_series(verbose=True).next()
 
     for key in model.keys():
         if key is not '__name':
             show(model[key]['part'])
 
-
-"""
-            .faces(">Z").edges(">X").chamfer(dim.body_z_mm - dim.tab_z_mm, dim.chamfer_1)\
-            .faces(">Z").edges("<X").chamfer(dim.chamfer_1, dim.chamfer_2)\
-            .faces(">Z").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
-            .faces(">Z").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
-            .faces("<Z").edges("<X").chamfer(dim.body_waist_z_mm - dim.nudge_mm, dim.chamfer_3)
 """
 
 
+        c1 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .rect(dim.tab_cutout_radius_mm * 2.0, dim.tab_cutout_y_mm)\
+            .extrude(dim.tab_z_mm)
+        c2 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, dim.tab_cutout_y_mm / 2.0)\
+            .circle(dim.tab_cutout_radius_mm)\
+            .extrude(dim.tab_z_mm+1)
+        c3 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, -dim.tab_cutout_y_mm / 2.0)\
+            .circle(dim.tab_cutout_radius_mm)\
+            .extrude(dim.tab_z_mm+1)
+        cutter = c1.union(c2).union(c3)
+        tab = tab.cut(cutter)
+
+
+
+
+"""
