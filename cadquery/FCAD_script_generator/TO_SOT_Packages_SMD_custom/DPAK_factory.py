@@ -378,6 +378,42 @@ class ATPAK(DPAK):
         return dim
 
 
+class Infineon_HSOF_8(DPAK):
+
+    def __init__(self, config_file):
+        self.SERIES = 'Infineon-HSOF-8'
+        self.config = self._load_config(config_file)
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 1.9 })
+        ]
+        return dim
+
+
+    def _build_pins(self, dim, cut_pin):
+
+        pin = cq.Workplane("XZ")\
+            .workplane(offset=-(dim.pin_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
+        pin = Ribbon(pin, dim.pin_profile).drawRibbon().extrude(dim.pin_y_mm)
+        pins = pin
+        for i in range(0, dim.number_pins):
+            pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+
+        if cut_pin:
+            cutter = cq.Workplane("XY")\
+                .moveTo(dim.body_centre_x_mm -(dim.body_x_mm / 2.0) - dim.pin_cut_x_mm - 5.0, 0)\
+                .rect(2*5.0, dim.pin_fat_y_mm).extrude(dim.body_z_mm)
+            pins = pins.cut(cutter)
+
+        return pins
+
+
 class Factory(object):
 
     def __init__(self, config_file):
@@ -394,7 +430,7 @@ class Factory(object):
         args = self._parse_command_line()
         packages = args.package[1:]  # remove program name, which is returned as first argument
         if not packages:
-            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file)]
+            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file), Infineon_HSOF_8(self.config_file)]
         else:
             build_list = []
             if 'TO252' in packages:
@@ -405,6 +441,8 @@ class Factory(object):
                 build_list.append(TO268(self.config_file))
             if 'ATPAK' in packages:
                 build_list.append(ATPAK(self.config_file))
+            if 'Infineon-HSOF-8' in packages:
+                build_list.append(Infineon_HSOF_8(self.config_file))
         return build_list
 
 
@@ -414,7 +452,7 @@ if "module" in __name__:
     print("Started from CadQuery workbench ...")
 
     CONFIG = '{path:s}/DPAK_config.yaml'.format(path=os.environ.get("MYSCRIPT_DIR"))
-    series = TO252(CONFIG)
+    series = Infineon_HSOF_8(CONFIG)
     model = series.build_series(verbose=True).next()
 
     for key in model.keys():
