@@ -388,12 +388,48 @@ class Infineon_HSOF_8(DPAK):
     def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
 
         dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.chamfer_1 = 0.3
+        dim.chamfer_3 = 0.01
         dim.pin_profile = [
             ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
                        'direction': 0.0, 'width': dim.pin_z_mm}),
             ('line', {'length': 1.9 })
         ]
+        dim.tab_cutout_y_mm = 3.1
+        dim.tab_cutout_offset_y_mm = (3.1 + 1.2) / 2.0
+        dim.tab_cutout_x_mm = 0.2
         return dim
+
+
+    def _build_body(self, dim):
+
+        body = cq.Workplane("XY").workplane(offset=dim.nudge_mm).moveTo(dim.body_centre_x_mm, 0)\
+            .rect(dim.body_x_mm, dim.body_y_mm).extrude(dim.body_z_mm)
+
+        # TODO replace hard-coded numbers
+        c1 = cq.Workplane("XY")\
+            .workplane(offset=dim.tab_z_mm)\
+            .moveTo(0.64, dim.body_y_mm / 2.0)\
+            .rect(3.3, 0.4 * 2.0)\
+            .extrude(dim.body_z_mm)
+        c2 = cq.Workplane("XY")\
+            .workplane(offset=dim.tab_z_mm)\
+            .moveTo(0.64, -dim.body_y_mm / 2.0)\
+            .rect(3.3, 0.4 * 2.0)\
+            .extrude(dim.body_z_mm)
+        cutter = c1.union(c2)
+        body = body.cut(cutter)
+
+        # chamfer each top edge individually and with "side face first" selectors
+        # to avoid FreeCAD asymmetric chamfer problem
+        body = body.faces(">Z").edges("not(<X or >X or <Y or >Y)").edges("|X").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces(">Y").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces("<Y").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces(">X").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+        body = body.faces("<X").edges(">Z").chamfer(dim.chamfer_1, dim.chamfer_2)
+
+        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, 0).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        return body
 
 
     def _build_pins(self, dim, cut_pin):
@@ -412,6 +448,32 @@ class Infineon_HSOF_8(DPAK):
             pins = pins.cut(cutter)
 
         return pins
+
+
+    def _build_tab(self, dim):  
+
+        tab = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, 0)\
+            .line(0, -(dim.tab_y_mm/2.0))\
+            .line(-dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(-(dim.tab_x_mm - dim.tab_project_x_mm), 0)\
+            .line(0, dim.tab_inner_y_mm)\
+            .line(dim.tab_x_mm - dim.tab_project_x_mm, 0)\
+            .line(0, (dim.tab_y_mm - dim.tab_inner_y_mm)/2.0)\
+            .line(dim.tab_project_x_mm, 0)\
+            .close().extrude(dim.tab_z_mm)
+        c1 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, dim.tab_cutout_offset_y_mm)\
+            .rect(dim.tab_cutout_x_mm * 2.0, dim.tab_cutout_y_mm)\
+            .extrude(dim.tab_z_mm)
+        c2 = cq.Workplane("XY")\
+            .moveTo(dim.device_x_mm / 2.0, -dim.tab_cutout_offset_y_mm)\
+            .rect(dim.tab_cutout_x_mm * 2.0, dim.tab_cutout_y_mm)\
+            .extrude(dim.tab_z_mm)
+        cutter = c1.union(c2)
+        tab = tab.cut(cutter)
+        return tab
 
 
 class Factory(object):
@@ -458,4 +520,14 @@ if "module" in __name__:
     for key in model.keys():
         if key is not '__name':
             show(model[key]['part'])
+
+
+"""
+            .faces(">Z").edges(">X").chamfer(dim.body_z_mm - dim.tab_z_mm, dim.chamfer_1)\
+            .faces(">Z").edges("<X").chamfer(dim.chamfer_1, dim.chamfer_2)\
+            .faces(">Z").edges(">Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
+            .faces(">Z").edges("<Y").chamfer(dim.chamfer_1, dim.chamfer_2)\
+            .faces("<Z").edges("<X").chamfer(dim.body_waist_z_mm - dim.nudge_mm, dim.chamfer_3)
+"""
+
 

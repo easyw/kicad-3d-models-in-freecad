@@ -275,5 +275,5 @@ variants:
           cut_x_mm: 0.0
       centre_pin: ['uncut']
       keywords: ''
-      datasheet: http://www.infineon.com/cms/en/product/packages/PG-HSOF/PG-HSOF-8-1/
+      datasheet: http://www.infineon.com/dgdl/Infineon-IPT111N20NFD-DS-v02_01-EN.pdf?fileId=5546d462533600a401537a8b4b786fc2
 
