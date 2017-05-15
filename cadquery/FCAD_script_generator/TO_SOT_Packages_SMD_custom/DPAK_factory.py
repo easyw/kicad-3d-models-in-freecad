@@ -398,6 +398,7 @@ class Infineon_HSOF_8(DPAK):
         dim.tab_cutout_y_mm = 3.1
         dim.tab_cutout_offset_y_mm = (3.1 + 1.2) / 2.0
         dim.tab_cutout_x_mm = 0.2
+        dim.name = 'Infineon_PG-HSOF-8-1'
         return dim
 
 
@@ -474,6 +475,20 @@ class Infineon_HSOF_8(DPAK):
         cutter = c1.union(c2)
         tab = tab.cut(cutter)
         return tab
+
+
+    def build_series(self, verbose=False):
+        print('Building series {p:s}\r\n'.format(p=self.config['base']['description']))
+        base = self.config['base']
+        for variant in self.config['variants']:
+            if 'uncut' in variant['centre_pin']:
+                model = self._build_model(base, variant, verbose=verbose)
+                yield model
+                # model = self._build_model(base, variant, tab_linked=True, verbose=verbose)
+                # yield model
+            if 'cut' in variant['centre_pin']:
+                model = self._build_model(base, variant, cut_pin=True, verbose=verbose)
+                yield model
 
 
 class Factory(object):
