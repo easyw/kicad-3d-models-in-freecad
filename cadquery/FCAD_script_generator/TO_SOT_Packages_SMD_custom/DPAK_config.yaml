@@ -235,7 +235,7 @@ variants:
 ---
 # Infineon HSOF-8 SMD packages
 base:
-    series: Infineon-HSOF-8                                               
+    series: HSOF-8                                               
     description: 'Infineon PG-HSOF-8 SMD package'
     keywords: 'Infineon'
     footprint:
@@ -284,7 +284,7 @@ variants:
 ---
 # NXP SOT-669 SMD packages
 base:
-    series: SOT669
+    series: SOT-669
     description: 'NXP SOT-669 LFPAK56 Power-SO8 SMD package'
     keywords: 'NXP'
     footprint:
