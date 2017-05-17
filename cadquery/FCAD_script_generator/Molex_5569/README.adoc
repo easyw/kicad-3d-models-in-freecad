@@ -1,0 +1,109 @@
+STEP AP214 and VRML FreeCAD script generator
+============================================
+:Author:    Maurice
+:Email:     https://github.com/easyw
+:Date:      March 2017
+:Revision:  1.5.1
+:website: https://github.com/easyw/kicad-3d-models-in-freecad/
+:docname: README.md
+
+this repository +
+link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
+is a place to find STEP AP214 3D models and VRML kicad 3D models
+under *''cadquery'' DIR*, there are some nice scripts that can generate +
+*STEP and VRML parametric models* for +
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers*
+
+All the STEP and VRML models can be used with kicad new stable release (August 2015)
+and are ready to be used with Kicad StepUp script +
+*kicad StepUp* is a new approach to export kicad board and modules in STEP AP214 (with colors).
+With kicad StepUp it is possible to export the 3D board and modules in STEP
+for MCAD interchange and create the 3D wrl libraries. +
+link:http://sourceforge.net/projects/kicadstepup/[kicadStepUp at sourceforge] +
+link:http://bazaar.launchpad.net/~easyw/kicad-stepup/trunk/files/[kicadStepUp at lauchpad] +
+link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
+
+.REQUIREMENTS
+* FreeCAD 0.15 (best for step single object result)
+* CadQuery 0.5.2 
+
+<<<
+
+.OverView of the parametric scripts
+**********************************************************************
+this repository +
+link:https://github.com/easyw/kicad-3d-models-in-freecad/[] +
+is a place to find STEP AP214 3D models and VRML kicad 3D models; +
+under *''cadquery'' DIR*, there are some nice scripts that can generate +
+*STEP and VRML parametric models* for +
+*GullWings ICs, DIP ICS, Chip Capacitors, Chip resistors, pin-strip headers* ready to go for *kicad StepUp script*
+
+The parametric scripts are derived from CadQuery scripts for generating QFP, DIP and pinHeaders
+models in X3D format. +
+author *hyOzd* +
+author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
+
+## requirements ## +
+link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] version 0.52 +
+link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
+
+**********************************************************************
+Running the scripts
+-------------------
+
+to run the script just move to the scripts dir and do: +
+freecad ./main_generator.py modelName +
+examples in win: +
++c:\freecad\bin\freecad main_generator.py+ +
+in linux: +
++freecad ./main_generator.py +
+or simply run the 'create_model' script/batch +
+
+# To do
+- [x] export models to STEP & VRML  +
+
+Author: timtashpulatov +
+ +
+
+
+modelName and parameters are described in: +
+1. cq_parameters.py file in their relative DIR
+all data in parameter files are collected from components data sheets +
+##the script will generate STEP and VRML parametric models##
+ready to be used with kicad StepUp script 
+
+[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD. 
+If you do, run the following command line from a terminal to fix this issue. +
++sudo apt-get install python-pyside.qtnetwork+
+
+
+
+credits
+-------
+
+FreeCAD & cadquery tools: +
+libraries to export generated models in STEP & VRML format +
+- cad tools functions +
+Main author *Maurice* link:https://github.com/easyw[] +
+ +
+starting from work of author *hyOzd* +
+author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[] +
+
+[[copyright]]
+Copyright
+---------
+
+This document '{docname}' and all the materials and files at the repository are +
+Copyrighted © 2015 by {Author}. +
+You may distribute it and/or modify it under the terms of either
+the GNU Affero General Public License  (http://www.gnu.org/licenses/gpl.html),
+version 2, or the Creative Commons Attribution License
+(http://creativecommons.org/licenses/by/3.0/), version 3.0 or later.
+
+All trademarks within this guide belong to their legitimate owners.
+
+Risk disclaimer
+---------------
+
+*USE 3D CAD DATA AT YOUR OWN RISK +
+DO NOT RELY UPON ANY INFORMATION FOUND HERE WITHOUT INDEPENDENT VERIFICATION.*
