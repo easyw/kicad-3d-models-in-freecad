@@ -5,6 +5,13 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 
+import sys, os
+from sys import argv
+sys.path.append("../_tools")
+
+scriptdir = os.path.dirname (os.path.realpath(__file__))
+sys.path.append(scriptdir)
+
 import cadquery as cq
 from Helpers import show
 
