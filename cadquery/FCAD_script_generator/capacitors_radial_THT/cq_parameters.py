@@ -242,6 +242,19 @@ kicad_naming_params_radial_th_cap = {
         rotation  = 180, # rotation if required
         dest_dir_prefix = '../Capacitors_THT.3dshapes/'
     ),
+    "CP_Radial_D8.0mm_P3.80mm" : Params(# from Jan Kriege's 3d models
+        L = 8.0,
+        D = 8.0,
+        d = 0.5,
+        F = 3.8,
+        ll = 2.0,
+        la = 0.0,
+        bs = 0.,
+        pin3 = None,
+        modelName = 'CP_Radial_D8.0mm_P3.80mm', #modelName
+        rotation  = 180, # rotation if required
+        dest_dir_prefix = '../Capacitors_THT.3dshapes/'
+    ),
     "CP_Radial_D8.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
         L = 8.0,
         D = 8.0,

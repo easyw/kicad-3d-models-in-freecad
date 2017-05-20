@@ -46,7 +46,7 @@
 
 __title__ = "make Radial Caps 3D models"
 __author__ = "maurice and hyOzd"
-__Comment__ = 'make Radial Caps 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make Rect Caps 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.3.2 10/02/2017"
 
@@ -64,17 +64,10 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "blue body"
+body_color_key = "red body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-base_color_key = "black body"
-base_color = shaderColors.named_colors[base_color_key].getDiffuseFloat()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-mark_color_key = "light brown label"
-mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
-top_color_key = "metal grey pins"
-top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
-
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -136,146 +129,35 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-#all_params = all_params_radial_th_cap
-all_params = kicad_naming_params_radial_th_cap
+#all_params = all_params_rect_th_cap
+all_params = kicad_naming_params_rect_th_cap
 
-def make_radial_th(params):
-
-    L = params.L    # overall height
-    D = params.D    # body diameter
+def make_rect_th(params):
+    A = params.A    # body height
+    L = params.L    # body length
+    W = params.W    # body width
     d = params.d     # lead diameter
     F = params.F     # lead separation (center to center)
     ll = params.ll   # lead length
-    la = params.la   # extra lead length of the anode
     bs = params.bs   # board separation
-    if params.pin3:
-        pin3_width = params.pin3[0]
-        pin3_x = params.pin3[1]
-        pin3_y = params.pin3[2]
-
-    bt = 1.        # flat part before belt
-    if D > 4:
-        bd = 0.2       # depth of the belt
-    else:
-        bd = 0.15       # depth of the belt
-    bh = 1.        # height of the belt
-    bf = 0.3       # belt fillet
-
-    tc = 0.2       # cut thickness for the bottom&top
-    dc = D*0.7     # diameter of the bottom&top cut
-    ts = 0.1       # thickness of the slots at the top in the shape of (+)
-    ws = 0.1       # width of the slots
-
-    ef = 0.2       # top and bottom edges fillet
+    ef = W/10       # top and bottom edges fillet
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
-
-    bpt = 0.1        # bottom plastic thickness (not visual)
-    tmt = ts*2       # top metallic part thickness (not visual)
-
-    # TODO: calculate width of the cathode marker bar from the body size
-    ciba = 45.  # angle of the cathode identification bar
-
-    # TODO: calculate marker sizes according to the body size
-    mmb_h = 2.       # lenght of the (-) marker on the cathode bar
-    mmb_w = 0.5      # rough width of the marker
-
-    ef_s2 = ef/sqrt(2)
-    ef_x = ef-ef/sqrt(2)
+    body = cq.Workplane("XY").box(L, W, A)
+    body = body.translate((0,0,A/2)).rotate((0,0,0), (0,0,1), 0). \
+        edges("|Z").fillet(ef).edges(">Z").fillet(ef)
     
-    def bodyp():
-        return cq.Workplane("XZ").move(0, bs).\
-               move(0, tc+bpt).\
-               line(dc/2., 0).\
-               line(0, -(tc+bpt)).\
-               line(D/2.-dc/2.-ef, 0).\
-               threePointArc((D/2.-(ef_x), bs+(ef_x)), (D/2., bs+ef)).\
-               line(0, bt).\
-               threePointArc((D/2.-bd, bs+bt+bh/2.), (D/2., bs+bt+bh)).\
-               lineTo(D/2., L+bs-ef).\
-               threePointArc((D/2.-(ef_x), L+bs-(ef_x)), (D/2.-ef, L+bs)).\
-               lineTo(dc/2., L+bs).\
-               line(0, -(tc+tmt)).\
-               line(-dc/2., 0).\
-               close()
-
-    body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
-    bar = bodyp().revolve(ciba, (0,0,0), (0,1,0))
-
-    #show(body)
-    #show(bar)
-    # # fillet the belt edges
-    BS = cq.selectors.BoxSelector
-    # note that edges are selected from their centers
-    b_r = D/2.-bd # inner radius of the belt
-
-    try:
-        #body = body.edges(BS((-0.5,-0.5, bs+bt-0.01), (0.5, 0.5, bs+bt+bh+0.01))).\
-        #    fillet(bf)
-        pos=D/10
-        body = body.edges(BS((-pos,-pos, bs+bt-0.2), (pos, pos, bs+bt+bh+0.01))).\
-            fillet(bf)
-    except:
-        #stop
-        expVRML.sayerr("")
-        expVRML.sayerr("not filleting")
-        #show(body)
-        #show(bar)
-        #raise
-        pass
     
-    #b_r = D/2.-bd # inner radius of the belt
-    bar = bar.edges(BS((b_r/sqrt(2), 0, bs+bt-0.01),(b_r, -b_r/sqrt(2), bs+bt+bh+0.01))).\
-          fillet(bf)
-
-    body = body.rotate((0,0,0), (0,0,1), 180-ciba/2)
-    bar = bar.rotate((0,0,0), (0,0,1), 180+ciba/2)
-
-
-    # draw the plastic at the bottom
-    bottom = cq.Workplane("XY").workplane(offset=bs+tc).\
-             circle(dc/2).extrude(bpt)
-    body = body.union(bottom)
-    # draw the metallic part at the top
-    top = cq.Workplane("XY").workplane(offset=bs+L-tc-ts).\
-         circle(dc/2).extrude(tmt)
-
-    # draw the slots on top in the shape of plus (+)
-    top = top.faces(">Z").workplane().move(ws/2,ws/2).\
-          line(0,D).line(-ws,0).line(0,-D).\
-          line(-D,0).line(0,-ws).line(D,0).\
-          line(0,-D).line(ws,0).line(0,D).\
-          line(D,0).line(0,ws).close().cutBlind(-ts)
-
-    # draw the (-) marks on the bar
-    n = int(L/(2*mmb_h)) # number of (-) marks to draw
-    points = []
-    first_z = (L-(2*n-1)*mmb_h)/2
-    for i in range(n):
-        points.append((0, (i+0.25)*2*mmb_h+first_z))
-    mmb = cq.Workplane("YZ", (-D/2,0,bs)).pushPoints(points).\
-          box(mmb_w, mmb_h, 2).\
-          edges("|X").fillet(mmb_w/2.-0.001)
-
-    mmb = mmb.cut(mmb.translate((0,0,0)).cut(bar))
-    bar = bar.cut(mmb)
-
     # draw the leads
-    leads = cq.Workplane("XY").workplane(offset=bs+tc).\
-            center(-F/2,0).circle(d/2).extrude(-(ll+tc)).\
-            center(F,0).circle(d/2).extrude(-(ll+tc+la+0.1)).translate((0,0,0.1)) #need overlap for fusion
-    if params.pin3:
-        leads = leads.union(cq.Workplane("XY").workplane(offset=bs+tc).\
-            circle(pin3_width/2).extrude(-(ll+tc+la+0.1)).translate((pin3_x,pin3_y,0.1))) #need overlap for fusion)
+    leads = cq.Workplane("XY").workplane(offset=bs).\
+            center(-F/2,0).circle(d/2).extrude(-(ll)).\
+            center(F,0).circle(d/2).extrude(-(ll)).translate((0,0,0.1)) #need overlap for fusion
 
     
     #show(body)
-    #show(mmb)
-    #show(bar)
     #show(leads)
-    #show(top)
     #stop
-    return (body, mmb, bar, leads, top) #body, base, mark, pins, top
+    return (body, leads) #body, pins
 
     
 #import step_license as L
@@ -327,47 +209,30 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        #body, base, mark, pins = make_radial_th(all_params[variant])
-        body, base, mark, pins, top = make_radial_th(all_params[variant]) #body, base, mark, pins, top
+        #body, base, mark, pins = make_rect_th(all_params[variant])
+        body, pins= make_rect_th(all_params[variant]) #body, base, mark, pins, top
         
         
         show(body)
-        show(base)
-        show(pins)
-        show(mark)
-        show(top)
-        
+        show(pins)        
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
 
         Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],base_color)
-        Color_Objects(Gui,objs[2],pins_color)
-        Color_Objects(Gui,objs[3],mark_color)
-        Color_Objects(Gui,objs[4],top_color)
+        Color_Objects(Gui,objs[1],pins_color)
 
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_base=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        col_mark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
-        col_top=Gui.ActiveDocument.getObject(objs[4].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+
         material_substitutions={
             col_body[:-1]:body_color_key,
-            col_base[:-1]:base_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_mark[:-1]:mark_color_key,
-            col_top[:-1]:top_color_key
+            col_pin[:-1]:pins_color_key
         }
         expVRML.say(material_substitutions)
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[2].Name, objs[3].Name)
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)    
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)    
         #stop
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
