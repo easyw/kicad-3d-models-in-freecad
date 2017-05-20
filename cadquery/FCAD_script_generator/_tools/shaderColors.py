@@ -175,7 +175,7 @@ named_colors = {
         specularColor= (0.039, 0.102, 0.145),
         shininess= 0.25
     ),
-    "red_body":shaderColor(
+    "red body":shaderColor(
         name="RED-BODY",
         ambientIntensity= 0.683,
         diffuseColor= (0.700, 0.100, 0.050),
