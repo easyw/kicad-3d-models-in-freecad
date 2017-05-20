@@ -107,7 +107,7 @@ import cq_cad_tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, x_TranslateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements
 
 
@@ -136,8 +136,8 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-all_params = all_params_radial_th_cap
-# all_params = kicad_naming_params_radial_th_cap
+#all_params = all_params_radial_th_cap
+all_params = kicad_naming_params_radial_th_cap
 
 def make_radial_th(params):
 
@@ -148,9 +148,16 @@ def make_radial_th(params):
     ll = params.ll   # lead length
     la = params.la   # extra lead length of the anode
     bs = params.bs   # board separation
+    if params.pin3:
+        pin3_width = params.pin3[0]
+        pin3_x = params.pin3[1]
+        pin3_y = params.pin3[2]
 
     bt = 1.        # flat part before belt
-    bd = 0.2       # depth of the belt
+    if D > 4:
+        bd = 0.2       # depth of the belt
+    else:
+        bd = 0.15       # depth of the belt
     bh = 1.        # height of the belt
     bf = 0.3       # belt fillet
 
@@ -201,6 +208,7 @@ def make_radial_th(params):
     BS = cq.selectors.BoxSelector
     # note that edges are selected from their centers
     b_r = D/2.-bd # inner radius of the belt
+
     try:
         #body = body.edges(BS((-0.5,-0.5, bs+bt-0.01), (0.5, 0.5, bs+bt+bh+0.01))).\
         #    fillet(bf)
@@ -223,10 +231,11 @@ def make_radial_th(params):
     body = body.rotate((0,0,0), (0,0,1), 180-ciba/2)
     bar = bar.rotate((0,0,0), (0,0,1), 180+ciba/2)
 
+
     # draw the plastic at the bottom
     bottom = cq.Workplane("XY").workplane(offset=bs+tc).\
              circle(dc/2).extrude(bpt)
-
+    body = body.union(bottom)
     # draw the metallic part at the top
     top = cq.Workplane("XY").workplane(offset=bs+L-tc-ts).\
          circle(dc/2).extrude(tmt)
@@ -255,6 +264,9 @@ def make_radial_th(params):
     leads = cq.Workplane("XY").workplane(offset=bs+tc).\
             center(-F/2,0).circle(d/2).extrude(-(ll+tc)).\
             center(F,0).circle(d/2).extrude(-(ll+tc+la+0.1)).translate((0,0,0.1)) #need overlap for fusion
+    if params.pin3:
+        leads = leads.union(cq.Workplane("XY").workplane(offset=bs+tc).\
+            circle(pin3_width/2).extrude(-(ll+tc+la+0.1)).translate((pin3_x,pin3_y,0.1))) #need overlap for fusion)
 
     
     #show(body)
@@ -362,9 +374,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         objs[0].Label = CheckedModelName
         restore_Main_Tools()
         #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FreeCAD.getDocument(doc.Name).getObject(objs[0].Name).Placement = FreeCAD.Placement(FreeCAD.Vector(all_params[variant].F/2,0,0),
+        FreeCAD.Rotation(FreeCAD.Vector(0,0,1),all_params[variant].rotation))
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
         expVRML.say(script_dir)
