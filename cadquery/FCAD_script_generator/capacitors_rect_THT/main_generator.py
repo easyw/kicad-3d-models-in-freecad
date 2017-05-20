@@ -140,7 +140,7 @@ def make_rect_th(params):
     F = params.F     # lead separation (center to center)
     ll = params.ll   # lead length
     bs = params.bs   # board separation
-    ef = 0.2       # top and bottom edges fillet
+    ef = W/10       # top and bottom edges fillet
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
     body = cq.Workplane("XY").box(L, W, A)
