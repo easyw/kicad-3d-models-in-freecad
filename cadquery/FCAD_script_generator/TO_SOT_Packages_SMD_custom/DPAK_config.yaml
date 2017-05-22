@@ -330,4 +330,53 @@ variants:
       centre_pin: ['uncut']
       keywords: ''
       datasheet: http://www.nxp.com/documents/outline_drawing/SOT669.pdf
+---
+# SOT-89-3 SMD package
+base:
+    series: SOT-89                                               
+    description: 'SOT-89-3 SMD package'
+    keywords: ''
+    footprint:
+        x_mm: 4.0
+        tab:
+            x_mm: 2.5
+            y_mm: 1.6
+        split_paste: 'off'
+        paste_gutter_mm: 0.0
+    device:
+        x_mm: 4.0
+        body:
+            x_mm: 2.5
+            y_mm: 4.5
+            z_mm: 1.5                                             
+            waist_z_mm: 0.4                                           
+            marker_offset_x_mm: 0.0                                  
+            marker_offset_y_mm: 0.0                                 
+            colour: 'black body'                                     
+        tab:
+            x_mm: 2.5                           
+            y_mm: 1.6
+            z_mm: 0.4                                               
+            project_x_mm: 0.5
+            colour: 'metal grey pins'                                
+        marker:
+            x_mm: 0.7                             
+            z_mm: 0.1                                                 
+        pins:
+            colour: 'metal grey pins'                                
+    3d_prefix: '${KISYS3DMOD}/TO_SOT_Packages_SMD.3dshapes'
+variants:
+    - pins: 3                                              
+      pitch_mm: 1.5
+      pad:
+          x_mm: 1.5
+          y_mm: 1.0
+      pin:
+          x_mm: 1.0
+          y_mm: 0.4
+          z_mm: 0.4                                                   
+          cut_x_mm: 0.0
+      centre_pin: ['uncut']
+      keywords: ''
+      datasheet: https://www.onsemi.com/pub/Collateral/2SB1122-D.PDF
 

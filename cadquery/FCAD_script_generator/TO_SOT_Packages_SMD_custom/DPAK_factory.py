@@ -558,8 +558,67 @@ class SOT669(DPAK):
             if 'uncut' in variant['centre_pin']:
                 model = self._build_model(base, variant, verbose=verbose)
                 yield model
-                # model = self._build_model(base, variant, tab_linked=True, verbose=verbose)
-                # yield model
+            if 'cut' in variant['centre_pin']:
+                model = self._build_model(base, variant, cut_pin=True, verbose=verbose)
+                yield model
+
+
+class SOT89(DPAK):
+
+    def __init__(self, config_file):
+        self.SERIES = 'SOT-89'
+        self.config = self._load_config(config_file)
+
+
+    def _get_dimensions(self, base, variant, cut_pin=False, tab_linked=False):
+
+        dim = Dimensions(base, variant, cut_pin, tab_linked)
+        dim.chamfer_1 = 0.1
+        dim.chamfer_3 = 0.01
+        dim.pin_profile = [
+            ('start', {'position': (-dim.pin_offset_x_mm, dim.pin_z_mm / 2.0),
+                       'direction': 0.0, 'width': dim.pin_z_mm}),
+            ('line', {'length': 1.5 })
+        ]
+        dim.tab_cutout_y_mm = 3.1
+        dim.tab_cutout_offset_y_mm = (3.1 + 1.2) / 2.0
+        dim.tab_cutout_x_mm = 0.2
+        dim.name = 'SOT-89-3'
+        return dim
+
+
+    def _build_body(self, dim):
+
+        body = cq.Workplane("XY").workplane(offset=dim.nudge_mm).moveTo(dim.body_centre_x_mm, 0)\
+            .rect(dim.body_x_mm, dim.body_y_mm).extrude(dim.body_z_mm)
+        body = body.faces(">Z").edges(">Z").chamfer(dim.chamfer_2, dim.chamfer_1)
+        body = body.faces(">Z").workplane().center(dim.marker_offset_x_mm, dim.marker_offset_y_mm).hole(dim.marker_x_mm, depth=dim.marker_z_mm)
+        return body
+
+
+    def _build_pins(self, dim, cut_pin):
+
+        pin = cq.Workplane("XZ")\
+            .workplane(offset=-(dim.pin_y_mm/2.0 + (dim.number_pins - 1) * dim.pin_pitch_mm/2.0))
+        pin = Ribbon(pin, dim.pin_profile).drawRibbon().extrude(dim.pin_y_mm)
+        pins = pin
+        for i in range(0, dim.number_pins):
+            pins = pins.union(pin.translate((0, -i * dim.pin_pitch_mm, 0)))
+        if cut_pin:
+            cutter = cq.Workplane("XY")\
+                .moveTo(dim.body_centre_x_mm -(dim.body_x_mm / 2.0) - dim.pin_cut_x_mm - 5.0, 0)\
+                .rect(2*5.0, dim.pin_fat_y_mm).extrude(dim.body_z_mm)
+            pins = pins.cut(cutter)
+        return pins
+
+
+    def build_series(self, verbose=False):
+        print('Building series {p:s}\r\n'.format(p=self.config['base']['description']))
+        base = self.config['base']
+        for variant in self.config['variants']:
+            if 'uncut' in variant['centre_pin']:
+                model = self._build_model(base, variant, verbose=verbose)
+                yield model
             if 'cut' in variant['centre_pin']:
                 model = self._build_model(base, variant, cut_pin=True, verbose=verbose)
                 yield model
@@ -582,7 +641,7 @@ class Factory(object):
         args = self._parse_command_line()
         packages = args.package[1:]  # remove program name, which is returned as first argument
         if not packages:
-            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file), HSOF8(self.config_file), SOT669(self.config_file)]
+            build_list = [TO252(self.config_file), TO263(self.config_file), TO268(self.config_file), ATPAK(self.config_file), HSOF8(self.config_file), SOT669(self.config_file), SOT89(self.config_file)]
         else:
             build_list = []
             if 'TO252' in packages:
@@ -597,6 +656,8 @@ class Factory(object):
                 build_list.append(HSOF8(self.config_file))
             if 'SOT669' in packages:
                 build_list.append(SOT669(self.config_file))
+            if 'SOT89' in packages:
+                build_list.append(SOT89(self.config_file))
         return build_list
 
 
