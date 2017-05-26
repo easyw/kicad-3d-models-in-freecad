@@ -54,7 +54,7 @@ ___ver___ = "1.4.2 26/02/2017"
 
 # maui import cadquery as cq
 # maui from Helpers import show
-from math import tan, radians, sqrt
+from math import tan, cos, sin, radians, sqrt
 from collections import namedtuple
 
 #from cq_cad_tools import say, sayw, saye
@@ -76,6 +76,16 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
+import FreeCADGui as Gui
+
+import logging
+logging.getLogger('builder').addHandler(logging.NullHandler())
+#logger = logging.getLogger('builder')
+#logging.info("Begin")
+
+outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
+scriptdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(outdir)
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -91,12 +101,9 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
 
 # Import cad_tools
 import cq_cad_tools
-from cq_cad_tools import say, sayw, saye
 
 # Reload tools
 reload(cq_cad_tools)
@@ -130,127 +137,10 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-# import cq_parameters  # modules parameters
-# from cq_parameters import *
+import cq_parameters  # modules parameters
+from cq_parameters import *
 
-from collections import namedtuple
-
-"""
-Parameters for creating various pin-headers
-"""
-Params = namedtuple("Params", [
-    'p', # pitch (separaration between pins)
-    'rows', #number of rows
-    'w', #width of plastic base
-    'c', # chamfering of plastic base
-    'h', # height of plastic base above board
-    'pw', #pin width (square pins only)
-    'pc', #pin end chamfer amount
-    'pa', #pin height above board
-    'ph', #pin height total
-    'rot', #rotation if required
-])
-
-headers = {
-    '254singleH10': Params(
-        p = 2.54,
-        w = 2.5,
-        rows = 1,
-        c = 0.25,
-        h = 2.54,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 6 + 2.54,
-        ph = 6 + 2.54 + 3.05,
-        rot = -90,
-    ),
-    '254single': Params(
-        p = 2.54,
-        w = 2.5,
-        rows = 1,
-        c = 0.25,
-        h = 2.5,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 11,
-        ph = 11 + 3.3,
-        rot = -90,
-    ),
-    '254dual': Params(
-        p = 2.54,
-        w = 5.0,
-        rows = 2,
-        c = 0.25,
-        h = 2.5,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 11,
-        ph = 11 + 3.3,
-        rot = -90,
-    ),
-    #2.00mm pitch, single row
-    #e.g. http://multimedia.3m.com/mws/media/438474O/3mtm-pin-strip-header-ts2156.pdf
-    '200single': Params(
-        p = 2.00,
-        w = 2.0,
-        rows = 1,
-        c = 0.25,
-        h = 1.5,
-        pw = 0.5,
-        pc = 0.1,
-        pa = 5.9,
-        ph = 8.7,
-        rot = -90,
-    ),
-    #2.00mm pitch, dual row
-    #e.g. http://multimedia.3m.com/mws/media/438474O/3mtm-pin-strip-header-ts2156.pdf
-    '200dual': Params(
-        p = 2.00,
-        w = 4.0,
-        rows = 2,
-        c = 0.25,
-        h = 1.5,
-        pw = 0.5,
-        pc = 0.1,
-        pa = 5.9,
-        ph = 8.7,
-        rot = -90,
-    ),
-    #1.27mm pitch, single row
-    #e.g. http://www.sullinscorp.com/drawings/71_GRPB___1VWVN-RC,_10957-C.pdf
-    '127single': Params(
-        p = 1.27,
-        w = 2.14,
-        rows = 1,
-        c = 0.2,
-        h = 1.0,
-        pw = 0.4,
-        pc = 0.1,
-        pa = 4.0,
-        ph = 6.3,
-        rot = -90,
-    ),
-    #1.27mm pitch, dual row
-    #e.g. http://www.sullinscorp.com/drawings/71_GRPB___1VWVN-RC,_10957-C.pdf
-    '127dual': Params(
-        p = 1.27,
-        w = 3.4,
-        rows = 2,
-        c = 0.2,
-        h = 1.0,
-        pw = 0.4,
-        pc = 0.1,
-        pa = 4.0,
-        ph = 6.3,
-        rot = -90,
-    ),
-}
-
-#destination_dir="./generated_pinheaders/"
-#if not os.path.exists(destination_dir):
-#    os.makedirs(destination_dir)
-#
-#outdir = "" # handled below
+all_params = kicad_naming_params_pin_headers
 
 #Make a single plastic base block (chamfered if required)
 def MakeBaseBlock(params):
@@ -277,33 +167,67 @@ def MakeBase(n, params):
     if params.rows > 1:
         offset = params.p * (params.rows - 1) / 2.0
         base = base.translate((0,offset,0))
-        
+    if params.type == 'Angled':
+        base = base.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.h+params.hb-params.pw/2,params.w/2))
     return base
     
 #make a single pin
-def MakePin(params):
-    pin = cq.Workplane("XY").workplane(offset=params.pa-params.ph).rect(params.pw,params.pw).extrude(params.ph)
-
-    #chamfer each end of the pin if required
-    if params.pc > 0:
-        pin = pin.faces("<Z").chamfer(params.pc)
-        pin = pin.faces(">Z").chamfer(params.pc)
+def MakePin(n, row, params):
+    row_offset = row-1
+    if params.type == 'Straight':
+        pin = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pw).extrude(params.ph+params.pa)
     
+        #chamfer each end of the pin if required
+        if params.pc > 0:
+            pin = pin.faces("<Z").chamfer(params.pc)
+            pin = pin.faces(">Z").chamfer(params.pc)
+    
+    elif params.type == 'Angled':
+        horizontal_pin_height = params.ph+params.w-params.w/(row*2)-params.pw/2
+        pin = cq.Workplane("XY").box(params.pw,params.pa+params.hb,params.pw,horizontal_pin_height,False).translate((-params.ph,0,0))
+        pin_cutout = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pa+params.hb).extrude(params.ph+(params.w+params.pw)/2)
+        '''
+        . \
+        threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
+                      (S+R1, A1+A2_b-R1)). \
+        line(0, -(A1+A2_b-R1-R2_o)). \
+        threePointArc((S+R1+R2_o*(1-1/sqrt(2)), R2_o*(1-1/sqrt(2))),
+                      (S+R1+R2_o, 0)). \
+        line(L-R2_o, 0). \
+        line(0, c). \
+        line(-(L-R2_o), 0). \
+        threePointArc((S+R1+R2_o-R2/sqrt(2), c+R2*(1-1/sqrt(2))),
+                      (S+R1+R2_o-R1, c+R2)). \
+        lineTo(S+R1+c, A1+A2_b-R1). \
+        threePointArc((S+R1_o/sqrt(2), A1+A2_b+c-R1_o*(1-1/sqrt(2))),
+                      (S, A1+A2_b+c)). \
+        line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
+        
+        pin = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pw).extrude()
+        horisontalpin = cq.Workplane("XZ").workplane(offset= -params.pw/2-row_offset*params.p).rect(params.pw,params.pw).extrude(-params.hb-params.pa+params.pw).translate((0,0,params.w/2+row_offset*params.p))
+        pin = pin.union(cq.Workplane("XY").workplane(offset=params.w/2-params.pw/2+row_offset*params.p).rect(params.pw, params.pw, False) \
+        .revolve(90).rotate((0, 0, 0),(0, 0, 1), -90).translate((-(params.pw/2),params.pw/2,0)))
+        pin = pin.union(horisontalpin).translate((0,-(row_offset*params.p),0))
+        '''
+        if params.pc > 0:
+            pin = pin.faces("<Z").chamfer(params.pc)
+            pin = pin.faces(">Y").chamfer(params.pc)
     return pin
+
     
 #make all the pins
-def MakePinRow(n, params):
+def MakePinRow(n, row, params):
     #make some pins
-    pin = MakePin(params)
+    pin = MakePin(1, row, params)
     
     for i in range(1,n):
-        pin = pin.union(MakePin(params).translate((params.p * i,0,0)))
+        pin = pin.union(MakePin(1, row, params).translate((params.p * i,0,0)))
     
     return pin
 
 #generate a name for the pin header
 def HeaderName(n, params):
-    return "PinHeader_Straight_{r:01}x{n:02}_H{h:02}_p{p:.2f}mm".format(r=params.rows,n=n,h=int(params.ph),p=params.p)
+    return "Pin_Header_{}_{r:01}x{n:02}_Pitch{p:.2f}mm".format(params.type,r=params.rows,n=n,p=params.p)
     
 #make a pin header using supplied parameters, n pins in each row
 def MakeHeader(n, params):
@@ -338,12 +262,12 @@ def MakeHeader(n, params):
     App.setActiveDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins = MakePinRow(n,params)
+    pins = MakePinRow(n,1,params)
     
     #duplicate pin rows
     if params.rows > 1:
         for i in range(1,params.rows):
-            pins = pins.union(MakePinRow(n,params).translate((0,i*params.p,0)))
+            pins = pins.union(MakePinRow(n,i,params).translate((0,i*params.p,0)))
     
     base = MakeBase(n,params)
         
@@ -430,20 +354,19 @@ if __name__ == "__main__" or __name__ == "main_generator":
     pins = []
     
     if len(sys.argv) < 3:
-        say("Nothing specified to build...")
-        model = "254single"
+        FreeCAD.Console.PrintMessage('No variant name is given! building 254single')
+        model_to_build = "254single"
     else:
-        model = sys.argv[2]
+        model_to_build = sys.argv[2]
         
-    if model == 'all':
-        models = [headers[model] for model in headers.keys()]
-        pins = range(2,41)
+    if model_to_build == 'all':
+        models = [all_params[model_to_build] for model_to_build in all_params.keys()]
+        pins = range(1,41)
     else:
-        models = [headers[i] for i in model.split(',') if i in headers.keys()]#separate model types with comma
+        models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
             
-    #say(models)
     if len(sys.argv) < 4:
-        say("No pins specified, building 254single 1")
+        FreeCAD.Console.PrintMessage("No pins specified, building 254single 1")
         p = "1"
     else:
         p = sys.argv[3].strip()
@@ -453,7 +376,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         try:
             pins = map(int,p.split(','))
         except:
-            say("Pin argument '",p,"' is invalid ,")
+            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid ,")
             pins = []
     
     #range of pins x-y
@@ -464,7 +387,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             p1, p2 = int(ps[0]),int(ps[1])
             pins = range(p1,p2+1)
         except:
-            say("Pin argument '",p,"' is invalid -")
+            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid -")
             pins = []
             
     #otherwise try for a single pin
