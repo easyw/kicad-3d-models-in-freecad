@@ -375,7 +375,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         restore_Main_Tools()
         #rotate if required
         objs=GetListOfObjects(FreeCAD, doc)
-        FreeCAD.getDocument(doc.Name).getObject(objs[0].Name).Placement = FreeCAD.Placement(FreeCAD.Vector(all_params[variant].F/2,0,0),
+        if all_params[variant].xoffset:
+            X_offset = all_params[variant].xoffset
+        else:
+            X_offset = all_params[variant].F/2
+        FreeCAD.getDocument(doc.Name).getObject(objs[0].Name).Placement = FreeCAD.Placement(FreeCAD.Vector(X_offset,0,0),
         FreeCAD.Rotation(FreeCAD.Vector(0,0,1),all_params[variant].rotation))
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
