@@ -64,8 +64,11 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "red body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+MKS_color_key = "red body"
+MKS_color = shaderColors.named_colors[MKS_color_key].getDiffuseFloat()
+MKT_color_key = "grey body"
+MKT_color = shaderColors.named_colors[MKT_color_key].getDiffuseFloat()
+
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 
@@ -133,7 +136,8 @@ from cq_parameters import *
 all_params = kicad_naming_params_rect_th_cap
 
 def make_rect_th(params):
-    A = params.A    # body height
+    series = params.series # Series
+    H = params.H    # body height
     L = params.L    # body length
     W = params.W    # body width
     d = params.d     # lead diameter
@@ -141,18 +145,36 @@ def make_rect_th(params):
     ll = params.ll   # lead length
     bs = params.bs   # board separation
     ef = W/10       # top and bottom edges fillet
+    pt = 0.02 # pin thickness (only for MKT)
+    pb = F/20
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
-    body = cq.Workplane("XY").box(L, W, A)
-    body = body.translate((0,0,A/2)).rotate((0,0,0), (0,0,1), 0). \
-        edges("|Z").fillet(ef).edges(">Z").fillet(ef)
-    
-    
-    # draw the leads
-    leads = cq.Workplane("XY").workplane(offset=bs).\
+    if series == 'MKS':
+        body = cq.Workplane("XY").box(L, W, H)
+        body = body.translate((0,0,H/2)).rotate((0,0,0), (0,0,1), 0). \
+            edges("|Z").fillet(ef).edges(">Z").fillet(ef)
+        # draw the leads
+        leads = cq.Workplane("XY").workplane(offset=bs).\
             center(-F/2,0).circle(d/2).extrude(-(ll)).\
             center(F,0).circle(d/2).extrude(-(ll)).translate((0,0,0.1)) #need overlap for fusion
 
+    elif series == 'MKT':
+        body = cq.Workplane("XY").box(F-2*pb, W-2*pt, H-2*pt)
+        #translate the object
+        body=body.translate((0,0,H/2)).rotate((0,0,0), (0,0,1), 0)
+        
+        pin1 = cq.Workplane("XY").box(pb, W, H)
+        pin1=pin1.translate((-F/2+pb/2,0,H/2)).rotate((0,0,0), (0,0,1), 0)
+        pin2 = cq.Workplane("XY").box(pb, W, H)
+        pin2=pin2.translate((F/2-pb/2,0,H/2)).rotate((0,0,0), (0,0,1), 0)
+        pins = pin1.union(pin2)
+
+        leads=cq.Workplane("XY").workplane(offset=H-0.6).\
+            center(-F/2,0).circle(d/2).extrude(-(ll+H-0.6)).\
+            center(F,0).circle(d/2).extrude(-(ll+H-0.6)).translate((0,0,0.1)) #need overlap for fusion
+        leads=leads.union(pins)
+    
+    
     
     #show(body)
     #show(leads)
@@ -218,17 +240,24 @@ if __name__ == "__main__" or __name__ == "main_generator":
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
-
-        Color_Objects(Gui,objs[0],body_color)
+        if all_params[variant].series == 'MKS':
+            Color_Objects(Gui,objs[0],MKS_color)
+        elif all_params[variant].series == 'MKT':
+            Color_Objects(Gui,objs[0],MKT_color)
         Color_Objects(Gui,objs[1],pins_color)
 
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key
-        }
+        if all_params[variant].series == 'MKS':
+            material_substitutions={
+                col_body[:-1]:MKS_color_key,
+                col_pin[:-1]:pins_color_key
+            }
+        elif all_params[variant].series == 'MKT':
+            material_substitutions={
+                col_body[:-1]:MKT_color_key,
+                col_pin[:-1]:pins_color_key
+            }
         expVRML.say(material_substitutions)
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
