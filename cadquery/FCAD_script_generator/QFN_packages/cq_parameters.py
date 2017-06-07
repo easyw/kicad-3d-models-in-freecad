@@ -2789,4 +2789,82 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
+    'Texas_S-PDSO-N12': Params( # from http://www.ti.com/lit/ml/mpds289a/mpds289a.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 2.5,       # body overall length
+        E = 4.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.24,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 6,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (1.6, 2.5), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'Texas_S-PDSO-N12', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
+    'Texas_S-PVSON-N10': Params( # from http://www.ti.com/lit/ml/mpds117k/mpds117k.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 3.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.24,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.5, 2.0), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'Texas_S-PVSON-N10', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
+    'Texas_S-PVSON-N8': Params( # from http://chip.tomsk.ru/chip/chipdoc.nsf/Package/C2A39EE36E516F85C62578B20022E0E7!OpenDocument
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 3.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.9,  # body height
+        b = 0.3,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 4,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.5, 2.0), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'Texas_S-PVSON-N8', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
 }
