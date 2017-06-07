@@ -2760,7 +2760,7 @@ kicad_naming_params_qfn = {
         epad = (2.8, 0.4), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'WSON-16_3.3x1.35_Pitch0.4mm', #modelName
-        rotation = 0, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
 }
