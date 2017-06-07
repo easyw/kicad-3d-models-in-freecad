@@ -170,6 +170,35 @@ all_params_soic = {
 }
 
 kicad_naming_params_soic = {
+	'SO-6L_10x3.84mm_Pitch1.27mm': Params( # TLP2770 https://toshiba.semicon-storage.com/info/docget.jsp?did=53548&prodName=TLP2770
+        the = 9.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c = 0.1,        # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.30,       # pin top flat part length (excluding corner arc)
+#        L = 0.65,      # pin bottom flat part length (including corner arc)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.05,    # first pin indicator distance from edge
+        fp_z = 0.05,    # first pin indicator depth
+        ef = 0.0,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,		#0.45 chamfer of the 1st pin corner
+        D1 = 3.84,      # body length
+        E1 = 7.5,       # body width
+        E = 10.0,       # body overall width
+        A1 = 0.1,       # body-board separation
+        A2 = 2.1,       # body height
+        b = 0.38,       # pin width
+        e = 1.27,       # pin (center-to-center) distance
+        npx = 3,        # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = None,    # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'SO-6L_10x3.84mm_Pitch1.27mm', #modelName
+        rotation = -90,   # rotation if required
+        dest_dir_prefix = 'SOIC'
+        ),
     'SOIC-8_3.9x4.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/msoi002j/msoi002j.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
