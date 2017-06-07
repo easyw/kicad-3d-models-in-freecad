@@ -2867,4 +2867,56 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
+    'USON-10_2.5x1.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
+        c = 0.13,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.35,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 2.5,       # body overall length
+        E = 1.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.5,  # body height
+        b = 0.2,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'USON-10_2.5x1.0mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
+    'USON-20_2x4mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0108.pdf
+        c = 0.1,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.55,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 4.0,       # body overall length
+        E = 2.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.5,  # body height
+        b = 0.2,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 10,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'USON-20_2x4mm_Pitch0.4mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
 }
