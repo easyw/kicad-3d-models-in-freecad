@@ -3049,4 +3049,30 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
+    'WSON14_4x4mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/lp3947.pdf
+        c = 0.1,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.25,      #0.45 chamfer of the epad 1st pin corner
+        D = 4.0,       # body overall length
+        E = 4.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.8,  # body height
+        b = 0.25,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 7,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (3.0, 2.6), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'WSON14_4x4mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
 }
