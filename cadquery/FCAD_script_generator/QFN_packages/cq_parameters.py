@@ -2809,7 +2809,7 @@ kicad_naming_params_qfn = {
         ps = 'rounded',   # rounded pads
         npx = 5,  # number of pins along X axis (width)
         npy = 2,  # number of pins along y axis (length)
-        epad = (2.5, 1.6), # e Pad #epad = None, # e Pad
+        epad = (2.35, 1.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'VSON-10-1EP_3x3mm_Pitch0.5mm_ThermalPad', #modelName
         rotation = -90, # rotation if required
