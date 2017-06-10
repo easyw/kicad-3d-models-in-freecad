@@ -2893,7 +2893,59 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'USON-10_2.5x1.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
+    'Texas_R_PUQFN-N12_2.0x1.7_Pitch0.4mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.4,   		# pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.05,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,     # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,       	# body overall length
+        E =  1.7,      	# body overall width
+        A1 = 0.02,  	# body-board separation  maui to check
+        A2 = 0.5,  		# body height
+        b = 0.20,  		# pin width
+        e = 0.4,  		# pin (center-to-center) distance
+        m = 0.0,  		# margin between pins and body  
+        ps = 'square', 	# rounded pads
+        npx = 5,  		# number of pins along X axis (width)
+        npy = 1,  		# number of pins along y axis (length)
+        epad = None, 	# e Pad #epad = None, # e Pad
+        excluded_pins = None, #
+        modelName = 'Texas_R_PUQFN-N12_2.0x1.7_Pitch0.4mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
+    'Texas_S-PVQFN-N14_4.3x4.3_Pitch0.5mm_ThermalPad': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.4,   		# pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,     # 0.45 chamfer of the epad 1st pin corner
+        D = 4.3,       	# body overall length
+        E =  4.3,      	# body overall width
+        A1 = 0.02,  	# body-board separation  maui to check
+        A2 = 0.9,  		# body height
+        b = 0.28,  		# pin width
+        e = 0.5,  		# pin (center-to-center) distance
+        m = 0.0,  		# margin between pins and body  
+        ps = 'rounded', # rounded pads
+        npx = 9,  		# number of pins along X axis (width)
+        npy = 9,  		# number of pins along y axis (length)
+        epad = (2.05, 2.05), # e Pad #epad = None, # e Pad
+        excluded_pins = (1,2,4,5,6,8,9,10,11,17,18,19,20,22,23,24,26,27,28,29,35,36), #
+        modelName = 'Texas_S-PVQFN-N14_4.3x4.3_Pitch0.5mm_ThermalPad', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
+		'USON-10_2.5x1.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
         c = 0.13,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.36,        # pin top flat part length (including fillet radius)
