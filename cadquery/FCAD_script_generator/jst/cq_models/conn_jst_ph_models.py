@@ -46,18 +46,18 @@
 #*   exception statement from your version.                                 *
 #****************************************************************************
 
-__title__ = "model description for JST-XH Connectors"
+__title__ = "model description for JST-PH Connectors"
 __author__ = "poeschlr"
-__Comment__ = 'model description for JST-XH Connectors using cadquery'
+__Comment__ = 'model description for JST-PH Connectors using cadquery. Datasheet: http://www.jst-mfg.com/product/pdf/eng/ePH.pdf'
 
-___ver___ = "1.1 10/04/2016"
+___ver___ = "1.0 02/03/2017"
 
 import sys
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from conn_jst_xh_params import *
+from conn_jst_ph_params import *
 
 def union_all(objects):
     o = objects[0]
@@ -163,16 +163,35 @@ def generate_angled_pins(params):
 def generate_angled_body(params):
     body_width = params.body_width
     body_height = params.body_height
-    body_lenght = params.body_length
+    body_length = params.body_length
     zdistance = params.zdistance
     d = params.pin_angle_distance
 
-    body_fin_lenght = 11.5-body_height
-    body_fin_width = 0.5
-    body_fin_height = 5
-    body_fin_back_height = 2.5
+    body_fin_lenght = 1.6
+    body_fin_width = 1
+    body_fin_height = 3.8
+    body_fin_back_height = 2.9
 
     body = generate_straight_body(params)
+
+    cutout2 = cq.Workplane("XZ").workplane(offset=-body_corner_y)\
+        .moveTo(body_corner_x+body_front_cutout_from_side,
+                body_height-body_front_cutout_from_top)\
+        .vLineTo(0)\
+        .hLine(body_front_cutout_width)\
+        .vLineTo(body_height-body_front_cutout_from_top)\
+        .close().extrude(-body_front_width,False)
+    body = body.cut(cutout2)
+
+    cutout3 = cq.Workplane("XZ").workplane(offset=-body_corner_y)\
+        .moveTo(body_corner_x+body_length-body_front_cutout_from_side,
+              body_height-body_front_cutout_from_top)\
+        .vLineTo(0)\
+        .hLine(-body_front_cutout_width)\
+        .vLineTo(body_height-body_front_cutout_from_top)\
+        .close().extrude(-body_front_width,False)
+    body = body.cut(cutout3)
+
     body = body.rotate((0,body_width+body_corner_y,0),(1,0,0),-90)
     body = body.translate((0,-(body_width+body_corner_y)+d,zdistance))
 
@@ -182,7 +201,7 @@ def generate_angled_body(params):
         .vLineTo(0).hLine(body_fin_lenght+body_height)\
         .vLine(zdistance).close().extrude(body_fin_width)
     body=body.union(fin)
-    body=body.union(fin.translate((body_lenght-body_fin_width,0,0)))
+    body=body.union(fin.translate((body_length-body_fin_width,0,0)))
 
     return body.union(fin)
 
@@ -196,16 +215,11 @@ def generate_straight_body(params):
     body_width = params.body_width
     body_height = params.body_height
     body_length = params.body_length
-    body_plug_depth = 5.15
+    body_plug_depth = 4.2
 
-    body_front_width = 0.85
-    body_side_width = 0.85
-    body_back_width = 0.75
-
-    body_cutout_radius = 0.5
-    body_side_cutout_depth = 3.35
-    body_side_cutout_width = 1
-    body_front_cutout_depth = 3.9
+    body_side_cutout_depth = 2
+    body_side_cutout_width = 0.8
+    body_side_cutout_from_front = 1.5
 
     body_off_center_y = (body_front_width-body_back_width)/2
 
@@ -217,57 +231,49 @@ def generate_straight_body(params):
         .rect(body_length-2*body_side_width, body_width-body_front_width-body_back_width)\
         .cutBlind(-body_plug_depth)
 
-    pcs1 = (body_width/2-body_front_width, body_height/2)
-    pcs2 = v_add(pcs1, (0, -body_side_cutout_depth+body_cutout_radius))
-    pcs3 = v_add(pcs2, (-body_cutout_radius, -body_cutout_radius))
-    pcsam = get_third_arc_point(pcs2, pcs3)
+    pcs1 = (body_width/2-body_side_cutout_from_front, body_height/2)
+    pcs2 = v_add(pcs1, (0, -body_side_cutout_depth+body_side_cutout_width/2))
+    pcs3 = v_add(pcs2, (-body_side_cutout_width, -0))
+    #pcsam = get_third_arc_point(pcs2, pcs3)
+    pcsam = v_add(pcs2, (-body_side_cutout_width/2, -body_side_cutout_width/2))
 
     body = body.faces("<X").workplane()\
         .moveTo(pcs1[0], pcs1[1])\
         .lineTo(pcs2[0], pcs2[1])\
         .threePointArc(pcsam, pcs3)\
-        .line(-body_side_cutout_width+body_cutout_radius, 0)\
-        .line(0, body_side_cutout_depth).close()\
+        .line(0, body_side_cutout_depth-body_side_cutout_width/2).close()\
         .cutThruAll()
 
-    if(num_pins>2):
-        f_cutout_distance = body_length-6.9
-        body_front_cutout_width = 1.5
-    else:
-        f_cutout_distance = 0
-        body_front_cutout_width = 3.5/2
+    cutout1 = body.faces("<Y").workplane()\
+        .move(-body_length/2+body_front_main_cutout_to_side,body_height/2)\
+        .vLine(-body_front_main_cutout_depth)\
+        .hLineTo(body_length/2-body_front_main_cutout_to_side)\
+        .vLine(body_front_main_cutout_depth)\
+        .close().extrude(-1,False)
+    body = body.cut(cutout1)
 
-    p_cutout_f=[(f_cutout_distance/2, body_height/2)]
-    add_p_to_chain(p_cutout_f, (0, -body_front_cutout_depth))
-    add_p_to_chain(p_cutout_f, (body_front_cutout_width, 0))
-    add_p_to_chain(p_cutout_f, (0, 2.5))
-    add_p_to_chain(p_cutout_f, (-0.25, 0.25))
-    add_p_to_chain(p_cutout_f, (0.25, 0.25))
-    p_cutout_f.append(v_add(p_cutout_f[0],(body_front_cutout_width,0)))
+    cutout2 = cq.Workplane("XZ").workplane(offset=-body_corner_y)\
+        .moveTo(body_corner_x+body_front_cutout_from_side,
+                body_height-body_front_cutout_from_top)\
+        .vLine(-body_front_cutout_height)\
+        .hLine(body_front_cutout_width)\
+        .vLine(body_front_cutout_height)\
+        .close().extrude(-1,False)
+    body = body.cut(cutout2)
 
-    p_cutout_f2 = mirror(p_cutout_f)
-    cutout1 = body.faces("<Y").workplane()
-    cutout1 = poline(p_cutout_f,cutout1)
-    cutout1 = cutout1.close().extrude(-1,False)\
-        .faces("<Z").edges(">X").fillet(1.5*body_cutout_radius)
+    cutout3 = cq.Workplane("XZ").workplane(offset=-body_corner_y)\
+        .moveTo(body_corner_x+body_length-body_front_cutout_from_side,
+              body_height-body_front_cutout_from_top)\
+        .vLine(-body_front_cutout_height)\
+        .hLine(-body_front_cutout_width)\
+        .vLine(body_front_cutout_height)\
+        .close().extrude(-1,False)
+    body = body.cut(cutout3)
 
-    cutout2 = body.faces("<Y").workplane()
-    cutout2 = poline(p_cutout_f2,cutout2)
-    cutout2 = cutout2.close().extrude(-1,False)\
-        .faces("<Z").edges("<X").fillet(1.5*body_cutout_radius)
-
-    body = body.cut(cutout1.union(cutout2))
-    BS = cq.selectors.BoxSelector
-    body = body.edges(BS((body_corner_x+body_side_width/2+0.05,
-                          0,
-                          body_height-0.1),
-                          (body_corner_x+body_length-body_side_width/2-0.05,
-                          body_width/2,
-                          body_height+0.1))).chamfer(0.2)
     bottom_cutout_width = 1.5
-    bottom_cutout_depth = 1
+    bottom_cutout_depth = 0.2
     bottom_cutout_platou_len = 1
-    bottom_cutout_platou_depth = 0.3
+    bottom_cutout_platou_depth = 0.1
     bottom_cutout = cq.Workplane("YZ").workplane(offset=-bottom_cutout_width/2)\
         .moveTo(body_corner_y, 0).vLine(bottom_cutout_depth)\
         .lineTo(-bottom_cutout_platou_len/2.0,
@@ -278,6 +284,31 @@ def generate_straight_body(params):
 
     for i in range(0,num_pins):
         body = body.cut(bottom_cutout.translate((i*pin_pitch,0,0)))
+
+    body_back_prodrucion_from_top = 2.3
+    body_back_prodrucion_width = 0.4
+    body_back_prodrucion_depth = 0.3
+
+    body_back_prodrucion = cq.Workplane("XY")\
+        .workplane(offset=body_height-body_plug_depth)\
+        .moveTo(pin_pitch/2.0,
+                body_corner_y + body_width -
+                body_back_width - body_back_prodrucion_depth/2.0)\
+        .rect(body_back_prodrucion_width, body_back_prodrucion_depth)\
+        .extrude(body_plug_depth - body_back_prodrucion_from_top)
+    for i in range(num_pins-1):
+        body = body.union(body_back_prodrucion.translate((i*pin_pitch,0,0)))
+
+    body_pin1_prodrucion_depth = 0.05
+    body_pin1_prodrucion_width = 0.5
+    body_pin1_prodrucion = cq.Workplane("XY")\
+        .workplane(offset = body_height-body_front_cutout_from_top)\
+        .moveTo(body_corner_x + body_length -
+                body_front_cutout_width - body_pin1_prodrucion_width/2.0,
+                body_corner_y - body_pin1_prodrucion_depth/2.0)\
+                .rect(body_pin1_prodrucion_width, body_pin1_prodrucion_depth)\
+                .extrude(body_front_cutout_from_top)
+    body = body.union(body_pin1_prodrucion)
 
     return body
     #return bottom_cutout
@@ -295,10 +326,11 @@ def generate_part(params):
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "S02B_XH_A"
-    #part_to_build = "B02B_XH_A"
+    part_to_build = "B02B_PH_K"
+    part_to_build = "S03B_PH_K"
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    
+    all_params=params_straight
+    all_params.update(params_angled)
     (pins, body) = generate_part(all_params[part_to_build])
     show(pins)
     show(body)
