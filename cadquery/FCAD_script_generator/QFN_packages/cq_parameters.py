@@ -2841,7 +2841,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'Texas_S-PVSON-N10': Params( # from http://www.ti.com/lit/ml/mpds117k/mpds117k.pdf
+    'Texas_S-PVSON-N10': Params( # from http://www.ti.com/lit/ds/symlink/lm5165.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.4,        # pin top flat part length (including fillet radius)
@@ -2850,7 +2850,7 @@ kicad_naming_params_qfn = {
         fp_d = 0.1,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        cce = 0.3,      #0.45 chamfer of the epad 1st pin corner
         D = 3.0,       # body overall length
         E = 3.0,       # body overall width
         A1 = 0.02,  # body-board separation  maui to check
