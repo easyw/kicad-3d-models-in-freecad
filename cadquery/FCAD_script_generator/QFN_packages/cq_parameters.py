@@ -2832,11 +2832,11 @@ kicad_naming_params_qfn = {
         b = 0.24,  # pin width
         e = 0.4,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
-        ps = 'square',   # rounded pads
+        ps = 'rounded',   # rounded pads
         npx = 6,  # number of pins along X axis (width)
-        npy = 0,  # number of pins along y axis (length)
-        epad = (1.6, 2.5), # e Pad #epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
+        npy = 6,  # number of pins along y axis (length)
+        epad = (2.0, 2.24), # e Pad #epad = None, # e Pad
+        excluded_pins = (8,9,10,11,20,21,22,23), #no pin excluded
         modelName = 'Texas_S-PDSO-N12', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
@@ -3049,7 +3049,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'WSON14_4x4mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/lp3947.pdf
+    'WSON-14_1EP_4.0x4.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/lp3947.pdf
         c = 0.1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.4,        # pin top flat part length (including fillet radius)
@@ -3071,7 +3071,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (3.0, 2.6), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'WSON14_4x4mm_Pitch0.5mm', #modelName
+        modelName = 'WSON-14_1EP_4.0x4.0mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
