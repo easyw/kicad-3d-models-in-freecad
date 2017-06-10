@@ -162,8 +162,7 @@ params_straight = {
     "B13B_PH_K" : make_params_straight(13, 'B13B_PH_K'),
     "B14B_PH_K" : make_params_straight(14, 'B14B_PH_K'),
     "B15B_PH_K" : make_params_straight(15, 'B15B_PH_K'),
-    "B16B_PH_K" : make_params_straight(16, 'B16B_PH_K'),
-    "B20B_PH_K" : make_params_straight(20, 'B20B_PH_K')
+    "B16B_PH_K" : make_params_straight(16, 'B16B_PH_K')
 }
 
 params_angled = {
