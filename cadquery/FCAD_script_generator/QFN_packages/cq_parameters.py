@@ -2834,9 +2834,9 @@ kicad_naming_params_qfn = {
         m = 0.0,  # margin between pins and body  
         ps = 'rounded',   # rounded pads
         npx = 6,  # number of pins along X axis (width)
-        npy = 6,  # number of pins along y axis (length)
-        epad = (2.0, 2.24), # e Pad #epad = None, # e Pad
-        excluded_pins = (8,9,10,11,20,21,22,23), #no pin excluded
+        npy = 7,  # number of pins along y axis (length)
+        epad = (2.0, 2.64), # e Pad #epad = None, # e Pad
+        excluded_pins = (8,9,10,11,12,21,22,23,24,25), #
         modelName = 'Texas_S-PDSO-N12', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
@@ -2858,10 +2858,10 @@ kicad_naming_params_qfn = {
         b = 0.24,  # pin width
         e = 0.5,  # pin (center-to-center) distance
         m = 0.0,  # margin between pins and body  
-        ps = 'square',   # rounded pads
+        ps = 'rounded',   # rounded pads
         npx = 5,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-        epad = (2.5, 2.0), # e Pad #epad = None, # e Pad
+        epad = (2.5, 1.8), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'Texas_S-PVSON-N10', #modelName
         rotation = -90, # rotation if required
