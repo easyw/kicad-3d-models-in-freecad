@@ -2860,9 +2860,9 @@ kicad_naming_params_qfn = {
         m = 0.0,  # margin between pins and body  
         ps = 'rounded',   # rounded pads
         npx = 5,  # number of pins along X axis (width)
-        npy = 0,  # number of pins along y axis (length)
+        npy = 2,  # number of pins along y axis (length)
         epad = (2.5, 1.8), # e Pad #epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
+        excluded_pins = None,
         modelName = 'Texas_S-PVSON-N10', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
