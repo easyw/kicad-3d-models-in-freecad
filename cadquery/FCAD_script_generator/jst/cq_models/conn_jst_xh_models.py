@@ -298,9 +298,7 @@ if "module" in __name__ :
     part_to_build = "S02B_XH_A"
     #part_to_build = "B02B_XH_A"
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    all_params=params_straight
-    all_params.update(params_angled)
-    all_params.update(params_angled_compact)
+    
     (pins, body) = generate_part(all_params[part_to_build])
     show(pins)
     show(body)

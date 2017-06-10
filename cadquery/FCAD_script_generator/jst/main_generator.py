@@ -44,10 +44,10 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of JST-XH-Connectors."
+__title__ = "make 3D models of JST-PH-Connectors."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types B??B-XH-A. (Top entry),
-                S??B-XH-A (Side entry) and S??B-XH-A-1 (Side entry compact version).'''
+__Comment__ = '''make 3D models of JST-PH-Connectors types B??B-PH-K. (THT Top entry),
+                S??B-PH-K (THT Side entry)'''
 
 ___ver___ = "1.1 10/04/2016"
 
@@ -168,7 +168,9 @@ from collections import namedtuple
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 sys.path.append("cq_models")
-import conn_jst_xh_models as M
+import conn_jst_ph_models as ModelPH
+import conn_jst_eh_models as ModelEH
+import conn_jst_xh_models as ModelXH
 import step_license as L
 
 if float(cq.__version__[:-2]) < 0.3:
@@ -178,14 +180,14 @@ if float(cq.__version__[:-2]) < 0.3:
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 
-def export_one_part(params):
+def export_one_part(params, series):
     FreeCAD.Console.PrintMessage('\r\n'+params.model_name)
     ModelName = params.model_name
     FileName = params.file_name
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = M.generate_part(params)
+    (pins, body) = series.generate_part(params)
 
     color_attr = body_color + (0,)
     show(body, color_attr)
@@ -233,10 +235,11 @@ def export_one_part(params):
 
     saveFCdoc(App, Gui, doc, FileName,out_dir)
 
-def exportSeries(series_params, model_filter_regobj):
+def exportSeries(series_params, model_filter_regobj, series):
     for key in series_params.keys():
         if model_filter_regobj.match(key):
-            export_one_part(series_params[key])
+            FreeCAD.Console.PrintMessage('Current Model: '+str(key)+'\r\n')
+            export_one_part(series_params[key], series)
 
 
 if __name__ == "__main__":
@@ -244,32 +247,37 @@ if __name__ == "__main__":
     if not os.path.exists(destination_dir):
         os.makedirs(destination_dir)
     series_to_build = []
-    modelfilter = ""
-    for arg in sys.argv[1:]:
+    modelfilter = "*"
+
+
+    for arg in sys.argv[2:]:
         if arg.startswith("series="):
-            series_to_build += arg[len("series="):].split(',')
-        if arg.startswith("filter="):
+            series_to_build += arg[len("series="):].lower().split(',')
+        elif arg.startswith("filter="):
             modelfilter = arg[len("filter="):]
+        elif len(sys.argv) == 3:
+            #fallback mode: only one parameter. This parameter is either all or the name of the model to build.
+            if sys.argv[2] == "all":
+                series_to_build = ['xh', 'eh', 'ph']
+                modelfilter = "*"
+            elif not '=' in sys.argv[2]:
+                modelfilter = sys.argv[2]
+
 
 
     if len(series_to_build) == 0:
-        if len(modelfilter) == 0:
-            modelfilter = "*"
-            series_to_build = ['straight', 'angled']
-        else:
-            series_to_build = ['straight', 'angled', 'compact']
-    elif len(modelfilter) == 0:
-        modelfilter = "*"
+        series_to_build = ['xh', 'eh', 'ph']
+
+    series = []
+    if 'xh' in series_to_build:
+        series += [ModelXH]
+    if 'eh' in series_to_build:
+        series += [ModelEH]
+    if 'ph' in series_to_build:
+        series += [ModelPH]
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
-
-    if 'straight' in series_to_build:
-        exportSeries(M.params_straight, model_filter_regobj)
-
-    if 'angled' in series_to_build:
-        exportSeries(M.params_angled, model_filter_regobj)
-
-    if 'compact' in series_to_build:
-        exportSeries(M.params_angled_compact, model_filter_regobj)
+    for current_series in series:
+        exportSeries(current_series.all_params, model_filter_regobj, current_series)
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')

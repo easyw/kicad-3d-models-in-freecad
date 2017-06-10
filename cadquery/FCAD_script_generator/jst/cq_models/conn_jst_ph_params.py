@@ -183,3 +183,6 @@ params_angled = {
     "S15B_PH_K" : make_params_angled(15, 'S15B_PH_K'),
     "S16B_PH_K" : make_params_angled(16, 'S16B_PH_K')
 }
+
+all_params=params_straight
+all_params.update(params_angled)

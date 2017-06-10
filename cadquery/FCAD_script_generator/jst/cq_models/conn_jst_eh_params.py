@@ -179,3 +179,6 @@ params_angled = {
     "S14B_EH_A" : make_params_angled(14, 'S14B_EH_A'),
     "S15B_EH_A" : make_params_angled(15, 'S15B_EH_A')
 }
+
+all_params=params_straight
+all_params.update(params_angled)
