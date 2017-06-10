@@ -131,7 +131,7 @@ def make_params_angled(num_pins, name):
         body_height=6.0,
         body_length=2*1.95+(num_pins-1)*pin_pitch,
         zdistance=4.8-4.5,
-        file_name="JST_PH_B{num_pins:02d}B-PH-K_{num_pins:02d}x{pin_pitch:.2f}mm_Straight".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        file_name="JST_PH_S{num_pins:d}S-PH-K_{num_pins:02d}x{pin_pitch:.2f}mm_Straight".format(num_pins=num_pins, pin_pitch=pin_pitch)
     )
 def make_params_straight(num_pins, name):
     return Params(
@@ -144,7 +144,7 @@ def make_params_straight(num_pins, name):
         body_height=6.0,
         body_length=2*1.95+(num_pins-1)*pin_pitch,
         zdistance=6.1-5.75,
-        file_name="JST_PH_B{num_pins:02d}B-PH-K_{num_pins:02d}x{pin_pitch:.2f}mm_Straight".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        file_name="JST_PH_B{num_pins:d}B-PH-K_{num_pins:02d}x{pin_pitch:.2f}mm_Straight".format(num_pins=num_pins, pin_pitch=pin_pitch)
     )
 
 params_straight = {
