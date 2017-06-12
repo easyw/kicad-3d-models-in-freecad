@@ -2934,13 +2934,14 @@ kicad_naming_params_qfn = {
         A1 = 0.02,  	# body-board separation  maui to check
         A2 = 0.9,  		# body height
         b = 0.28,  		# pin width
-        e = 0.5,  		# pin (center-to-center) distance
+        e = 0.25,  		# pin (center-to-center) distance
         m = 0.0,  		# margin between pins and body  
         ps = 'rounded', # rounded pads
         npx = 9,  		# number of pins along X axis (width)
         npy = 9,  		# number of pins along y axis (length)
         epad = (2.05, 2.05), # e Pad #epad = None, # e Pad
-        excluded_pins = (1,2,4,5,6,8,9,10,11,17,18,19,20,22,23,24,26,27,28,29,35,36), #
+        excluded_pins = ( 2,4,6,8, 10,12,13,14,15,16,18, 20,22,24,26, 28,30,31,32,33,34,36), #
+#        excluded_pins = ( 1,3,4,5,6,7,9, 11,13,15,17, 19,21,22,23,24,25,27, 29,31,33,35,37), #
         modelName = 'Texas_S-PVQFN-N14_4.3x4.3_Pitch0.5mm_ThermalPad', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
