@@ -533,7 +533,7 @@ kicad_naming_params_qfn = {
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
         modelName = 'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm_Dia0.30mm', #modelName
-        rotation = -90, # rotation if required
+        rotation = 180, # rotation if required
         dest_dir_prefix = ''
         ),
 }
