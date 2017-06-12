@@ -111,7 +111,7 @@ kicad_naming_params_qfn = {
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
         modelName = 'Maxim_WLP-12_4x3_2.0x1.56mm_Pitch0.5mm', #modelName
-        rotation = 180, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
     'BGA-16_4x4_1.92x1.92mm_Pitch0.5mm': Params( # from http://www.st.com/content/ccc/resource/technical/document/datasheet/group2/bc/cd/62/9e/8f/30/47/69/CD00151267/files/CD00151267.pdf/jcr:content/translations/en.CD00151267.pdf
@@ -503,15 +503,15 @@ kicad_naming_params_qfn = {
         fp_d = 0.01,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
         ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        D = 1.86,       # body overall length
-        E = 1.36,       # body overall width
+        D = 1.36,       # body overall length
+        E = 1.86,       # body overall width
         A1 = 0.17,  	# body-board separation 
         A = 0.625,  	# body  overall height
         b = 0.25,  		# ball pin width diameter with a small extra to obtain a union of balls and case
         e = 0.5,  		# pin (center-to-center) distance
         sp = 0.0, 		# seating plane (pcb penetration)
-        npx = 4,  		# number of pins along X axis (width)
-        npy = 3,  		# number of pins along y axis (length)
+        npx = 3,  		# number of pins along X axis (width)
+        npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
         modelName = 'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm_Dia0.25mm', #modelName
         rotation = -90, # rotation if required
@@ -533,7 +533,7 @@ kicad_naming_params_qfn = {
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
         modelName = 'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm_Dia0.30mm', #modelName
-        rotation = 180, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
 }
