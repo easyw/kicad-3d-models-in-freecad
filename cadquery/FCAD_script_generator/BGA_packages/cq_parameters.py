@@ -95,7 +95,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'Maxim_WLP-12_4x3_2.0x1.56mm_Pitch0.5mm': Params( # W121B2+1 from http://pdfserv.maximintegrated.com/package_dwgs/21-0009.PDF
+    'Maxim_WLP-12_4x3_2.04x1.56mm_Pitch0.5mm': Params( # W121B2+1 from http://pdfserv.maximintegrated.com/package_dwgs/21-0009.PDF
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.04,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -110,7 +110,7 @@ kicad_naming_params_qfn = {
         npx = 3,  		# number of pins along X axis (width)
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
-        modelName = 'Maxim_WLP-12_4x3_2.0x1.56mm_Pitch0.5mm', #modelName
+        modelName = 'Maxim_WLP-12_4x3_2.04x1.56mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
@@ -498,7 +498,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm_Dia0.25mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+    'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -513,11 +513,11 @@ kicad_naming_params_qfn = {
         npx = 3,  		# number of pins along X axis (width)
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
-        modelName = 'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm_Dia0.25mm', #modelName
+        modelName = 'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm_Dia0.30mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+    'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -532,7 +532,7 @@ kicad_naming_params_qfn = {
         npx = 3,  		# number of pins along X axis (width)
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
-        modelName = 'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm_Dia0.30mm', #modelName
+        modelName = 'Texas_Junior_DSBGA-12_4x3_2.5x2.0mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
