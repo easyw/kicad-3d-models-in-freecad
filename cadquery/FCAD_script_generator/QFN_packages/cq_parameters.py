@@ -2893,7 +2893,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'Texas_R_PUQFN-N12_2.0x1.7_Pitch0.4mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+    'Texas_R_PUQFN-N12': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,         # Fillet radius for pin edges
         L = 0.4,   		# pin top flat part length (including fillet radius)
@@ -2915,11 +2915,11 @@ kicad_naming_params_qfn = {
         npy = 1,  		# number of pins along y axis (length)
         epad = None, 	# e Pad #epad = None, # e Pad
         excluded_pins = None, #
-        modelName = 'Texas_R_PUQFN-N12_2.0x1.7_Pitch0.4mm', #modelName
+        modelName = 'Texas_R_PUQFN-N12', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
-    'Texas_S-PVQFN-N14_4.3x4.3_Pitch0.5mm_ThermalPad': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+    'Texas_S-PVQFN-N14': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,         # Fillet radius for pin edges
         L = 0.4,   		# pin top flat part length (including fillet radius)
@@ -2942,7 +2942,7 @@ kicad_naming_params_qfn = {
         epad = (2.05, 2.05), # e Pad #epad = None, # e Pad
         excluded_pins = ( 2,4,6,8, 10,12,13,14,15,16,18, 20,22,24,26, 28,30,31,32,33,34,36), #
 #        excluded_pins = ( 1,3,4,5,6,7,9, 11,13,15,17, 19,21,22,23,24,25,27, 29,31,33,35,37), #
-        modelName = 'Texas_S-PVQFN-N14_4.3x4.3_Pitch0.5mm_ThermalPad', #modelName
+        modelName = 'Texas_S-PVQFN-N14', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
