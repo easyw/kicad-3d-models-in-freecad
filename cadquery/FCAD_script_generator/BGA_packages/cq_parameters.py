@@ -95,7 +95,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'Maxim_WLP-12_4x3_2.04x1.56mm_Pitch0.5mm': Params( # W121B2+1 from http://pdfserv.maximintegrated.com/package_dwgs/21-0009.PDF
+    'Maxim_WLP-12': Params( # W121B2+1 from http://pdfserv.maximintegrated.com/package_dwgs/21-0009.PDF
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.04,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -110,7 +110,7 @@ kicad_naming_params_qfn = {
         npx = 3,  		# number of pins along X axis (width)
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
-        modelName = 'Maxim_WLP-12_4x3_2.04x1.56mm_Pitch0.5mm', #modelName
+        modelName = 'Maxim_WLP-12', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
