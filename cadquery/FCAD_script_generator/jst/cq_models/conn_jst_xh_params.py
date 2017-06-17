@@ -201,3 +201,7 @@ params_angled_compact = {
     "S14B_XH_A_1" : make_params_angled_short(14, 'S14B_XH_A_1'),
     "S15B_XH_A_1" : make_params_angled_short(15, 'S15B_XH_A_1')
 }
+
+all_params=params_straight
+all_params.update(params_angled)
+all_params.update(params_angled_compact)

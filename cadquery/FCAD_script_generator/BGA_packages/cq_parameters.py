@@ -498,4 +498,42 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
+    'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 1.36,       # body overall length
+        E = 1.86,       # body overall width
+        A1 = 0.17,  	# body-board separation 
+        A = 0.625,  	# body  overall height
+        b = 0.25,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 3,  		# number of pins along X axis (width)
+        npy = 4,  		# number of pins along y axis (length)
+        excluded_pins = ("None",), #pins to exclude -> None or "internals"
+        modelName = 'DSBGA-12_3x4_1.36x1.86mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
+    'Texas_Junior_DSBGA-12': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 2.00,       # body overall length
+        E = 2.50,       # body overall width
+        A1 = 0.20,  	# body-board separation 
+        A = 0.36,  		# body  overall height
+        b = 0.30,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 3,  		# number of pins along X axis (width)
+        npy = 4,  		# number of pins along y axis (length)
+        excluded_pins = ("None",), #pins to exclude -> None or "internals"
+        modelName = 'Texas_Junior_DSBGA-12', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
 }
