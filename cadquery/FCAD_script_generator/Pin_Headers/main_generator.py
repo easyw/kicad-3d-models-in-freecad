@@ -86,6 +86,7 @@ logging.getLogger('builder').addHandler(logging.NullHandler())
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
+sys.path.append(scriptdir)
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -168,47 +169,36 @@ def MakeBase(n, params):
         offset = params.p * (params.rows - 1) / 2.0
         base = base.translate((0,offset,0))
     if params.type == 'Angled':
-        base = base.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.h+params.hb-params.pw/2,params.w/2))
+        base = base.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.hb+params.h+(params.rows-1)*params.p,params.h/2))
     return base
     
 #make a single pin
 def MakePin(n, row, params):
-    row_offset = row-1
+    row_offset = row*params.p
     if params.type == 'Straight':
-        pin = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pw).extrude(params.ph+params.pa)
+        pin = cq.Workplane("XY").workplane(offset=-params.ph+params.hb).rect(params.pw,params.pw).extrude(params.ph+params.pa).translate((0,row_offset,0))
     
         #chamfer each end of the pin if required
         if params.pc > 0:
             pin = pin.faces("<Z").chamfer(params.pc)
             pin = pin.faces(">Z").chamfer(params.pc)
-    
-    elif params.type == 'Angled':
-        horizontal_pin_height = params.ph+params.w-params.w/(row*2)-params.pw/2
-        pin = cq.Workplane("XY").box(params.pw,params.pa+params.hb,params.pw,horizontal_pin_height,False).translate((-params.ph,0,0))
-        pin_cutout = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pa+params.hb).extrude(params.ph+(params.w+params.pw)/2)
-        '''
-        . \
-        threePointArc((S+R1/sqrt(2), A1+A2_b-R1*(1-1/sqrt(2))),
-                      (S+R1, A1+A2_b-R1)). \
-        line(0, -(A1+A2_b-R1-R2_o)). \
-        threePointArc((S+R1+R2_o*(1-1/sqrt(2)), R2_o*(1-1/sqrt(2))),
-                      (S+R1+R2_o, 0)). \
-        line(L-R2_o, 0). \
-        line(0, c). \
-        line(-(L-R2_o), 0). \
-        threePointArc((S+R1+R2_o-R2/sqrt(2), c+R2*(1-1/sqrt(2))),
-                      (S+R1+R2_o-R1, c+R2)). \
-        lineTo(S+R1+c, A1+A2_b-R1). \
-        threePointArc((S+R1_o/sqrt(2), A1+A2_b+c-R1_o*(1-1/sqrt(2))),
-                      (S, A1+A2_b+c)). \
-        line(-S-tb_s, 0).close().extrude(b).translate((-b/2,0,0))
         
-        pin = cq.Workplane("XY").workplane(offset=-params.ph).rect(params.pw,params.pw).extrude()
-        horisontalpin = cq.Workplane("XZ").workplane(offset= -params.pw/2-row_offset*params.p).rect(params.pw,params.pw).extrude(-params.hb-params.pa+params.pw).translate((0,0,params.w/2+row_offset*params.p))
-        pin = pin.union(cq.Workplane("XY").workplane(offset=params.w/2-params.pw/2+row_offset*params.p).rect(params.pw, params.pw, False) \
-        .revolve(90).rotate((0, 0, 0),(0, 0, 1), -90).translate((-(params.pw/2),params.pw/2,0)))
-        pin = pin.union(horisontalpin).translate((0,-(row_offset*params.p),0))
-        '''
+    elif params.type == 'Angled':
+        R1 = params.pw/2 # pin upper corner inner radius
+        R1_o = R1+params.pw # pin upper corner, outer radius
+
+        pin = cq.Workplane("YZ", (0,0,0,)). \
+        moveTo(params.pa+params.hb+row_offset, (params.w/params.rows-params.pw)/2). \
+        line(-params.pa-params.hb-row_offset+R1+params.pw/2, 0). \
+        threePointArc((params.pw/sqrt(2), (params.w/params.rows-params.pw)/2-R1*(1-1/sqrt(2))),
+                      ((params.pw/2, (params.w/params.rows-params.pw)/2-R1))). \
+        line(0, -(params.w/params.rows-params.pw)/2-R1-params.ph-row_offset). \
+        line(-params.pw,0). \
+        line(0, ((params.w/params.rows)-params.pw)/2+R1+params.ph+row_offset). \
+        threePointArc((-(R1-params.pw/2)/sqrt(2), (params.w/params.rows+params.pw)/2-R1_o*(1-1/sqrt(2))),
+                      (R1_o-params.pw/2, (params.w/params.rows+params.pw)/2)). \
+        line(params.pa+params.hb-R1_o+params.pw/2+row_offset, 0).close().extrude(params.pw).translate((-params.pw/2,params.p*(params.rows-1-row),row_offset))
+        
         if params.pc > 0:
             pin = pin.faces("<Z").chamfer(params.pc)
             pin = pin.faces(">Y").chamfer(params.pc)
@@ -216,12 +206,12 @@ def MakePin(n, row, params):
 
     
 #make all the pins
-def MakePinRow(n, row, params):
+def MakePinRow(n, ROW, params):
     #make some pins
-    pin = MakePin(1, row, params)
+    pin = MakePin(1, ROW, params)
     
     for i in range(1,n):
-        pin = pin.union(MakePin(1, row, params).translate((params.p * i,0,0)))
+        pin = pin.union(MakePin(1, ROW, params).translate((params.p * i,0,0)))
     
     return pin
 
@@ -262,12 +252,12 @@ def MakeHeader(n, params):
     App.setActiveDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins = MakePinRow(n,1,params)
+    pins = MakePinRow(n,0,params)
     
     #duplicate pin rows
     if params.rows > 1:
         for i in range(1,params.rows):
-            pins = pins.union(MakePinRow(n,i,params).translate((0,i*params.p,0)))
+            pins = pins.union(MakePinRow(n,i,params))
     
     base = MakeBase(n,params)
         
@@ -345,11 +335,11 @@ def MakeHeader(n, params):
 
     return 0
     
+#import step_license as L
 import add_license as Lic
 
 if __name__ == "__main__" or __name__ == "main_generator":
     
-    global LIST_license
     models = []
     pins = []
     
