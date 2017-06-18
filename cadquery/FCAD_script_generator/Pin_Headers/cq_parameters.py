@@ -11,7 +11,7 @@
 ## file of parametric definitions
 from collections import namedtuple
 
-destination_dir="./generated_pinheaders/"
+destination_dir="../generated_pinheaders/"
 
 Params = namedtuple("Params", [
     'p', # pitch (separaration between pins)
@@ -19,134 +19,185 @@ Params = namedtuple("Params", [
     'w', #width of plastic base
     'c', # chamfering of plastic base
     'h', # height of plastic base
-    'hb', # heigh of plastic base above board for SMD (or to the back of pin for Angled)
+    'hb', # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
     'pw', #pin width (square pins only)
     'pc', #pin end chamfer amount
-    'pa', #pin height above board
-    'ph', #pin length below board
+    'pa', #pin lenght from bottom of base to pintip
+    'ph', #pin length below board 
     'rot', #rotation if required
     'type', #Angled or Straight
 ])
 
 kicad_naming_params_pin_headers = {
-    '254singleH10': Params(		
-        p = 2.54,
-        w = 2.5,
-        rows = 1,
-        c = 0.25,
-        h = 2.54,
-        hb = 0,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 6 + 2.54,
-        ph = 3.05,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Straight_1xyy_Pitch2.54mm': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
+        p = 2.54, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.54, #width of plastic base
+        c = 0.25, # chamfering of plastic base
+        h = 2.54, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.64, #pin width (square pins only)
+        pc = 0.15, #pin end chamfer amount
+        pa = 6 + 2.54, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
     ),
-    '254single': Params(
-        p = 2.54,
-        w = 2.5,
-        rows = 1,
-        c = 0.25,
-        h = 2.5,
-        hb = 0,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 11,
-        ph = 3.3,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Straight_2xyy_Pitch2.54mm': Params( #from http://katalog.we-online.de/em/datasheet/6130xx21121.pdf
+        p = 2.54, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 5.08, #width of plastic base
+        c = 0.25, # chamfering of plastic base
+        h = 2.54, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.64, #pin width (square pins only)
+        pc = 0.15, #pin end chamfer amount
+        pa = 6 + 2.54, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
     ),
-    '254dual': Params(
-        p = 2.54,
-        w = 5.0,
-        rows = 2,
-        c = 0.25,
-        h = 2.5,
-        hb = 0,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 11,
-        ph = 3.3,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Angled_1xyy_Pitch2.54mm': Params( # from http://katalog.we-online.de/em/datasheet/6130xx11021.pdf    
+        p = 2.54, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.54, #width of plastic base
+        c = 0.25, # chamfering of plastic base
+        h = 2.54, # height of plastic base
+        hb = 1.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.64, #pin width (square pins only)
+        pc = 0.15, #pin end chamfer amount
+        pa = 6 + 2.54, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
     ),
-    #2.00mm pitch, single row
-    #e.g. http://multimedia.3m.com/mws/media/438474O/3mtm-pin-strip-header-ts2156.pdf
-    '200single': Params(
-        p = 2.00,
-        w = 2.0,
-        rows = 1,
-        c = 0.25,
-        h = 1.5,
-        hb = 0,
-        pw = 0.5,
-        pc = 0.1,
-        pa = 5.9,
-        ph = 2.8,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Angled_2xyy_Pitch2.54mm': Params( # from http://katalog.we-online.de/em/datasheet/6130xx21021.pdf
+        p = 2.54, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 5.08, #width of plastic base
+        c = 0.25, # chamfering of plastic base
+        h = 2.54, # height of plastic base
+        hb = 1.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.64, #pin width (square pins only)
+        pc = 0.15, #pin end chamfer amount
+        pa = 6 + 2.54, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
     ),
-    #2.00mm pitch, dual row
-    #e.g. http://multimedia.3m.com/mws/media/438474O/3mtm-pin-strip-header-ts2156.pdf
-    '200dual': Params(
-        p = 2.00,
-        w = 4.0,
-        rows = 2,
-        c = 0.25,
-        h = 1.5,
-        hb = 0,
-        pw = 0.5,
-        pc = 0.1,
-        pa = 5.9,
-        ph = 2.8,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Straight_1xyy_Pitch2.00mm': Params( #from http://katalog.we-online.de/em/datasheet/6200xx11121.pdf
+        p = 2.00, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.00, #width of plastic base
+        c = 0.2, # chamfering of plastic base
+        h = 2.00, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.5, #pin width (square pins only)
+        pc = 0.125, #pin end chamfer amount
+        pa = 4.0 + 2.00, #pin lenght from bottom of base to pintip
+        ph = 2.8, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
     ),
-    #1.27mm pitch, single row
-    #e.g. http://www.sullinscorp.com/drawings/71_GRPB___1VWVN-RC,_10957-C.pdf
-    '127single': Params(
-        p = 1.27,
-        w = 2.14,
-        rows = 1,
-        c = 0.2,
-        h = 1.0,
-        hb = 0,
-        pw = 0.4,
-        pc = 0.1,
-        pa = 4.0,
-        ph = 2.3,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Straight_2xyy_Pitch2.00mm': Params( #from http://katalog.we-online.de/em/datasheet/6200xx21121.pdf
+        p = 2.00, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 4.0, #width of plastic base
+        c = 0.2, # chamfering of plastic base
+        h = 2.00, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.5, #pin width (square pins only)
+        pc = 0.125, #pin end chamfer amount
+        pa = 4.0 + 2.00, #pin lenght from bottom of base to pintip
+        ph = 2.8, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
     ),
-    #1.27mm pitch, dual row
-    #e.g. http://www.sullinscorp.com/drawings/71_GRPB___1VWVN-RC,_10957-C.pdf
-    '127dual': Params(
-        p = 1.27,
-        w = 3.4,
-        rows = 2,
-        c = 0.2,
-        h = 1.0,
-        hb = 0,
-        pw = 0.4,
-        pc = 0.1,
-        pa = 4.0,
-        ph = 2.3,
-        rot = -90,
-        type = 'Straight',
+    'Pin_Header_Angled_1xyy_Pitch2.00mm': Params( # from https://cdn.harwin.com/pdfs/M22-273.pdf
+        p = 2.00, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.00, #width of plastic base
+        c = 0.2, # chamfering of plastic base
+        h = 1.5, # height of plastic base
+        hb = 1.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.5, #pin width (square pins only)
+        pc = 0.125, #pin end chamfer amount
+        pa = 4.2 + 1.5, #pin lenght from bottom of base to pintip
+        ph = 2.4, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
     ),
-    'Pin_Header_Angled_Pitch2.54mm': Params(		
-        p = 2.54,
-        w = 5.0,
-        rows = 2,
-        c = 0.25,
-        h = 2.54,
-        hb = 1.82,
-        pw = 0.64,
-        pc = 0.15,
-        pa = 6 + 2.5,
-        ph = 3.05,
-        rot = 0,
-        type = 'Angled',
+    'Pin_Header_Angled_2xyy_Pitch2.00mm': Params( # from https://cdn.harwin.com/pdfs/M22-274.pdf
+        p = 2.00, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 4.0, #width of plastic base
+        c = 0.2, # chamfering of plastic base
+        h = 1.5, # height of plastic base
+        hb = 1.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.5, #pin width (square pins only)
+        pc = 0.125, #pin end chamfer amount
+        pa = 4.2 + 1.5, #pin lenght from bottom of base to pintip
+        ph = 2.4, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
+    ),
+
+
+
+    'Pin_Header_Straight_1xyy_Pitch1.27mm': Params( #from https://cdn.harwin.com/pdfs/M50-353.pdf
+        p = 1.27, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.1, #width of plastic base
+        c = 0.127, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.4, #pin width (square pins only)
+        pc = 0.1, #pin end chamfer amount
+        pa = 3.0 + 1, #pin lenght from bottom of base to pintip
+        ph = 2.3, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
+    ),
+    'Pin_Header_Straight_2xyy_Pitch1.27mm': Params( #from https://cdn.harwin.com/pdfs/HF212-W.pdf
+        p = 1.27, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 3.4, #width of plastic base
+        c = 0.127, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.4, #pin width (square pins only)
+        pc = 0.1, #pin end chamfer amount
+        pa = 3.0 + 1, #pin lenght from bottom of base to pintip
+        ph = 2.3, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
+    ),
+    'Pin_Header_Angled_1xyy_Pitch1.27mm': Params( # from http://katalog.we-online.de/em/datasheet/6130xx11021.pdf    
+        p = 1.27, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 2.1, #width of plastic base
+        c = 0.127, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.4, #pin width (square pins only)
+        pc = 0.1, #pin end chamfer amount
+        pa = 4.0 + 1, #pin lenght from bottom of base to pintip
+        ph = 2.4, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
+    ),
+    'Pin_Header_Angled_2xyy_Pitch1.27mm': Params( # from http://katalog.we-online.de/em/datasheet/6130xx21021.pdf
+        p = 1.27, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 3.4, #width of plastic base
+        c = 0.127, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.5, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.4, #pin width (square pins only)
+        pc = 0.1, #pin end chamfer amount
+        pa = 4.0 + 1, #pin lenght from bottom of base to pintip
+        ph = 2.4, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
     ),
 }
