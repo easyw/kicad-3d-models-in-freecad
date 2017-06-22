@@ -260,6 +260,7 @@ all_params = {
     "DIP-28_W7.62mm" : make_params(mm(1.4), 28, 'DIP-28_W7.62mm', 90),
     "DIP-24_W15.24mm" : make_paramsw(mm(1.25), 24, 'DIP-24_W15.24mm', 90),
     "DIP-28_W15.24mm" : make_paramsw(mm(1.4), 28, 'DIP-28_W15.24mm', 90),
+    "DIP-32_W7.62mm" : make_params(mm(1.63), 32, 'DIP-32_W7.62mm', 90),
     "DIP-32_W15.24mm" : make_paramsw(mm(1.63), 32, 'DIP-32_W15.24mm', 90),
     "DIP-40_W15.24mm" : make_paramsw(mm(2), 40, 'DIP-40_W15.24mm', 90),
     "DIP-48_W15.24mm" : make_paramsw(mm(2.42), 48, 'DIP-48_W15.24mm', 90),
