@@ -56,10 +56,16 @@ ___ver___ = "1.4.2 26/02/2017"
 # maui from Helpers import show
 from math import tan, cos, sin, radians, sqrt
 from collections import namedtuple
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
+global closeformerDoc
+closeformerDoc = False
+global formerDOC
 
 #from cq_cad_tools import say, sayw, saye
 
 import sys, os
+from sys import argv
 import datetime
 from datetime import datetime
 sys.path.append("../_tools")
@@ -146,48 +152,48 @@ all_params = kicad_naming_params_pin_headers
 #Make a single plastic base block (chamfered if required)
 def MakeBaseBlock(params):
     block = cq.Workplane("XY").rect(params.p, params.w).extrude(params.h)
-    
     #chamfer
     if params.c > 0:
-        block = block.edges("Z+").chamfer(params.c)
-    
+        block = block.edges("|Z").chamfer(params.c)
+        #move the base to the 'middle'
+    if params.rows > 1:
+        offset = params.p * (params.rows - 1) / 2.0
+        block = block.translate((0,offset,0))
+    if params.type == 'Angled':
+        block = block.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.hb+params.h+(params.rows-1)*params.p,params.h/2))
     return block
     
 #Make the plastic base
 #Note - making the 'blocks' separately and then making a UNION of the blocks seems to be the best way to get them to merge
 #make the plastic base
-def MakeBase(n, params):
-
-    base = MakeBaseBlock(params)
-    
-    for i in range(1,n):
+def MakeBase(n, params, pinarray):
+    global basecount
+    global base
+    if n == pinarray[0]:
+        base = MakeBaseBlock(params)
+        basecount = 1
+    for i in range(basecount,n):
         block = MakeBaseBlock(params).translate((i*params.p,0,0))
         base = base.union(block)
-        
-    #move the base to the 'middle'
-    if params.rows > 1:
-        offset = params.p * (params.rows - 1) / 2.0
-        base = base.translate((0,offset,0))
-    if params.type == 'Angled':
-        base = base.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.hb+params.h+(params.rows-1)*params.p,params.h/2))
+    basecount = n
     return base
     
 #make a single pin
 def MakePin(n, row, params):
     row_offset = row*params.p
     if params.type == 'Straight':
-        pin = cq.Workplane("XY").workplane(offset=-params.ph+params.hb).rect(params.pw,params.pw).extrude(params.ph+params.pa).translate((0,row_offset,0))
+        single_pin = cq.Workplane("XY").workplane(offset=-params.ph+params.hb).rect(params.pw,params.pw).extrude(params.ph+params.pa).translate((0,row_offset,0))
     
         #chamfer each end of the pin if required
         if params.pc > 0:
-            pin = pin.faces("<Z").chamfer(params.pc)
-            pin = pin.faces(">Z").chamfer(params.pc)
+            single_pin = single_pin.faces("<Z").chamfer(params.pc)
+            single_pin = single_pin.faces(">Z").chamfer(params.pc)
         
     elif params.type == 'Angled':
         R1 = params.pw/2 # pin upper corner inner radius
         R1_o = R1+params.pw # pin upper corner, outer radius
 
-        pin = cq.Workplane("YZ", (0,0,0,)). \
+        single_pin = cq.Workplane("YZ", (0,0,0,)). \
         moveTo(params.pa+params.hb+row_offset, (params.w/params.rows-params.pw)/2). \
         line(-params.pa-params.hb-row_offset+R1+params.pw/2, 0). \
         threePointArc((params.pw/sqrt(2), (params.w/params.rows-params.pw)/2-R1*(1-1/sqrt(2))),
@@ -200,19 +206,27 @@ def MakePin(n, row, params):
         line(params.pa+params.hb-R1_o+params.pw/2+row_offset, 0).close().extrude(params.pw).translate((-params.pw/2,params.p*(params.rows-1-row),row_offset))
         
         if params.pc > 0:
-            pin = pin.faces("<Z").chamfer(params.pc)
-            pin = pin.faces(">Y").chamfer(params.pc)
-    return pin
-
+            single_pin = single_pin.faces("<Z").chamfer(params.pc)
+            single_pin = single_pin.faces(">Y").chamfer(params.pc)
+    return single_pin
     
-#make all the pins
-def MakePinRow(n, ROW, params):
+#make all the pinarray
+def MakePinRow(n, ROW, params, pinarray):
+    global pincount
+    global pin
+    global pinset
     #make some pins
-    pin = MakePin(1, ROW, params)
+    if n == pinarray[0]:
+        pinset = MakePin(1, 0, params)
+        if params.rows > 1:
+            for i in range(1,params.rows):
+                pinset = pinset.union(MakePin(1, i, params))
+        pin = pinset
+        pincount = 0
     
-    for i in range(1,n):
-        pin = pin.union(MakePin(1, ROW, params).translate((params.p * i,0,0)))
-    
+    for i in range(pincount,n):
+        pin = pin.union(pinset.translate((params.p * i,0,0)))
+    pincount = n
     return pin
 
 #generate a name for the pin header
@@ -220,13 +234,13 @@ def HeaderName(n, params):
     return "Pin_Header_{}_{r:01}x{n:02}_Pitch{p:.2f}mm".format(params.type,r=params.rows,n=n,p=params.p)
     
 #make a pin header using supplied parameters, n pins in each row
-def MakeHeader(n, params):
-    
+def MakeHeader(n, params, pinarray):
+    global formerDOC
     global LIST_license
     name = HeaderName(n,params)
     
-    destination_dir="/Pin_Headers"
-    
+    # destination_dir="/Pin_Headers"
+
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
     scriptdir=os.path.dirname(os.path.realpath(__file__))
@@ -250,19 +264,17 @@ def MakeHeader(n, params):
    
     newdoc = App.newDocument(docname)
     App.setActiveDocument(docname)
+    App.ActiveDocument=App.getDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins = MakePinRow(n,0,params)
+    pins_output = MakePinRow(n,0,params,pinarray)
     
     #duplicate pin rows
-    if params.rows > 1:
-        for i in range(1,params.rows):
-            pins = pins.union(MakePinRow(n,i,params))
-    
-    base = MakeBase(n,params)
-        
-    show(base)
-    show(pins)
+
+    base_output = MakeBase(n,params,pinarray)
+
+    show(base_output)
+    show(pins_output)
 
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
@@ -327,12 +339,23 @@ def MakeHeader(n, params):
     #scale=0.3937001
     #exportVRML(doc,name,scale,out_dir)
     
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+    
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, name,out_dir)
-
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
-
+    Gui.activateWorkbench("StartWorkbench")
+    if save_memory == True:
+        App.setActiveDocument(docname)
+        App.ActiveDocument=App.getDocument(docname)
+        Gui.ActiveDocument=Gui.getDocument(docname)
+        if n != pinarray[0]:
+            #FreeCAD.closeDocument(formerDOC)
+            App.closeDocument(formerDOC)
+        FreeCADGui.updateGui()
+        formerDOC = docname
+    Gui.activateWorkbench("CadQueryWorkbench")
     return 0
     
 #import step_license as L
@@ -340,8 +363,9 @@ import add_license as Lic
 
 if __name__ == "__main__" or __name__ == "main_generator":
     
+    from sys import argv
     models = []
-    pins = []
+    pinrange = []
     
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building 254single')
@@ -351,10 +375,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         
     if model_to_build == 'all':
         models = [all_params[model_to_build] for model_to_build in all_params.keys()]
-        pins = range(1,41)
+        pinrange = range(1,41)
+        save_memory = True
     else:
         models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
-            
+        
     if len(sys.argv) < 4:
         FreeCAD.Console.PrintMessage("No pins specified, building 254single 1")
         p = "1"
@@ -364,10 +389,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
     #comma separarated pin numberings
     if ',' in p:
         try:
-            pins = map(int,p.split(','))
+            pinrange = map(int,p.split(','))
         except:
             FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid ,")
-            pins = []
+            pinrange = []
     
     #range of pins x-y
     elif '-' in p and len(p.split('-')) == 2:
@@ -375,26 +400,30 @@ if __name__ == "__main__" or __name__ == "main_generator":
         
         try:
             p1, p2 = int(ps[0]),int(ps[1])
-            pins = range(p1,p2+1)
+            pinrange = range(p1,p2+1)
         except:
             FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid -")
-            pins = []
+            pinrange = []
+        save_memory = True
             
     #otherwise try for a single pin
     else:
         try:
-            pin = int(p)
-            pins = [pin]
+            pin_number = int(p)
+            pinrange = [pin]
         except:
-            say("Pin argument '",p,"' is invalid")
-            pins = []
-                
+            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is isnvalid")
+            pinrange = []
+    
     #make all the seleted models
+    pincount = 0
+    basecount = 0
+
+    formerDOC = ""
+
     for model in models:
-        for pin in pins:
-            MakeHeader(pin,model)
-
-
+        for pin_number in pinrange:
+            MakeHeader(pin_number,model,pinrange)
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":
