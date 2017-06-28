@@ -515,6 +515,22 @@ def make_gw(params):
 #################################################
 import add_license as Lic
 
+def closeCurrentDoc(title):
+    mw = FreeCADGui.getMainWindow()
+    mdi = mw.findChild(QtGui.QMdiArea)
+    mdiWin = mdi.currentSubWindow()
+    print mdiWin.windowTitle()
+
+    # We have a 3D view selected so we need to find the corresponding script window
+    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle():
+        subList = mdi.subWindowList()
+
+        for sub in subList:
+            print sub.windowTitle().split(':')[0].strip()
+            if sub.windowTitle().split(':')[0].strip() == title:
+                sub.close()
+                return
+
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
     expVRML.say(expVRML.__file__)
@@ -546,8 +562,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=True
     save_memory=False #reducing memory consuming for all generation params
     if model_to_build == "all":
-        expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
-    #    variants = all_params.keys()
+        #expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
+        variants = all_params.keys()
+		save_memory=True
     #elif model_to_build == "SOIC":
     elif model_to_build == "allSOIC":
         variants = kicad_naming_params_soic.keys()
@@ -698,6 +715,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
             Gui.activeDocument().activeView().viewBottom()
             #Gui.activeDocument().activeView().viewAxometric()
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
+        if save_memory == True:
+            closeCurrentDoc(doc.Label)			  
         #sys.argv = ["fc", "dummy", all]
 
         #saveFCdoc(App, Gui, doc, ModelName,out_dir)
