@@ -564,7 +564,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     if model_to_build == "all":
         #expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
         variants = all_params.keys()
-		save_memory=True
+        save_memory=True
     #elif model_to_build == "SOIC":
     elif model_to_build == "allSOIC":
         variants = kicad_naming_params_soic.keys()
@@ -716,7 +716,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             #Gui.activeDocument().activeView().viewAxometric()
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         if save_memory == True:
-            closeCurrentDoc(doc.Label)			  
+            closeCurrentDoc(doc.Label)
         #sys.argv = ["fc", "dummy", all]
 
         #saveFCdoc(App, Gui, doc, ModelName,out_dir)
