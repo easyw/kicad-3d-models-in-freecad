@@ -558,4 +558,4 @@ def closeCurrentDoc(title):
             print sub.windowTitle().split(':')[0].strip() 
             if sub.windowTitle().split(':')[0].strip() == title: 
                 sub.close() 
-                return 
+                return
