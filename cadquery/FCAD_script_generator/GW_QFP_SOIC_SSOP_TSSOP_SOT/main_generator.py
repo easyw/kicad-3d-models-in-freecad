@@ -114,7 +114,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements, closeCurrentDoc
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -514,22 +514,6 @@ def make_gw(params):
 
 #################################################
 import add_license as Lic
-
-def closeCurrentDoc(title):
-    mw = FreeCADGui.getMainWindow()
-    mdi = mw.findChild(QtGui.QMdiArea)
-    mdiWin = mdi.currentSubWindow()
-    print mdiWin.windowTitle()
-
-    # We have a 3D view selected so we need to find the corresponding script window
-    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle():
-        subList = mdi.subWindowList()
-
-        for sub in subList:
-            print sub.windowTitle().split(':')[0].strip()
-            if sub.windowTitle().split(':')[0].strip() == title:
-                sub.close()
-                return
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
