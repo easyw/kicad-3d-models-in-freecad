@@ -11,7 +11,7 @@
 ## file of parametric definitions
 from collections import namedtuple
 
-destination_dir="../generated_pinheaders/"
+destination_dir="/Pin_Headers.3dshapes"
 
 Params = namedtuple("Params", [
     'p', # pitch (separaration between pins)

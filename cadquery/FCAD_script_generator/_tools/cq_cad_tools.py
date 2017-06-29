@@ -537,3 +537,25 @@ def checkRequirements(cq):
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
     return 0
+
+###################################################################
+# closeCurrentDoc()  maui/Jmwright
+#   Function to close the active window
+#
+###################################################################
+
+def closeCurrentDoc(title): 
+    mw = FreeCADGui.getMainWindow() 
+    mdi = mw.findChild(QtGui.QMdiArea) 
+    mdiWin = mdi.currentSubWindow() 
+    print mdiWin.windowTitle() 
+ 
+    # We have a 3D view selected so we need to find the corresponding script window 
+    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle(): 
+        subList = mdi.subWindowList() 
+ 
+        for sub in subList: 
+            print sub.windowTitle().split(':')[0].strip() 
+            if sub.windowTitle().split(':')[0].strip() == title: 
+                sub.close() 
+                return
