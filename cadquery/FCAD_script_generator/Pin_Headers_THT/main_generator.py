@@ -58,9 +58,6 @@ from math import tan, cos, sin, radians, sqrt
 from collections import namedtuple
 global save_memory
 save_memory = False #reducing memory consuming for all generation params
-global closeformerDoc
-closeformerDoc = False
-global formerDOC
 
 #from cq_cad_tools import say, sayw, saye
 
@@ -118,7 +115,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements, closeCurrentDoc
 
 
 # from export_x3d import exportX3D, Mesh
@@ -345,17 +342,8 @@ def MakeHeader(n, params, pinarray):
     
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, name,out_dir)
-    Gui.activateWorkbench("StartWorkbench")
     if save_memory == True:
-        App.setActiveDocument(docname)
-        App.ActiveDocument=App.getDocument(docname)
-        Gui.ActiveDocument=Gui.getDocument(docname)
-        if n != pinarray[0]:
-            #FreeCAD.closeDocument(formerDOC)
-            App.closeDocument(formerDOC)
-        FreeCADGui.updateGui()
-        formerDOC = docname
-    Gui.activateWorkbench("CadQueryWorkbench")
+        closeCurrentDoc(docname)
     return 0
     
 #import step_license as L
@@ -418,8 +406,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
     #make all the seleted models
     pincount = 0
     basecount = 0
-
-    formerDOC = ""
 
     for model in models:
         for pin_number in pinrange:
