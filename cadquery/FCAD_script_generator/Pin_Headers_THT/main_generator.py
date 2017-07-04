@@ -127,11 +127,17 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-    # maui end
+except:
+    try:
+        from CadQuery.Gui.Command import *
+        Gui.activateWorkbench("CadQueryWorkbench")
+        import cadquery as cq
+        from Helpers import show
+    except: # catch *all* exceptions
+        msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+        # maui end
 
 #checking requirements
 checkRequirements(cq)
@@ -354,59 +360,98 @@ if __name__ == "__main__" or __name__ == "main_generator":
     from sys import argv
     models = []
     pinrange = []
-    
+    pinrange = [1]
+
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building 254single')
-        model_to_build = "254single"
+        model_to_build = "Pin_Header_Straight_1xyy_Pitch2.54mm"
+        pinrange = [1]
     else:
         model_to_build = sys.argv[2]
+    if len(sys.argv) > 3:
+        #if sys.argv[2] == 'all':
+        #Pin_Header_Straight_1xyy_Pitch2.54mm
+        model_to_build = sys.argv[2]
         
+        #else
+    #print model_to_build
     if model_to_build == 'all':
         models = [all_params[model_to_build] for model_to_build in all_params.keys()]
         pinrange = range(1,41)
         save_memory = True
     else:
         models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
-        
-    if len(sys.argv) < 4:
-        FreeCAD.Console.PrintMessage("No pins specified, building 254single 1")
-        p = "1"
-    else:
+    if len(sys.argv) == 4:
+#   254single 1-10
+#   254dual 1-10
+#   200single 1-10
+#   200dual 1-10
+#   127single 1-10
+#   127dual 1-10    
+        #if sys.argv[2] != 'all':
+        #    FreeCAD.Console.PrintMessage("No pins specified, building 254single 1")
+        #    p = "1"
+        #else:
+        family=sys.argv[2]
+        #print family
+        model_to_build='Pin_Header'
+        if 'angled' not in family.lower():
+            model_to_build+='_Straight'
+        else:
+            model_to_build+='_Angled'
+        if 'single' in family:
+            model_to_build+='_1xyy'
+        else:
+            model_to_build+='_2xyy'
+        if '254' in family:
+            model_to_build+='_Pitch2.54mm'
+        elif '200' in family:
+            model_to_build+='_Pitch2.00mm'
+        else:
+            model_to_build+='_Pitch1.27mm'
+
+        models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
         p = sys.argv[3].strip()
         
-    #comma separarated pin numberings
-    if ',' in p:
-        try:
-            pinrange = map(int,p.split(','))
-        except:
-            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid ,")
-            pinrange = []
-    
-    #range of pins x-y
-    elif '-' in p and len(p.split('-')) == 2:
-        ps = p.split('-')
+        #print models
+        #stop
+        #comma separarated pin numberings
+        if ',' in p:
+            try:
+                pinrange = map(int,p.split(','))
+            except:
+                FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid ,")
+                pinrange = []
         
-        try:
-            p1, p2 = int(ps[0]),int(ps[1])
-            pinrange = range(p1,p2+1)
-        except:
-            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid -")
-            pinrange = []
-        save_memory = True
+        #range of pins x-y
+        elif '-' in p and len(p.split('-')) == 2:
+            ps = p.split('-')
             
-    #otherwise try for a single pin
-    else:
-        try:
-            pin_number = int(p)
-            pinrange = [pin]
-        except:
-            FreeCAD.Console.PrintMessage("Pin argument '",p,"' is isnvalid")
-            pinrange = []
+            try:
+                p1, p2 = int(ps[0]),int(ps[1])
+                pinrange = range(p1,p2+1)
+            except:
+                FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid -")
+                pinrange = []
+            save_memory = True
+            
+        #otherwise try for a single pin
+        else:
+            try:
+                pin_number = int(p)
+                pinrange = [pin_number]
+            except:
+                FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid")
+                pinrange = []
     
+    #stop    
     #make all the seleted models
     pincount = 0
     basecount = 0
 
+    print "\n m"
+    print models
+    print pinrange
     for model in models:
         for pin_number in pinrange:
             MakeHeader(pin_number,model,pinrange)
