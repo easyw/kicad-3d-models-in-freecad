@@ -1560,4 +1560,33 @@ kicad_naming_params_ssop = {
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
+    'SOP-4_3.8x4.1mm_Pitch2.54mm': Params( # from http://www.ixysic.com/home/pdfs.nsf/www/CPC1017N.pdf/$file/CPC1017N.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.1,    # top part of body is that much smaller
+        c = 0.2,        # pin thickness, body center part height
+        R1 = 0.15,       # pin upper corner, inner radius
+        R2 = 0.15,       # pin lower corner, inner radius
+        S = 0.25,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 4.089,       # body length
+        E1 = 3.81,       # body width
+        E = 6.096,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 2.0,  # body height
+        b = 0.381,  # pin width
+        e = 2.54,  # pin (center-to-center) distance
+        npx = 2,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName ='SOP-4_3.8x4.1mm_Pitch2.54mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'SSOP'
+        ),
 }
