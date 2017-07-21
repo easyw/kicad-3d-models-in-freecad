@@ -75,6 +75,23 @@ import ImportGui
 import FreeCADGui as Gui
 #from Gui.Command import *
 
+cd_new_notfound=False
+cd_notfound=False
+try:
+    from CadQuery.Gui.Command import *
+except:
+    cd_new_notfound=True
+try:
+    from Gui.Command import *
+except:
+    cd_notfound=True
+if cd_new_notfound and cd_notfound:
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+
+
+    
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
@@ -107,7 +124,7 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 try:
     # Gui.SendMsgToActiveView("Run")
     # cq Gui            
-    from Gui.Command import *
+    #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
