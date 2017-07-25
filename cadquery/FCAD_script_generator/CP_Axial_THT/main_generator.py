@@ -183,8 +183,8 @@ def make_axial_th(params):
     ciba = 45.  # angle of the cathode identification bar
 
     # TODO: calculate marker sizes according to the body size
-    mmb_h = 2.       # lenght of the (-) marker on the cathode bar
-    mmb_w = 0.5      # rough width of the marker
+    mmb_h = D*0.4       # lenght of the (-) marker on the cathode bar
+    mmb_w = mmb_h/4      # rough width of the marker
 
     ef_s2 = ef/sqrt(2)
     ef_x = ef-ef/sqrt(2)
