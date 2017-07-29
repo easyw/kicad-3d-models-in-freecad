@@ -4,7 +4,7 @@ echo cadquery-freecad-module required
 @echo ON
 cd %~p0
 
-start "" "c:\FreeCAD\bin\freecad" main_generator.py all
+start "" "d:\FreeCAD-016\bin\freecad" main_generator.py Standoff_Height_13.0mm_HEX
 :: start "" "c:\FreeCAD\bin\freecad" main_generator.py angled-254-dual 2
 
 :: start "" "c:\FreeCAD\bin\freecad" main_generator.py 254-single 3
