@@ -152,7 +152,7 @@ from cq_parameters import *
 #all_params = all_params_c_axial_th_cap
 all_params = kicad_naming_params_c_axial_th_cap
 
-def make_rect_th(params):
+def make_disc_th(params):
     L = params.L    # body length
     W = params.W    # body width
     d = params.d     # lead diameter
@@ -210,8 +210,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building qfn16')
-        model_to_build='L10_D5'
+        FreeCAD.Console.PrintMessage('No variant name is given! building C_Disc_D12.0mm_W4.4mm_P7.75mm')
+        model_to_build='C_Disc_D12.0mm_W4.4mm_P7.75mm'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
@@ -236,9 +236,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        #body, base, mark, pins = make_rect_th(all_params[variant])
-        body, pins= make_rect_th(all_params[variant]) #body, base, mark, pins, top
-        
+        #body, base, mark, pins = make_disc_th(all_params[variant])
+        body, pins= make_disc_th(all_params[variant]) #body, base, mark, pins, top
         
         show(body)
         show(pins)        
