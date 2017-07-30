@@ -194,7 +194,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'CP_Radial_Tantal_D90mm_P5.00mm', # Modelname
+        modelName = 'CP_Radial_Tantal_D9.0mm_P5.00mm', # Modelname
         rotation = 0, # Rotation
         dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
