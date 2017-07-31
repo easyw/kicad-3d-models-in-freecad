@@ -173,12 +173,12 @@ def make_tantalum_th(params):
     leads = lead1.union(lead2)
 
     oval_base_w = 2*d
-    oval_base_L = L*0.8
+    oval_base_L = L*0.7
 
-    body = cq.Workplane("XY").workplane(offset=bs).moveTo(-oval_base_L/2,0).threePointArc((0, oval_base_w/2),(oval_base_L/2,0)).close().extrude(d)
-    body = body.union(cq.Workplane("XY").workplane(offset=bs).moveTo(-oval_base_L/2,0).threePointArc((0, -oval_base_w/2),(oval_base_L/2,0)).close().extrude(d)).edges("<Z").fillet(d/4)
-    body = body.union(cq.Workplane("XY").workplane(offset=bs+d).moveTo(-oval_base_L/2, 0.0001).threePointArc((0, oval_base_w/2),(oval_base_L/2, 0.0001),forConstruction=False).\
-    line(0,-0.0002).threePointArc((0, -oval_base_w/2),(-oval_base_L/2, -0.0001),forConstruction=False).close().workplane(offset=L).circle(L/2).loft(combine=True))
+    body = cq.Workplane("XY").workplane(offset=bs).moveTo(-(oval_base_L/2-d), -oval_base_w/2).threePointArc((-oval_base_L/2, 0),(-(oval_base_L/2-d),oval_base_w/2)).line(oval_base_L-d*2,0).\
+    threePointArc((oval_base_L/2, 0),(oval_base_L/2-d,-oval_base_w/2)).close().extrude(d).edges("<Z").fillet(d/4)
+    body = body.union(cq.Workplane("XY").workplane(offset=bs+d).moveTo(-(oval_base_L/2-d), -oval_base_w/2).threePointArc((-oval_base_L/2, 0),(-(oval_base_L/2-d),oval_base_w/2)).line(oval_base_L-d*2,0).\
+    threePointArc((oval_base_L/2, 0),(oval_base_L/2-d,-oval_base_w/2)).close().workplane(offset=L).circle(L/2).loft(combine=True))
     middlepoint = (sin(radians(45.0))*L/2)/sin(radians(90.0))
     body = body.union(cq.Workplane("YZ").moveTo(0,bs+d+L).vLine(L/2,forConstruction=False).threePointArc((middlepoint, bs+d+L+middlepoint),(L/2, bs+d+L),forConstruction=False).close().revolve())
     plussize = L/3
@@ -191,7 +191,7 @@ def make_tantalum_th(params):
     edges("<Z").edges("|Y").fillet(plusthickness/2.5)
     subtract_part = pinmark.translate((0, 0.01, 0)).cut(body)
     subtract_part = subtract_part.translate((0, -0.02, 0)).cut(body).translate((0, 0.01, 0))
-    pinmark = pinmark.cut(subtract_part).cut(body)
+    pinmark = pinmark.cut(subtract_part)
     #draw the body
     leads = leads.cut(body)
     #show(leads)
@@ -254,7 +254,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         show(body)
         show(pins)
         show(pinmark)
-
+        
         doc = FreeCAD.ActiveDocument
         print(GetListOfObjects(FreeCAD, doc))
         objs = GetListOfObjects(FreeCAD, doc)
