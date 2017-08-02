@@ -49,21 +49,21 @@ all_params_res = {
 }   
 
 kicad_naming_params_res = {
-    "0402_h040" : Params(
-        L = 1.07,  # package length
-        W = 0.55,  # package width
-        T = 0.40,  # package height
+    "0603_Concave" : Params(
+        L = 1.6,  # package length
+        W = 0.77,  # package width
+        T = 0.8,  # package height
 
-        pb = 0.32,  # pin band
+        pb = 0.25,  # pin band
         pt = 0.025,   # pin thickness
-        ph = 0.40,  # pin height
+        ph = 0.28,  # pin height
 
         pintype = 'concave',
         ef = 0.02, # fillet of edges
-        modelName = 'r_0402_h040',  # Model Name
+        modelName = 'lala_concave',  # Model Name
         rotation = 0   # rotation
     ),
-    "0603_LED_GREEN" : Params(
+    "0603_Convex" : Params(
         L = 1.6,  # package length
         W = 0.77,  # package width
         T = 0.8,  # package height
@@ -74,7 +74,7 @@ kicad_naming_params_res = {
 
         pintype = 'convex',
         ef = 0.02, # fillet of edges
-        modelName = 'lala',  # Model Name
+        modelName = 'lala_convex',  # Model Name
         rotation = 0   # rotation
     ),
 }   
