@@ -536,4 +536,23 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
+    'Texas_MicroStar_Junior_BGA-49_7x7_4.0x4.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mpbg309/mpbg309.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 4.00,       # body overall length
+        E = 4.00,       # body overall width
+        A1 = 0.20,  	# body-board separation 
+        A = 0.74,  		# body  overall height
+        b = 0.30,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 7,  		# number of pins along X axis (width)
+        npy = 7,  		# number of pins along y axis (length)
+        excluded_pins = ("none", 17), #pins to exclude -> None or "internals"
+        modelName = 'Texas_MicroStar_Junior_BGA-49_7x7_4.0x4.0mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
 }
