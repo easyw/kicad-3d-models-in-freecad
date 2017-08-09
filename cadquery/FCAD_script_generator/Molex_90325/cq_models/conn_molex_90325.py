@@ -81,12 +81,12 @@ def generate_straight_pin(params, num):
     if num == 0:
         pinTop=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
             .moveTo(-2.54, 0)\
-            .rect(2.54, 3.4, False)\
+            .rect(2.54, 4.1, False)\
             .extrude(pin_width)
     else:
         pinTop=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
             .moveTo(0, 0)\
-            .rect(2.54, 3.4, False)\
+            .rect(2.54, 4.1, False)\
             .extrude(pin_width)
 
     pinTop = pinTop.faces(">Z").edges(">X").chamfer(chamfer_short,  2*chamfer_long)
@@ -197,9 +197,9 @@ def generate_body(params ,calc_dim, with_details=False):
         .rect(body_width, body_height, False)\
         .extrude(body_lenght)
 
-    body = body.faces(">Z").edges(">Y").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
-    body = body.faces(">Z").edges("<Y").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
-    body = body.faces(">Z").edges("<X").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges(">Y").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges("<Y").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges("<X").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
  
     body_block = body_block.union(body)
 
@@ -217,9 +217,9 @@ def generate_body(params ,calc_dim, with_details=False):
         .rect(body_width, body_height, False)\
         .extrude(body_lenght)
 
-    body = body.faces(">Z").edges(">Y").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
-    body = body.faces(">Z").edges("<Y").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
-    body = body.faces(">Z").edges(">X").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges(">Y").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges("<Y").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
+    body = body.faces(">Z").edges(">X").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
     body = body.faces("<X").edges(">Y").chamfer(seriesParams.pin_chamfer_short / 2.0,seriesParams.pin_chamfer_short / 2.0)
  
     body_block = body_block.union(body)
@@ -229,13 +229,13 @@ def generate_body(params ,calc_dim, with_details=False):
     #	
     body_x = -1.8
     body_y = 1.48
-    body_height = seriesParams.pig_depth + 0.3
+    body_height = seriesParams.pig_depth + 0.7
 
-    body = cq.Workplane("XY").workplane(offset=0.3)\
+    body = cq.Workplane("XY").workplane(offset=0.7)\
         .moveTo(body_x, body_y)\
         .circle(0.75).extrude(-body_height,False)
  
-    body = body.faces("<Z").edges(">X").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
+    body = body.faces("<Z").edges(">X").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
     body_block = body_block.union(body)
  
 		
@@ -244,13 +244,13 @@ def generate_body(params ,calc_dim, with_details=False):
     #	
     body_x = ((params.num_pins - 1) * params.pin_pitch) + 1.8
     body_y = 1.48
-    body_height = seriesParams.pig_depth + 0.3
+    body_height = seriesParams.pig_depth + 0.7
 	
-    body = cq.Workplane("XY").workplane(offset=0.3)\
+    body = cq.Workplane("XY").workplane(offset=0.7)\
         .moveTo(body_x, body_y)\
         .circle(0.75).extrude(-body_height,False)
  
-    body = body.faces("<Z").edges(">X").chamfer(seriesParams.pin_chamfer_short,seriesParams.pin_chamfer_short)
+    body = body.faces("<Z").edges(">X").chamfer(2*seriesParams.pin_chamfer_short, 2*seriesParams.pin_chamfer_short)
     body_block = body_block.union(body)
 
     return body_block, None
