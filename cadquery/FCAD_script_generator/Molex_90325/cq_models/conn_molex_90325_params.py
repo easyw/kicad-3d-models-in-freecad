@@ -37,9 +37,9 @@ all_params = {								# Molex part number
 class seriesParams():
 
     pin_width = 0.3
-    pin_chamfer_long = 0.14
-    pin_chamfer_short = 0.14
-    pin_height =  3.3					# Heaight above bottom surface of base
+    pin_chamfer_long = 0.25
+    pin_chamfer_short = 0.12
+    pin_height =  4.0					# Heaight above bottom surface of base
     pin_depth =   3.3					# Depth below bottom surface of base
     pin_inside_distance = 2.525			# Distance between centre of end pin and end of body
 
