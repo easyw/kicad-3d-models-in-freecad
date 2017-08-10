@@ -30,6 +30,8 @@ all_params = {								# Molex part number
     'Molex_Picoflex_90325_16' : generate_params(16, "Picoflex_90325", 1.27),
     'Molex_Picoflex_90325_18' : generate_params(18, "Picoflex_90325", 1.27),
     'Molex_Picoflex_90325_20' : generate_params(20, "Picoflex_90325", 1.27),
+    'Molex_Picoflex_90325_22' : generate_params(22, "Picoflex_90325", 1.27),
+    'Molex_Picoflex_90325_24' : generate_params(24, "Picoflex_90325", 1.27),
     'Molex_Picoflex_90325_26' : generate_params(26, "Picoflex_90325", 1.27)	
 }
 
