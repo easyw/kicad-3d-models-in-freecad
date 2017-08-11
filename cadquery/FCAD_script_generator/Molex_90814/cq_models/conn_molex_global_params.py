@@ -10,6 +10,6 @@ manufacturer_tag = "molex "
 
 def generate_footprint_name(series_name, num_pins, pin_pitch):
     return "Molex_" + series_name + "_" \
-        + ('%02d' % num_pins) + "x" + ('%.2f' % pin_pitch) + "mm_Straight"
+        + ('%02d' % num_pins) + "x" + ('%.2f' % pin_pitch) + "mm_Straight_SMD"
 
 
