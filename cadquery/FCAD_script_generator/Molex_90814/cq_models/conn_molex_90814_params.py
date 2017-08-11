@@ -30,23 +30,23 @@ all_params = {								# Molex part number
     'Molex_Picoflex_90814_16' : generate_params(16, "Picoflex_90814", 1.27),
     'Molex_Picoflex_90814_18' : generate_params(18, "Picoflex_90814", 1.27),
     'Molex_Picoflex_90814_20' : generate_params(20, "Picoflex_90814", 1.27),
+    'Molex_Picoflex_90814_22' : generate_params(22, "Picoflex_90814", 1.27),
+    'Molex_Picoflex_90814_24' : generate_params(24, "Picoflex_90814", 1.27),
     'Molex_Picoflex_90814_26' : generate_params(26, "Picoflex_90814", 1.27)	
 }
 
 
 class seriesParams():
 
-    pin_width = 0.29
-    pin_length = 2.28
-    pin_depth =   1.0					# Depth below bottom surface of base
-    pin_height =  3.3					# Heaight above bottom surface of base
-
-    pin_chamfer_long = 0.14
-    pin_chamfer_short = 0.14
+    pin_width = 0.3
+    pin_chamfer_long = 0.25
+    pin_chamfer_short = 0.12
+    pin_height =  3.71					# Heaight above bottom surface of base
+    pin_depth =   1.05					# Depth below bottom surface of base
     pin_inside_distance = 2.525			# Distance between centre of end pin and end of body
 
-    pig_depth = 2.8                     # Depth below bottom surface of the plastic guidence pin
-    pig_height = 6.4                    # Height above bottom surface of the plastic guidence pin
+    pig_depth = 2.29                     # Depth below bottom surface of the plastic guidence pin
+    pig_height = 6.05                    # Height above bottom surface of the plastic guidence pin
 
 
 calcDim = namedtuple( 'calcDim', ['length'])
