@@ -67,11 +67,9 @@ import shaderColors
 
 body_color_key = "white body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-pinmark_color_key = "led green"
-pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
 pins_color_key = "gold pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-top_color_key = "led green"
+top_color_key = "led white"
 top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 pinmark_color_key = "green body"
 pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
@@ -171,12 +169,12 @@ def make_chip(params):
     ef = params.ef  # fillet of edges
     modelName = params.modelName  # Model Name
     rotation = params.rotation   # rotation
-    internals = True
+    internals = False
     die = None
     # Create a 3D box based on the dimension variables above and fillet it
     case = cq.Workplane("XY").box(L-2*pt, W, ph-2*pt)
     if pintype == 'concave':
-        case = case.workplane(offset=T/2).moveTo(-(L-2*pt)/2, 0).circle(W/6).cutThruAll().moveTo((L-2*pt)/2, 0).circle(W/6).cutThruAll()
+        case = case.workplane(offset=T/2).moveTo(-L/2, -W/4-0.1).threePointArc((-L/2+pb/2+0.1, 0),(-L/2, W/4+0.1),forConstruction=False).close().cutThruAll().moveTo(L/2, -W/4-0.1).threePointArc((L/2-pb/2-0.1, 0),(L/2, W/4+0.1),forConstruction=False).close().cutThruAll()
     # translate the object
     case=case.translate((0,0,ph/2)).rotate((0,0,0), (0,0,1), 0)
     top = cq.Workplane("XZ").workplane(offset=-W/2).moveTo(-(L/2-pb),ph-pt).lineTo((-(L/2-pb))*0.9, T).lineTo((L/2-pb)*0.9, T).lineTo(L/2-pb,ph-pt).close().extrude(W)
@@ -190,7 +188,7 @@ def make_chip(params):
     pin2=pin2.translate((L/2-pb/2,0,ph/2)).rotate((0,0,0), (0,0,1), 0)
     pins = pin1.union(pin2)
     if pintype == 'concave':
-        pins = pins.workplane(offset=ph).moveTo(-L/2, 0).circle(W/6).cutThruAll().moveTo(L/2, 0).circle(W/6).cutThruAll()
+        pins = pins.workplane(offset=ph).moveTo(-L/2, -W/4).threePointArc((-L/2+pb/2, 0),(-L/2, W/4),forConstruction=False).close().cutThruAll().moveTo(L/2, -W/4).threePointArc((L/2-pb/2, 0),(L/2, W/4),forConstruction=False).close().cutThruAll()
     elif pintype == 'convex':
         pins = pins.workplane(offset=ph).moveTo(0, W/2).rect(L-pb/2, W/4, centered=True).cutThruAll().moveTo(0, -W/2).rect(L-pb/2, W/4, centered=True).cutThruAll()
     if internals:
@@ -210,7 +208,9 @@ def make_chip(params):
 
         die = cq.Workplane("XY").workplane(offset=ph).rect(W/4, W/4, centered=True).rect(W/8, W/8, centered=True).extrude(pt)
     #body_copy.ShapeColor=result.ShapeColor
-    pinmark = cq.Workplane("XY").workplane(offset=pt).rect(0.01,0.01).extrude(0.01)
+    pinmark_side = W*0.7
+    pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
+    pinmark = cq.Workplane("XY").workplane(offset=pt/2).moveTo(pinmark_length/2,0).lineTo(-pinmark_length/2,pinmark_side/2).lineTo(-pinmark_length/2,-pinmark_side/2).close().extrude(pt/2)
     # extract case from pins
     # case = case.cut(pins)
     pins = pins.cut(case)
@@ -266,7 +266,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
         show(pins)
         show(top)
         show(pinmark)
-        show(die)
+        if die:
+        	show(die)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
@@ -275,20 +276,29 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Color_Objects(Gui,objs[1],top_color)
         Color_Objects(Gui,objs[2],pins_color)
         Color_Objects(Gui,objs[3],pinmark_color)
-        Color_Objects(Gui,objs[4],die_color)
+        if die:
+        	Color_Objects(Gui,objs[4],die_color)
 
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
         col_pinmark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
-        col_die=Gui.ActiveDocument.getObject(objs[4].Name).DiffuseColor[0]
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_top[:-1]:top_color_key,
-            col_pinmark[:-1]:pinmark_color_key,
-            col_die[:-1]:die_color_key
-        }
+        if die:
+        	col_die=Gui.ActiveDocument.getObject(objs[4].Name).DiffuseColor[0]
+        	material_substitutions={
+        	    col_body[:-1]:body_color_key,
+        	    col_pin[:-1]:pins_color_key,
+        	    col_top[:-1]:top_color_key,
+        	    col_pinmark[:-1]:pinmark_color_key,
+        	    col_die[:-1]:die_color_key
+        	}
+        else:
+        	material_substitutions={
+        	    col_body[:-1]:body_color_key,
+        	    col_pin[:-1]:pins_color_key,
+        	    col_top[:-1]:top_color_key,
+        	    col_pinmark[:-1]:pinmark_color_key
+        	}
         expVRML.say(material_substitutions)
         del objs
 
@@ -298,8 +308,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        if die:
+        	objs=GetListOfObjects(FreeCAD, doc)
+        	FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label = CheckedModelName
