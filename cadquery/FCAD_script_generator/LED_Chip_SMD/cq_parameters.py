@@ -12,7 +12,7 @@
 
 from collections import namedtuple
 
-destination_dir="/Resistors_SMD"
+destination_dir="/LED_Chip_SMD"
 
 ### Parametric Values
 ##
@@ -49,32 +49,74 @@ all_params_res = {
 }   
 
 kicad_naming_params_res = {
-    "0603_Concave" : Params(
-        L = 1.6,  # package length
-        W = 0.77,  # package width
-        T = 0.8,  # package height
+    "LED_0402" : Params( # from http://www.produktinfo.conrad.com/datenblaetter/1000000-1099999/001050370-da-01-en-SMD_CHIPLED_GE_0402_KPHHS_1005SYCK.pdf
+        L = 1.0,  # package length
+        W = 0.5,  # package width
+        T = 0.5,  # package height
 
-        pb = 0.25,  # pin band
+        pb = 0.15,  # pin band
         pt = 0.025,   # pin thickness
-        ph = 0.28,  # pin height
-
-        pintype = 'concave',
-        ef = 0.02, # fillet of edges
-        modelName = 'lala_concave',  # Model Name
-        rotation = 0   # rotation
-    ),
-    "0603_Convex" : Params(
-        L = 1.6,  # package length
-        W = 0.77,  # package width
-        T = 0.8,  # package height
-
-        pb = 0.25,  # pin band
-        pt = 0.025,   # pin thickness
-        ph = 0.28,  # pin height
+        ph = 0.2,  # pin height
 
         pintype = 'convex',
         ef = 0.02, # fillet of edges
-        modelName = 'lala_convex',  # Model Name
-        rotation = 0   # rotation
+        modelName = 'LED_0402',  # Model Name
+        rotation = 180   # rotation
+    ),
+    "LED_0603" : Params(
+        L = 1.6,  # package length
+        W = 0.8,  # package width
+        T = 1.1,  # package height
+
+        pb = 0.3,  # pin band
+        pt = 0.025,   # pin thickness
+        ph = 0.5,  # pin height
+
+        pintype = 'convex',
+        ef = 0.02, # fillet of edges
+        modelName = 'LED_0603',  # Model Name
+        rotation = 180   # rotation
+    ),
+    "LED_0606" : Params(
+        L = 1.6,  # package length
+        W = 1.6,  # package width
+        T = 1.1,  # package height
+
+        pb = 0.3,  # pin band
+        pt = 0.025,   # pin thickness
+        ph = 0.5,  # pin height
+
+        pintype = 'convex',
+        ef = 0.02, # fillet of edges
+        modelName = 'LED_0606',  # Model Name
+        rotation = 180   # rotation
+    ),
+    "LED_0805" : Params( # from http://www.kingbrightusa.com/images/catalog/SPEC/AP2012CGCK.pdf
+        L = 2.0,  # package length
+        W = 1.25,  # package width
+        T = 1.1,  # package height
+
+        pb = 0.35,  # pin band
+        pt = 0.025,   # pin thickness
+        ph = 0.5,  # pin height
+
+        pintype = 'convex',
+        ef = 0.02, # fillet of edges
+        modelName = 'LED_0805',  # Model Name
+        rotation = 180   # rotation
+    ),
+    "LED_1206" : Params( # from http://www.kingbrightusa.com/images/catalog/SPEC/AP3216CGCK.pdf
+        L = 3.2,  # package length
+        W = 1.6,  # package width
+        T = 1.1,  # package height
+
+        pb = 0.6,  # pin band
+        pt = 0.025,   # pin thickness
+        ph = 0.5,  # pin height
+
+        pintype = 'convex',
+        ef = 0.02, # fillet of edges
+        modelName = 'LED_1206',  # Model Name
+        rotation = 180   # rotation
     ),
 }   
