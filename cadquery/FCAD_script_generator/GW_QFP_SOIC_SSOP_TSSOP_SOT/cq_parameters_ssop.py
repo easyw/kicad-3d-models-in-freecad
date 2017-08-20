@@ -168,6 +168,64 @@ kicad_naming_params_ssop = {
         rotation = -90,       # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
+    'MFSOP6-4_4.4x3.6mm_Pitch1.27mm': Params( # from https://toshiba.semicon-storage.com/ap-en/design-support/package/detail.4pin%20MFSOP6.html
+        the = 12.0,           # body angle in degrees
+        tb_s = 0.15,          # top part of body is that much smaller
+        c = 0.15,             # pin thickness, body center part height
+        R1 = 0.05,            # pin upper corner, inner radius
+        R2 = 0.05,            # pin lower corner, inner radius
+        S = 0.25,             # pin top flat part length (excluding corner arc)
+#        L = 0.64,            # pin bottom flat part length (including corner arc)
+        fp_s = True,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.15,          # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 3.6,             # body length
+        E1 = 4.4,             # body width
+        E = 7.0,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,             # body-board separation
+        A2 = 2.5,             # body height
+        b = 0.4,              # pin width
+        e = 1.27,             # pin (center-to-center) distance
+        npx = 3,              # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = None,          # ePad is guessed from datasheet
+        excluded_pins = (2, 5), # no pin excluded
+        modelName = 'MFSOP6-4_4.4x3.6mm_Pitch1.27mm',
+        rotation = -90,       # rotation if required
+        dest_dir_prefix = 'SSOP'
+        ),
+    'MFSOP6-5_4.4x3.6mm_Pitch1.27mm': Params( # from https://toshiba.semicon-storage.com/ap-en/design-support/package/detail.5pin%20MFSOP6.html
+        the = 12.0,           # body angle in degrees
+        tb_s = 0.15,          # top part of body is that much smaller
+        c = 0.15,             # pin thickness, body center part height
+        R1 = 0.05,            # pin upper corner, inner radius
+        R2 = 0.05,            # pin lower corner, inner radius
+        S = 0.25,             # pin top flat part length (excluding corner arc)
+#        L = 0.64,            # pin bottom flat part length (including corner arc)
+        fp_s = True,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.15,          # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 3.6,             # body length
+        E1 = 4.4,             # body width
+        E = 7.0,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,             # body-board separation
+        A2 = 2.5,             # body height
+        b = 0.4,              # pin width
+        e = 1.27,             # pin (center-to-center) distance
+        npx = 3,              # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = None,          # ePad is guessed from datasheet
+        excluded_pins = (0, 2), # no pin excluded
+        modelName = 'MFSOP6-5_4.4x3.6mm_Pitch1.27mm',
+        rotation = -90,       # rotation if required
+        dest_dir_prefix = 'SSOP'
+        ),
     'MSOP-8_3x3mm_Pitch0.65mm': Params( # from http://cds.linear.com/docs/en/packaging/05081660_G_MS8.pdf
         the = 12.0,           # body angle in degrees
         tb_s = 0.15,          # top part of body is that much smaller
