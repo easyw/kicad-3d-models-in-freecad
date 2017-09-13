@@ -200,4 +200,61 @@ kicad_naming_params_pin_headers = {
         rot = -90, #rotation if required
         type = 'Angled', #Angled or Straight
     ),
+
+    'Pin_Header_Straight_1xyy_Pitch1.00mm': Params( #from https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC020.pdf&t=1502019369628
+        p = 1.0, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 1.27, #width of plastic base
+        c = 0.1, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pc = 0.08, #pin end chamfer amount
+        pa = 3.8 + 1, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
+    ),
+    'Pin_Header_Straight_2xyy_Pitch1.00mm': Params( #from https://cdn.harwin.com/pdfs/HF212-W.pdf
+        p = 1.00, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 2.3, #width of plastic base
+        c = 0.1, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pc = 0.08, #pin end chamfer amount
+        pa = 3.8 + 1, #pin lenght from bottom of base to pintip
+        ph = 3.0, #pin length below board 
+        rot = -90, #rotation if required
+        type = 'Straight', #Angled or Straight
+    ),
+    'Pin_Header_Angled_1xyy_Pitch1.00mm': Params( # from https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC030.pdf&t=1502031327147
+        p = 1.00, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 1.27, #width of plastic base
+        c = 0.1, # chamfering of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.25, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pc = 0.08, #pin end chamfer amount
+        pa = 2.0 + 1, #pin lenght from bottom of base to pintip
+        ph = 2.5, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
+    ),
+    'Pin_Header_Angled_2xyy_Pitch1.00mm': Params( # from https://gct.co/files/drawings/bc045.pdf
+        p = 1.0, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 3.4, #width of plastic base
+        c = 0.1, # chamfering of plastic base
+        h = 1.2, # height of plastic base
+        hb = 0.9, # heigh of plastic base (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pc = 0.08, #pin end chamfer amount
+        pa = 2.5 + 1, #pin lenght from bottom of base to pintip
+        ph = 1.9, #pin length below board to bottom of base 
+        rot = -90, #rotation if required
+        type = 'Angled', #Angled or Straight
+    ),
 }

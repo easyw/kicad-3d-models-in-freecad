@@ -399,7 +399,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             model_to_build+='_Straight'
         else:
             model_to_build+='_Angled'
-        if 'single' in family:
+        if 'single' in family or '_1xyy' in family:
             model_to_build+='_1xyy'
         else:
             model_to_build+='_2xyy'
@@ -407,8 +407,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
             model_to_build+='_Pitch2.54mm'
         elif '200' in family:
             model_to_build+='_Pitch2.00mm'
-        else:
+        elif '127' in family:
             model_to_build+='_Pitch1.27mm'
+        else:
+            model_to_build+='_Pitch1.00mm'
 
         models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
         p = sys.argv[3].strip()

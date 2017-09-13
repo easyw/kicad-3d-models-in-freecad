@@ -147,4 +147,44 @@ kicad_naming_params_pin_headers = {
         rot = -90, #rotation if required
         type = None, #Angled or Straight
     ),
+
+    'Pin_Header_Straight_1xyy_Pitch1.00mm_SMD_Pin1Left': Params(    #http://www.farnell.com/datasheets/1912818.pdf?_ga=2.101918145.1303212991.1501602361-984110936.1498471838
+        p = 1.00, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 1.27, #width of plastic base
+        h = 1.0, # height of plastic base
+        hb = 1.0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pa = 4.0, #pin length from board to pintip
+        ph = 1.4, #pin length below board
+        pins = (2,40), #pin range
+        rot = -90, #rotation if required
+        type = 'Pin1Left', #Angled or Straight
+    ),
+    'Pin_Header_Straight_1xyy_Pitch1.00mm_SMD_Pin1Right': Params(    #http://www.farnell.com/datasheets/1912818.pdf?_ga=2.101918145.1303212991.1501602361-984110936.1498471838
+        p = 1.00, # pitch (separaration between pins)
+        rows = 1, #number of rows
+        w = 1.27, #width of plastic base
+        h = 1.0, # height of plastic base
+        hb = 1.0, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pa = 4.0, #pin lenght from board to pintip
+        ph = 1.4, #pin length below board 
+        pins = (2,40), #pin range
+        rot = -90, #rotation if required
+        type = 'Pin1Right', #Angled or Straight
+    ),
+    'Pin_Header_Straight_2xyy_Pitch1.00mm_SMD': Params( #from http://katalog.we-online.de/em/datasheet/6130xx21121.pdf
+        p = 1.00, # pitch (separaration between pins)
+        rows = 2, #number of rows
+        w = 3.1, #width of plastic base
+        h = 1.0, # height of plastic base
+        hb = 0.6, # heigh of plastic base above board for SMD (or to the middle of pin for Angled)
+        pw = 0.3, #pin width (square pins only)
+        pa = 3.6, #pin lenght from board to pintip
+        ph = 2.05, #pin length below board 
+        pins = (1,40), #pin range
+        rot = -90, #rotation if required
+        type = None, #Angled or Straight
+    ),
 }
