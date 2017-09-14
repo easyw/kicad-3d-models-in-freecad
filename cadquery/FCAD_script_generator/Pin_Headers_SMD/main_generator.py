@@ -333,10 +333,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
     if model_to_build == "all":
        	#expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
        	models = all_params.keys()
-       	save_memory=True
+       	
     else:
     	models = [model_to_build]
-    
+    save_memory=True
     print "\n m"
     print model_to_build
     print pinrange
