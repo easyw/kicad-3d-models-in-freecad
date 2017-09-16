@@ -92,7 +92,7 @@ STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
 STR_licOrg = "FreeCAD"   
 
-LIST_license = ["",]
+
 #################################################################################################
 
 # Import cad_tools
@@ -133,156 +133,178 @@ destination_dir="/DIP_packages"
 # rotation = 0
 
 
+CASE_THT_TYPE = 'tht'
+CASE_SMD_TYPE = 'smd'
+CASE_THTSMD_TYPE = 'thtsmd'
+_TYPES = [CASE_THT_TYPE, CASE_SMD_TYPE, CASE_THTSMD_TYPE]
+
+
+CORNER_CHAMFER_TYPE = 'chamfer'
+CORNER_FILLET_TYPE = 'fillet'
+_CORNER = [CORNER_CHAMFER_TYPE, CORNER_FILLET_TYPE]
+
+
 Params = namedtuple("Params", [
-    'D',    # package length
-    'E1',   # package width
-    'E',    # package shoulder-to-shoulder width
-    'A1',   # package board seperation
-    'A2',   # package height
+    'D',            # package length
+    'E1',           # package width
+    'E',            # package shoulder-to-shoulder width
+    'A1',           # package board seperation
+    'A2',           # package height
 
-    'b1',   # pin width
-    'b',    # pin tip width
-    'e',    # pin center to center distance (pitch)
+    'b1',           # pin width
+    'b',            # pin tip width
+    'e',            # pin center to center distance (pitch)
 
-    'npins',  # number of pins
-    'modelName', #modelName
-    'rotation' #rotation if required
+    'npins',        # number of pins
+    'modelName',    #modelName
+    'rotation',     #rotation if required
+    'type',         # THT and/or SMD
+    'corner'        # Chamfer or corner
 ])
 
-def make_params(D, npins, modelName, rotation):
+def make_params(D, npins, modelName, rotation, type, corner):
     """Since most DIL packages share the same parameters this is a
     convenience function to generate a Params structure.
     """
     return Params(
-        D = D,      # package length
-        E1 = 6.35,  # package width
-        E = 7.874,  # shoulder to shoulder width (includes pins)
-        A1 = 0.38,  # base to seating plane
-        A2 = 3.3,   # package height
+        D = D,                  # package length
+        E1 = 6.35,              # package width
+        E = 7.874,              # shoulder to shoulder width (includes pins)
+        A1 = 0.38,              # base to seating plane
+        A2 = 3.3,               # package height
 
-        b1 = 1.524, # upper lead width
-        b = 0.457,  # lower lead width
-        e = 2.54,   # pin to pin distance
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
 
-        npins = npins,  # total number of pins
+        npins = npins,          # total number of pins
         modelName = modelName,  # Model Name
-        rotation = rotation    # rotation if required
+        rotation = rotation,    # rotation if required
+        type = type,            # SMD and/or THT
+        corner = corner         # Chamfer or corner
     )
 
-def make_paramso(D, npins, modelName, rotation):
+def make_paramso(D, npins, modelName, rotation, type, corner):
     """Wider version of make_params() 10.16 for opto-couplers """
     return Params(
-        D = D,      # package length
-        E1 = 6.35, #10.16+0.254-1.24,  # package width
-        E = 10.16+0.254,  # shoulder to shoulder width (includes pins)
-        A1 = 0.38,  # base to seating plane
-        A2 = 3.3,   # package height
+        D = D,                  # package length
+        E1 = 6.35,              #10.16+0.254-1.24,  # package width
+        E = 10.16+0.254,        # shoulder to shoulder width (includes pins)
+        A1 = 0.38,              # base to seating plane
+        A2 = 3.3,               # package height
 
-        b1 = 1.524, # upper lead width
-        b = 0.457,  # lower lead width
-        e = 2.54,   # pin to pin distance
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
 
-        npins = npins,  # total number of pins
+        npins = npins,          # total number of pins
         modelName = modelName,  # Model Name
-        rotation = rotation    # rotation if required
+        rotation = rotation,    # rotation if required
+        type = type,            # SMD and/or THT
+        corner = corner         # Chamfer or corner
     )
     
-def make_paramsm(D, npins, modelName, rotation):
+def make_paramsm(D, npins, modelName, rotation, type, corner):
     """Wider version of make_params() 10.16 for opto-couplers """
     return Params(
-        D = D,      # package length
+        D = D,                  # package length
         E1 = 10.16+0.254-1.24,  # package width
-        E = 10.16+0.254,  # shoulder to shoulder width (includes pins)
-        A1 = 0.38,  # base to seating plane
-        A2 = 3.3,   # package height
+        E = 10.16+0.254,        # shoulder to shoulder width (includes pins)
+        A1 = 0.38,              # base to seating plane
+        A2 = 3.3,               # package height
 
-        b1 = 1.524, # upper lead width
-        b = 0.457,  # lower lead width
-        e = 2.54,   # pin to pin distance
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
 
-        npins = npins,  # total number of pins
+        npins = npins,          # total number of pins
         modelName = modelName,  # Model Name
-        rotation = rotation    # rotation if required
+        rotation = rotation,    # rotation if required
+        type = type,            # SMD and/or THT
+        corner = corner         # Chamfer or corner
     )
 
-def make_paramsw(D, npins, modelName, rotation):
+def make_paramsw(D, npins, modelName, rotation, type, corner):
     """Wider version of make_params()"""
     return Params(
-        D = D,      # package length
-        E1 = mm(0.53),  # package width
-        E = mm(0.61),  # shoulder to shoulder width (includes pins)
-        A1 = 0.38,  # base to seating plane
-        A2 = 3.3,   # package height
+        D = D,                  # package length
+        E1 = 13.462,            # package width
+        E = 15.494,             # shoulder to shoulder width (includes pins)
+        A1 = 0.38,              # base to seating plane
+        A2 = 3.3,               # package height
 
-        b1 = 1.524, # upper lead width
-        b = 0.457,  # lower lead width
-        e = 2.54,   # pin to pin distance
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
 
-        npins = npins,  # total number of pins
+        npins = npins,          # total number of pins
         modelName = modelName,  # Model Name
-        rotation = rotation    # rotation if required
+        rotation = rotation,    # rotation if required
+        type = type,            # SMD and/or THT
+        corner = corner         # Chamfer or corner
     )
-
-def mm(inch):
-    """Convenience function to convert inches to mm"""
-    return inch*25.4
 
 all_params = {
     "DIP-8_W7.62mm" : Params(
-        D = 9.27,   # package length
-        E1 = 6.35,  # package width
-        E = 7.874,  # shoulder to shoulder width (includes pins)
-        A1 = 0.38,  # base to seating plane
-        A2 = 3.3,   # package height
+        D = 9.27,               # package length
+        E1 = 6.35,              # package width
+        E = 7.874,              # shoulder to shoulder width (includes pins)
+        A1 = 0.38,              # base to seating plane
+        A2 = 3.3,               # package height
 
-        b1 = 1.524, # upper lead width
-        b = 0.457,  # lower lead width
-        e = 2.54,   # pin to pin distance
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
 
-        npins = 8,  # total number of pins
+        npins = 8,              # total number of pins
         modelName = 'DIP-8_W7.62mm',  # Model Name
-        rotation = 90    # rotation if required
+        rotation = 90,          # rotation if required
+        type = CASE_THTSMD_TYPE,     # SMD and/or THT
+        corner = CORNER_FILLET_TYPE  # Chamfer or corner
     ),
 
-    "DIP-4_W7.62mm" : make_params(4.93, 4, 'DIP-4_W7.62mm', 90),
-    "DIP-4_W10.16mm" : make_paramso(4.93, 4, 'DIP-4_W10.16mm', 90),
-    "DIP-6_W7.62mm" : make_params(7.05, 6, 'DIP-6_W7.62mm', 90),
-    "DIP-6_W10.16mm" : make_paramso(7.05, 6, 'DIP-6_W10.16mm', 90),
-    "DIP-8_W10.16mm" : make_paramso(9.27, 8, 'DIP-8_W10.16mm', 90),
-    "DIP-14_W7.62mm" : make_params(19.05, 14, 'DIP-14_W7.62mm', 90),
-    "DIP-16_W7.62mm" : make_params(mm(0.755), 16, 'DIP-16_W7.62mm', 90),
-    "DIP-18_W7.62mm" : make_params(mm(0.9), 18, 'DIP-18_W7.62mm', 90),
-    "DIP-20_W7.62mm" : make_params(mm(1.03), 20, 'DIP-20_W7.62mm', 90),
-    "DIP-22_W7.62mm" : make_params(mm(1.1), 22, 'DIP-22_W7.62mm', 90),
-    "DIP-24_W7.62mm" : make_params(mm(1.25), 24, 'DIP-24_W7.62mm', 90),
-    "DIP-22_W10.16mm" : make_paramsm(mm(1.1), 22, 'DIP-22_W10.16mm', 90),
-    "DIP-24_W10.16mm" : make_paramsm(mm(1.25), 24, 'DIP-24_W10.16mm', 90),
-    "DIP-28_W7.62mm" : make_params(mm(1.4), 28, 'DIP-28_W7.62mm', 90),
-    "DIP-24_W15.24mm" : make_paramsw(mm(1.25), 24, 'DIP-24_W15.24mm', 90),
-    "DIP-28_W15.24mm" : make_paramsw(mm(1.4), 28, 'DIP-28_W15.24mm', 90),
-    "DIP-32_W7.62mm" : make_params(mm(1.63), 32, 'DIP-32_W7.62mm', 90),
-    "DIP-32_W15.24mm" : make_paramsw(mm(1.63), 32, 'DIP-32_W15.24mm', 90),
-    "DIP-40_W15.24mm" : make_paramsw(mm(2), 40, 'DIP-40_W15.24mm', 90),
-    "DIP-48_W15.24mm" : make_paramsw(mm(2.42), 48, 'DIP-48_W15.24mm', 90),
-    "DIP-64_W15.24mm" : make_paramsw(mm(3.26), 64, 'DIP-64_W15.24mm', 90),
+    "DIP-4_W7.62mm"   : make_params(4.93,       4, 'DIP-4_W7.62mm',   90, CASE_THTSMD_TYPE, CORNER_FILLET_TYPE),
+    "DIP-4_W10.16mm"  : make_paramso(4.93,      4, 'DIP-4_W10.16mm',  90, CASE_THTSMD_TYPE, CORNER_CHAMFER_TYPE),
+    "DIP-6_W7.62mm"   : make_params(7.05,       6, 'DIP-6_W7.62mm',   90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-6_W10.16mm"  : make_paramso(7.05,      6, 'DIP-6_W10.16mm',  90, CASE_THT_TYPE, CORNER_CHAMFER_TYPE),
+    "DIP-8_W10.16mm"  : make_paramso(9.27,      8, 'DIP-8_W10.16mm',  90, CASE_THT_TYPE, CORNER_CHAMFER_TYPE),
+    "DIP-14_W7.62mm"  : make_params(19.05,     14, 'DIP-14_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-16_W7.62mm"  : make_params(19.177,    16, 'DIP-16_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-18_W7.62mm"  : make_params(22.86,     18, 'DIP-18_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-20_W7.62mm"  : make_params(26.162,    20, 'DIP-20_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-22_W7.62mm"  : make_params(27.94,     22, 'DIP-22_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-24_W7.62mm"  : make_params(31.75,     24, 'DIP-24_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-22_W10.16mm" : make_paramsm(27.94,    22, 'DIP-22_W10.16mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-24_W10.16mm" : make_paramsm(31.75,    24, 'DIP-24_W10.16mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-28_W7.62mm"  : make_params(35.56,     28, 'DIP-28_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-24_W15.24mm" : make_paramsw(31.75,    24, 'DIP-24_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-28_W15.24mm" : make_paramsw(35.56,    28, 'DIP-28_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-32_W7.62mm"  : make_params(41.402,    32, 'DIP-32_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-32_W15.24mm" : make_paramsw(41.402,   32, 'DIP-32_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-40_W15.24mm" : make_paramsw(50.8,     40, 'DIP-40_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-48_W15.24mm" : make_paramsw(61.468,   48, 'DIP-48_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
+    "DIP-64_W15.24mm" : make_paramsw(82.804,   64, 'DIP-64_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
 
     # 64-Lead Shrink Plastic Dual In-Line (SP) 750mil Body
     "DIP-64_W22.86mm" : Params(
-        D = mm(2.27),   # package length
-        E1 = mm(0.670),  # package width
-        E = mm(0.760),  # shoulder to shoulder width (includes pins)
-        A1 = mm(0.02),  # base to seating plane
-        A2 = mm(0.150),   # package height
+        D = 57.658,     # package length
+        E1 = 17.018,    # package width
+        E = 19.304,     # shoulder to shoulder width (includes pins)
+        A1 = 0.508,     # base to seating plane
+        A2 = 3.81,      # package height
 
-        b1 = mm(0.040), # upper lead width
-        b = mm(0.018),  # lower lead width
-        e = mm(0.070),   # pin to pin distance
+        b1 = 1.016,     # upper lead width
+        b = 0.4572,     # lower lead width
+        e = 1.778,      # pin to pin distance
 
-        npins = 64,  # total number of pins
+        npins = 64,     # total number of pins
         modelName = 'DIP-64_W22.86mm',  # Model Name
-        rotation = 0    # rotation if required
+        rotation = 0,   # rotation if required
+        type = CASE_THTSMD_TYPE,      # SMD and/or THT
+        corner = CORNER_FILLET_TYPE   # SMD and/or THT
     ),
 }
+
 
 #all_params_base = {  #kicad naming
 #    "DIP08" : Params(
@@ -335,7 +357,8 @@ all_params = {
 #    ),
 #}
 
-def make_dip(params):
+
+def make_case(params, type, modelName):
     # dimensions for PDIP-8
     D = params.D    # package length
     E1 = params.E1  # package width
@@ -348,9 +371,9 @@ def make_dip(params):
     e = params.e    # pin center to center distance (pitch)
 
     npins = params.npins  # number of pins
-
-    modelName = params.modelName
     
+    corner = params.corner
+
     # common dimensions
     L = 3.3 # tip to seating plane
     c = 0.254 # lead thickness
@@ -384,94 +407,6 @@ def make_dip(params):
            rect(D_t1,E1_t1).workplane(offset=A2_t).rect(D_t2,E1_t2). \
            loft(ruled=True)
 
-    # draw top indicator
-    case = case.faces(">Z").center(D_b/2., 0).hole(ti_r*2, ti_d)
-
-    # draw 1st pin (side pin shape)
-    x = e*(npins/4.-0.5) # center x position of first pin
-    ty = (A2+c)/2.+A1 # top point (max z) of pin
-
-    # draw the side part of the pin
-    pin = cq.Workplane("XZ", (x, E/2., 0)).\
-          moveTo(+b/2., ty).line(0, -(L+ty-b)).line(-b/4.,-b).line(-b/2.,0).\
-          line(-b/4.,b).line(0,L-b).line(-(b1-b)/2.,0).line(0,ty).close().extrude(c)
-
-    # draw the top part of the pin
-    pin = pin.faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
-          rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
-
-    # fillet the corners
-    def fillet_corner(pina):
-        BS = cq.selectors.BoxSelector
-        return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
-            fillet(c/2.).\
-            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
-            fillet(1.5*c)
-
-    def chamfer_corner(pina):
-        BS = cq.selectors.BoxSelector
-        return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
-            chamfer(c/0.18).\
-            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
-            chamfer(6.*c)
-
-    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
-        pin = chamfer_corner(pin)
-    else:
-        pin = fillet_corner(pin)
-        
-    if npins/2>2:
-        # draw the 2nd pin (regular pin shape)
-        x = e*(npins/4.-0.5-1) # center x position of 2nd pin
-        pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
-            moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
-            line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
-            line(-(b1-b)/2.,0).line(0,ty).\
-            close().extrude(c)
-    
-        # draw the top part of the pin
-        pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
-        #pin2 = fillet_corner(pin2)
-        if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName:
-            pin2 = chamfer_corner(pin2)
-        else:
-            pin2 = fillet_corner(pin2)
-
-        # create other pins (except last one)
-        pins = [pin, pin2]
-        for i in range(2,npins/2-1):
-            pin_i = pin2.translate((-e*(i-1),0,0))
-            pins.append(pin_i)
-    else:
-        pins = [pin,]
-    # create last pin (mirrored 1st pin)
-    x = -e*(npins/4.-0.5)
-    pinl = cq.Workplane("XZ", (x, E/2., 0)).\
-           moveTo(-b/2., ty).line(0, -(L+ty-b)).line(b/4.,-b).line(b/2.,0).\
-           line(b/4.,b).line(0,L-b).line((b1-b)/2.,0).line(0,ty).close().\
-           extrude(c).\
-           faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
-           rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
-    #pinl = fillet_corner(pinl)
-    if "W10.16mm" in ModelName and "DIP-22" not in ModelName and "DIP-24" not in ModelName: #this has to be reworked :)
-        pinl = chamfer_corner(pinl)
-    else:
-        pinl = fillet_corner(pinl)
-
-    pins.append(pinl)
-
-    def union_all(objects):
-        o = objects[0]
-        for i in range(1,len(objects)):
-            o = o.union(objects[i])
-        return o
-
-    # union all pins
-    pins = union_all(pins)
-
-    # create other side of the pins (mirror would be better but there
-    # is no solid mirror API)
-    pins = pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
     # finishing touches
     BS = cq.selectors.BoxSelector
@@ -492,14 +427,223 @@ def make_dip(params):
     ## maui case = case.faces(">Z").workplane().center(D_t2/2.-fp_r-fp_t,E1_t2/2.-fp_r-fp_t).\
     ## maui        hole(fp_r*2, fp_d)
 
-    # extract pins from the case
-    case = case.cut(pins)
     #mvX = (npins*e/4+e/2)
     #mvY = (E-c)/2
     #case = case.translate ((-mvX,-mvY,0))
+
+    return case
+
+
+def make_dip(params, type, modelName):
+    # dimensions for PDIP-8
+    D = params.D    # package length
+    E1 = params.E1  # package width
+    E = params.E    # package shoulder-to-shoulder width
+    A1 = params.A1  # package board seperation
+    A2 = params.A2  # package height
+
+    b1 = params.b1  # pin width
+    b = params.b    # pin width
+    e = params.e    # pin center to center distance (pitch)
+
+    npins = params.npins  # number of pins
+    
+    corner = params.corner
+
+    # common dimensions
+    L = 3.3 # tip to seating plane
+    c = 0.254 # lead thickness
+
+
+    if (type == CASE_THT_TYPE):
+        # draw 1st pin (side pin shape)
+        x = e*(npins/4.-0.5) # center x position of first pin
+        ty = (A2+c)/2.+A1 # top point (max z) of pin
+
+        # draw the side part of the pin
+        pin = cq.Workplane("XZ", (x, E/2., 0)).\
+              moveTo(+b/2., ty).line(0, -(L+ty-b)).line(-b/4.,-b).line(-b/2.,0).\
+              line(-b/4.,b).line(0,L-b).line(-(b1-b)/2.,0).line(0,ty).close().extrude(c)
+
+        # draw the top part of the pin
+        pin = pin.faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
+              rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
+
+        # fillet the corners
+        def fillet_corner(pina):
+            BS = cq.selectors.BoxSelector
+            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+                fillet(c/2.).\
+                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+                fillet(1.5*c)
+
+        def chamfer_corner(pina):
+            BS = cq.selectors.BoxSelector
+            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+                chamfer(c/0.18).\
+                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+                chamfer(6.*c)
+
+        if (corner == CORNER_CHAMFER_TYPE):
+            pin = chamfer_corner(pin)
+        else:
+            pin = fillet_corner(pin)
+            
+        if npins/2>2:
+            # draw the 2nd pin (regular pin shape)
+            x = e*(npins/4.-0.5-1) # center x position of 2nd pin
+            pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
+                moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
+                line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
+                line(-(b1-b)/2.,0).line(0,ty).\
+                close().extrude(c)
+        
+            # draw the top part of the pin
+            pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
+            #pin2 = fillet_corner(pin2)
+            if (corner == CORNER_CHAMFER_TYPE):
+                pin2 = chamfer_corner(pin2)
+            else:
+                pin2 = fillet_corner(pin2)
+
+            # create other pins (except last one)
+            pins = [pin, pin2]
+            for i in range(2,npins/2-1):
+                pin_i = pin2.translate((-e*(i-1),0,0))
+                pins.append(pin_i)
+        else:
+            pins = [pin,]
+        # create last pin (mirrored 1st pin)
+        x = -e*(npins/4.-0.5)
+        pinl = cq.Workplane("XZ", (x, E/2., 0)).\
+               moveTo(-b/2., ty).line(0, -(L+ty-b)).line(b/4.,-b).line(b/2.,0).\
+               line(b/4.,b).line(0,L-b).line((b1-b)/2.,0).line(0,ty).close().\
+               extrude(c).\
+               faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
+               rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
+        #pinl = fillet_corner(pinl)
+        if (corner == CORNER_CHAMFER_TYPE):
+            pinl = chamfer_corner(pinl)
+        else:
+            pinl = fillet_corner(pinl)
+
+        pins.append(pinl)
+
+    if (type == CASE_SMD_TYPE):
+
+        # fillet the corners
+        def fillet_corner(pina):
+            BS = cq.selectors.BoxSelector
+            return pina.\
+                edges(BS((1000, E/2.-c-0.001,   ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).fillet(c/2.).\
+                edges(BS((1000, E/2.-c-0.001,       -0.001), (-1000, E/2.-c+0.001,     +0.001))).fillet(c/2.).\
+                edges(BS((1000, E/2.-0.001,       ty-0.001), (-1000, E/2.+0.001,     ty+0.001))).fillet(1.5*c)
+
+        def chamfer_corner(pina):
+            BS = cq.selectors.BoxSelector
+            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+                chamfer(c/0.18).\
+                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+                chamfer(6.*c)
+    
+        L = 2 # tip to seating plane
+#        b = b * 2.
+    
+        # draw 1st pin (side pin shape)
+        x = e*(npins/4.-0.5) # center x position of first pin
+        ty = (A2+c)/2.+A1 # top point (max z) of pin
+
+
+        # draw the side part of the pin
+        pin = cq.Workplane("XZ", (x, E/2., 0)). \
+            moveTo(-b, 0). \
+            lineTo(-b, ty). \
+            lineTo(b, ty). \
+            lineTo(b, 0). \
+            close().extrude(c)
+              
+        # draw the top part of the pin
+        pin = pin.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+
+        # Draw the bottom part of the pin
+        pin = pin.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+#
+#
+#
+        if (corner == CORNER_CHAMFER_TYPE):
+            pin = chamfer_corner(pin)
+        else:
+            pin = fillet_corner(pin)
+            
+        if npins/2>2:
+            # draw the 2nd pin (regular pin shape)
+            x = e*(npins/4.-0.5-1) # center x position of 2nd pin
+            pin2 = cq.Workplane("XZ", (x, E/2., 0)). \
+                moveTo(-b, 0). \
+                lineTo(-b, ty). \
+                lineTo(b, ty). \
+                lineTo(b, 0). \
+                close().extrude(c)
+        
+            # draw the top part of the pin
+            pin2 = pin2.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+
+            # Draw the bottom part of the pin
+            pin2 = pin2.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+
+            #pin2 = fillet_corner(pin2)
+            if (corner == CORNER_CHAMFER_TYPE):
+                pin2 = chamfer_corner(pin2)
+            else:
+                pin2 = fillet_corner(pin2)
+
+            # create other pins (except last one)
+            pins = [pin, pin2]
+            for i in range(2,npins/2-1):
+                pin_i = pin2.translate((-e*(i-1),0,0))
+                pins.append(pin_i)
+        else:
+            pins = [pin,]
+			
+        # create last pin (mirrored 1st pin)
+        x = -e*(npins/4.-0.5)
+        pinl = cq.Workplane("XZ", (x, E/2., 0)). \
+            moveTo(-b, 0). \
+            lineTo(-b, ty). \
+            lineTo(b, ty). \
+            lineTo(b, 0). \
+            close().extrude(c)
+        # draw the top part of the pin
+        pinl = pinl.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+
+        # Draw the bottom part of the pin
+        pinl = pinl.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+        #pinl = fillet_corner(pinl)
+        if (corner == CORNER_CHAMFER_TYPE):
+            pinl = chamfer_corner(pinl)
+        else:
+            pinl = fillet_corner(pinl)
+
+        pins.append(pinl)
+
+    def union_all(objects):
+        o = objects[0]
+        for i in range(1,len(objects)):
+            o = o.union(objects[i])
+        return o
+
+    # union all pins
+    pins = union_all(pins)
+
+    # create other side of the pins (mirror would be better but there
+    # is no solid mirror API)
+    pins = pins.union(pins.rotate((0,0,0), (0,0,1), 180))
+
+    #mvX = (npins*e/4+e/2)
+    #mvY = (E-c)/2
     #pins = pins.translate ((-mvX,-mvY,0))
     
-    return (case, pins)
+    return (pins)
 
 ## def shapeToMesh(shape, color):
 ##     mesh_data = shape.tessellate(1)
@@ -507,17 +651,147 @@ def make_dip(params):
 ##                 faces = mesh_data[1],
 ##                 color = color)
 
-def make_one(variant, filename):
+def make_one(variant, filename, type):
     """Generates an X3D file for given variant. Variants parameters must
     be entered into `all_params` data structure.
     """
     print("Generating DIL package model for %s variant..." % variant)
-    case, pins = make_dip(all_params[variant])
+    case, pins = make_dip(all_params[variant], TYPE_THT)
 ##     exportX3D([shapeToMesh(case.toFreecad(), case_color),
 ##                shapeToMesh(pins.toFreecad(), pins_color)],
 ##               filename)
     print("Done generating DIL %s variant." % variant)
 
+    
+def make_3D_model(models_dir, variant, type):
+                
+    #modelName = all_params[variant].modelName
+    #Newdoc = FreeCAD.newDocument(modelName)
+    #App.setActiveDocument(modelName)
+    #Gui.ActiveDocument=Gui.getDocument(modelName)
+    #case, pins = make_dip(all_params[variant])
+
+    LIST_license = ["",]
+    modelName = all_params[variant].modelName
+    if (type == CASE_SMD_TYPE):
+        modelName = modelName + '_SMD'
+        
+    CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedmodelName)
+    App.setActiveDocument(CheckedmodelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
+
+    case = make_case(all_params[variant], type, modelName)
+    pins = make_dip(all_params[variant], type, modelName)
+
+    # color_attr=case_color+(0,)
+    # show(case, color_attr)
+    # #FreeCAD.Console.PrintMessage(pins_color)
+    # color_attr=pins_color+(0,)
+    # #FreeCAD.Console.PrintMessage(color_attr)
+    # show(pins, color_attr)
+    #doc = FreeCAD.ActiveDocument
+    #objs=GetListOfObjects(FreeCAD, doc)
+
+    show(case)
+    show(pins)
+    #show(pinmark)
+    #stop
+    
+    doc = FreeCAD.ActiveDocument
+    objs=GetListOfObjects(FreeCAD, doc)
+
+    Color_Objects(Gui,objs[0],body_color)
+    Color_Objects(Gui,objs[1],pins_color)
+    #Color_Objects(Gui,objs[2],marking_color)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+    #col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+    material_substitutions={
+        col_body[:-1]:body_color_key,
+        col_pin[:-1]:pins_color_key
+        #col_mark[:-1]:marking_color_key
+    }
+    expVRML.say(material_substitutions)
+
+    FuseObjs_wColors(FreeCAD, FreeCADGui,
+                    doc.Name, objs[0].Name, objs[1].Name)
+    doc.Label = CheckedmodelName
+    del objs
+    #objs=GetListOfObjects(FreeCAD, doc)
+    #FuseObjs_wColors(FreeCAD, FreeCADGui,
+    #                doc.Name, objs[0].Name, objs[1].Name)
+    #doc.Label=modelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = CheckedmodelName
+    restore_Main_Tools()
+
+    # objs=GetListOfObjects(FreeCAD, doc)
+    # objs[0].Label=modelName
+    # restore_Main_Tools()
+    #rotate if required
+    if (all_params[variant].rotation!=0):
+        rot= all_params[variant].rotation
+        z_RotateObject(doc, rot)
+    npins=all_params[variant].npins
+    e=all_params[variant].e
+    E=all_params[variant].E
+    c= 0.254 # lead thickness
+    mvY = (npins*e/4-e/2)
+    mvX = (E-c)/2
+    s = objs[0].Shape
+    shape=s.copy()
+    shape.Placement=s.Placement;
+    shape.translate((+mvX,-mvY,0))
+    objs[0].Placement=shape.Placement
+    #case = case.translate ((-mvX,-mvY,0))
+    #pins = pins.translate ((-mvX,-mvY,0))
+    # out_dir=destination_dir
+    # if not os.path.exists(out_dir):
+    #     os.makedirs(out_dir)
+    # #out_dir="./generated_qfp/"
+    # # export STEP model
+    # exportSTEP(doc,modelName,out_dir)
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    #models_dir=script_dir+"/../_3Dmodels"
+    expVRML.say(models_dir)
+    out_dir=models_dir+destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    #out_dir="./generated_qfp/"
+    # export STEP model
+    exportSTEP(doc, modelName, out_dir)
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    Lic.addLicenseToStep(out_dir+'/', modelName+".step", LIST_license,\
+                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,modelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+    expVRML.say("######################################################################")
+    expVRML.say(objs)
+    expVRML.say("######################################################################")
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+modelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+    #scale=0.3937001
+    #exportVRML(doc,modelName,scale,out_dir)
+    # Save the doc in Native FC format
+    saveFCdoc(App, Gui, doc, modelName,out_dir)
+    #display BBox
+    Gui.activateWorkbench("PartWorkbench")
+    Gui.SendMsgToActiveView("ViewFit")
+    Gui.activeDocument().activeView().viewAxometric()
+
+    #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
+
+    
 def run():
     ## # get variant names from command line
 
@@ -544,10 +818,10 @@ def run():
 # when run from freecad-cadquery
 if __name__ == "temp.module":
 
-    ModelName=""
+    modelName=""
     ## Newdoc = FreeCAD.newDocument('mydip')
-    ## App.setActiveDocument(ModelName)
-    ## Gui.ActiveDocument=Gui.getDocument(ModelName)
+    ## App.setActiveDocument(modelName)
+    ## Gui.ActiveDocument=Gui.getDocument(modelName)
     ## case, pins = make_dip(all_params["DIP08"])
     ## color_attr=case_color+(0,)
     ## show(case, color_attr)
@@ -596,126 +870,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         if not variant in all_params:
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
-        #ModelName = all_params[variant].modelName
-        #Newdoc = FreeCAD.newDocument(ModelName)
-        #App.setActiveDocument(ModelName)
-        #Gui.ActiveDocument=Gui.getDocument(ModelName)
-        #case, pins = make_dip(all_params[variant])
 
-        ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-        Newdoc = App.newDocument(CheckedModelName)
-        App.setActiveDocument(CheckedModelName)
-        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        #case, pins, pinmark = make_qfn(all_params[variant])
-        case, pins = make_dip(all_params[variant])
+        if (all_params[variant].type == CASE_THT_TYPE) or (all_params[variant].type == CASE_THTSMD_TYPE):
+            make_3D_model(models_dir, variant, CASE_THT_TYPE)
 
-        # color_attr=case_color+(0,)
-        # show(case, color_attr)
-        # #FreeCAD.Console.PrintMessage(pins_color)
-        # color_attr=pins_color+(0,)
-        # #FreeCAD.Console.PrintMessage(color_attr)
-        # show(pins, color_attr)
-        #doc = FreeCAD.ActiveDocument
-        #objs=GetListOfObjects(FreeCAD, doc)
-
-        show(case)
-        show(pins)
-        #show(pinmark)
-        #stop
-        
-        doc = FreeCAD.ActiveDocument
-        objs=GetListOfObjects(FreeCAD, doc)
-
-        Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
-        #Color_Objects(Gui,objs[2],marking_color)
-
-        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        #col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key
-            #col_mark[:-1]:marking_color_key
-        }
-        expVRML.say(material_substitutions)
-
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                        doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label = CheckedModelName
-        del objs
-        #objs=GetListOfObjects(FreeCAD, doc)
-        #FuseObjs_wColors(FreeCAD, FreeCADGui,
-        #                doc.Name, objs[0].Name, objs[1].Name)
-        #doc.Label=ModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = CheckedModelName
-        restore_Main_Tools()
-
-        # objs=GetListOfObjects(FreeCAD, doc)
-        # objs[0].Label=ModelName
-        # restore_Main_Tools()
-        #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
-        npins=all_params[variant].npins
-        e=all_params[variant].e
-        E=all_params[variant].E
-        c= 0.254 # lead thickness
-        mvY = (npins*e/4-e/2)
-        mvX = (E-c)/2
-        s = objs[0].Shape
-        shape=s.copy()
-        shape.Placement=s.Placement;
-        shape.translate((+mvX,-mvY,0))
-        objs[0].Placement=shape.Placement
-        #case = case.translate ((-mvX,-mvY,0))
-        #pins = pins.translate ((-mvX,-mvY,0))
-        # out_dir=destination_dir
-        # if not os.path.exists(out_dir):
-        #     os.makedirs(out_dir)
-        # #out_dir="./generated_qfp/"
-        # # export STEP model
-        # exportSTEP(doc,ModelName,out_dir)
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-        #models_dir=script_dir+"/../_3Dmodels"
-        expVRML.say(models_dir)
-        out_dir=models_dir+destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
-        # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
-        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
-                           STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
-        # scale and export Vrml model
-        scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
-        objs=GetListOfObjects(FreeCAD, doc)
-        expVRML.say("######################################################################")
-        expVRML.say(objs)
-        expVRML.say("######################################################################")
-        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-        #scale=0.3937001
-        #exportVRML(doc,ModelName,scale,out_dir)
-        # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        #display BBox
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
-
-        #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
-
+        if (all_params[variant].type == CASE_THTSMD_TYPE) or (all_params[variant].type == CASE_THTSMD_TYPE):
+            make_3D_model(models_dir, variant, CASE_SMD_TYPE)
 
         ## run()
