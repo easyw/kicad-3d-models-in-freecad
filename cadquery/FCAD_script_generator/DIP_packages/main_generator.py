@@ -46,7 +46,7 @@
 #****************************************************************************
 
 __title__ = "make DIP ICs 3D models"
-__author__ = "maurice and hyOzd"
+__author__ = "maurice, hyOzd, Stefan"
 __Comment__ = 'make DIP ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.3.3 14/08/2015"
@@ -136,7 +136,7 @@ destination_dir="/DIP_packages"
 CASE_THT_TYPE = 'tht'
 CASE_SMD_TYPE = 'smd'
 CASE_THTSMD_TYPE = 'thtsmd'
-_TYPES = [CASE_THT_TYPE, CASE_SMD_TYPE, CASE_THTSMD_TYPE]
+_TYPES = [CASE_THT_TYPE, CASE_SMD_TYPE ]
 
 
 CORNER_CHAMFER_TYPE = 'chamfer'
@@ -162,16 +162,38 @@ Params = namedtuple("Params", [
     'corner'        # Chamfer or corner
 ])
 
-def make_params(D, npins, modelName, rotation, type, corner):
+def make_params(D, E1, E, npins, modelName, rotation, type, corner):
     """Since most DIL packages share the same parameters this is a
     convenience function to generate a Params structure.
     """
     return Params(
         D = D,                  # package length
-        E1 = 6.35,              # package width
-        E = 7.874,              # shoulder to shoulder width (includes pins)
+        E1 = E1,                # package width
+        E = E,                  # shoulder to shoulder width (includes pins)
         A1 = 0.38,              # base to seating plane
         A2 = 3.3,               # package height
+
+        b1 = 1.524,             # upper lead width
+        b = 0.457,              # lower lead width
+        e = 2.54,               # pin to pin distance
+
+        npins = npins,          # total number of pins
+        modelName = modelName,  # Model Name
+        rotation = rotation,    # rotation if required
+        type = type,            # SMD and/or THT
+        corner = corner         # Chamfer or corner
+    )
+
+def make_params953(D, E1, E, npins, modelName, rotation, type, corner):
+    """Since most DIL packages share the same parameters this is a
+    convenience function to generate a Params structure.
+    """
+    return Params(
+        D = D,                  # package length
+        E1 = E1,              # package width
+        E = E,              # shoulder to shoulder width (includes pins)
+        A1 = 0.1,               # base to seating plane
+        A2 = 3.5,               # package height
 
         b1 = 1.524,             # upper lead width
         b = 0.457,              # lower lead width
@@ -224,12 +246,12 @@ def make_paramsm(D, npins, modelName, rotation, type, corner):
         corner = corner         # Chamfer or corner
     )
 
-def make_paramsw(D, npins, modelName, rotation, type, corner):
+def make_paramsw(D, E1, E, npins, modelName, rotation, type, corner):
     """Wider version of make_params()"""
     return Params(
         D = D,                  # package length
-        E1 = 13.462,            # package width
-        E = 15.494,             # shoulder to shoulder width (includes pins)
+        E1 = E1,                # package width
+        E = E,                  # shoulder to shoulder width (includes pins)
         A1 = 0.38,              # base to seating plane
         A2 = 3.3,               # package height
 
@@ -259,32 +281,32 @@ all_params = {
         npins = 8,              # total number of pins
         modelName = 'DIP-8_W7.62mm',  # Model Name
         rotation = 90,          # rotation if required
-        type = CASE_THTSMD_TYPE,     # SMD and/or THT
+        type = CASE_THT_TYPE,     # SMD and/or THT
         corner = CORNER_FILLET_TYPE  # Chamfer or corner
     ),
 
-    "DIP-4_W7.62mm"   : make_params(4.93,       4, 'DIP-4_W7.62mm',   90, CASE_THTSMD_TYPE, CORNER_FILLET_TYPE),
-    "DIP-4_W10.16mm"  : make_paramso(4.93,      4, 'DIP-4_W10.16mm',  90, CASE_THTSMD_TYPE, CORNER_CHAMFER_TYPE),
-    "DIP-6_W7.62mm"   : make_params(7.05,       6, 'DIP-6_W7.62mm',   90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-6_W10.16mm"  : make_paramso(7.05,      6, 'DIP-6_W10.16mm',  90, CASE_THT_TYPE, CORNER_CHAMFER_TYPE),
-    "DIP-8_W10.16mm"  : make_paramso(9.27,      8, 'DIP-8_W10.16mm',  90, CASE_THT_TYPE, CORNER_CHAMFER_TYPE),
-    "DIP-14_W7.62mm"  : make_params(19.05,     14, 'DIP-14_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-16_W7.62mm"  : make_params(19.177,    16, 'DIP-16_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-18_W7.62mm"  : make_params(22.86,     18, 'DIP-18_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-20_W7.62mm"  : make_params(26.162,    20, 'DIP-20_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-22_W7.62mm"  : make_params(27.94,     22, 'DIP-22_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-24_W7.62mm"  : make_params(31.75,     24, 'DIP-24_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-22_W10.16mm" : make_paramsm(27.94,    22, 'DIP-22_W10.16mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-24_W10.16mm" : make_paramsm(31.75,    24, 'DIP-24_W10.16mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-28_W7.62mm"  : make_params(35.56,     28, 'DIP-28_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-24_W15.24mm" : make_paramsw(31.75,    24, 'DIP-24_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-28_W15.24mm" : make_paramsw(35.56,    28, 'DIP-28_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-32_W7.62mm"  : make_params(41.402,    32, 'DIP-32_W7.62mm',  90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-32_W15.24mm" : make_paramsw(41.402,   32, 'DIP-32_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-40_W15.24mm" : make_paramsw(50.8,     40, 'DIP-40_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-48_W15.24mm" : make_paramsw(61.468,   48, 'DIP-48_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-    "DIP-64_W15.24mm" : make_paramsw(82.804,   64, 'DIP-64_W15.24mm', 90, CASE_THT_TYPE, CORNER_FILLET_TYPE),
-
+    "DIP-4_W7.62mm"                         : make_params(4.93,     6.350,  7.874,  4, 'DIP-4_W7.62mm',                         90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-4_W10.16mm"                        : make_paramso(4.93,      4, 'DIP-4_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
+    "DIP-6_W7.62mm"                         : make_params(7.05,     6.350,  7.874,  6, 'DIP-6_W7.62mm',                         90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-6_W10.16mm"                        : make_paramso(7.05,      6, 'DIP-6_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
+    "DIP-8_W10.16mm"                        : make_paramso(9.27,      8, 'DIP-8_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
+    "DIP-14_W7.62mm"                        : make_params(19.05,    6.350,  7.874, 14, 'DIP-14_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-16_W7.62mm"                        : make_params(19.177,   6.350,  7.874, 16, 'DIP-16_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-18_W7.62mm"                        : make_params(22.86,    6.350,  7.874, 18, 'DIP-18_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-20_W7.62mm"                        : make_params(26.162,   6.350,  7.874, 20, 'DIP-20_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-22_W7.62mm"                        : make_params(27.94,    6.350,  7.874, 22, 'DIP-22_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W7.62mm"                        : make_params(31.75,    6.350,  7.874, 24, 'DIP-24_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-22_W10.16mm"                       : make_paramsm(27.94,    22, 'DIP-22_W10.16mm',                                     90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W10.16mm"                       : make_paramsm(31.75,    24, 'DIP-24_W10.16mm',                                     90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-28_W7.62mm"                        : make_params(35.56,    6.350,  7.874, 28, 'DIP-28_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W15.24mm"                       : make_paramsw(31.75,  13.462, 15.494, 24, 'DIP-24_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-28_W15.24mm"                       : make_paramsw(35.56,  13.462, 15.494, 28, 'DIP-28_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-32_W7.62mm"                        : make_params(41.402,   6.350,  7.874, 32, 'DIP-32_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-32_W15.24mm"                       : make_paramsw(41.402, 13.462, 15.494, 32, 'DIP-32_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-40_W15.24mm"                       : make_paramsw(50.8,   13.462, 15.494, 40, 'DIP-40_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-48_W15.24mm"                       : make_paramsw(61.468, 13.462, 15.494, 48, 'DIP-48_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W15.24mm"                       : make_paramsw(82.804, 13.462, 15.494, 64, 'DIP-64_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    
     # 64-Lead Shrink Plastic Dual In-Line (SP) 750mil Body
     "DIP-64_W22.86mm" : Params(
         D = 57.658,     # package length
@@ -300,9 +322,81 @@ all_params = {
         npins = 64,     # total number of pins
         modelName = 'DIP-64_W22.86mm',  # Model Name
         rotation = 0,   # rotation if required
-        type = CASE_THTSMD_TYPE,      # SMD and/or THT
+        type = CASE_THT_TYPE,      # SMD and/or THT
         corner = CORNER_FILLET_TYPE   # SMD and/or THT
     ),
+
+    "DIP-4_W7.62mm_SMD"                     : make_params(4.93,     6.350,  7.874,  4, 'DIP-4_W7.62mm_SMD',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-4_W9.53mm_Clearance8mm_SMD"        : make_params953(4.93,   7.35,  9.254,  4, 'DIP-4_W9.53mm_Clearance8mm_SMD',        90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-6_W7.62mm_SMD"                     : make_params(7.05,     6.350,  7.874,  6, 'DIP-6_W7.62mm_SMD',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-6_W7.62mm_SMDSocket_SmallPads"     : make_params(7.05,     5.350,  6.874,  6, 'DIP-6_W7.62mm_SMDSocket_SmallPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-6_W8.89mm_SMDSocket_LongPads"      : make_params(7.05,     6.350,  7.874,  6, 'DIP-6_W8.89mm_SMDSocket_LongPads',      90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-8_W11.48mm_SMD"                    : make_params(10.16,   11.84,  12.48,   8, 'DIP-8_W11.48mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-8_W7.62mm_SMDSocket_SmallPads"     : make_params(10.16,    5.350,  6.874,  8, 'DIP-8_W7.62mm_SMDSocket_SmallPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-8_W8.89mm_SMDSocket_LongPads"      : make_params(10.16,    6.350,  7.874,  8, 'DIP-8_W8.89mm_SMDSocket_LongPads',      90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-10_W7.62mm_SMD"                    : make_params(12.25,    6.350,  7.874, 10, 'DIP-10_W7.62mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-10_W7.62mm_SMDSocket_SmallPads"    : make_params(12.25,    5.350,  6.874, 10, 'DIP-10_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-10_W8.89mm_SMDSocket_LongPads"     : make_params(12.25,    7.350,  9.000, 10, 'DIP-10_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-10_W9.53mm_SMD"                    : make_params(12.25,    8.400,  9.650, 10, 'DIP-10_W9.53mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-10_W11.48mm_SMD"                   : make_params(12.25,   10.100, 11.700, 10, 'DIP-10_W11.48mm_SMD',                   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-12_W7.62mm_SMDSocket_SmallPads"    : make_params(15.24,    5.350,  6.874, 12, 'DIP-12_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-12_W8.89mm_SMDSocket_LongPads"     : make_params(15.24,    7.350,  9.000, 12, 'DIP-12_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-14_W7.62mm_SMD"                    : make_params(19.05,    6.350,  7.874, 14, 'DIP-14_W7.62mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-14_W7.62mm_SMDSocket_SmallPads"    : make_params(19.05,    5.350,  6.874, 14, 'DIP-14_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-14_W8.89mm_SMDSocket_LongPads"     : make_params(19.05,    7.450,  8.840, 14, 'DIP-14_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-14_W9.53mm_SMD"                    : make_params(19.05,    8.350,  9.740, 14, 'DIP-14_W9.53mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-14_W11.48mm_SMD"                   : make_params(19.05,   10.200, 11.520, 14, 'DIP-14_W11.48mm_SMD',                   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-16_W7.62mm_SMD"                    : make_params(21.59,    6.350,  7.874, 16, 'DIP-16_W7.62mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-16_W7.62mm_SMDSocket_SmallPads"    : make_params(21.59,    5.350,  6.874, 16, 'DIP-16_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-16_W8.89mm_SMDSocket_LongPads"     : make_params(21.59,    7.450,  8.840, 16, 'DIP-16_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-16_W9.53mm_SMD"                    : make_params(21.59,    8.350,  9.740, 16, 'DIP-16_W9.53mm_SMD',                    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-16_W11.48mm_SMD"                   : make_params(21.59,   10.200, 11.520, 16, 'DIP-16_W11.48mm_SMD',                   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-18_W7.62mm_SMDSocket_SmallPads"    : make_params(22.86,    5.350,  6.874, 18, 'DIP-18_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-18_W8.89mm_SMDSocket_LongPads"     : make_params(22.86,    7.350,  8.774, 18, 'DIP-18_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-20_W7.62mm_SMDSocket_SmallPads"    : make_params(26.162,   5.350,  6.874, 20, 'DIP-20_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-20_W8.89mm_SMDSocket_LongPads"     : make_params(26.162,   7.350,  8.874, 20, 'DIP-20_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-22_W7.62mm_SMDSocket_SmallPads"    : make_params(27.94,    5.350,  6.874, 22, 'DIP-22_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-22_W8.89mm_SMDSocket_LongPads"     : make_params(27.94,    7.350,  8.874, 22, 'DIP-22_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-24_W10.16mm_SMDSocket_SmallPads"   : make_params(31.75,    7.350,  8.874, 24, 'DIP-24_W10.16mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W11.43mm_SMDSocket_LongPads"    : make_params(31.75,   10.200, 11.520, 24, 'DIP-24_W11.43mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(31.75,  12.462, 14.494, 24, 'DIP-24_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-24_W16.51mm_SMDSocket_LongPads"    : make_paramsw(31.75,  14.762, 16.714, 24, 'DIP-24_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-28_W7.62mm_SMDSocket_SmallPads"    : make_params(35.56,    5.350,  6.874, 28, 'DIP-28_W7.62mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-28_W8.89mm_SMDSocket_LongPads"     : make_params(35.56,    7.350,  8.774, 28, 'DIP-28_W8.89mm_SMDSocket_LongPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-28_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(35.56,  12.462, 14.494, 28, 'DIP-28_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-28_W16.51mm_SMDSocket_LongPads"    : make_paramsw(35.56,  14.762, 16.714, 28, 'DIP-28_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-32_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(41.402, 12.462, 14.494, 32, 'DIP-32_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-32_W16.51mm_SMDSocket_LongPads"    : make_paramsw(41.402, 14.762, 16.714, 32, 'DIP-32_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-40_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(50.8,   12.462, 14.494, 40, 'DIP-40_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-40_W16.51mm_SMDSocket_LongPads"    : make_paramsw(50.8,   14.762, 16.714, 40, 'DIP-40_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-40_W25.24mm_SMDSocket_SmallPads"   : make_paramsw(50.8,   22.000, 24.294, 40, 'DIP-40_W25.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-40_W26.67mm_SMDSocket_LongPads"    : make_paramsw(50.8,   24.000, 26.814, 40, 'DIP-40_W26.67mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-42_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(53.34,  11.462, 13.494, 42, 'DIP-42_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-42_W16.51mm_SMDSocket_LongPads"    : make_paramsw(53.34,  14.762, 16.714, 42, 'DIP-42_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-48_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(61.468, 12.462, 14.494, 48, 'DIP-48_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-48_W16.51mm_SMDSocket_LongPads"    : make_paramsw(61.468, 14.762, 16.714, 48, 'DIP-48_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+
+    "DIP-64_W15.24mm_SMDSocket_SmallPads"   : make_paramsw(82.804, 12.462, 14.494, 64, 'DIP-64_W15.24mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W16.51mm_SMDSocket_LongPads"    : make_paramsw(82.804, 14.762, 16.714, 64, 'DIP-64_W16.51mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W22.86mm_SMDSocket_SmallPads"   : make_paramsw(82.804, 16.018, 18.304, 64, 'DIP-64_W22.86mm_SMDSocket_SmallPads',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W24.13mm_SMDSocket_LongPads"    : make_paramsw(82.804, 23.000, 24.244, 64, 'DIP-64_W24.13mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W25.4mm_SMDSocket_SmallPads"    : make_paramsw(82.804, 23.000, 24.294, 64, 'DIP-64_W25.4mm_SMDSocket_SmallPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-64_W26.67mm_SMDSocket_LongPads"    : make_paramsw(82.804, 25.200, 26.814, 64, 'DIP-64_W26.67mm_SMDSocket_LongPads',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 }
 
 
@@ -359,7 +453,7 @@ all_params = {
 
 
 def make_case(params, type, modelName):
-    # dimensions for PDIP-8
+
     D = params.D    # package length
     E1 = params.E1  # package width
     E = params.E    # package shoulder-to-shoulder width
@@ -407,6 +501,8 @@ def make_case(params, type, modelName):
            rect(D_t1,E1_t1).workplane(offset=A2_t).rect(D_t2,E1_t2). \
            loft(ruled=True)
 
+    # draw top indicator
+    case = case.faces(">Z").center(D_b/2., 0).hole(ti_r*2, ti_d)
 
     # finishing touches
     BS = cq.selectors.BoxSelector
@@ -427,15 +523,17 @@ def make_case(params, type, modelName):
     ## maui case = case.faces(">Z").workplane().center(D_t2/2.-fp_r-fp_t,E1_t2/2.-fp_r-fp_t).\
     ## maui        hole(fp_r*2, fp_d)
 
-    #mvX = (npins*e/4+e/2)
-    #mvY = (E-c)/2
-    #case = case.translate ((-mvX,-mvY,0))
+    if (params.type == CASE_SMD_TYPE):
+        mvX = (npins*e/4+e/2)
+        mvX = (((npins / 2.) - 1.) / 2) * e
+        mvY = (E-c)/2
+        case = case.translate ((mvX,mvY,0))
 
-    return case
+    return (case)
 
 
-def make_dip(params, type, modelName):
-    # dimensions for PDIP-8
+def make_pins_tht(params, type, modelName):
+
     D = params.D    # package length
     E1 = params.E1  # package width
     E = params.E    # package shoulder-to-shoulder width
@@ -455,176 +553,78 @@ def make_dip(params, type, modelName):
     c = 0.254 # lead thickness
 
 
-    if (type == CASE_THT_TYPE):
-        # draw 1st pin (side pin shape)
-        x = e*(npins/4.-0.5) # center x position of first pin
-        ty = (A2+c)/2.+A1 # top point (max z) of pin
+    # draw 1st pin (side pin shape)
+    x = e*(npins/4.-0.5) # center x position of first pin
+    ty = (A2+c)/2.+A1 # top point (max z) of pin
 
-        # draw the side part of the pin
-        pin = cq.Workplane("XZ", (x, E/2., 0)).\
-              moveTo(+b/2., ty).line(0, -(L+ty-b)).line(-b/4.,-b).line(-b/2.,0).\
-              line(-b/4.,b).line(0,L-b).line(-(b1-b)/2.,0).line(0,ty).close().extrude(c)
+    # draw the side part of the pin
+    pin = cq.Workplane("XZ", (x, E/2., 0)).\
+          moveTo(+b/2., ty).line(0, -(L+ty-b)).line(-b/4.,-b).line(-b/2.,0).\
+          line(-b/4.,b).line(0,L-b).line(-(b1-b)/2.,0).line(0,ty).close().extrude(c)
 
-        # draw the top part of the pin
-        pin = pin.faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
-              rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
+    # draw the top part of the pin
+    pin = pin.faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
+          rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
 
-        # fillet the corners
-        def fillet_corner(pina):
-            BS = cq.selectors.BoxSelector
-            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
-                fillet(c/2.).\
-                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
-                fillet(1.5*c)
+    # fillet the corners
+    def fillet_corner(pina):
+        BS = cq.selectors.BoxSelector
+        return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+            fillet(c/2.).\
+            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+            fillet(1.5*c)
 
-        def chamfer_corner(pina):
-            BS = cq.selectors.BoxSelector
-            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
-                chamfer(c/0.18).\
-                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
-                chamfer(6.*c)
+    def chamfer_corner(pina):
+        BS = cq.selectors.BoxSelector
+        return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
+            chamfer(c/0.18).\
+            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
+            chamfer(6.*c)
 
-        if (corner == CORNER_CHAMFER_TYPE):
-            pin = chamfer_corner(pin)
-        else:
-            pin = fillet_corner(pin)
-            
-        if npins/2>2:
-            # draw the 2nd pin (regular pin shape)
-            x = e*(npins/4.-0.5-1) # center x position of 2nd pin
-            pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
-                moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
-                line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
-                line(-(b1-b)/2.,0).line(0,ty).\
-                close().extrude(c)
+    if (corner == CORNER_CHAMFER_TYPE):
+        pin = chamfer_corner(pin)
+    else:
+        pin = fillet_corner(pin)
         
-            # draw the top part of the pin
-            pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
-            #pin2 = fillet_corner(pin2)
-            if (corner == CORNER_CHAMFER_TYPE):
-                pin2 = chamfer_corner(pin2)
-            else:
-                pin2 = fillet_corner(pin2)
-
-            # create other pins (except last one)
-            pins = [pin, pin2]
-            for i in range(2,npins/2-1):
-                pin_i = pin2.translate((-e*(i-1),0,0))
-                pins.append(pin_i)
-        else:
-            pins = [pin,]
-        # create last pin (mirrored 1st pin)
-        x = -e*(npins/4.-0.5)
-        pinl = cq.Workplane("XZ", (x, E/2., 0)).\
-               moveTo(-b/2., ty).line(0, -(L+ty-b)).line(b/4.,-b).line(b/2.,0).\
-               line(b/4.,b).line(0,L-b).line((b1-b)/2.,0).line(0,ty).close().\
-               extrude(c).\
-               faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
-               rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
-        #pinl = fillet_corner(pinl)
-        if (corner == CORNER_CHAMFER_TYPE):
-            pinl = chamfer_corner(pinl)
-        else:
-            pinl = fillet_corner(pinl)
-
-        pins.append(pinl)
-
-    if (type == CASE_SMD_TYPE):
-
-        # fillet the corners
-        def fillet_corner(pina):
-            BS = cq.selectors.BoxSelector
-            return pina.\
-                edges(BS((1000, E/2.-c-0.001,   ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).fillet(c/2.).\
-                edges(BS((1000, E/2.-c-0.001,       -0.001), (-1000, E/2.-c+0.001,     +0.001))).fillet(c/2.).\
-                edges(BS((1000, E/2.-0.001,       ty-0.001), (-1000, E/2.+0.001,     ty+0.001))).fillet(1.5*c)
-
-        def chamfer_corner(pina):
-            BS = cq.selectors.BoxSelector
-            return pina.edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).\
-                chamfer(c/0.18).\
-                edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).\
-                chamfer(6.*c)
-    
-        L = 2 # tip to seating plane
-#        b = b * 2.
-    
-        # draw 1st pin (side pin shape)
-        x = e*(npins/4.-0.5) # center x position of first pin
-        ty = (A2+c)/2.+A1 # top point (max z) of pin
-
-
-        # draw the side part of the pin
-        pin = cq.Workplane("XZ", (x, E/2., 0)). \
-            moveTo(-b, 0). \
-            lineTo(-b, ty). \
-            lineTo(b, ty). \
-            lineTo(b, 0). \
+    if npins/2>2:
+        # draw the 2nd pin (regular pin shape)
+        x = e*(npins/4.-0.5-1) # center x position of 2nd pin
+        pin2 = cq.Workplane("XZ", (x, E/2., 0)).\
+            moveTo(b1/2., ty).line(0, -ty).line(-(b1-b)/2.,0).line(0,-L+b).\
+            line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
+            line(-(b1-b)/2.,0).line(0,ty).\
             close().extrude(c)
-              
+    
         # draw the top part of the pin
-        pin = pin.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
-
-        # Draw the bottom part of the pin
-        pin = pin.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
-#
-#
-#
+        pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
+        #pin2 = fillet_corner(pin2)
         if (corner == CORNER_CHAMFER_TYPE):
-            pin = chamfer_corner(pin)
+            pin2 = chamfer_corner(pin2)
         else:
-            pin = fillet_corner(pin)
-            
-        if npins/2>2:
-            # draw the 2nd pin (regular pin shape)
-            x = e*(npins/4.-0.5-1) # center x position of 2nd pin
-            pin2 = cq.Workplane("XZ", (x, E/2., 0)). \
-                moveTo(-b, 0). \
-                lineTo(-b, ty). \
-                lineTo(b, ty). \
-                lineTo(b, 0). \
-                close().extrude(c)
-        
-            # draw the top part of the pin
-            pin2 = pin2.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+            pin2 = fillet_corner(pin2)
 
-            # Draw the bottom part of the pin
-            pin2 = pin2.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+        # create other pins (except last one)
+        pins = [pin, pin2]
+        for i in range(2,npins/2-1):
+            pin_i = pin2.translate((-e*(i-1),0,0))
+            pins.append(pin_i)
+    else:
+        pins = [pin,]
+    # create last pin (mirrored 1st pin)
+    x = -e*(npins/4.-0.5)
+    pinl = cq.Workplane("XZ", (x, E/2., 0)).\
+           moveTo(-b/2., ty).line(0, -(L+ty-b)).line(b/4.,-b).line(b/2.,0).\
+           line(b/4.,b).line(0,L-b).line((b1-b)/2.,0).line(0,ty).close().\
+           extrude(c).\
+           faces(">Z").workplane().center(-(b1+b)/4.,c/2.).\
+           rect((b1+b)/2.,-E/2.,centered=False).extrude(-c)
+    #pinl = fillet_corner(pinl)
+    if (corner == CORNER_CHAMFER_TYPE):
+        pinl = chamfer_corner(pinl)
+    else:
+        pinl = fillet_corner(pinl)
 
-            #pin2 = fillet_corner(pin2)
-            if (corner == CORNER_CHAMFER_TYPE):
-                pin2 = chamfer_corner(pin2)
-            else:
-                pin2 = fillet_corner(pin2)
-
-            # create other pins (except last one)
-            pins = [pin, pin2]
-            for i in range(2,npins/2-1):
-                pin_i = pin2.translate((-e*(i-1),0,0))
-                pins.append(pin_i)
-        else:
-            pins = [pin,]
-			
-        # create last pin (mirrored 1st pin)
-        x = -e*(npins/4.-0.5)
-        pinl = cq.Workplane("XZ", (x, E/2., 0)). \
-            moveTo(-b, 0). \
-            lineTo(-b, ty). \
-            lineTo(b, ty). \
-            lineTo(b, 0). \
-            close().extrude(c)
-        # draw the top part of the pin
-        pinl = pinl.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
-
-        # Draw the bottom part of the pin
-        pinl = pinl.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
-        #pinl = fillet_corner(pinl)
-        if (corner == CORNER_CHAMFER_TYPE):
-            pinl = chamfer_corner(pinl)
-        else:
-            pinl = fillet_corner(pinl)
-
-        pins.append(pinl)
+    pins.append(pinl)
 
     def union_all(objects):
         o = objects[0]
@@ -645,11 +645,143 @@ def make_dip(params, type, modelName):
     
     return (pins)
 
-## def shapeToMesh(shape, color):
-##     mesh_data = shape.tessellate(1)
-##     return Mesh(points = mesh_data[0],
-##                 faces = mesh_data[1],
-##                 color = color)
+
+def make_pins_smd(params, type, modelName):
+
+    D = params.D    # package length
+    E1 = params.E1  # package width
+    E = params.E    # package shoulder-to-shoulder width
+    A1 = params.A1  # package board seperation
+    A2 = params.A2  # package height
+
+    b1 = params.b1  # pin width
+    b = params.b    # pin width
+    e = params.e    # pin center to center distance (pitch)
+
+    npins = params.npins  # number of pins
+    
+    corner = params.corner
+
+    # common dimensions
+    L = 3.3 # tip to seating plane
+    c = 0.254 # lead thickness
+
+    # fillet the corners
+    def fillet_corner(pina):
+        BS = cq.selectors.BoxSelector
+        return pina.\
+            edges(BS((1000, E/2.-c-0.001,   ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).fillet(c/2.).\
+            edges(BS((1000, E/2.-c-0.001,       -0.001), (-1000, E/2.-c+0.001,     +0.001))).fillet(1.5*c).\
+            edges(BS((1000, E/2.-0.001,       ty-0.001), (-1000, E/2.+0.001,     ty+0.001))).fillet(1.5*c).\
+            edges(BS((1000, E/2.-0.001,        c-0.001), (-1000, E/2.+0.001,     c+0.001))).fillet(c/2.)
+
+    def chamfer_corner(pina):
+        BS = cq.selectors.BoxSelector
+        return pina.\
+            edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).chamfer(c/0.18).\
+            edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).chamfer(6.*c)
+
+            
+    # draw 1st pin
+    x = e*(npins/4.-0.5) # center x position of first pin
+    ty = (A2+c)/2.+A1 # top point (max z) of pin
+
+
+    # draw the side part of the pin
+    pin = cq.Workplane("XZ", (x, E/2., 0)). \
+        moveTo(-b, 0). \
+        lineTo(-b, ty). \
+        lineTo(b, ty). \
+        lineTo(b, 0). \
+        close().extrude(c)
+
+    # draw the top part of the pin
+    pin = pin.faces(">Z").workplane().\
+        moveTo(-b, 0). \
+        lineTo(-b, -E/2.). \
+        lineTo(b, -E/2.). \
+        lineTo(b, 0). \
+        close().extrude(-c)
+
+    # Draw the bottom part of the pin
+    pin = pin.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+
+    if (corner == CORNER_CHAMFER_TYPE):
+        pin = chamfer_corner(pin)
+    else:
+        pin = fillet_corner(pin)
+#
+#
+#        
+    if npins/2>2:
+        # draw the 2nd pin (regular pin shape)
+        x = e*(npins/4.-0.5-1) # center x position of 2nd pin
+        pin2 = cq.Workplane("XZ", (x, E/2., 0)). \
+            moveTo(-b, 0). \
+            lineTo(-b, ty). \
+            lineTo(b, ty). \
+            lineTo(b, 0). \
+            close().extrude(c)
+    
+        # draw the top part of the pin
+        pin2 = pin2.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+
+        # Draw the bottom part of the pin
+        pin2 = pin2.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+
+        if (corner == CORNER_CHAMFER_TYPE):
+            pin2 = chamfer_corner(pin2)
+        else:
+            pin2 = fillet_corner(pin2)
+
+        # create other pins (except last one)
+        pins = [pin, pin2]
+        for i in range(2,npins/2-1):
+            pin_i = pin2.translate((-e*(i-1),0,0))
+            pins.append(pin_i)
+    else:
+        pins = [pin,]
+        
+    # create last pin (mirrored 1st pin)
+    x = -e*(npins/4.-0.5)
+    pinl = cq.Workplane("XZ", (x, E/2., 0)). \
+        moveTo(-b, 0). \
+        lineTo(-b, ty). \
+        lineTo(b, ty). \
+        lineTo(b, 0). \
+        close().extrude(c)
+    # draw the top part of the pin
+    pinl = pinl.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
+
+    # Draw the bottom part of the pin
+    pinl = pinl.faces("<Z").workplane().center(0, -b + c/2.).rect(2*b, 2 * b).extrude(-c)
+    if (corner == CORNER_CHAMFER_TYPE):
+        pinl = chamfer_corner(pinl)
+    else:
+        pinl = fillet_corner(pinl)
+
+    pins.append(pinl)
+
+    
+    def union_all(objects):
+        o = objects[0]
+        for i in range(1,len(objects)):
+            o = o.union(objects[i])
+        return o
+
+    # union all pins
+    pins = union_all(pins)
+
+    # create other side of the pins (mirror would be better but there
+    # is no solid mirror API)
+    pins = pins.union(pins.rotate((0,0,0), (0,0,1), 180))
+
+    mvX = (((npins / 2.) - 1.) / 2) * e
+    mvY = (E-c)/2
+    pins = pins.translate ((mvX,mvY,0))
+
+    return (pins)
+
 
 def make_one(variant, filename, type):
     """Generates an X3D file for given variant. Variants parameters must
@@ -663,18 +795,10 @@ def make_one(variant, filename, type):
     print("Done generating DIL %s variant." % variant)
 
     
-def make_3D_model(models_dir, variant, type):
+def make_3D_model(models_dir, variant):
                 
-    #modelName = all_params[variant].modelName
-    #Newdoc = FreeCAD.newDocument(modelName)
-    #App.setActiveDocument(modelName)
-    #Gui.ActiveDocument=Gui.getDocument(modelName)
-    #case, pins = make_dip(all_params[variant])
-
     LIST_license = ["",]
     modelName = all_params[variant].modelName
-    if (type == CASE_SMD_TYPE):
-        modelName = modelName + '_SMD'
         
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
@@ -682,9 +806,15 @@ def make_3D_model(models_dir, variant, type):
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
 
     case = make_case(all_params[variant], type, modelName)
-    pins = make_dip(all_params[variant], type, modelName)
+    
+    if (all_params[variant].type == CASE_THT_TYPE):
+        pins = make_pins_tht(all_params[variant], type, modelName)
 
-    # color_attr=case_color+(0,)
+    if (all_params[variant].type == CASE_SMD_TYPE):
+        pins = make_pins_smd(all_params[variant], type, modelName)
+
+
+        # color_attr=case_color+(0,)
     # show(case, color_attr)
     # #FreeCAD.Console.PrintMessage(pins_color)
     # color_attr=pins_color+(0,)
@@ -855,26 +985,38 @@ if __name__ == "__main__" or __name__ == "main_generator":
     #expVRML.say(models_dir)
     #stop
 
+    buildAllSMD = 0
+    
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building DIP-8_W7.62mm')
         model_to_build='DIP-8_W7.62mm'
     else:
         model_to_build=sys.argv[2]
 
+    
     if model_to_build == "all":
         variants = all_params.keys()
+    
+    if model_to_build == "allsmd":
+        variants = all_params.keys()
+        buildAllSMD = 1
     else:
         variants = [model_to_build]
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-            continue
+    
+    
+    if (buildAllSMD == 1):
+        for variant in variants:
+            if (all_params[variant].type == CASE_SMD_TYPE):
+                FreeCAD.Console.PrintMessage('\r\n'+variant)
+                make_3D_model(models_dir, variant)
+    
+    else:
+        for variant in variants:
+            FreeCAD.Console.PrintMessage('\r\n'+variant)
+            if not variant in all_params:
+                print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
+                continue
 
-        if (all_params[variant].type == CASE_THT_TYPE) or (all_params[variant].type == CASE_THTSMD_TYPE):
-            make_3D_model(models_dir, variant, CASE_THT_TYPE)
-
-        if (all_params[variant].type == CASE_THTSMD_TYPE) or (all_params[variant].type == CASE_THTSMD_TYPE):
-            make_3D_model(models_dir, variant, CASE_SMD_TYPE)
+            make_3D_model(models_dir, variant)
 
         ## run()
