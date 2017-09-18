@@ -517,7 +517,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'Texas_Junior_DSBGA-12': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
+    'Texas_MicroStar_Junior_BGA-12_4x3_2.0x2.5mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0104.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -532,11 +532,11 @@ kicad_naming_params_qfn = {
         npx = 3,  		# number of pins along X axis (width)
         npy = 4,  		# number of pins along y axis (length)
         excluded_pins = ("None",), #pins to exclude -> None or "internals"
-        modelName = 'Texas_Junior_DSBGA-12', #modelName
+        modelName = 'Texas_MicroStar_Junior_BGA-12_4x3_2.0x2.5mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
-    'Texas_MicroStar_Junior_BGA-49_7x7_4.0x4.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ml/mpbg309/mpbg309.pdf
+    'Texas_Junior_DSBGA-48': Params( # from http://www.ti.com/lit/ml/mpbg309/mpbg309.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
@@ -551,7 +551,7 @@ kicad_naming_params_qfn = {
         npx = 7,  		# number of pins along X axis (width)
         npy = 7,  		# number of pins along y axis (length)
         excluded_pins = ("none", 17), #pins to exclude -> None or "internals"
-        modelName = 'Texas_MicroStar_Junior_BGA-49_7x7_4.0x4.0mm_Pitch0.5mm', #modelName
+        modelName = 'Texas_Junior_DSBGA-48', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = ''
         ),
