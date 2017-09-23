@@ -328,6 +328,7 @@ all_params = {
 
     "DIP-4_W7.62mm_SMD"                     : make_params(4.93,     6.350,  7.874,  4, 'DIP-4_W7.62mm_SMD',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
     "DIP-4_W9.53mm_Clearance8mm_SMD"        : make_params953(4.93,   7.35,  9.254,  4, 'DIP-4_W9.53mm_Clearance8mm_SMD',        90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-4_W9.53mm_SMD"                     : make_params953(4.93,   7.35,  9.254,  4, 'DIP-4_W9.53mm_SMD',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
     "DIP-6_W7.62mm_SMD"                     : make_params(7.05,     6.350,  7.874,  6, 'DIP-6_W7.62mm_SMD',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
     "DIP-6_W7.62mm_SMDSocket_SmallPads"     : make_params(7.05,     5.350,  6.874,  6, 'DIP-6_W7.62mm_SMDSocket_SmallPads',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
