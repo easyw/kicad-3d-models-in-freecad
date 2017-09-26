@@ -168,7 +168,7 @@ def make_params(D, E1, E, npins, modelName, rotation, type, corner):
     """
     return Params(
         D = D,                  # package length
-        E1 = E1,                # package width
+        E1 =  E1,               # package width
         E = E,                  # shoulder to shoulder width (includes pins)
         A1 = 0.38,              # base to seating plane
         A2 = 3.3,               # package height
@@ -184,14 +184,15 @@ def make_params(D, E1, E, npins, modelName, rotation, type, corner):
         corner = corner         # Chamfer or corner
     )
 
-def make_params953(D, E1, E, npins, modelName, rotation, type, corner):
+def make_params953(D, E, npins, modelName, rotation, type, corner):
     """Since most DIL packages share the same parameters this is a
     convenience function to generate a Params structure.
     """
     return Params(
         D = D,                  # package length
-        E1 = E1,              # package width
-        E = E,              # shoulder to shoulder width (includes pins)
+        E = E,                  # shoulder to shoulder width (includes pins)
+        E1 = E1,                # package width
+
         A1 = 0.1,               # base to seating plane
         A2 = 3.5,               # package height
 
@@ -285,27 +286,27 @@ all_params = {
         corner = CORNER_FILLET_TYPE  # Chamfer or corner
     ),
 
-    "DIP-4_W7.62mm"                         : make_params(4.93,     6.350,  7.874,  4, 'DIP-4_W7.62mm',                         90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-4_W10.16mm"                        : make_paramso(4.93,      4, 'DIP-4_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
-    "DIP-6_W7.62mm"                         : make_params(7.05,     6.350,  7.874,  6, 'DIP-6_W7.62mm',                         90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-6_W10.16mm"                        : make_paramso(7.05,      6, 'DIP-6_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
-    "DIP-8_W10.16mm"                        : make_paramso(9.27,      8, 'DIP-8_W10.16mm',                                      90, CASE_THT_TYPE,      CORNER_CHAMFER_TYPE),
-    "DIP-14_W7.62mm"                        : make_params(19.05,    6.350,  7.874, 14, 'DIP-14_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-16_W7.62mm"                        : make_params(19.177,   6.350,  7.874, 16, 'DIP-16_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-18_W7.62mm"                        : make_params(22.86,    6.350,  7.874, 18, 'DIP-18_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-20_W7.62mm"                        : make_params(26.162,   6.350,  7.874, 20, 'DIP-20_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-22_W7.62mm"                        : make_params(27.94,    6.350,  7.874, 22, 'DIP-22_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-24_W7.62mm"                        : make_params(31.75,    6.350,  7.874, 24, 'DIP-24_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-22_W10.16mm"                       : make_paramsm(27.94,    22, 'DIP-22_W10.16mm',                                     90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-24_W10.16mm"                       : make_paramsm(31.75,    24, 'DIP-24_W10.16mm',                                     90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-28_W7.62mm"                        : make_params(35.56,    6.350,  7.874, 28, 'DIP-28_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-24_W15.24mm"                       : make_paramsw(31.75,  13.462, 15.494, 24, 'DIP-24_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-28_W15.24mm"                       : make_paramsw(35.56,  13.462, 15.494, 28, 'DIP-28_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-32_W7.62mm"                        : make_params(41.402,   6.350,  7.874, 32, 'DIP-32_W7.62mm',                        90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-32_W15.24mm"                       : make_paramsw(41.402, 13.462, 15.494, 32, 'DIP-32_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-40_W15.24mm"                       : make_paramsw(50.8,   13.462, 15.494, 40, 'DIP-40_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-48_W15.24mm"                       : make_paramsw(61.468, 13.462, 15.494, 48, 'DIP-48_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-64_W15.24mm"                       : make_paramsw(82.804, 13.462, 15.494, 64, 'DIP-64_W15.24mm',                       90, CASE_THT_TYPE,      CORNER_FILLET_TYPE),
+    "DIP-4_W7.62mm"                         : make_params(4.93,     6.350, 7.874,    4, 'DIP-4_W7.62mm',    90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-4_W10.16mm"                        : make_paramso(4.93,                     4, 'DIP-4_W10.16mm',   90, CASE_THT_TYPE,  CORNER_CHAMFER_TYPE),
+    "DIP-6_W7.62mm"                         : make_params(7.05,     6.350, 7.874,    6, 'DIP-6_W7.62mm',    90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-6_W10.16mm"                        : make_paramso(7.05,                     6, 'DIP-6_W10.16mm',   90, CASE_THT_TYPE,  CORNER_CHAMFER_TYPE),
+    "DIP-8_W10.16mm"                        : make_paramso(9.27,                     8, 'DIP-8_W10.16mm',   90, CASE_THT_TYPE,  CORNER_CHAMFER_TYPE),
+    "DIP-14_W7.62mm"                        : make_params(19.05,    6.350, 7.874,   14, 'DIP-14_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-16_W7.62mm"                        : make_params(19.177,   6.350, 7.874,   16, 'DIP-16_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-18_W7.62mm"                        : make_params(22.86,    6.350, 7.874,   18, 'DIP-18_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-20_W7.62mm"                        : make_params(26.162,   6.350, 7.874,   20, 'DIP-20_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-22_W7.62mm"                        : make_params(27.94,    6.350, 7.874,   22, 'DIP-22_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-24_W7.62mm"                        : make_params(31.75,    6.350, 7.874,   24, 'DIP-24_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-22_W10.16mm"                       : make_paramsm(27.94,                   22, 'DIP-22_W10.16mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-24_W10.16mm"                       : make_paramsm(31.75,                   24, 'DIP-24_W10.16mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-28_W7.62mm"                        : make_params(35.56,    6.350, 7.874,   28, 'DIP-28_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-24_W15.24mm"                       : make_paramsw(31.75,  13.462, 15.494,  24, 'DIP-24_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-28_W15.24mm"                       : make_paramsw(35.56,  13.462, 15.494,  28, 'DIP-28_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-32_W7.62mm"                        : make_params(41.402,   6.350, 7.874,   32, 'DIP-32_W7.62mm',   90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-32_W15.24mm"                       : make_paramsw(41.402, 13.462, 15.494,  32, 'DIP-32_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-40_W15.24mm"                       : make_paramsw(50.8,   13.462, 15.494,  40, 'DIP-40_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-48_W15.24mm"                       : make_paramsw(61.468, 13.462, 15.494,  48, 'DIP-48_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
+    "DIP-64_W15.24mm"                       : make_paramsw(82.804, 13.462, 15.494,  64, 'DIP-64_W15.24mm',  90, CASE_THT_TYPE,  CORNER_FILLET_TYPE),
     
     # 64-Lead Shrink Plastic Dual In-Line (SP) 750mil Body
     "DIP-64_W22.86mm" : Params(
@@ -326,67 +327,76 @@ all_params = {
         corner = CORNER_FILLET_TYPE   # SMD and/or THT
     ),
 
-    "DIP-4_W7.62mm_SMD"                     : make_params(4.93,       6.350,  7.874,  4, 'DIP-4_W7.62mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-4_W9.53mm_SMD"                     : make_params953(4.93,    8.400,  9.254,  4, 'DIP-4_W9.53mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-4_W9.53mm_Clearance8mm_SMD"        : make_params953(4.93,    8.400,  9.254,  4, 'DIP-4_W9.53mm_Clearance8mm_SMD',  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-4_W11.48mm_SMD"                    : make_params953(4.93,   10.200, 11.520,  4, 'DIP-4_W11.48mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-4_W7.62mm"               : make_params(4.93,         5.5,    7.5,  4,    'SMDIP-4_W7.62mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-4_W9.53mm"               : make_params(4.93,         7.0,    8.0,  4,    'SMDIP-4_W9.53mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-4_W9.53mm_Clearance8mm"  : make_params(4.93,         7.0,    8.0,  4,    'SMDIP-4_W9.53mm_Clearance8mm',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-4_W11.48mm"              : make_params(4.93,       7.000, 10.000,  4,    'SMDIP-4_W11.48mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-6_W7.62mm_SMD"                     : make_params(7.05,       6.350,  7.874,  6, 'DIP-6_W7.62mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-6_W9.53mm_SMD"                     : make_params(7.05,       8.400,  9.254,  6, 'DIP-6_W9.53mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-6_W11.48mm_SMD"                    : make_params(7.05,      10.200, 11.520,  6, 'DIP-6_W11.48mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-6_W7.62mm"               : make_params(7.05,         5.5,    7.5,  6,    'SMDIP-6_W7.62mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-6_W9.53mm"               : make_params(7.05,         7.0,    8.0,  6,    'SMDIP-6_W9.53mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-6_W9.53mm_Clearance8mm"  : make_params(7.05,         7.0,    8.0,  6,    'SMDIP-6_W9.53mm_Clearance8mm',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-6_W11.48mm"              : make_params(7.05,       7.000, 10.000,  6,    'SMDIP-6_W11.48mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-8_W7.62mm_SMD"                     : make_params(9.27,       6.350,  7.874,  8, 'DIP-8_W7.62mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-8_W9.53mm_SMD"                     : make_params(9.27,       8.400,  9.254,  8, 'DIP-8_W9.53mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-8_W11.48mm_SMD"                    : make_params(9.27,      10.200, 11.520,  8, 'DIP-8_W11.48mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-8_W7.62mm"               : make_params(9.27,         5.5,    7.5,  8,    'SMDIP-8_W7.62mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-8_W9.53mm"               : make_params(9.27,         7.0,    8.0,  8,    'SMDIP-8_W9.53mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-8_W9.53mm_Clearance8mm"  : make_params(9.27,         7.0,    8.0,  8,    'SMDIP-8_W9.53mm_Clearance8mm',     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-8_W11.48mm"              : make_params(9.27,       7.000, 10.000,  8,    'SMDIP-8_W11.48mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-10_W7.62mm_SMD"                    : make_params(12.25,      6.350,  7.874, 10, 'DIP-10_W7.62mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-10_W9.53mm_SMD"                    : make_params(12.25,      8.400,  9.650, 10, 'DIP-10_W9.53mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-10_W11.48mm_SMD"                   : make_params(12.25,     10.100, 11.700, 10, 'DIP-10_W11.48mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-10_W7.62mm"              : make_params(12.25,        5.5,    7.5, 10,    'SMDIP-10_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-10_W9.53mm"              : make_params(12.25,        7.0,    8.0, 10,    'SMDIP-10_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-10_W9.53mm_Clearance8mm" : make_params(12.25,        7.0,    8.0, 10,    'SMDIP-10_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-10_W11.48mm"             : make_params(12.25,      7.000, 10.000, 10,    'SMDIP-10_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-12_W7.62mm_SMD"                    : make_params(15.24,      6.350,  7.874, 12, 'DIP-12_W7.62mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-12_W9.53mm_SMD"                    : make_params(15.24,      8.400,  9.650, 12, 'DIP-12_W9.53mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-12_W11.48mm_SMD"                   : make_params(15.24,     10.100, 11.700, 12, 'DIP-12_W11.48mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-12_W7.62mm"              : make_params(15.24,        5.5,    7.5, 12,    'SMDIP-12_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-12_W9.53mm"              : make_params(15.24,        7.0,    8.0, 12,    'SMDIP-12_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-12_W9.53mm_Clearance8mm" : make_params(15.24,        7.0,    8.0, 12,    'SMDIP-12_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-12_W11.48mm"             : make_params(15.24,      7.000, 10.000, 12,    'SMDIP-12_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-14_W7.62mm_SMD"                    : make_params(19.05,      6.350,  7.874, 14, 'DIP-14_W7.62mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-14_W9.53mm_SMD"                    : make_params(19.05,      8.400,  9.650, 14, 'DIP-14_W9.53mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-14_W11.48mm_SMD"                   : make_params(19.05,     10.100, 11.700, 14, 'DIP-14_W11.48mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-14_W7.62mm"              : make_params(19.05,        5.5,    7.5, 14,    'SMDIP-14_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-14_W9.53mm"              : make_params(19.05,        7.0,    8.0, 14,    'SMDIP-14_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-14_W9.53mm_Clearance8mm" : make_params(19.05,        7.0,    8.0, 14,    'SMDIP-14_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-14_W11.48mm"             : make_params(19.05,      7.000, 10.000, 14,    'SMDIP-14_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-16_W7.62mm_SMD"                    : make_params(19.177,     6.350,  7.874, 16, 'DIP-16_W7.62mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-16_W9.53mm_SMD"                    : make_params(19.177,     8.400,  9.650, 16, 'DIP-16_W9.53mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-16_W11.48mm_SMD"                   : make_params(19.177,    10.100, 11.700, 16, 'DIP-16_W11.48mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-16_W7.62mm"              : make_params(19.177,       5.5,    7.5, 16,    'SMDIP-16_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-16_W9.53mm"              : make_params(19.177,       7.0,    8.0, 16,    'SMDIP-16_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-16_W9.53mm_Clearance8mm" : make_params(19.177,       7.0,    8.0, 16,    'SMDIP-16_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-16_W11.48mm"             : make_params(19.177,     7.000, 10.000, 16,    'SMDIP-16_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-18_W7.62mm_SMD"                    : make_params(22.86,      6.350,  7.874, 18, 'DIP-18_W7.62mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-18_W9.53mm_SMD"                    : make_params(22.86,      8.350,  9.740, 18, 'DIP-18_W9.53mm_SMD',              90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-18_W11.48mm_SMD"                   : make_params(22.86,     10.200, 11.520, 18, 'DIP-18_W11.48mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-18_W7.62mm"              : make_params(22.86,        5.5,    7.5, 18,    'SMDIP-18_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-18_W9.53mm"              : make_params(22.86,        7.0,    8.0, 18,    'SMDIP-18_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-18_W9.53mm_Clearance8mm" : make_params(22.86,        7.0,    8.0, 18,    'SMDIP-18_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-18_W11.48mm"             : make_params(22.86,      7.000, 10.000, 18,    'SMDIP-18_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-20_W7.62mm_SMD"                    : make_params(26.162,      6.350,  7.874, 20, 'DIP-20_W7.62mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-20_W9.53mm_SMD"                    : make_params(26.162,      8.350,  9.740, 20, 'DIP-20_W9.53mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-20_W11.48mm_SMD"                   : make_params(26.162,     10.200, 11.520, 20, 'DIP-20_W11.48mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-20_W7.62mm"              : make_params(26.162,       5.5,    7.5, 20,    'SMDIP-20_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-20_W9.53mm"              : make_params(26.162,       7.0,    8.0, 20,    'SMDIP-20_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-20_W9.53mm_Clearance8mm" : make_params(26.162,     8.400,  9.254, 20,    'SMDIP-20_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-20_W11.48mm"             : make_params(26.162,     7.000, 10.000, 20,    'SMDIP-20_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-22_W7.62mm_SMD"                    : make_params(27.940,      6.350,  7.874, 22, 'DIP-22_W7.62mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-22_W9.53mm_SMD"                    : make_params(27.940,      8.350,  9.740, 22, 'DIP-22_W9.53mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-22_W11.48mm_SMD"                   : make_params(27.940,     10.200, 11.520, 22, 'DIP-22_W11.48mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-22_W7.62mm"              : make_params(27.940,       5.5,    7.5, 22,    'SMDIP-22_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-22_W9.53mm"              : make_params(27.940,       7.0,    8.0, 22,    'SMDIP-22_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-22_W9.53mm_Clearance8mm" : make_params(27.940,       7.0,    8.0, 22,    'SMDIP-22_W9.53mm_Clearance8mm',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-22_W11.48mm"             : make_params(27.940,     7.000, 10.000, 22,    'SMDIP-22_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-24_W7.62mm_SMD"                    : make_params(31.750,      6.350,  7.874, 24, 'DIP-24_W7.62mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-24_W10.16mm_SMD"                   : make_params(31.750,      8.800, 10.400, 24, 'DIP-24_W10.16mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-24_W15.24mm_SMD"                   : make_params(31.750,     14.000, 15.400, 24, 'DIP-24_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-24_W7.62mm"              : make_params(31.750,       5.5,    7.5, 24,    'SMDIP-24_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-24_W9.53mm"              : make_params(31.750,       7.0,    8.0, 24,    'SMDIP-24_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-24_W11.48mm"             : make_params(31.750,     8.800, 10.400, 24,    'SMDIP-24_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-24_W15.24mm"             : make_params(31.750,    13.000, 14.000, 24,    'SMDIP-24_W15.24mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-28_W7.62mm_SMD"                    : make_params(35.560,      6.350,  7.874, 28, 'DIP-28_W7.62mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-28_W15.24mm_SMD"                   : make_params(35.560,     14.000, 15.400, 28, 'DIP-28_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-28_W15.24mm"             : make_params(35.56,     13.000, 14.000, 28,    'SMDIP-28_W15.24mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-32_W7.62mm_SMD"                    : make_params(41.402,      6.350,  7.874, 32, 'DIP-32_W7.62mm_SMD',             90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-32_W15.24mm_SMD"                   : make_params(41.402,     14.000, 15.400, 32, 'DIP-32_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-32_W7.62mm"              : make_params(41.402,       5.5,    7.5, 32,    'SMDIP-32_W7.62mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-32_W9.53mm"              : make_params(41.402,       7.0,    8.0, 32,    'SMDIP-32_W9.53mm',                 90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-32_W11.48mm"             : make_params(41.402,     8.800, 10.400, 32,    'SMDIP-32_W11.48mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-32_W15.24mm"             : make_params(41.402,    13.000, 14.000, 32,    'SMDIP-32_W15.24mm',                90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-40_W15.24mm_SMD"                   : make_params(50.800,     12.462, 14.494, 40, 'DIP-40_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-40_W25.24mm_SMD"                   : make_params(50.800,     24.000, 25.400, 40, 'DIP-40_W25.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-40_W15.24mm"             : make_params(50.800,    13.000, 14.000, 40,    'SMDIP-40_W15.24mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-40_W25.24mm"             : make_params(50.800,    23.000, 24.000, 40,    'SMDIP-40_W25.24mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-42_W15.24mm_SMD"                   : make_params(53.340,     12.462, 14.494, 42, 'DIP-42_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-42_W15.24mm"             : make_params(53.340,    13.000, 14.000, 42,    'SMDIP-42_W15.24mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-48_W15.24mm_SMD"                   : make_params(61.468,     12.462, 14.494, 48, 'DIP-48_W15.24mm_SMD',            90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-48_W15.24mm"             : make_params(61.468,    13.000, 14.000, 48,    'SMDIP-48_W15.24mm',                  90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 
-    "DIP-64_W15.24mm_SMD"                   : make_paramsw(82.804, 12.462, 14.494, 64, 'DIP-64_W15.24mm_SMD',               90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-64_W22.86mm_SMD"                   : make_paramsw(82.804, 21.600, 23.000, 64, 'DIP-64_W22.86mm_SMD',   90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
-    "DIP-64_W25.4mm_SMD"                    : make_paramsw(82.804, 24.200, 25.604, 64, 'DIP-64_W25.4mm_SMD',    90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
+    "SMDIP-64_W15.24mm"             : make_params(82.804,    13.000, 14.000, 64,    'SMDIP-64_W15.24mm',                     90, CASE_SMD_TYPE,      CORNER_FILLET_TYPE),
 }
 
 
