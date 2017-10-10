@@ -150,59 +150,88 @@ def MakeBase(pins):
     D = (pins - 1) * 2.54
     #height of the base
     H = 2.8
-    base = cq.Workplane("XY").rect(L,W1).extrude(H - T)
+    base = cq.Workplane("XY").rect(W1,L).extrude(H - T)
     #wall height H2
     H2 = 8.9 - H
     #extrude the edge up around the base
-    wall = cq.Workplane("XY").workplane(offset=H-T).rect(L,W1).extrude(H2+T).faces(">Z").shell(-T)
+    wall = cq.Workplane("XY").workplane(offset=H-T).rect(W1,L).extrude(H2+T).faces(">Z").shell(-T)
     base = base.union(wall)
     #cut a notch out of one side 
-    CW = 4
-    cutout = cq.Workplane("XY").workplane(offset=H).rect(CW,W1).extrude(H2).translate((0,-W2/2,0))
+    CW = 4.4
+    cutout = cq.Workplane("XY").workplane(offset=H).rect(W1,CW).extrude(H2).translate((-W2/2,0,0))
     base = base.cut(cutout)
     #now offset the location of the base appropriately
-    base = base.translate(((pins-1)*1.27,1.27,0))
+    base = base.translate((1.27,(pins-1)*-1.27,0))
     
     return base
     
 #make a single pin
-def MakePin():
+def MakePin(Z, H):
 
     #pin size
     size = 0.64
-    #pin height
-    H = 11.0
     #pin distance below z=0
-    Z = -3.0
-    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H)
+    #Z = -3.0
+    #pin height (above board)
+    #H = 8.0
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z)
     #Chamfer C
     C = 0.2
     pin = pin.faces("<Z").chamfer(C)
     pin = pin.faces(">Z").chamfer(C)
     
     return pin
+
+# make a single angle pin
+def MakeAnglePin(Z, H, L):
+    #pin size
+    size = 0.64
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z + size/2)
+    pin = pin.union(cq.Workplane("YZ").workplane(offset=size/2).rect(size,size).extrude(L-size/2).translate((0,0,H)))
+    #Chamfer C
+    C = 0.2
+    pin = pin.faces("<Z").chamfer(C)
+    pin = pin.faces(">X").chamfer(C)
+    # fillet on back of pin
+    R = size
+    pin = pin.faces(">Z").edges("<X").fillet(R)
+    return pin
     
-#make all the pins
-def MakePinRow(n):
+# make a row of straight pins
+def MakePinRow(n, Z, H):
+
     #make some pins
-    pin = MakePin()
+    pin = MakePin(Z, H)
     
     for i in range(1,n):
-        pin = pin.union(MakePin().translate((2.54 * i,0,0)))
+        pin = pin.union(MakePin(Z, H).translate((0,-2.54 * i,0)))
     
     return pin
 
-#generate a name for the pin header
-def HeaderName(n):
-    return "Box_Header_Straight_2x{n:02}x2.54mm".format(n=n)
+# make a row of angled (bent) pins
+def MakeAnglePinRow(n, Z, H, L):
     
-#make a pin header using supplied parameters, n pins in each row
-def MakeHeader(n):
+    pin = MakeAnglePin(Z, H, L)
+    
+    for i in range(1,n):
+        pin = pin.union(MakeAnglePin(Z, H, L).translate((0,-2.54 * i,0)))
+    
+    return pin
+    
+# generate a name for the pin header
+def HeaderName(n, isAngled):
+    if (isAngled):    
+        return "IDC-Header_2x{n:02}_Pitch2.54mm_Angled".format(n=n)
+    else:
+        return "IDC-Header_2x{n:02}_Pitch2.54mm_Straight".format(n=n)
+    
+# make a pin header using supplied parameters, n pins in each row
+def MakeHeader(n, isAngled):
     
     global LIST_license, docname
-    name = HeaderName(n)
+    name = HeaderName(n, isAngled)
     
-    destination_dir="/Box_Headers"
+    destination_dir="/IDC-Headers"
     
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
@@ -222,18 +251,24 @@ def MakeHeader(n):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     
-    #having a period '.' character in the model name REALLY messes with things.
-    docname = name.replace(".","")
+    #having a period '.' or '-' character in the model name REALLY messes with things.
+    docname = name.replace(".","").replace("-","_")
     
     newdoc = App.newDocument(docname)
     App.setActiveDocument(docname)
     a_doc = Gui.ActiveDocument
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins = MakePinRow(n)
-    pins = pins.union(MakePinRow(n).translate((0,2.54,0)))
-    
     base = MakeBase(n)
+    
+    if (isAngled):
+        pins = MakeAnglePinRow(n, -3, 5.72, 12.66)
+        pins = pins.union(MakeAnglePinRow(n, -3, 3.18, 10.12).translate((2.54,0,0)))
+        # rotate the base into the angled position
+        base = base.rotate((0,0,0),(0,1,0),90).translate((4.66,0,5.72))
+    else:
+        pins = MakePinRow(n, -3.0, 8.0)
+        pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54,0,0)))
         
     ##assign some colors
     #base_color = (50,50,50)
@@ -266,7 +301,7 @@ def MakeHeader(n):
                    doc.Name, objs[0].Name, objs[1].Name)
     doc.Label=docname
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label=docname
+    objs[0].Label=name
     restore_Main_Tools()
     
     #out_dir = "./generated_pinheaders/"
@@ -321,25 +356,22 @@ if __name__ == "__main__" or __name__ == "main_generator":
         arg = sys.argv[2]
         if arg.lower() == "all":
             close_doc=True
-            pins = range(2,41)
+            pins = (3, 4, 5, 6, 7, 8, 10, 13, 15, 17, 20, 25, 30, 32)
         else:
             pins = cq_cad_tools.getListOfNumbers(sys.argv[2])
-
+    
     for pin in pins:
-        MakeHeader(pin)
-        App.setActiveDocument(docname)
-        doc = FreeCAD.ActiveDocument
-        if close_doc: #closing doc to avoid memory leak
-            expVRML.say("closing doc to save memory")
-            expVRML.say(docname)
-            App.closeDocument(doc.Name)
-            App.setActiveDocument("")
-            App.ActiveDocument=None
-            Gui.ActiveDocument=None
-        #if int(pin)==20:
-        #    stop
-    #if close_doc: #closing doc to avoid memory leak
-    #    sys.exit(0)
+        for isAngled in (True, False):
+            MakeHeader(pin, isAngled)
+            App.setActiveDocument(docname)
+            doc = FreeCAD.ActiveDocument
+            if close_doc: #closing doc to avoid memory leak
+                expVRML.say("closing doc to save memory")
+                expVRML.say(docname)
+                App.closeDocument(doc.Name)
+                App.setActiveDocument("")
+                App.ActiveDocument=None
+                Gui.ActiveDocument=None
 
 
 
