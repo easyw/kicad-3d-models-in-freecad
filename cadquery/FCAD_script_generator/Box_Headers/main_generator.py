@@ -136,73 +136,146 @@ except: # catch *all* exceptions
 
 
 #Make a single plastic base block (chamfered if required)
-def MakeBase(pins):
+# dimensions taken from Wurth Elektronik (WE) 612 0xx 216 21: http://katalog.we-online.de/em/datasheet/6120xx21621.pdf
+# dimensions not shown on drawing are estimated or taken from physical example
+def MakeBase(pins, highDetail=True):
     
     #length of the base block
-    L = pins * 2.54 + 7.62
+    L = pins * 2.54 + 7.66
     #Width of base block
-    W1 = 8.9
+    W1 = 8.85
     #internal width
-    W2 = 6.4
+    W2 = 6.35
     #wall thickness
     T = (W1 - W2) / 2
     #length of pin array
     D = (pins - 1) * 2.54
     #height of the base
-    H = 2.8
-    base = cq.Workplane("XY").rect(L,W1).extrude(H - T)
+    H = 8.85-6.50
+    base = cq.Workplane("XY").rect(W1,L).extrude(H)
     #wall height H2
-    H2 = 8.9 - H
+    H2 = 6.50
+    
     #extrude the edge up around the base
-    wall = cq.Workplane("XY").workplane(offset=H-T).rect(L,W1).extrude(H2+T).faces(">Z").shell(-T)
+    wall = cq.Workplane("XY").workplane(offset=H).rect(W1,L).extrude(H2)
+    wall = wall.cut(cq.Workplane("XY").rect(W2,(pins-1)*2.54+7.88).extrude(8.85))
+    # add a chamfer to the wall inner (only for high detail version)
+    if (highDetail):
+        wall = wall.faces(">Z").edges("not(<X or >X or <Y or >Y)").chamfer(0.5)       
     base = base.union(wall)
+    
     #cut a notch out of one side 
-    CW = 4
-    cutout = cq.Workplane("XY").workplane(offset=H).rect(CW,W1).extrude(H2).translate((0,-W2/2,0))
+    CW = 4.5
+    
+    # in detail version, this tab extends slightly below base top surface
+    if (highDetail):
+        undercut = 0.5
+    else:
+        undercut = 0.0
+        
+    cutout = cq.Workplane("XY").workplane(offset=H-undercut).rect(2*2.0,CW).extrude(H2+undercut).translate((-W1/2,0,0))
     base = base.cut(cutout)
+    
+    # add visual / non-critical details
+    if (highDetail):
+    
+        # long bobbles
+        bobbleR = 0.5
+        bobbleH = 9.10-8.85
+        longbobble1 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, L/2-2.5).circle(bobbleR).extrude(8.5)
+        longbobble2 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, 0).circle(bobbleR).extrude(8.5)
+        longbobble3 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, -L/2+2.5).circle(bobbleR).extrude(8.5)
+        base = base.union(longbobble1)
+        base = base.union(longbobble2)
+        base = base.union(longbobble3)
+        
+        # wee bobbles
+        weebobbles = cq.Workplane("XY").center(2.85, L/2-2.5).circle(0.5).extrude(8.85-9.10)
+        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, 0).circle(0.5).extrude(8.85-9.10))
+        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, -L/2+2.5).circle(0.5).extrude(8.85-9.10))    
+        weebobbles = weebobbles.union(weebobbles.translate((-5.7,0,0)))
+        base = base.union(weebobbles)
+        
+        # sidecuts
+        sidecut = cq.Workplane("XY").rect(3.5, 1.25*2).extrude(H2).translate((0,L/2,0))
+        sidecut = sidecut.union(sidecut.translate((0,-L,0)))
+        base = base.cut(sidecut)
+    
     #now offset the location of the base appropriately
-    base = base.translate(((pins-1)*1.27,1.27,0))
+    base = base.translate((1.27,(pins-1)*-1.27,9.10-8.85))
     
     return base
     
 #make a single pin
-def MakePin():
+def MakePin(Z, H):
 
     #pin size
     size = 0.64
-    #pin height
-    H = 11.0
     #pin distance below z=0
-    Z = -3.0
-    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H)
+    #Z = -3.0
+    #pin height (above board)
+    #H = 8.0
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z)
     #Chamfer C
     C = 0.2
     pin = pin.faces("<Z").chamfer(C)
     pin = pin.faces(">Z").chamfer(C)
     
     return pin
+
+# make a single angle pin
+def MakeAnglePin(Z, H, L, highDetail=False):
+    #pin size
+    size = 0.64
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z + size/2)
+    pin = pin.union(cq.Workplane("YZ").workplane(offset=size/2).rect(size,size).extrude(L-size/2).translate((0,0,H)))
+    #Chamfer C
+    C = 0.2
+    pin = pin.faces("<Z").chamfer(C)
+    pin = pin.faces(">X").chamfer(C)
     
-#make all the pins
-def MakePinRow(n):
+    # fillet on back of pin
+    if (highDetail):
+        R = size
+        pin = pin.faces(">Z").edges("<X").fillet(R)
+        
+    return pin
+    
+# make a row of straight pins
+def MakePinRow(n, Z, H):
+
     #make some pins
-    pin = MakePin()
+    pin = MakePin(Z, H)
     
     for i in range(1,n):
-        pin = pin.union(MakePin().translate((2.54 * i,0,0)))
+        pin = pin.union(MakePin(Z, H).translate((0,-2.54 * i,0)))
     
     return pin
 
-#generate a name for the pin header
-def HeaderName(n):
-    return "Box_Header_Straight_2x{n:02}x2.54mm".format(n=n)
+# make a row of angled (bent) pins
+def MakeAnglePinRow(n, Z, H, L, highDetail=False):
     
-#make a pin header using supplied parameters, n pins in each row
-def MakeHeader(n):
+    pin = MakeAnglePin(Z, H, L, highDetail)
+
+    for i in range(1,n):
+        pin = pin.union(MakeAnglePin(Z, H, L, highDetail).translate((0,-2.54 * i,0)))
+    
+    return pin
+    
+# generate a name for the pin header
+def HeaderName(n, isAngled):
+    if (isAngled):    
+        return "IDC-Header_2x{n:02}_Pitch2.54mm_Angled".format(n=n)
+    else:
+        return "IDC-Header_2x{n:02}_Pitch2.54mm_Straight".format(n=n)
+    
+# make a pin header using supplied parameters, n pins in each row
+def MakeHeader(n, isAngled, highDetail=False):
     
     global LIST_license, docname
-    name = HeaderName(n)
+    name = HeaderName(n, isAngled)
     
-    destination_dir="/Box_Headers"
+    destination_dir="/IDC-Headers"
     
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
@@ -222,18 +295,24 @@ def MakeHeader(n):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     
-    #having a period '.' character in the model name REALLY messes with things.
-    docname = name.replace(".","")
+    #having a period '.' or '-' character in the model name REALLY messes with things.
+    docname = name.replace(".","").replace("-","_")
     
     newdoc = App.newDocument(docname)
     App.setActiveDocument(docname)
     a_doc = Gui.ActiveDocument
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins = MakePinRow(n)
-    pins = pins.union(MakePinRow(n).translate((0,2.54,0)))
+    base = MakeBase(n, highDetail)
     
-    base = MakeBase(n)
+    if (isAngled):
+        pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
+        pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
+        # rotate the base into the angled position
+        base = base.rotate((0,0,0),(0,1,0),90).translate((4.13,0,5.94))
+    else:
+        pins = MakePinRow(n, -3.0, 8.0)
+        pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54,0,0)))
         
     ##assign some colors
     #base_color = (50,50,50)
@@ -266,7 +345,7 @@ def MakeHeader(n):
                    doc.Name, objs[0].Name, objs[1].Name)
     doc.Label=docname
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label=docname
+    objs[0].Label=name
     restore_Main_Tools()
     
     #out_dir = "./generated_pinheaders/"
@@ -313,6 +392,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
     global docname
     pins = []
     
+    # select whether to include visual detail features
+    highDetail = True
+    
     close_doc=False
     if len(sys.argv) < 3:
         say("Nothing specified to build...")
@@ -321,25 +403,23 @@ if __name__ == "__main__" or __name__ == "main_generator":
         arg = sys.argv[2]
         if arg.lower() == "all":
             close_doc=True
-            pins = range(2,41)
+            pins = (3, 4, 5, 6, 7, 8, 10, 13, 15, 17, 20, 25, 30, 32)
         else:
             pins = cq_cad_tools.getListOfNumbers(sys.argv[2])
-
+    
     for pin in pins:
-        MakeHeader(pin)
-        App.setActiveDocument(docname)
-        doc = FreeCAD.ActiveDocument
-        if close_doc: #closing doc to avoid memory leak
-            expVRML.say("closing doc to save memory")
-            expVRML.say(docname)
-            App.closeDocument(doc.Name)
-            App.setActiveDocument("")
-            App.ActiveDocument=None
-            Gui.ActiveDocument=None
-        #if int(pin)==20:
-        #    stop
-    #if close_doc: #closing doc to avoid memory leak
-    #    sys.exit(0)
+        # make an angled and a straight version
+        for isAngled in (True, False):
+            MakeHeader(pin, isAngled, highDetail)
+            App.setActiveDocument(docname)
+            doc = FreeCAD.ActiveDocument
+            if close_doc: #closing doc to avoid memory leak
+                expVRML.say("closing doc to save memory")
+                expVRML.say(docname)
+                App.closeDocument(doc.Name)
+                App.setActiveDocument("")
+                App.ActiveDocument=None
+                Gui.ActiveDocument=None
 
 
 
