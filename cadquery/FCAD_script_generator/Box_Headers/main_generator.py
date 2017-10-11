@@ -306,10 +306,10 @@ def MakeHeader(n, isAngled, highDetail=False):
     base = MakeBase(n, highDetail)
     
     if (isAngled):
-        pins = MakeAnglePinRow(n, -3, 5.72, 12.38, highDetail)
-        pins = pins.union(MakeAnglePinRow(n, -3, 3.18, 9.84, highDetail).translate((2.54,0,0)))
+        pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
+        pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
         # rotate the base into the angled position
-        base = base.rotate((0,0,0),(0,1,0),90).translate((4.13,0,5.72))
+        base = base.rotate((0,0,0),(0,1,0),90).translate((4.13,0,5.94))
     else:
         pins = MakePinRow(n, -3.0, 8.0)
         pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54,0,0)))
