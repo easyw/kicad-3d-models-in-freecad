@@ -130,6 +130,34 @@ all_params_radial_th_cap = {# Aluminum TH capacitors
         rotation  = 180, # rotation if required
         dest_dir_prefix = ''
     ),
+    "CP_Radial_D8.0mm_P40.00mm" : Params(
+        L = 40.0,
+        D = 8.,
+        d = 0.3,
+        F = 5.0,
+        ll = 2.0,
+        la = 0.0,
+        bs = 0.,
+        pin3 = None,
+        xoffset = None, 
+        modelName = 'CP_Radial_D8.0mm_P40.00mm', #modelName
+        rotation  = 180, # rotation if required
+        dest_dir_prefix = ''
+    ),
+    "CP_Radial_D10.0mm_P30.00mm" : Params(
+        L = 32.0,
+        D = 10.,
+        d = 0.6,
+        F = 5.0,
+        ll = 1.0,
+        la = 0.0,
+        bs = 0.,
+        pin3 = None,
+        xoffset = None, 
+        modelName = 'CP_Radial_D10.0mm_P30.00mm', #modelName
+        rotation  = 180, # rotation if required
+        dest_dir_prefix = ''
+    ),
 }
 
 kicad_naming_params_radial_th_cap = {

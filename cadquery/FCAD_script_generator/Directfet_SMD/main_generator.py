@@ -153,8 +153,14 @@ def make_chip(params):
     R = params.R   # pad height over board
 
     if params.die:
-        die_x = params.die[0]
-        die_y = params.die[1]
+        die_size_x = params.die[0]
+        die_size_y = params.die[1]
+        if len(params.die) > 2:
+            die_pos_x = params.die[2]
+            die_pos_y = params.die[3]
+        else:
+            die_pos_x = 0
+            die_pos_y = 0
 
     pads = params.pads # pads
     
@@ -194,13 +200,13 @@ def make_chip(params):
     wing1 = cq.Workplane("XY").box(D,C, M*0.5, centered=(True, True, False)).translate(((A-D)/2,0,0))
     wing2 = cq.Workplane("XY").box(D,C, M*0.5, centered=(True, True, False)).translate((-(A-D)/2,0,0))
     case = case.union(wing1).union(wing2)
-    die = cq.Workplane("XY").box(die_x, die_y, (M-P)*0.5-(P+R), centered=(True, True, False)).translate((0,0,P+R))
+    die = cq.Workplane("XY").box(die_size_x, die_size_y, (M-P)*0.5-(P+R), centered=(True, True, False)).translate((die_pos_x,die_pos_y,P+R))
 
     for Pad in range(len(pads)):
         if Pad == 0:
-            Pads = cq.Workplane("XY").box(pads[Pad][0], pads[Pad][1], P, centered=(True, True, False)).translate((pads[Pad][2],pads[Pad][3],R)).edges("<Z").fillet(P*0.9)
+            Pads = cq.Workplane("XY").box(pads[Pad][0], pads[Pad][1], (M-(P+R))*0.5+P, centered=(True, True, False)).translate((pads[Pad][2],pads[Pad][3],R)).edges("<Z").fillet(P*0.9)
         else:
-            Pads = Pads.union(cq.Workplane("XY").box(pads[Pad][0], pads[Pad][1], P, centered=(True, True, False)).translate((pads[Pad][2],pads[Pad][3],R)).edges("<Z").fillet(P*0.9))
+            Pads = Pads.union(cq.Workplane("XY").box(pads[Pad][0], pads[Pad][1], (M-(P+R))*0.5+P, centered=(True, True, False)).translate((pads[Pad][2],pads[Pad][3],R)).edges("<Z").fillet(P*0.9))
     case = case.union(Pads)
     return (case, die)
     
