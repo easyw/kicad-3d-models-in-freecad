@@ -136,8 +136,8 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-#all_params = all_params_radial_th_cap
-all_params = kicad_naming_params_radial_th_cap
+all_params = all_params_radial_th_cap
+#all_params = kicad_naming_params_radial_th_cap
 
 def make_radial_th(params):
 

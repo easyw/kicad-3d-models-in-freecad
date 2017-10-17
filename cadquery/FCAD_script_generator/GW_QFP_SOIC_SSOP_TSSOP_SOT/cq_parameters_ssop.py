@@ -1647,4 +1647,33 @@ kicad_naming_params_ssop = {
         rotation = -90, # rotation if required
         dest_dir_prefix = 'SSOP'
         ),
+    'HTSSOP-56-1EP_6.1x14mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/drv8301.pdf
+        the = 12.0,      # body angle in degrees
+        tb_s = 0.1,    # top part of body is that much smaller
+        c = 0.15,        # pin thickness, body center part height
+        R1 = 0.15,       # pin upper corner, inner radius
+        R2 = 0.15,       # pin lower corner, inner radius
+        S = 0.4,       # pin top flat part length (excluding corner arc)
+#        L = 0.6,       # pin bottom flat part length (including corner arc)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
+        ef = 0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25, #0.45 chamfer of the 1st pin corner
+        D1 = 14.0,       # body length
+        E1 = 6.1,       # body width
+        E = 8.1,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.2,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 28,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = (5.825, 3.23), # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName ='HTSSOP-56-1EP_6.1x14mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = 'SSOP'
+        ),
 }
