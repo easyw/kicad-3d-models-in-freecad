@@ -69,7 +69,7 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "blue body"
+body_color_key = "light brown body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
@@ -155,29 +155,73 @@ from cq_parameters import *
 all_params = kicad_naming_params_resistors_tht
 
 # make a cylindrical style resistor based on parameters
-def MakeResistor(params):
-    if (params.orient == 'v'):
-        if (params.shape == 'din'):
-            body = cq.Workplane("XY").circle(params.d/2*0.9).extrude(params.l)
-            body = body.union(cq.Workplane("XY").circle(params.d/2).extrude(params.l/4))
-            body = body.union(cq.Workplane("XY").workplane(offset=params.l*3/4).circle(params.d/2).extrude(params.l/4))
-        elif (params.shape == 'power'):
-            body = cq.Workplane("XY").rect(params.d, params.w).extrude(params.l)
-        body = body.translate((0,0,1.0))
+def MakeResistor(params, n=1):
+
+    if (params.shape == 'array'):
+        c = 0.3 # height off board
+        l = params.px * n
+        body = cq.Workplane("YZ").rect(params.w, params.d).extrude(l)
+        body = body.translate((-params.px/2,0,c+params.d/2))
+        body = body.edges().fillet(params.w/3)
+    elif (params.shape == 'bare'):
+        c = 1.0 # height off board
+        t = 1.0 # element thickness
+        r = t*1.5
+        arco = (1-sqrt(2)/2)*r
+        h = params.d - t/2 - c # will translate up by c later...
+        path = cq.Workplane("XZ").lineTo(0,h-r).threePointArc((arco,h-arco),(r,h)).lineTo(params.px-r,h).threePointArc((params.px-arco,h-arco),(params.px,h-r)).lineTo(params.px,0)
+        body = cq.Workplane("XY").rect(t,params.w).sweep(path).translate((0,0,c))
+        body = body.union(cq.Workplane("XY").circle(1.6).extrude(c*2))
+        body = body.union(cq.Workplane("XY").circle(1.6).extrude(c*2).translate((params.px,0,0)))
     else:
-        # horizontal cylinder
-        if (params.shape == 'din'):
-            body = cq.Workplane("YZ").circle(params.d/2*0.9).extrude(params.l)
-            body = body.union(cq.Workplane("YZ").circle(params.d/2).extrude(params.l/4))
-            body = body.union(cq.Workplane("YZ").workplane(offset=params.l*3/4).circle(params.d/2).extrude(params.l/4))
-        elif (params.shape == 'power') or (params.shape == 'box') or (params.shape == 'radial') or (params.shape == 'shunt'):
-            body = cq.Workplane("YZ").rect(params.w, params.d).extrude(params.l)
-        # sit on board, center between pads
-        body = body.translate(((params.px-params.l)/2,0,params.d/2))
+        if (params.orient == 'v'):
+            if (params.shape == 'din'):
+                body = cq.Workplane("XY").circle(params.d/2*0.9).extrude(params.l)
+                body = body.union(cq.Workplane("XY").circle(params.d/2).extrude(params.l/4))
+                body = body.union(cq.Workplane("XY").workplane(offset=params.l*3/4).circle(params.d/2).extrude(params.l/4))
+                body = body.edges(">Z or <Z").fillet(params.d/4)
+            else: #(params.shape == 'power'): # all vertical not din will make a box!
+                body = cq.Workplane("XY").rect(params.d, params.w).extrude(params.l)
+            body = body.translate((0,0,1.0))
+        else:
+            if (params.shape == 'din'):
+                # horizontal cylinder
+                body = cq.Workplane("YZ").circle(params.d/2*0.9).extrude(params.l)
+                body = body.union(cq.Workplane("YZ").circle(params.d/2).extrude(params.l/4))
+                body = body.union(cq.Workplane("YZ").workplane(offset=params.l*3/4).circle(params.d/2).extrude(params.l/4))
+                body = body.edges(">X or <X").fillet(params.d/4)
+            else: # elif (params.shape == 'power') or (params.shape == 'box') or (params.shape == 'radial') or (params.shape == 'shunt'):
+                body = cq.Workplane("YZ").rect(params.w, params.d).extrude(params.l)
+            if (params.shape == 'radial') and (params.py == 0.0):
+                # add the cool undercut from the datasheet http://www.vishay.com/docs/30218/cpcx.pdf
+                # doesn't apply to the centered-pin types (with py>0)
+                flat = 1.0
+                cut_h = 3.0
+                cutbody = (
+                    cq.Workplane("XZ").workplane(offset=-params.w/2)
+                    .center(flat, -params.d/2)
+                    .lineTo(cut_h, cut_h)
+                    .lineTo(params.l-2*flat-cut_h, cut_h)
+                    .lineTo(params.l-2*flat,0)
+                    .close()
+                    .extrude(params.w)
+                )
+                body = body.cut(cutbody)
+            if (params.shape == 'radial') and (params.py <> 0.0):
+                # center on pin 1 http://www.vitrohm.com/content/files/vitrohm_series_kvs_-_201702.pdf
+                body = body.translate((-params.l/2,0,params.d/2))
+            else:
+                # sit on board, center between pads
+                body = body.translate(((params.px-params.l)/2,0,params.d/2))
     return body
+
+def MakeSingleArrayPin(c, zbelow):
+    pin = cq.Workplane("XY").rect(0.5,0.3).extrude(c-zbelow).translate((0,0,zbelow))
+    pin = pin.union(cq.Workplane("XY").rect(1.14,0.5).extrude(c))
+    return pin
     
 # make a bent resistor pin
-def MakeResistorPin(params):
+def MakeResistorPin(params, n=1):
     
     zbelow = -3.0
     minimumstraight = 1.0
@@ -195,10 +239,16 @@ def MakeResistorPin(params):
         path = cq.Workplane("XZ").lineTo(0,h-r-zbelow).threePointArc((arco,h-arco-zbelow),(r,h-zbelow)).lineTo(params.px-r,h-zbelow).threePointArc((params.px-arco,h-arco-zbelow),(params.px,h-r-zbelow)).lineTo(params.px,0)
         pin = cq.Workplane("XY").circle(params.pd/2).sweep(path).translate((0,0,zbelow))
     # simple pins using px/py
-    elif (params.shape == "box") or (params.shape == "radial"):
-        pin = cq.Workplane("XY").circle(params.pd/2).extrude(zbelow)
+    elif (params.shape == "box") or (params.shape == "radial") or (params.shape == "bare"):
+        # extends 0.9*d above the board to allow for more complex body shapes, e.g. radial
+        pin = cq.Workplane("XY").circle(params.pd/2).extrude(params.d*0.9-zbelow).translate((0,0,zbelow))
         pin = pin.union(pin.translate((params.px,params.py,0)))
-    
+    elif (params.shape == "array"):
+        c = 0.8 # height off board
+        pin = MakeSingleArrayPin(c, zbelow)
+        for i in range(1,n):
+            pin = pin.union(MakeSingleArrayPin(c, zbelow).translate((i*params.px,0,0)))
+        
     # add extra pins for shunt package using py as pitch
     if (params.shape == "shunt"):
         pin = pin.union(cq.Workplane("XY").circle(params.pd/2).extrude(zbelow).translate(((params.px-params.py)/2,0,0)))
@@ -207,7 +257,7 @@ def MakeResistorPin(params):
     return pin
 
 #generate a name for the part
-def PartName(params, n=0):
+def PartName(params, n=1):
     # even though we use the names as keys, this generates the name programatically
     fstring = "R_Axial_"
     if (params.shape == 'din'):
@@ -227,27 +277,41 @@ def PartName(params, n=0):
             fstring += "DIN0614_"            
         elif (params.d == 6.0):
             fstring += "DIN0617_"
-        elif (params.d == 5.7) and (params.l == 18.00):
+        elif (params.d == 9.0) and (params.l == 18.00):
             fstring += "DIN0918_"
-        elif (params.d == 5.7) and (params.l == 20.00):    
-            fstring += "RDIN00922_"
+        elif (params.d == 9.0) and (params.l == 20.00):    
+            fstring += "DIN0922_"
         fstring += "L{0:.1f}mm_D{1:.1f}mm_P{2:.2f}mm_"
         if (params.orient == 'v'):
             fstring += "Vertical"
         else:
             fstring += "Horizontal"
     elif (params.shape == 'power'):
-        fstring += "Power_L{0:.1f}mm_W{1:.1f}mm_P{2:.2f}mm"
+        fstring += "Power_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"
         if (params.orient == 'v'):
             fstring += "_Vertical"
+    elif (params.shape == 'shunt'):
+        fstring += "Shunt_L{0:.1f}mm_W{5:.1f}mm_PS{3:.2f}mm_P{2:.2f}mm"  
+    elif (params.shape == 'box'):
+        fstring = "R_Box_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"    
+    elif (params.shape == 'bare'):
+        fstring = "R_Bare_Metal_Element_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"  
+    elif (params.shape == 'radial'):
+        fstring = "R_Radial_Power_L{0:.1f}mm_W{5:.1f}mm"
+        if (params.py == 0.0):
+            fstring += "_P{2:.2f}mm"
+        else:
+            fstring += "_Px{2:.2f}mm_Py{3:.2f}mm"
+    elif (params.shape == 'array'):
+        fstring = "R_Array_SIP{4}"
     
-    outstring = fstring.format(params.l, params.d, params.px)
+    outstring = fstring.format(params.l, params.d, params.px, params.py, n, params.w)
     print(outstring)
     return outstring
 
     
 #make a part using supplied parameters
-def MakePart(params, n=0):
+def MakePart(params, n=1):
     global formerDOC
     global LIST_license
     name = PartName(params, n)
@@ -278,8 +342,8 @@ def MakePart(params, n=0):
     Gui.ActiveDocument=Gui.getDocument(docname)
     
     FreeCAD.Console.PrintMessage(params)
-    pins_output = MakeResistorPin(params)
-    base_output = MakeResistor(params)
+    pins_output = MakeResistorPin(params, n)
+    base_output = MakeResistor(params, n)
     
     show(base_output)
     show(pins_output)
@@ -287,21 +351,29 @@ def MakePart(params, n=0):
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
     
-    if (params.shape == "power") or (params.shape == "box") or (params.shape == "radial"):
-        Color_Objects(Gui,objs[0],ceramic_color)
+    # select the color based on shape
+    if (params.shape == "power") or (params.shape == "radial") or (params.shape == "shunt"):
+        # white colour for ceramic box resistors
+        chosen_body_color = ceramic_color
+        chosen_body_color_key = ceramic_color_key
     elif (params.shape == "bare"):
-        Color_Objects(Gui,objs[0],pins_color) # body same colour as pins
+        # metal/pin colour for bare resistors
+        chosen_body_color = pins_color
+        chosen_body_color_key = pins_color_key   
     else:
-        Color_Objects(Gui,objs[0],body_color) # colourful resistors!
-    Color_Objects(Gui,objs[1],pins_color)
+        # light brown colour for din/axial/arrays/etc.
+        chosen_body_color = body_color
+        chosen_body_color_key = body_color_key  
     
+    Color_Objects(Gui,objs[0],chosen_body_color)
+    Color_Objects(Gui,objs[1],pins_color)
     #Color_Objects(Gui,objs[2],marking_color)
 
     col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
     col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
     #col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
     material_substitutions={
-        col_body[:-1]:body_color_key,
+        col_body[:-1]:chosen_body_color_key,
         col_pin[:-1]:pins_color_key,
         #col_mark[:-1]:marking_color_key
     }
@@ -370,8 +442,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     
     from sys import argv
     models = []
-    pinrange = []
-    pinrange = [1]
+    pinrange = range(4,15) # 4 to 14 (python doesn't include last)
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building example')
@@ -381,7 +452,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     if model_to_build == 'all':
         models = [all_params[model_to_build] for model_to_build in all_params.keys()]
-        pinrange = range(4,14)
         save_memory = True
     else:
         models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
@@ -394,12 +464,13 @@ if __name__ == "__main__" or __name__ == "main_generator":
     print models
     print pinrange
     for model in models:
-        # only arrays will pay attention to n
-        if (model.shape == "array"):
-            for pin_number in pinrange:
+        if (model.shape == "radial"): # only make one shape (testing)
+            # only arrays will pay attention to n
+            if (model.shape == "array"):
+                for pin_number in pinrange:
+                    MakePart(model, pin_number)
+            else:
                 MakePart(model)
-        else:
-            MakePart(model)
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":

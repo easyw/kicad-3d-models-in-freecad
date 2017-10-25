@@ -15,15 +15,17 @@ from collections import namedtuple
 destination_dir="/Resistors_THT.3dshapes"
 
 Params = namedtuple("Params", [
-    'l',      # length/height of body
-    'd',      # diameter/depth of body
-    'w',      # width of body
+    'l',      # length of body (x for horiz, z for vert)
+    'd',      # diameter/depth of body (z for h, x for vert)
+    'w',      # width of body (typically y)
     'pd',     # pin diameter
     'px',     # pin pitch on board (typical)
-    'py',     # pin pitch y offset (for box resistors)
-    'shape',  # "din", "power", "box", "array"
-    'orient'  # 'v' or 'h'
+    'py',     # pin pitch y offset or secondary pin pitch (PS)
+    'shape',  # "din", "power", "box", "array", "radial", "shunt", "bare"
+    'orient'  # 'v' or 'h' (for vertical, horizontal)
 ])
+
+# entries checked against datasheet have a comment with the datasheet link
 
 kicad_naming_params_resistors_tht = {
     'R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical': Params(	
@@ -196,9 +198,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'v'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P5.08mm_Vertical': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P5.08mm_Vertical': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 5.08,
@@ -206,9 +208,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'v'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P12.70mm_Horizontal': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P12.70mm_Horizontal': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 12.70,
@@ -216,9 +218,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'h'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P15.24mm_Horizontal': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P15.24mm_Horizontal': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 15.24,
@@ -226,9 +228,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'h'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P20.32mm_Horizontal': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P20.32mm_Horizontal': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 20.32,
@@ -236,9 +238,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'h'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P25.40mm_Horizontal': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P25.40mm_Horizontal': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 25.40,
@@ -246,9 +248,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'h'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P5.08mm_Vertical': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P5.08mm_Vertical': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 5.08,
@@ -256,9 +258,9 @@ kicad_naming_params_resistors_tht = {
         shape = 'din',
         orient = 'v'
     ),
-    'R_Axial_DIN0411_L9.9mm_D3.2mm_P7.62mm_Vertical': Params(
+    'R_Axial_DIN0411_L9.9mm_D3.6mm_P7.62mm_Vertical': Params(
         l = 9.9,
-        d = 3.2,
+        d = 3.6,
         w = 0.0,
         pd = 0.8,
         px = 7.62,
@@ -797,48 +799,53 @@ kicad_naming_params_resistors_tht = {
         orient = 'h'
     ),
     'R_Axial_Shunt_L22.2mm_W8.0mm_PS14.30mm_P25.40mm': Params(	
+        # doc: http://www.vishay.com/docs/30217/cpsl.pdf
         l = 22.2,
-        d = 8.0,
+        d = 8.0, # height
         w = 8.0, 
-        pd = 0.8,
+        pd = 0.914,
         px = 25.40,
         py = 14.30,
         shape = 'shunt',
         orient = 'h'
     ),
     'R_Axial_Shunt_L22.2mm_W9.5mm_PS14.30mm_P25.40mm': Params(	
+        # doc: http://www.vishay.com/docs/30217/cpsl.pdf
         l = 22.2,
-        d = 9.5,
+        d = 8.73, # height
         w = 9.5, 
-        pd = 0.8,
+        pd = 0.914,
         px = 25.40,
         py = 14.30,
         shape = 'shunt',
         orient = 'h'
     ),
     'R_Axial_Shunt_L35.3mm_W9.5mm_PS25.40mm_P38.10mm': Params(	
+        # doc: http://www.vishay.com/docs/30217/cpsl.pdf
         l = 35.3,
-        d = 9.5,
+        d = 8.73, # height
         w = 9.5, 
-        pd = 0.8,
+        pd = 0.914,
         px = 38.10,
         py = 25.40,
         shape = 'shunt',
         orient = 'h'
     ),
     'R_Axial_Shunt_L47.6mm_W12.7mm_PS34.93mm_P50.80mm': Params(	
+        # doc: http://www.vishay.com/docs/30217/cpsl.pdf
         l = 47.6,
         d = 12.7,
         w = 12.7, 
-        pd = 0.8,
+        pd = 0.914,
         px = 50.80,
         py = 34.93,
         shape = 'shunt',
         orient = 'h'
     ),
     'R_Axial_Shunt_L47.6mm_W9.5mm_PS34.93mm_P50.80mm': Params(	
+        # doc: http://www.vishay.com/docs/30217/cpsl.pdf
         l = 47.6,
-        d = 9.5,
+        d = 8.73, # height
         w = 9.5, 
         pd = 0.8,
         px = 50.80,
@@ -847,10 +854,11 @@ kicad_naming_params_resistors_tht = {
         orient = 'h'
     ),
     'R_Bare_Metal_Element_L12.4mm_W4.8mm_P11.40mm': Params(	
+        # doc: http://www.arcolresistors.com/wp-content/uploads/2011/07/MSR-6-11.272.pdf
         l = 12.4,
-        d = 10.0, #height
+        d = 5.10, #height
         w = 4.8, 
-        pd = 1.0,
+        pd = 1.7,
         px = 11.40,
         py = 0.0,
         shape = 'bare',
@@ -858,9 +866,9 @@ kicad_naming_params_resistors_tht = {
     ),
     'R_Bare_Metal_Element_L16.3mm_W4.8mm_P15.30mm': Params(	
         l = 16.3,
-        d = 10.0, #height
+        d = 25.4, #height
         w = 4.8, 
-        pd = 1.0,
+        pd = 1.7,
         px = 15.30,
         py = 0.0,
         shape = 'bare',
@@ -868,9 +876,9 @@ kicad_naming_params_resistors_tht = {
     ),    
     'R_Bare_Metal_Element_L21.3mm_W4.8mm_P20.30mm': Params(	
         l = 21.3,
-        d = 10.0, #height
+        d = 25.4, #height
         w = 4.8, 
-        pd = 1.0,
+        pd = 1.7,
         px = 20.30,
         py = 0.0,
         shape = 'bare',
@@ -907,8 +915,9 @@ kicad_naming_params_resistors_tht = {
         orient = 'h'
     ), 
     'R_Box_L26.0mm_W5.0mm_P20.00mm': Params(	
+        # doc: http://www.produktinfo.conrad.com/datenblaetter/425000-449999/443860-da-01-de-METALLBAND_WIDERSTAND_0_1_OHM_5W_5Pr.pdf
         l = 26.0,
-        d = 10.0, #height
+        d = 18.0,
         w = 5.0, 
         pd = 0.8,
         px = 20.00,
@@ -916,6 +925,17 @@ kicad_naming_params_resistors_tht = {
         shape = 'box',
         orient = 'h'
     ), 
+    'R_Box_L8.4mm_W2.5mm_P5.08mm': Params(	
+        # doc: http://www.vishay.com/docs/60051/cns020.pdf
+        l = 8.4,
+        d = 6.7, #height
+        w = 2.5, 
+        pd = 0.6,
+        px = 5.08,
+        py = 0.0,
+        shape = 'box',
+        orient = 'h'
+    ),     
     'R_Radial_Power_L11.0mm_W7.0mm_P5.00mm': Params(	
         l = 11.0,
         d = 22.0, #height
@@ -949,7 +969,7 @@ kicad_naming_params_resistors_tht = {
     'R_Radial_Power_L16.1mm_W9.0mm_P7.37mm': Params(	
         l = 16.1,
         d = 32.2, #height
-        w = 8.0, 
+        w = 9.0, 
         pd = 0.8,
         px = 7.37,
         py = 0.0,
@@ -957,8 +977,9 @@ kicad_naming_params_resistors_tht = {
         orient = 'h'
     ),
     'R_Radial_Power_L7.0mm_W8.0mm_Px2.40mm_Py2.30mm': Params(	
+        # doc: http://www.vitrohm.com/content/files/vitrohm_series_kvs_-_201702.pdf
         l = 7.0,
-        d = 40.0, #height
+        d = 38.0, #height
         w = 8.0, 
         pd = 1.0,
         px = 2.40,
@@ -967,8 +988,9 @@ kicad_naming_params_resistors_tht = {
         orient = 'h'
     ),
     'R_Radial_Power_L9.0mm_W10.0mm_Px2.70mm_Py2.30mm': Params(	
+        # doc: http://www.vitrohm.com/content/files/vitrohm_series_kvs_-_201702.pdf
         l = 9.0,
-        d = 80.0, #height
+        d = 75.0, #height
         w = 10.0, 
         pd = 1.0,
         px = 2.70,
@@ -976,11 +998,11 @@ kicad_naming_params_resistors_tht = {
         shape = 'radial',
         orient = 'h'
     ),
-    'R_Array_SIP': Params(	
+    'R_Array_SIP': Params(	# https://www.vishay.com/docs/31509/csc.pdf
         l = 0.0,
-        d = 8.0, #height
-        w = 4.0, 
-        pd = 0.6,
+        d = 5.0, #height
+        w = 2.5, 
+        pd = 0.5,
         px = 2.54,
         py = 0.0,
         shape = 'array',
