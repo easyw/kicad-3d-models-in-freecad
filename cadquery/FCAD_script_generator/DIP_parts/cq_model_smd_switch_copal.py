@@ -44,6 +44,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
 
     def __init__(self, params):
         dip_smd_switch.__init__(self, params)
+        self.make_me = self.make_me and self.num_pins / 2 in [1, 2, 4, 6, 8, 10]
         self.rotation = 90
 
         self.pin_pitch  = 1.27

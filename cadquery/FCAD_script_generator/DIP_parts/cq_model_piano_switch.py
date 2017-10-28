@@ -73,7 +73,7 @@ class dip_switch_piano (part):
         self.button_base = 3.5
         self.button_heigth = 4.0
 
-        self.color_keys[0] = "led blue"       # body
+        self.color_keys[0] = "blue body"      # body
         self.color_keys.append("white body")  # buttons
         self.color_keys.append("white body")  # pin mark
 
@@ -145,11 +145,11 @@ class dip_switch_piano (part):
         #create first pin
         pin = cq.Workplane("XZ", (self._first_pin_pos(), self.pin_row_distance / 2.0 + self.pin_thickness / 2.0, self.body_board_pad_height))\
                 .moveTo(self.pin_width / 2.0, 0.0)\
-                .line(0, -(l - self.pin_width))\
+                .line(0.0, -(l - self.pin_width))\
                 .line(-self.pin_width / 4.0, -self.pin_width)\
                 .line(-self.pin_width / 2.0, 0.0)\
                 .line(-self.pin_width / 4.0, self.pin_width)\
-                .line(0, l - self.pin_width)\
+                .line(0.0, l - self.pin_width)\
                 .close().extrude(self.pin_thickness)
 
         pins = self.make_rest(pin)
@@ -163,23 +163,19 @@ class dip_switch_piano (part):
         w = width / 2.0
         w3 = width / 3.0
 
-        return cq.Workplane("XZ", origin=(self._first_pin_pos(), self.body_width / 2.0 - h, 0.5))\
-                 .line(w, w)\
-                 .line(-w3, 0.0)\
-                 .line(0.0, w3)\
-                 .line(-w3, 0.0)\
+        return cq.Workplane("XY", origin=(self._first_pin_pos(), self.body_width / 2.0 - 3.9, self.body_height - h))\
+                 .line(-w, -w)\
+                 .line(w3, 0.0)\
                  .line(0.0, -w3)\
-                 .line(-w3, 0.0)\
-                 .close().extrude(-h)
+                 .line(w3, 0.0)\
+                 .line(0.0, w3)\
+                 .line(w3, 0.0)\
+                 .close().extrude(h)
 
     def make(self):        
-        body = self.make_body()
-        pins = self.make_pins()
-        btns = self.make_buttons()
-        mark = self.make_pinmark(self.button_width + 0.2)
-        show(body)
-        show(pins)
-        show(btns)
-        show(mark)
+        show(self.make_body())
+        show(self.make_pins())
+        show(self.make_buttons())
+        show(self.make_pinmark(self.button_width + 0.2))
         
 ### EOF ###

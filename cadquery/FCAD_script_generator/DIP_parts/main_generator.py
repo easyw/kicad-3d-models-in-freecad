@@ -61,6 +61,7 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "\..\_tools")
 import exportPartToVRML as expVRML
 import shaderColors
+import re, fnmatch
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -127,8 +128,9 @@ from math import sqrt, tan, radians
 # End of scratchpad area  #
 ###########################
 
-family = 7
-parts = [
+family = None # set to None to generate all series
+
+series = [
  dip_socket_turned_pin,
  dip_switch,
  dip_switch_low_profile,
@@ -139,8 +141,8 @@ parts = [
  dip_switch_omron_a6h
 ]
 
-global ksu_present
-ksu_present = False
+global kicadStepUptools
+kicadStepUptools = None
 
 def closeCurrentDoc(title):
     mw = FreeCADGui.getMainWindow()
@@ -157,24 +159,26 @@ def closeCurrentDoc(title):
                 sub.close()
                 return
 
-def make_3D_model(models_dir, genericName, part, save_memory):
+def make_3D_model(models_dir, genericName, model, save_memory):
 
-    if part.make_me != True:
+    modelName = model.make_modelname(genericName)
+
+    FreeCAD.Console.PrintMessage('\r\n' + modelName)
+
+    if model.make_me != True:
         FreeCAD.Console.PrintMessage(' - not made')
         return
 
-    global ksu_present
+    global kicadStepUptools
 
     LIST_license = ["",]
-
-    modelName = part.make_modelname(genericName)
 
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument = Gui.getDocument(CheckedmodelName)
     
-    part.make()
+    model.make()
     
     #stop
 
@@ -184,12 +188,12 @@ def make_3D_model(models_dir, genericName, part, save_memory):
     material_substitutions = {}
     
     for i in range(0, len(objs)):
-        Color_Objects(Gui, objs[i], shaderColors.named_colors[part.color_keys[i]].getDiffuseFloat())
-        material_substitutions[Gui.ActiveDocument.getObject(objs[i].Name).DiffuseColor[0][:-1]] = part.color_keys[i]
+        Color_Objects(Gui, objs[i], shaderColors.named_colors[model.color_keys[i]].getDiffuseFloat())
+        material_substitutions[Gui.ActiveDocument.getObject(objs[i].Name).DiffuseColor[0][:-1]] = model.color_keys[i]
 
     expVRML.say(material_substitutions)
-    expVRML.say(part.color_keys)
-    expVRML.say(part.offsets)
+    expVRML.say(model.color_keys)
+    expVRML.say(model.offsets)
 
     doc.Label = CheckedmodelName
 
@@ -202,18 +206,18 @@ def make_3D_model(models_dir, genericName, part, save_memory):
     restore_Main_Tools()
 
     #rotate if required
-    if (part.rotation != 0):
-        z_RotateObject(doc, part.rotation)
+    if (model.rotation != 0):
+        z_RotateObject(doc, model.rotation)
  
     s = objs[0].Shape
     shape = s.copy()
     shape.Placement = s.Placement;
-    shape.translate(part.offsets)
+    shape.translate(model.offsets)
     objs[0].Placement = shape.Placement
 
     expVRML.say(models_dir)
 
-    out_dir = models_dir + os.sep + part.destination_dir
+    out_dir = models_dir + os.sep + model.destination_dir
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -224,7 +228,7 @@ def make_3D_model(models_dir, genericName, part, save_memory):
         LIST_license = Lic.LIST_int_license
         LIST_license.append("")
 
-    Lic.addLicenseToStep(out_dir + os.sep, modelName + ".step", LIST_license, part.licAuthor, part.licEmail, part.licOrgSys, part.licOrg, part.licPreProc)
+    Lic.addLicenseToStep(out_dir + os.sep, modelName + ".step", LIST_license, model.licAuthor, model.licEmail, model.licOrgSys, model.licOrg, model.licPreProc)
 
     # scale and export Vrml model
     scale = 1.0 / 2.54
@@ -240,16 +244,15 @@ def make_3D_model(models_dir, genericName, part, save_memory):
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, modelName, out_dir)
 
-    if not save_memory and part.footprints_dir is not None and footprints_dir is not None and os.path.isdir(footprints_dir):
+    if not save_memory and model.footprints_dir is not None and footprints_dir is not None and os.path.isdir(footprints_dir):
 
-        sys.argv = ["fc", "dummy", footprints_dir + os.sep + part.footprints_dir + os.sep + modelName, "savememory"]
+        sys.argv = ["fc", "dummy", footprints_dir + os.sep + model.footprints_dir + os.sep + modelName, "savememory"]
 
         expVRML.say('Footprint: ' + sys.argv[2])
 
-        if not ksu_present:
+        if kicadStepUptools == None:
             try:
                 import kicadStepUptools
-                ksu_present = True
                 expVRML.say("ksu present!")
                 kicadStepUptools.KSUWidget.close()
                 #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
@@ -259,10 +262,10 @@ def make_3D_model(models_dir, genericName, part, save_memory):
                 #        i.deleteLater()
                 kicadStepUptools.KSUWidget.close()
             except:
-                ksu_present = False
+                kicadStepUptools = False
                 expVRML.say("ksu not present")
 
-        if ksu_present:
+        if not kicadStepUptools == False:
             kicadStepUptools.KSUWidget.close()
             reload(kicadStepUptools)
             kicadStepUptools.KSUWidget.close()
@@ -279,7 +282,6 @@ def make_3D_model(models_dir, genericName, part, save_memory):
 
 import add_license as Lic
 
-# when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
@@ -295,27 +297,57 @@ if __name__ == "__main__" or __name__ == "main_generator":
     sub_path = full_path.split(sub_dir_name)[0]
     expVRML.say(sub_path)
     models_dir = sub_path + "_3Dmodels"
+    models_made = 0
 
-    if len(sys.argv) < 3 or not (sys.argv[2] == "all" or sys.argv[2] == "allsmd"):
-# TODO: validate user input!
-        if sys.argv[0] == "fc":
-            sys.argv = [""]
-        variant =  parts[family].default_model if len(sys.argv) < 3 else sys.argv[2]
-        FreeCAD.Console.PrintMessage('No variant name is given! building ' + variant)
-        make_3D_model(models_dir, variant, parts[family](all_params[variant]), False)
+    if len(sys.argv) >= 3 and not all_params.has_key(sys.argv[2]):
+
+        Model = namedtuple("Model", [
+            'variant',      # generic model name
+            'params',       # parameters
+            'model'         # model creator class
+        ])
+
+        models = {}
+
+        # instantiate generator classes in order to make a dictionary of all model names
+        for i in range(0, len(series)):
+            for variant in all_params.keys():
+                model = series[i](all_params[variant])            
+                if model.make_me:
+                    models[model.make_modelname(variant)] = Model(variant, all_params[variant], series[i])
+
+        if sys.argv[2] == "list":
+            for variant in sorted(models):
+                expVRML.say(variant)
+        else:
+            buildAllSMD = sys.argv[2] == "allsmd"
+            filter = '*' if sys.argv[2] == "all" or sys.argv[2] == "allsmd" else sys.argv[2]
+            filter = re.compile(fnmatch.translate(filter))
+            for variant in models.keys():
+                if filter.match(variant):
+                    params = models[variant].params
+                    model = models[variant].model(params)
+                    if (buildAllSMD == False or params.type == CASE_SMD_TYPE) and model.make_me:
+                        models_made = models_made + 1
+                        make_3D_model(models_dir, variant, model, True)
     else:
-        buildAllSMD = model_to_build == "allsmd"
-        variants = all_params.keys()
-        
-        for i in range(0, len(variants) - 1):
-            for variant in variants:
-                FreeCAD.Console.PrintMessage('\r\nFamily: ' + str(family) + ': ' + variant)
-                if not variant in all_params:
-                    print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-                    continue
-                if (buildAllSMD == False or all_params[variant].type == CASE_SMD_TYPE):
-                    make_3D_model(models_dir, variant, parts[i](all_params[variant]), True)
+        variant_to_build = "" if len(sys.argv) < 3 else sys.argv[2]
+        if variant_to_build == "":
+            FreeCAD.Console.PrintMessage('No variant name is given! building default variants')
+        for i in (range(0, len(series)) if family == None else range(family, family + 1)):
+            variant = series[i].default_model if variant_to_build == "" else variant_to_build
+            model = series[i](all_params[variant])
+            if model.make_me:
+                models_made = models_made + 1
+                make_3D_model(models_dir, variant, series[i](all_params[variant]), False)
+            else:    
+                FreeCAD.Console.PrintMessage('\r\n' + model.make_modelname(variant) + ' - not made')
 
-    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
+    if models_made == 0:
+        FreeCAD.Console.PrintMessage('\r\nDone - no models matched the provided filter!')
+    else:  
+        FreeCAD.Console.PrintMessage('\r\nDone - models made: ' + str(models_made))
+
+    sys.argv = [""]
 
 ### EOF ###

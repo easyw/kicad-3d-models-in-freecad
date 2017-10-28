@@ -34,8 +34,6 @@
 import cadquery as cq
 from Helpers import show
 
-from math import sqrt, tan, radians
-
 ## base parametes & model
 
 from cq_base_model import part
@@ -142,13 +140,9 @@ class dip_smd_switch (part):
                  .close().extrude(h)
 
     def make(self):        
-        body = self.make_body()
-        pins = self.make_pins()
-        btns = self.make_buttons()
-        mark = self.make_pinmark(self.button_width - (0.1 if self.button_width > 1.0 else 0.0))
-        show(body)
-        show(pins)
-        show(btns)
-        show(mark)
+        show(self.make_body())
+        show(self.make_pins())
+        show(self.make_buttons())
+        show(self.make_pinmark(self.button_width - (0.1 if self.button_width > 1.0 else 0.0)))
 
 ### EOF ###

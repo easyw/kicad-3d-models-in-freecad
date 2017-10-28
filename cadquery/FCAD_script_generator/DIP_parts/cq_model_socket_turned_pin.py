@@ -112,7 +112,7 @@ class dip_socket_turned_pin (part):
                                  self.pin_row_distance / 2.0,
                                  -self.body_height / 2.0 + self.body_board_distance))\
                 .circle(self.pin_socket_radius).extrude(-self.body_board_distance)\
-                .faces("<Z").edges().chamfer(.3)
+                .faces("<Z").edges().chamfer(0.3)
 
         return pin.faces(">Z").workplane()\
                               .circle(self.pin_socket_radius + 0.1).extrude(self.body_height + 0.04).faces(">Z")\
@@ -134,20 +134,20 @@ class dip_socket_turned_pin (part):
 
         # pin 1 indent
         body = body.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(-body_length_2, -h / 2.0)\
-                    .lineTo(w - r, 0) \
+                    .lineTo(w - r, 0.0) \
                     .threePointArc((w - o, o), (w, r)) \
                     .lineTo(w, h-r) \
                     .threePointArc((w - o, h - o), (w - r, h)) \
-                    .lineTo(0, h) \
+                    .lineTo(0.0, h) \
                     .close().cutBlind(-self.body_height)
 
         # reverse indent
         body = body.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(body_length_2, -h / 2.0)\
-                    .lineTo(-w + r, 0) \
+                    .lineTo(-w + r, 0.0) \
                     .threePointArc((-w + o, o), (-w, r)) \
                     .lineTo(-w, h - r) \
                     .threePointArc((-w + o, h - o), (-w + r, h)) \
-                    .lineTo(0, h) \
+                    .lineTo(0.0, h) \
                     .close().cutBlind(-self.body_height / 2.0)
 
         # top pocket, none if self.body_bottom_pockets = 0, cuts through if self.body_bottom_pockets = 1
@@ -163,7 +163,7 @@ class dip_socket_turned_pin (part):
                         .lineTo(-w + r, h) \
                         .threePointArc((-w + o, h - o), (-w, h - r )) \
                         .lineTo(-w, r) \
-                        .threePointArc((-w + o, o), (-w + r, 0)) \
+                        .threePointArc((-w + o, o), (-w + r, 0.0)) \
                         .close().cutBlind(-self.body_height if self.body_bottom_pockets == 1 else -self.body_height / 2.0)
 
         # bottom pockets
@@ -173,18 +173,18 @@ class dip_socket_turned_pin (part):
             offs = -body_length_2 + tq + tr + w
             for i in range(0, self.body_bottom_pockets):
                 body = body.faces("<Z").workplane(centerOption='CenterOfBoundBox').center(offs + w1 * i, -h / 2.0)\
-                           .lineTo(w - r, 0) \
+                           .lineTo(w - r, 0.0) \
                            .threePointArc((w - o, o), (w, r)) \
                            .lineTo(w, h - r) \
                            .threePointArc((w - o, h - o), (w - r, h)) \
                            .lineTo(-w + r, h) \
                            .threePointArc((-w + o, h - o), (-w, h - r )) \
                            .lineTo(-w, r) \
-                           .threePointArc((-w + o, o), (-w + r, 0)) \
+                           .threePointArc((-w + o, o), (-w + r, 0.0)) \
                            .close().cutBlind(-self.body_height / 2.0)
 
         q1 = 2.2
-        q2 = 3.5 if self.body_bottom_pockets < 3 else 3.9
+        q2 = 3.5 if self.body_bottom_pockets < 3.0 else 3.9
 
         body = body.faces(">Z").workplane(centerOption='CenterOfBoundBox')\
                                .center(0.0, (-self.body_width + q1) / 2.0 + q2)\
@@ -208,9 +208,9 @@ class dip_socket_turned_pin (part):
         r = r2 - r2 / sqrt(2.0)
 
         path = cq.Workplane("YZ")\
-                   .lineTo(0, -L2)\
-                   .threePointArc((r, s + r), (r2, s))\
-                   .lineTo(L, s)
+                 .lineTo(0.0, -L2)\
+                 .threePointArc((r, s + r), (r2, s))\
+                 .lineTo(L, s)
         pin = cq.Workplane("XY").circle(self.pin_radius)\
                                 .sweep(path).faces(">Y")\
                                 .chamfer(.1)\
@@ -229,9 +229,7 @@ class dip_socket_turned_pin (part):
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
     def make(self):        
-        body = self.make_body()
-        pins = self.make_pins()
-        show(body)
-        show(pins)       
+        show(self.make_body())
+        show(self.make_pins())       
 
 ## EOF ##
