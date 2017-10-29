@@ -148,7 +148,9 @@ Params = namedtuple("Params", [
 	'pin',				# pin pitch
 	'A1',				# package board seperation
 	'corner',			# If top should be cut
+	'show_top',			# If top should be visible or not
 	'body_color_key',	# Body colour
+	'body_top_color_key',	# Body top colour
 	'pin_color_key'		# Pin colour
 ])
 
@@ -166,7 +168,90 @@ def make_params(modelName, L, W, H, pinpadsize, pinpadh, pintype, rotation, pin1
 		pin = pin,						# pin/pad cordinates
 		A1 = 0.1,						# package board seperation
 		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		show_top = 0,					# If top should be visible or not
 		body_color_key = "black body",
+		body_top_color_key = "black body",
+		pin_color_key = "metal grey pins"
+	)
+
+def make_params_tht_B_0(modelName, L, W, H, pinpadsize, pinpadh, pin1corner, pin):
+	return Params(
+		modelName = modelName,  		# Model Name
+		L = L,				  			# package length
+		W = W,				  			# package width
+		H = H,				  			# package height
+		pinpadsize = pinpadsize,		# pin diameter or pad size
+		pinpadh = pinpadh,				# pin length, pad height
+		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
+		pin = pin,						# pin/pad cordinates
+		pintype = CASE_THT_TYPE,		# Casing type
+		rotation = 0,					# rotation if required
+		A1 = 0.1,						# package board seperation
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		show_top = 0,					# If top should be visible or not
+		body_color_key = "black body",
+		body_top_color_key = "black body",
+		pin_color_key = "metal grey pins"
+	)
+
+def make_params_tht_O_0(modelName, L, W, H, pinpadsize, pinpadh, pin1corner, pin):
+	return Params(
+		modelName = modelName,  		# Model Name
+		L = L,				  			# package length
+		W = W,				  			# package width
+		H = H,				  			# package height
+		pinpadsize = pinpadsize,		# pin diameter or pad size
+		pinpadh = pinpadh,				# pin length, pad height
+		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
+		pin = pin,						# pin/pad cordinates
+		pintype = CASE_THT_TYPE,		# Casing type
+		rotation = 0,					# rotation if required
+		A1 = 0.1,						# package board seperation
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		show_top = 0,					# If top should be visible or not
+		body_color_key = "orange body",
+		body_top_color_key = "black body",
+		pin_color_key = "metal grey pins"
+	)
+
+def make_params_tht_G_0(modelName, L, W, H, pinpadsize, pinpadh, pin1corner, pin):
+	return Params(
+		modelName = modelName,  		# Model Name
+		L = L,				  			# package length
+		W = W,				  			# package width
+		H = H,				  			# package height
+		pinpadsize = pinpadsize,		# pin diameter or pad size
+		pinpadh = pinpadh,				# pin length, pad height
+		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
+		pin = pin,						# pin/pad cordinates
+		pintype = CASE_THT_TYPE,		# Casing type
+		rotation = 0,					# rotation if required
+		A1 = 0.1,						# package board seperation
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		show_top = 0,					# If top should be visible or not
+		body_color_key = "grey body",
+		body_top_color_key = "black body",
+		pin_color_key = "metal grey pins"
+	)
+
+
+def make_params_tht_MR_0(modelName, L, W, H, pinpadsize, pinpadh, pin1corner, pin):
+	return Params(
+		modelName = modelName,  		# Model Name
+		L = L,				  			# package length
+		W = W,				  			# package width
+		H = H,				  			# package height
+		pinpadsize = pinpadsize,		# pin diameter or pad size
+		pinpadh = pinpadh,				# pin length, pad height
+		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
+		pin = pin,						# pin/pad cordinates
+		pintype = CASE_THT_TYPE,		# Casing type
+		rotation = 0,					# rotation if required
+		A1 = 0.1,						# package board seperation
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		show_top = 1,					# If top should be visible or not
+		body_color_key = "metal grey pins",
+		body_top_color_key = "red_body",
 		pin_color_key = "metal grey pins"
 	)
 
@@ -178,24 +263,74 @@ all_params = {
 #
 #
 
-#	Name												  										Length		Width	 Height		Pin size, 	Pin height,		Pin type			Rotation,	pin1corner,		pin
-	"ACDC-Converter_Hahn-HS-400XX"			: make_params('ACDC-Converter_Hahn-HS-400XX',		32.8,		 27.80,	 25.8,		 1.0,		4.0,			CASE_THT_TYPE,		  000.0,		(-6.40,  -3.90),	((00.00, 00.00), (20.00, 00.00), (15.00, 20.00), (05.00, 20.00))	),
-	"ACDC-Converter_MeanWell-IRM-02-x"		: make_params('ACDC-Converter_MeanWell-IRM-02-x',	33.7,		 22.20,	 15.0,		 0.6,		6.0,			CASE_THT_TYPE,		  000.0,		(-2.85,  -3.50),	((00.00, 00.00), (00.00, 15.20), (28.00, 00.00), (28.00, 07.60))	),
-	"ACDC-Converter_MeanWell-IRM-03-xS"		: make_params('ACDC-Converter_MeanWell-IRM-03-xS',	24.0,		 37.0,	 15.0,		 1.0,		0.4,			CASE_SMD_TYPE,		  000.0,		(00.00,  00.00),	(
-	(-13.225, -15.24), (-13.225, -10.16), (-13.225, -05.08), (-13.225,  7.62), (-13.225,  10.16), (-13.225,  12.70), (-13.225,  15.24), 
-	( 13.225, -15.24), ( 13.225, -10.16), ( 13.225, -05.08), ( 13.225,  7.62), ( 13.225,  10.16), ( 13.225,  12.70), ( 13.225,  15.24)
-	)	),
-	"ACDC-Converter_MeanWell-IRM-20-xx"		: make_params('ACDC-Converter_MeanWell-IRM-20-xx',	52.40,		 27.20,	 24.00,		 1.04,		3.5,			CASE_THT_TYPE,		  000.0,		(-3.40,  -3.20),	((00.00, 00.00), (00.00, 20.80), (45.00, 12.80), (45.00, 20.80))	),
-	"ACDC-Converter_Traco-TMLM-04"			: make_params('ACDC-Converter_Traco-TMLM-04',		36.50,		 27.00,	 17.10,		 0.50,		4.0,			CASE_THT_TYPE,		  000.0,		(-3.75,  -3.00),	(
+#	Name												  																			Length		Width	 Height		Pin size 	Pin height	pin1corner			pin
+	"ACDC-Converter_Hahn-HS-400XX"						: make_params_tht_B_0('ACDC-Converter_Hahn-HS-400XX',						32.8,		 27.80,	 25.8,		 1.0,		4.0,		(-06.40,  -3.90),	((00.00, 00.00), (20.00, 00.00), (15.00, 20.00), (05.00, 20.00))	),
+	"ACDC-Converter_MeanWell-IRM-02-x"					: make_params_tht_B_0('ACDC-Converter_MeanWell-IRM-02-x',					33.7,		 22.20,	 15.0,		 0.6,		6.0,		(-02.85,  -3.50),	((00.00, 00.00), (00.00, 15.20), (28.00, 00.00), (28.00, 07.60))	),
+	"ACDC-Converter_MeanWell-IRM-20-xx"					: make_params_tht_B_0('ACDC-Converter_MeanWell-IRM-20-xx',					52.40,		 27.20,	 24.00,		 1.04,		3.5,		(-03.40,  -3.20),	((00.00, 00.00), (00.00, 20.80), (45.00, 12.80), (45.00, 20.80))	),
+	"ACDC-Converter_Traco-TMLM-04"						: make_params_tht_B_0('ACDC-Converter_Traco-TMLM-04',						36.50,		 27.00,	 17.10,		 0.50,		4.0,		(-03.75,  -3.00),	(
 	(00.00, 00.00), (21.50, 00.00), (25.25, 00.00), (29.00, 00.00),
 	(29.00, 21.00), (21.50, 21.00), (00.00, 21.00)
 	)	),
-	"ACDC-Converter_TRACO-TMLM-05"			: make_params('ACDC-Converter_TRACO-TMLM-05',		50.08,		 25.4,	 15.16,		 1.04,		8.0,			CASE_THT_TYPE,		  000.0,		(-2.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16))	),
-	"ACDC-Converter_TRACO-TMLM-10-20"		: make_params('ACDC-Converter_TRACO-TMLM-10-20',	52.40,		 27.2,	 23.50,		 1.00,		8.0,			CASE_THT_TYPE,		  000.0,		(-2.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16) )	)
+	"ACDC-Converter_TRACO-TMLM-05"						: make_params_tht_B_0('ACDC-Converter_TRACO-TMLM-05',						50.08,		 25.4,	 15.16,		 1.04,		8.0,		(-12.00, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16))	),
+	"ACDC-Converter_TRACO-TMLM-10-20"					: make_params_tht_B_0('ACDC-Converter_TRACO-TMLM-10-20',					52.40,		 27.2,	 23.50,		 1.00,		8.0,		(-02.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16) )	),
+	"ACDC-Conv_Vigortronix_VTX-214-010-XXX"				: make_params_tht_O_0('ACDC-Conv_Vigortronix_VTX-214-010-XXX',				36.00,		 56.00,	 25.50,		 1.00,		3.0,		(-12.00, -04.00),	((00.00, 00.00), (12.00, 00.00), (00.00, 48.00), (05.00,   48.00) )	),
+	"ACDC-Conv_Vigortronix_VTX-214-010-XXX_Miniature"	: make_params_tht_O_0('ACDC-Conv_Vigortronix_VTX-214-010-XXX_Miniature',	30.00,		 45.50,	 24.00,		 1.00,		3.5,		(-09.12, -03.37),	((00.00, 00.00), (12.00, 00.00), (12.00, 39.00), (05.00,   39.00) )	),
+	"DCDC-Conv_BOTHHAND_CF-Serie"						: make_params_tht_G_0('DCDC-Conv_BOTHHAND_CF-Serie',						16.80,		 33.60,	 10.20,		 1.00,		3.5,		(-00.78, -02.80),	(
+	(00.00, 00.00), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
+	(15.24, 27.94), (15.24, 25.40), (15.24, 22.86), (15.24, 00.00),
+	)	),
+	"DCDC-Conv_CINCON_EC5BE12_18-36VDCto12VDC1250mA"	: make_params_tht_B_0('DCDC-Conv_CINCON_EC5BE12_18-36VDCto12VDC1250mA',		25.40,		 50.80,	 24.00,		 1.00,		3.5,		(-10.16, -15.24),	((00.00, 00.00), (05.08, 00.00), (-07.62, 20.32), (12.70,   20.32) )	),
+	"DCDC-Conv_CINCON_EC6C11_18-36Vto5V5A"				: make_params_tht_B_0('DCDC-Conv_CINCON_EC6C11_18-36Vto5V5A',				50.80,		 50.80,	 24.00,		 1.00,		3.5,		(-02.54, -05.08),	(
+	(00.00, 00.00), (00.00, 15.24), ( 00.00, 22.86),
+	(45.72, 05.08), (45.72, 15.24), ( 45.72, 25.40),
+	)	),
+	"DCDC-Conv_DELTA_DPS05U09D_5VDCto9VDC"				: make_params_tht_B_0('DCDC-Conv_DELTA_DPS05U09D_5VDCto9VDC',				16.00,		 33.60,	 24.00,		 1.00,		3.5,		(-00.50, -02.80),	(
+	(00.00, 00.00), (00.00, 02.54), ( 00.00, 22.86), ( 00.00, 25.40), ( 00.00, 27.94),
+	(15.24, 00.00), (15.24, 02.54), ( 15.24, 22.86), ( 15.24, 25.40), ( 15.24, 27.94),
+	)	),
+	"DCDC-Conv_DELTA_DPS05U09D_5VDCto9VDC"				: make_params_tht_B_0('DCDC-Conv_DELTA_DPS05U09D_5VDCto9VDC',				16.00,		 33.60,	 24.00,		 1.00,		3.5,		(-00.50, -02.80),	(
+	(00.00, 00.00), (00.00, 02.54), ( 00.00, 22.86), ( 00.00, 25.40), ( 00.00, 27.94),
+	(15.24, 00.00), (15.24, 02.54), ( 15.24, 22.86), ( 15.24, 25.40), ( 15.24, 27.94),
+	)	),
+	"DCDC-Conv_MeanWell_NID60"							: make_params_tht_B_0('DCDC-Conv_MeanWell_NID60',							10.70,		 50.80,	 26.00,		 0.64,		4.5,		(-02.60, -01.76),	(
+	(00.00, 00.00), (00.00, 02.54), ( 00.00, 05.08), ( 00.00, 07.62), ( 00.00, 10.16),
+	(00.00, 35.56), (00.00, 38.10), ( 00.00, 40.64), ( 00.00, 43.18), ( 00.00, 45.72), ( 00.00, 48.26),
+	)	),
+	"DCDC-Conv_muRata_CRE1xxxxxx3C"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxx3C',						 6.10,		 11.53,	  7.62,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
+	"DCDC-Conv_muRata_CRE1xxxxxxDC"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxxDC',						 9.90,		 11.60,	  6.90,		 0.50,		4.1,		(-01.30, -02.10),	((00.00, 00.00), (00.00, 07.62), (07.62, 07.62), (07.62,   02.54) )	),
+	"DCDC-Conv_muRata_CRE1xxxxxxSC"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxxSC',						 6.10,		 11.53,	 10.00,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
+	"DCDC-Conv_muRata_NMAxxxxDC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxDC',							 9.80,		 19.50,	  6.80,		 0.50,		4.1,		(-00.96, -01.39),	((00.00, 00.00), (00.00, 15.24), (07.62, 15.24), (07.62,   12.70), (07.62,   07.62), (07.62,   00.00) )	),
+	"DCDC-Conv_muRata_NMAxxxxSC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxSC',							19.50,		  6.00,	 10.00,		 0.50,		4.1,		(-04.57, -01.27),	((00.00, 00.00), (00.00, 02.54), (00.00, 07.62), (00.00,   10.16), (00.00,   12.70) )	),
+	"DCDC-Conv_RECOM_R-78E-0.5"							: make_params_tht_B_0('DCDC-Conv_RECOM_R-78E-0.5',							 8.50,		 11.60,	 10.40,		 0.25,		4.1,		(-03.21, -06.50),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08) )	),
+	"DCDC-Conv_Recom_R-78HBxx-0.5"						: make_params_tht_B_0('DCDC-Conv_Recom_R-78HBxx-0.5',						11.50,		  8.50,	 17.50,		 0.70,		4.1,		(-03.26, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
+	"DCDC-CONV_ST_GS-R400V-2_Obsolete"					: make_params_tht_B_0('DCDC-CONV_ST_GS-R400V-2_Obsolete',					50.80,		 50.80,	 25.00,		 1.00,		2.1,		(-35.60, -03.80),	((00.00, 00.00), (02.54, 00.00), (10.10, 43.20), (-15.30, 43.20), (-20.00, 43.20) )	),
+	"DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA',	20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
+	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
+	)	),
+	"DCDC-Conv_TRACO_TED-xxxx_Single"					: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Single',					20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
+	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
+	)	),
+	"DCDC-Conv_TRACO_TED-xxxx_Dual"						: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Dual',						20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
+	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
+	)	),
+	"DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA',		25.40,		 50.80,	 10.20,	 1.00,	6.0,		(-10.16, -15.24),	(
+	(00.00, 00.00), (00.00, 05.08), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
+	)	),
+
+	
+#	Name												  																	Length		Width	 Height		Pin size, 	Pin height,		Pin type			Rotation,	pin1corner,		pin
+	"DCDC-Conv_muRata_NXE2SxxxxMC"						: make_params('DCDC-Conv_muRata_NXE2SxxxxMC',						10.41,		12.70,	  4.41,		 0.61,		0.2,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
+	( -4.700,  -3.81), ( -4.700,  -1.27), ( -4.700, 03.81), (  4.700,  03.81), (  4.700,  -3.81)
+	)	),
+	"ACDC-Converter_MeanWell-IRM-03-xS"					: make_params('ACDC-Converter_MeanWell-IRM-03-xS',					24.0,		 37.0,	 15.0,		 1.0,		0.4,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
+	(-13.225, -15.24), (-13.225, -10.16), (-13.225, -05.08), (-13.225,  7.62), (-13.225,  10.16), (-13.225,  12.70), (-13.225,  15.24), 
+	( 13.225, -15.24), ( 13.225, -10.16), ( 13.225, -05.08), ( 13.225,  7.62), ( 13.225,  10.16), ( 13.225,  12.70), ( 13.225,  15.24)
+	)	)
+	
 }
-
-#	"ACDC-Converter_MeanWell-IRM-03-xS"		: make_params('ACDC-Converter_MeanWell-IRM-03-xS',	24.0,		 37.0,	 15.0,		 1.0,		0.4,			CASE_SMD_TYPE,		0,			(00.00, 00.00),	((13.225, -15.24), (13.225, -10.16), (13.225, -05.08), (13.225,  7.62), (13.225,  10.16), (13.225,  12.70), (13.225,  15.24))	)
-
 
 
 def make_case(params):
@@ -209,6 +344,11 @@ def make_case(params):
 	pin = params.pin				# pin/pad cordinates
 
 	FreeCAD.Console.PrintMessage('make_case\r\n')
+
+	ff = W / 20.0;
+	
+	if ff > 1.0:
+		ff = 1.0
 
 	mvX = 0
 	mvY = 0
@@ -225,22 +365,74 @@ def make_case(params):
 		mvX = p[0] + pin1corner[0]
 		mvY = p[1] - pin1corner[1]
 		case=cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, -W, False).extrude(H)
-
-		
 	
-	case = case.faces("<X").edges("<Y").fillet(W / 20.0)
-	case = case.faces("<X").edges(">Y").fillet(W / 20.0)
-	case = case.faces(">X").edges("<Y").fillet(W / 20.0)
-	case = case.faces(">X").edges(">Y").fillet(W / 20.0)
+	case = case.faces("<X").edges("<Y").fillet(ff)
+	case = case.faces("<X").edges(">Y").fillet(ff)
+	case = case.faces(">X").edges("<Y").fillet(ff)
+	case = case.faces(">X").edges(">Y").fillet(ff)
 
-	case = case.faces(">Y").edges("<Z").fillet(W / 30.0)
-	case = case.faces(">Y").edges(">Z").fillet(W / 20.0)
+	case = case.faces(">Y").edges("<Z").fillet(ff / 2.0)
+	case = case.faces(">Y").edges(">Z").fillet(ff / 2.0)
 
 
 	if (rotation != 0):
 		case = case.rotate((0,0,0), (0,0,1), rotation)
 
 	return (case)
+
+
+def make_case_top(params):
+
+	L = params.L					# package length
+	W = params.W					# package width
+	H = params.H					# package height
+	A1 = params.A1					# Body seperation height
+	rotation = params.rotation		# rotation if required
+	pin1corner = params.pin1corner 	# Left upp corner relationsship to pin 1
+	pin = params.pin				# pin/pad cordinates
+	show_top = params.show_top		# If top should be visible or not
+
+	FreeCAD.Console.PrintMessage('make_case_top\r\n')
+
+	mvX = 0
+	mvY = 0
+	# Dummy
+	casetop=cq.Workplane("XY").workplane(offset=A1 + H).moveTo(0, 0).rect(1, 1, False).extrude(0.1)
+	
+
+	ff = W / 20.0;
+	if ff > 1.0:
+		ff = 1.0
+	
+	Ldt = ff
+	Wdt = ff
+	
+	L1 = L - (2.0 * Ldt)
+	W1 = W - (2.0 * Wdt)
+	
+	tty = A1 + H - 0.3
+	if show_top == 1:
+		tty = A1 + H - 0.1
+
+	if (all_params[variant].pintype == CASE_SMD_TYPE):
+		mvX = (0 - (L1 / 2.0)) + ((L - L1) / 2.0)
+		mvY = (0 - (W1 / 2.0)) - ((W - W1) / 2.0)
+		casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, W1, False).extrude(0.2)
+	elif (all_params[variant].pintype == CASE_THT_TYPE):
+		p = pin[0]
+		mvX = (p[0] + pin1corner[0]) + ((L - L1) / 2.0)
+		mvY = (p[1] - pin1corner[1]) - ((W - W1) / 2.0)
+		casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, -W1, False).extrude(0.2)
+
+	casetop = casetop.faces("<X").edges("<Y").fillet(ff)
+	casetop = casetop.faces("<X").edges(">Y").fillet(ff)
+	casetop = casetop.faces(">X").edges("<Y").fillet(ff)
+	casetop = casetop.faces(">X").edges(">Y").fillet(ff)
+
+	if (rotation != 0):
+		casetop = casetop.rotate((0,0,0), (0,0,1), rotation)
+
+	return (casetop)
 
 
 def make_pins_tht(params):
@@ -330,6 +522,7 @@ def make_3D_model(models_dir, variant):
 	Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
 
 	case = make_case(all_params[variant])
+	casetop = make_case_top(all_params[variant])
 	
 	if (all_params[variant].pintype == CASE_THT_TYPE):
 		pins = make_pins_tht(all_params[variant])
@@ -338,6 +531,7 @@ def make_3D_model(models_dir, variant):
 		pins = make_pins_smd(all_params[variant])
 
 	show(case)
+	show(casetop)
 	show(pins)
 	#show(pinmark)
 	#stop
@@ -345,24 +539,30 @@ def make_3D_model(models_dir, variant):
 	objs=GetListOfObjects(FreeCAD, doc)
 
 	body_color_key = all_params[variant].body_color_key
+	body_top_color_key = all_params[variant].body_top_color_key
 	pin_color_key = all_params[variant].pin_color_key
 	
+	
 	body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+	body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
 	pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
 
 	Color_Objects(Gui,objs[0],body_color)
-	Color_Objects(Gui,objs[1],pin_color)
+	Color_Objects(Gui,objs[1],body_top_color)
+	Color_Objects(Gui,objs[2],pin_color)
 
 	col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-	col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+	col_body_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+	col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
 
 	material_substitutions={
 		col_body[:-1]:body_color_key,
+		col_body_top[:-1]:body_top_color_key,
 		col_pin[:-1]:pin_color_key
 	}
 
 	expVRML.say(material_substitutions)
-	FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+	FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name, objs[2].Name)
 	doc.Label = CheckedmodelName
 
 	del objs
