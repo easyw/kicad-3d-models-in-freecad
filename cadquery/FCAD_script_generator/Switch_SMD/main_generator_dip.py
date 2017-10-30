@@ -70,6 +70,10 @@ import ImportGui
 import FreeCADGui as Gui
 #from Gui.Command import *
 
+	
+#import step_license as L
+import add_license as Lic
+
 
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
@@ -181,9 +185,9 @@ def make_params(L, W, H, pitch, paddist, PH, npins, padsw, pinshape, modelName, 
 all_params = {
 
 #	Name												  Length	Width	 Height		Pitch	pad dist	pig height	pins		pin width	pin type	
-	"SW_DIP_x1_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.08,		 2.54,	 2.5,		0.00,	 2.540,		 0.5,	 	 2,			0.50,		0,			'SW_DIP_x1_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x1_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.00,		 2.54,	 2.5,		0.00,	 3.810,		 0.5,	 	 2, 		0.50,		1,			'SW_DIP_x1_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x1_W8.61mm_Slide_LowProfile"	: make_params(5.00,		 4.10,	 1.5,		0.00,	 4.305,		 0.5,	 	 2, 		0.50,		1,			'SW_DIP_x1_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x1_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.08,		 2.54,	 2.5,		0.00,	 2.540,		 0.5,	 	 2,			0.76,		0,			'SW_DIP_x1_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x1_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.00,		 2.54,	 2.5,		0.00,	 3.810,		 0.5,	 	 2, 		0.76,		1,			'SW_DIP_x1_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x1_W8.61mm_Slide_LowProfile"	: make_params(5.00,		 4.10,	 1.5,		0.00,	 4.305,		 0.5,	 	 2, 		1.12,		1,			'SW_DIP_x1_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_SPST_EVQPE1"						: make_params(5.00,		 3.50,	 1.5,		0.00,	 0.000,		 0.5,	 	 2, 		1.00,		0,			'SW_SPST_EVQPE1',						 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
 	"SW_SPST_REED_CT05-XXXX-G1"				: make_params(6.40,		 3.50,	2.30,		0.00,	 4.28,		 0.5,	 	 2, 		1.50,		1,			'SW_SPST_REED_CT05-XXXX-G1',			 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
@@ -192,8 +196,8 @@ all_params = {
 	"SW_SPST_REED_CT10-XXXX-G2"				: make_params(11.6,		 2.40,	2.30,		0.00,	9.210,		 0.5,	 	 2, 		1.50,		1,			'SW_SPST_REED_CT10-XXXX-G2',			 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_SPST_REED_CT10-XXXX-G4"				: make_params(11.6,		 2.40,	2.30,		0.00,	9.220,		 0.5,	 	 2, 		1.50,		1,			'SW_SPST_REED_CT10-XXXX-G4',			 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	
-	"SW_DIP_x2_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.40,		 3.81,	 2.5,		1.27,	5.40,		 0.5,	 	 4, 		0.75,		0,			'SW_DIP_x2_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x2_W6.15mm_Slide_Omron_A6H"		: make_params(4.50,		 3.81,	 2.5,		1.27,	3.075,		 0.5,	 	 4, 		0.50,		1,			'SW_DIP_x2_W6.15mm_Slide_Omron_A6H',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x2_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.40,		 3.81,	 2.5,		1.27,	5.40,		 0.5,	 	 4, 		0.76,		0,			'SW_DIP_x2_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x2_W6.15mm_Slide_Omron_A6H"		: make_params(4.50,		 3.81,	 2.5,		1.27,	3.075,		 0.5,	 	 4, 		0.76,		1,			'SW_DIP_x2_W6.15mm_Slide_Omron_A6H',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_DIP_x2_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.40,		 3.81,	 2.5,		1.27,	3.810,		 0.5,	 	 4, 		0.75,		1,			'SW_DIP_x2_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_DIP_x2_W8.61mm_Slide_LowProfile"	: make_params(6.68,		 6.64,	 1.5,		2.54,	4.305,		 0.5,	 	 4, 		1.00,		1,			'SW_DIP_x2_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
@@ -214,19 +218,18 @@ all_params = {
 	"SW_DIP_x7_W8.61mm_Slide_LowProfile"	: make_params(6.68,		19.34,	 1.5,		2.54,	4.305,		 0.5,	 	14, 		1.00,		1,			'SW_DIP_x7_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
 	"SW_DIP_x8_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.30,		11.43,	 2.5,		1.27,	6.68,		 0.5,	 	16, 		0.75,		0,			'SW_DIP_x8_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x8_W5.9mm_Slide_Copal_CVS"		: make_params(4.70,		 9.00,	 2.5,		1.00,	2.95,		 0.5,	 	16, 		0.40,		1,			'SW_DIP_x8_W5.9mm_Slide_Copal_CVS',		 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_DIP_x8_W6.15mm_Slide_Omron_A6H"		: make_params(4.50,		11.43,	 2.5,		1.27,	3.075,		 0.5,	 	16, 		0.75,		1,			'SW_DIP_x8_W6.15mm_Slide_Omron_A6H',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_DIP_x8_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.40,		11.43,	 2.5,		1.27,	3.81,		 0.5,	 	16, 		0.75,		1,			'SW_DIP_x8_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	"SW_DIP_x8_W8.61mm_Slide_LowProfile"	: make_params(6.68,		21.88,	 1.5,		2.54,	4.305,		 0.5,	 	16, 		1.00,		1,			'SW_DIP_x8_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
 	"SW_DIP_x9_W8.61mm_Slide_LowProfile"	: make_params(6.68,		24.42,	 1.5,		2.54,	4.305,		 0.5,	 	18, 		1.00,		1,			'SW_DIP_x9_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 	
-	"SW_DIP_x10_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.30,		13.97,	 2.5,		1.27,	6.68,		 0.5,	 	20, 		0.50,		0,			'SW_DIP_x10_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x10_W6.15mm_Slide_Omron_A6H"	: make_params(4.50,		13.97,	 2.5,		1.27,	3.075,		 0.5,	 	20, 		0.50,		1,			'SW_DIP_x10_W6.15mm_Slide_Omron_A6H',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x10_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.40,		13.97,	 2.5,		1.27,	3.81,		 0.5,	 	20, 		0.50,		1,			'SW_DIP_x10_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
-	"SW_DIP_x10_W8.61mm_Slide_LowProfile"	: make_params(6.68,		26.99,	 1.5,		2.54,	4.305,		 0.5,	 	20, 		0.75,		1,			'SW_DIP_x10_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x10_W5.08mm_Slide_Copal_CHS-A"	: make_params(5.30,		13.97,	 2.5,		1.27,	6.68,		 0.5,	 	20, 		0.75,		0,			'SW_DIP_x10_W5.08mm_Slide_Copal_CHS-A',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x10_W6.15mm_Slide_Omron_A6H"	: make_params(4.50,		13.97,	 2.5,		1.27,	3.075,		 0.5,	 	20, 		0.75,		1,			'SW_DIP_x10_W6.15mm_Slide_Omron_A6H',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x10_W7.62mm_Slide_Copal_CHS-B"	: make_params(5.40,		13.97,	 2.5,		1.27,	3.81,		 0.5,	 	20, 		0.75,		1,			'SW_DIP_x10_W7.62mm_Slide_Copal_CHS-B',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x10_W8.61mm_Slide_LowProfile"	: make_params(6.68,		26.99,	 1.5,		2.54,	4.305,		 0.5,	 	20, 		1.00,		1,			'SW_DIP_x10_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
-	"SW_DIP_x11_W8.61mm_Slide_LowProfile"	: make_params(6.68,		29.50,	 1.5,		2.54,	4.305,		 0.5,	 	22, 		0.75,		1,			'SW_DIP_x11_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
+	"SW_DIP_x11_W8.61mm_Slide_LowProfile"	: make_params(6.68,		29.50,	 1.5,		2.54,	4.305,		 0.5,	 	22, 		1.00,		1,			'SW_DIP_x11_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE),
 
 	"SW_DIP_x12_W8.61mm_Slide_LowProfile"	: make_params(6.68,		32.04,	 1.5,		2.54,	4.305,		 0.5,	 	24, 		0.75,		1,			'SW_DIP_x12_W8.61mm_Slide_LowProfile',	 0, CASE_SMD_TYPE,  CORNER_CHAMFER_TYPE)
 }
@@ -528,8 +531,6 @@ def run():
 
 	return
 
-#import step_license as L
-import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
