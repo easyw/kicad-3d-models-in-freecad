@@ -251,7 +251,7 @@ def make_params_tht_MR_0(modelName, L, W, H, pinpadsize, pinpadh, pin1corner, pi
 		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
 		show_top = 1,					# If top should be visible or not
 		body_color_key = "metal grey pins",
-		body_top_color_key = "red_body",
+		body_top_color_key = "red body",
 		pin_color_key = "metal grey pins"
 	)
 
@@ -271,7 +271,7 @@ all_params = {
 	(00.00, 00.00), (21.50, 00.00), (25.25, 00.00), (29.00, 00.00),
 	(29.00, 21.00), (21.50, 21.00), (00.00, 21.00)
 	)	),
-	"ACDC-Converter_TRACO-TMLM-05"						: make_params_tht_B_0('ACDC-Converter_TRACO-TMLM-05',						50.08,		 25.4,	 15.16,		 1.04,		8.0,		(-12.00, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16))	),
+	"ACDC-Converter_TRACO-TMLM-05"						: make_params_tht_B_0('ACDC-Converter_TRACO-TMLM-05',						50.08,		 25.4,	 15.16,		 1.04,		8.0,		(-02.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16))	),
 	"ACDC-Converter_TRACO-TMLM-10-20"					: make_params_tht_B_0('ACDC-Converter_TRACO-TMLM-10-20',					52.40,		 27.2,	 23.50,		 1.00,		8.0,		(-02.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16) )	),
 	"ACDC-Conv_Vigortronix_VTX-214-010-XXX"				: make_params_tht_O_0('ACDC-Conv_Vigortronix_VTX-214-010-XXX',				36.00,		 56.00,	 25.50,		 1.00,		3.0,		(-12.00, -04.00),	((00.00, 00.00), (12.00, 00.00), (00.00, 48.00), (05.00,   48.00) )	),
 	"ACDC-Conv_Vigortronix_VTX-214-010-XXX_Miniature"	: make_params_tht_O_0('ACDC-Conv_Vigortronix_VTX-214-010-XXX_Miniature',	30.00,		 45.50,	 24.00,		 1.00,		3.5,		(-09.12, -03.37),	((00.00, 00.00), (12.00, 00.00), (12.00, 39.00), (05.00,   39.00) )	),
@@ -299,35 +299,82 @@ all_params = {
 	"DCDC-Conv_muRata_CRE1xxxxxx3C"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxx3C',						 6.10,		 11.53,	  7.62,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
 	"DCDC-Conv_muRata_CRE1xxxxxxDC"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxxDC',						 9.90,		 11.60,	  6.90,		 0.50,		4.1,		(-01.30, -02.10),	((00.00, 00.00), (00.00, 07.62), (07.62, 07.62), (07.62,   02.54) )	),
 	"DCDC-Conv_muRata_CRE1xxxxxxSC"						: make_params_tht_B_0('DCDC-Conv_muRata_CRE1xxxxxxSC',						 6.10,		 11.53,	 10.00,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
-	"DCDC-Conv_muRata_NMAxxxxDC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxDC',							 9.80,		 19.50,	  6.80,		 0.50,		4.1,		(-00.96, -01.39),	((00.00, 00.00), (00.00, 15.24), (07.62, 15.24), (07.62,   12.70), (07.62,   07.62), (07.62,   00.00) )	),
-	"DCDC-Conv_muRata_NMAxxxxSC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxSC',							19.50,		  6.00,	 10.00,		 0.50,		4.1,		(-04.57, -01.27),	((00.00, 00.00), (00.00, 02.54), (00.00, 07.62), (00.00,   10.16), (00.00,   12.70) )	),
-	"DCDC-Conv_RECOM_R-78E-0.5"							: make_params_tht_B_0('DCDC-Conv_RECOM_R-78E-0.5',							 8.50,		 11.60,	 10.40,		 0.25,		4.1,		(-03.21, -06.50),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08) )	),
-	"DCDC-Conv_Recom_R-78HBxx-0.5"						: make_params_tht_B_0('DCDC-Conv_Recom_R-78HBxx-0.5',						11.50,		  8.50,	 17.50,		 0.70,		4.1,		(-03.26, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
-	"DCDC-CONV_ST_GS-R400V-2_Obsolete"					: make_params_tht_B_0('DCDC-CONV_ST_GS-R400V-2_Obsolete',					50.80,		 50.80,	 25.00,		 1.00,		2.1,		(-35.60, -03.80),	((00.00, 00.00), (02.54, 00.00), (10.10, 43.20), (-15.30, 43.20), (-20.00, 43.20) )	),
-	"DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA',	20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	"DCDC-Conv_muRata_NMAxxxxDC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxDC',							 9.80,		 19.50,	  6.80,		 0.50,		4.1,		(-01.22, -02.23),	((00.00, 00.00), (00.00, 15.24), (07.62, 15.24), (07.62,   12.70), (07.62,   07.62), (07.62,   00.00) )	),
+	"DCDC-Conv_muRata_NMAxxxxSC"						: make_params_tht_B_0('DCDC-Conv_muRata_NMAxxxxSC',							 6.00,		 19.50,	 10.00,		 0.50,		4.1,		(-04.77, -02.03),	((00.00, 00.00), (00.00, 02.54), (00.00, 07.62), (00.00,   10.16), (00.00,   12.70) )	),
+	"DCDC-Conv_RECOM_R-78E-0.5"							: make_params_tht_B_0('DCDC-Conv_RECOM_R-78E-0.5',							11.60,		  8.50,	 10.40,		 0.25,		4.1,		(-03.21, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
+	"DCDC-Conv_Recom_R-78HBxx-0.5"						: make_params_tht_B_0('DCDC-Conv_Recom_R-78HBxx-0.5',						11.50,		  8.50,	 17.50,		 0.50,		4.1,		(-03.21, -02.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
+	"DCDC-CONV_ST_GS-R400V-2_Obsolete"					: make_params_tht_B_0('DCDC-CONV_ST_GS-R400V-2_Obsolete',					50.80,		 50.80,	 25.00,		 1.00,		2.1,		(-35.60, -03.80),	((00.00, 00.00), (10.10, 00.00), (10.10, 43.20), (-15.30, 43.20), (-20.00, 43.20) )	),
+	"DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-1212_Single_9-18VDCto12VDC160mA',	20.00,	32.00,	 10.00,	 0.50,		5.0,		(-02.38, -02.03),	(
 	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
 	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
 	)	),
-	"DCDC-Conv_TRACO_TED-xxxx_Single"					: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Single',					20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	"DCDC-Conv_TRACO_TED-xxxx_Single"					: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Single',					20.00,		 32.00,	 10.00,	 	 0.50,		5.0,		(-02.38, -02.03),	(
 	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
 	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
 	)	),
-	"DCDC-Conv_TRACO_TED-xxxx_Dual"						: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Dual',						20.00,		 32.00,	 10.00,	 1.00,	5.0,		(-02.38, -02.03),	(
+	"DCDC-Conv_TRACO_TED-xxxx_Dual"						: make_params_tht_MR_0('DCDC-Conv_TRACO_TED-xxxx_Dual',						20.00,		 32.00,	 10.00,	 	 0.50,		5.0,		(-02.38, -02.03),	(
 	(00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
 	(15.24, 00.00), (15.24, 02.54), (15.24, 05.08), (15.24, 22.86), (15.24, 25.40), (15.24, 27.94),
 	)	),
-	"DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA',		25.40,		 50.80,	 10.20,	 1.00,	6.0,		(-10.16, -15.24),	(
-	(00.00, 00.00), (00.00, 05.08), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
+	"DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA"	: make_params_tht_MR_0('DCDC-Conv_TRACO_TEN10-1212_9-18VDCto12VDC830mA',	25.40,		 50.80,	 10.20,	 	0.50,		6.0,		(-10.16, -15.24),	(
+	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
+	)	),
+	"DCDC-Conv_TRACO_TEN10-xxxx"						: make_params_tht_MR_0('DCDC-Conv_TRACO_TEN10-xxxx',						25.40,		 50.80,	 10.20,	 	0.50,		6.0,		(-10.16, -15.24),	(
+	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32),
+	)	),
+	"DCDC-Conv_TRACO_TEN20-xxxx"						: make_params_tht_MR_0('DCDC-Conv_TRACO_TEN20-xxxx',						25.40,		 50.80,	 10.20,	 	0.50,		3.2,		(-10.16, -15.24),	(
+	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
+	)	),
+	"DCDC-Conv_TRACO_TME05xx_TME12xx"					: make_params_tht_B_0('DCDC-Conv_TRACO_TME05xx_TME12xx',					 11.50,		07.00,	 10.20,	 	0.50,		3.2,		(-01.90, -04.20),	(
+	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00),
+	)	),
+	"DCDC-Conv_Traco_TME24xx"							: make_params_tht_B_0('DCDC-Conv_Traco_TME24xx',							11.50,		 07.00,	 10.20,	 	0.50,		3.2,		(-01.90, -04.20),	(
+	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00),
+	)	),
+	"DCDC-Conv_TRACO_TMH-xxxx_Dual"						: make_params_tht_B_0('DCDC-Conv_TRACO_TMH-xxxx_Dual',						19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-01.90, -04.20),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMH-xxxx_Dual_RevB"				: make_params_tht_B_0('DCDC-Conv_TRACO_TMH-xxxx_Dual_RevB',					19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-02.60, -01.75),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMH-xxxx_Single"					: make_params_tht_B_0('DCDC-Conv_TRACO_TMH-xxxx_Single',					19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-02.30, -06.125),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMH-xxxx_Single_RevB"				: make_params_tht_B_0('DCDC-Conv_TRACO_TMH-xxxx_Single_RevB',				19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-02.60, -01.75),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMR_1-xxxx_Dual"					: make_params_tht_B_0('DCDC-Conv_TRACO_TMR_1-xxxx_Dual',					19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-02.70, -02.62),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMR_1-xxxx_Single"					: make_params_tht_B_0('DCDC-Conv_TRACO_TMR_1-xxxx_Single',					19.50,		 07.50,	 10.20,	 	0.50,		3.2,		(-02.70, -02.62),	(
+	(00.00, 00.00), (02.54, 00.00), (07.62, 00.00), (12.70, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TMR_xxxx"							: make_params_tht_B_0('DCDC-Conv_TRACO_TMR_xxxx',							21.80,		 09.20,	 11.10,	 	0.50,		4.0,		(-02.00, -3.45),	(
+	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (10.16, 00.00), (12.70, 00.00), (15.24, 00.00), (17.78, 00.00)
+	)	),
+	"DCDC-Conv_TRACO_TSR-1"								: make_params_tht_B_0('DCDC-Conv_TRACO_TSR-1',								11.70,		 07.60,	 10.20,	 	0.50,		4.1,		(-03.30, -5.60),	(
+	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00)
 	)	),
 
 	
-#	Name												  																	Length		Width	 Height		Pin size, 	Pin height,		Pin type			Rotation,	pin1corner,		pin
+#	Name												  																	Length		Width	 Height		Pin size, 	Pin height,		Pin type			Rotation,		pin1corner,			pin
+	"DCDC-Conv_TRACO_TMR-1SM"							: make_params('DCDC-Conv_TRACO_TMR-1SM',							13.70,		18.90,	  8.45,		1.20,		0.2,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
+	( -8.075,  -7.62), (-8.075,  -5.08), (-8.075,   5.08), (-8.075,   7.62),
+	(  8.075,  -7.62), ( 8.075,  -5.08), 				   ( 8.075,   7.62),
+	)	),
 	"DCDC-Conv_muRata_NXE2SxxxxMC"						: make_params('DCDC-Conv_muRata_NXE2SxxxxMC',						10.41,		12.70,	  4.41,		 0.61,		0.2,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
-	( -4.700,  -3.81), ( -4.700,  -1.27), ( -4.700, 03.81), (  4.700,  03.81), (  4.700,  -3.81)
+	( -4.700,  -3.81), ( -4.700,  -1.27), ( -4.700, 03.81), 
+	(  4.700,  03.81), (  4.700,  -3.81)
 	)	),
 	"ACDC-Converter_MeanWell-IRM-03-xS"					: make_params('ACDC-Converter_MeanWell-IRM-03-xS',					24.0,		 37.0,	 15.0,		 1.0,		0.4,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
-	(-13.225, -15.24), (-13.225, -10.16), (-13.225, -05.08), (-13.225,  7.62), (-13.225,  10.16), (-13.225,  12.70), (-13.225,  15.24), 
-	( 13.225, -15.24), ( 13.225, -10.16), ( 13.225, -05.08), ( 13.225,  7.62), ( 13.225,  10.16), ( 13.225,  12.70), ( 13.225,  15.24)
+	(-14.035, -15.24), (-14.035, -10.16), (-14.035, -05.08), (-14.035,  7.62), (-14.035,  10.16), (-14.035,  12.70), (-14.035,  15.24), 
+	( 14.035, -15.24), ( 14.035, -10.16), ( 14.035, -05.08), ( 14.035,  7.62), ( 14.035,  10.16), ( 14.035,  12.70), ( 14.035,  15.24)
+	)	),
+	"DCDC-Conv_Infineon_IR3898"							: make_params('DCDC-Conv_Infineon_IR3898',							04.00,		 05.00,	 01.0,		 0.22,		0.1,			CASE_SMD_TYPE,		  000.0,		( 00.00,  00.00),	(
+	(-1.920, -01.84), (-1.920,  -1.29), (-1.920, -00.74), (-1.920, -0.19), (-1.920,  0.835), (-1.920,  1.335), (-1.920,  1.835),
+	( 1.920, -01.84), ( 1.920,  -1.29), ( 1.920, -00.74), ( 1.920, -0.19), ( 1.920,  0.835), ( 1.920,  1.335), ( 1.920,  1.835),
+	(-1.500,  2.65),  (-1.000,   2.65), (-0.500,  2.65),  ( 0.000,  2.65), ( 0.500,  2.65), ( 1.000,   2.65), ( 1.500,   2.65),
+	(-0.345, -2.65),  ( 0.315,  -2.65), ( 0.975, -2.65),
 	)	)
 	
 }
@@ -397,7 +444,7 @@ def make_case_top(params):
 	mvX = 0
 	mvY = 0
 	# Dummy
-	casetop=cq.Workplane("XY").workplane(offset=A1 + H).moveTo(0, 0).rect(1, 1, False).extrude(0.1)
+	casetop=cq.Workplane("XY").workplane(offset=A1 + H).moveTo(0, 0).rect(1, 1, False).extrude(0.8)
 	
 
 	ff = W / 20.0;
@@ -410,24 +457,35 @@ def make_case_top(params):
 	L1 = L - (2.0 * Ldt)
 	W1 = W - (2.0 * Wdt)
 	
-	tty = A1 + H - 0.3
 	if show_top == 1:
 		tty = A1 + H - 0.1
 
-	if (all_params[variant].pintype == CASE_SMD_TYPE):
-		mvX = (0 - (L1 / 2.0)) + ((L - L1) / 2.0)
-		mvY = (0 - (W1 / 2.0)) - ((W - W1) / 2.0)
-		casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, W1, False).extrude(0.2)
-	elif (all_params[variant].pintype == CASE_THT_TYPE):
-		p = pin[0]
-		mvX = (p[0] + pin1corner[0]) + ((L - L1) / 2.0)
-		mvY = (p[1] - pin1corner[1]) - ((W - W1) / 2.0)
-		casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, -W1, False).extrude(0.2)
+		if (all_params[variant].pintype == CASE_SMD_TYPE):
+			mvX = (0 - (L1 / 2.0)) + ((L - L1) / 2.0)
+			mvY = (0 - (W1 / 2.0)) - ((W - W1) / 2.0)
+			casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, W1, False).extrude(0.2)
+		elif (all_params[variant].pintype == CASE_THT_TYPE):
+			p = pin[0]
+			mvX = (p[0] + pin1corner[0]) + ((L - L1) / 2.0)
+			mvY = (p[1] - pin1corner[1]) - ((W - W1) / 2.0)
+			casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, -W1, False).extrude(0.2)
 
-	casetop = casetop.faces("<X").edges("<Y").fillet(ff)
-	casetop = casetop.faces("<X").edges(">Y").fillet(ff)
-	casetop = casetop.faces(">X").edges("<Y").fillet(ff)
-	casetop = casetop.faces(">X").edges(">Y").fillet(ff)
+		casetop = casetop.faces("<X").edges("<Y").fillet(ff)
+		casetop = casetop.faces("<X").edges(">Y").fillet(ff)
+		casetop = casetop.faces(">X").edges("<Y").fillet(ff)
+		casetop = casetop.faces(">X").edges(">Y").fillet(ff)
+	else:
+		# If it is not used, just hide it inside the body
+		if (all_params[variant].pintype == CASE_SMD_TYPE):
+			mvX = 0
+			mvY = 0
+			casetop=cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(mvX, mvY).rect(0.1, 0.1, False).extrude(0.1)
+		else:
+			p = pin[0]
+			mvX = (p[0] + pin1corner[0]) + (L / 2.0)
+			mvY = (p[1] - pin1corner[1]) - (W / 2.0)
+			casetop=cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(mvX, mvY).rect(0.1, 0.1, False).extrude(0.1)
+			
 
 	if (rotation != 0):
 		casetop = casetop.rotate((0,0,0), (0,0,1), rotation)
@@ -480,30 +538,90 @@ def make_pins_smd(params):
 
 	FreeCAD.Console.PrintMessage('make_pins_smd\r\n')
 
-	p = pin[0]
-	
-	myX1 = 0
-	if p[0] < 0:
-		myX1 = p[0] - pinpadsize
-	else:
-		myX1 = p[0] + pinpadsize
-	
-	myY1 = -p[1]
-	
-	pins=cq.Workplane("XY").workplane(offset=0).moveTo(myX1 / 2, myY1).rect(myX1, pinpadsize).extrude(pinpadh)
+	#
+	# Dummy
+	#
+	pins=cq.Workplane("XY").workplane(offset=0).moveTo(0, 0).rect(0.1, 0.1).extrude(0.1)
+	#
 
-	for i in range(1, len(pin)):
+	for i in range(0, len(pin)):
 		p = pin[i]
-	
-		myX1 = 0
-		if p[0] < 0:
-			myX1 = p[0] - pinpadsize
-		else:
-			myX1 = p[0] + pinpadsize
-		
+		myX1 = p[0] - pinpadsize
 		myY1 = -p[1]
-		pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1 / 2, myY1).rect(myX1, pinpadsize).extrude(pinpadh)
-		pins = pins.union(pint)
+		xD = myX1
+		yD = pinpadsize
+		if p[0] < 0 and (p[1] > (0 - (W / 2.0)) and p[1] < ((W / 2.0))):
+			# Left side
+			if p[0] < (0 - (L / 2.0)):
+				# Normal pad
+				myX1 = p[0] / 2.0
+				myY1 = -p[1]
+				xD = p[0]
+				yD = pinpadsize
+				pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
+			else:
+				# pad cordinate is inside the body
+				myZ1 = pinpadsize / 2.0
+				myY1 = -p[1]
+				xD = pinpadsize
+				yD = pinpadsize
+				pint=cq.Workplane("ZY").workplane(offset=(L / 2.0) - (pinpadh / 2.0)).moveTo(myZ1, myY1).rect(xD, yD).extrude(pinpadh)
+			
+		#
+		elif p[0] >= 0 and (p[1] > (0 - (W / 2.0)) and p[1] < ((W / 2.0))):
+			# Right side
+			if p[0] > (L / 2.0):
+				# Normal pad
+				myX1 = p[0] / 2.0
+				xD = -p[0]
+				yD = pinpadsize
+				pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
+			else:
+				# pad cordinate is inside the body
+				myZ1 = pinpadsize / 2.0
+				myY1 = -p[1]
+				xD = pinpadsize
+				yD = pinpadsize
+				pint=cq.Workplane("ZY").workplane(offset=0 - ((L / 2.0) + (pinpadh / 2.0))).moveTo(myZ1, myY1).rect(xD, yD).extrude(pinpadh)
+		elif p[1] < 0:
+			# top pad
+			if p[1] < (W / 2.0):
+				FreeCAD.Console.PrintMessage('make_pins_smd top pad outside body\r\n')
+				myX1 = p[0] - (pinpadsize / 2.0)
+				myY1 = 0 - (p[1] / 2.0)
+				yD = 0 - p[1]
+				xD = pinpadsize
+				pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
+			else:
+				# pad cordinate is inside the body
+				FreeCAD.Console.PrintMessage('make_pins_smd bottom pad inside body\r\n')
+				myZ1 = pinpadsize / 2.0
+				yD = pinpadsize
+				xD = pinpadsize
+				myX1 = p[0] - (pinpadsize / 2.0)
+				pint=cq.Workplane("ZX").workplane(offset=((W / 2.0) - (pinpadh / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(pinpadh)
+		else:
+			# bottom pad
+			if p[1] > (W / 2.0):
+				FreeCAD.Console.PrintMessage('make_pins_smd bottom pad outside body\r\n')
+				myX1 = p[0] - (pinpadsize / 2.0)
+				myY1 = 0 - (p[1] / 2.0)
+				yD = 0 - p[1]
+				xD = pinpadsize
+				pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
+			else:
+				# pad cordinate is inside the body
+				FreeCAD.Console.PrintMessage('make_pins_smd bottom pad inside body\r\n')
+				myX1 =  p[0] - (pinpadsize / 2.0)
+				myZ1 = pinpadsize / 2.0
+				yD = pinpadsize
+				xD = pinpadsize
+				pint=cq.Workplane("ZX").workplane(offset=0 -((W / 2.0) + (pinpadh / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(pinpadh)
+
+		if i == 0:
+			pins = pint
+		else:
+			pins = pins.union(pint)
 
 	if (rotation != 0):
 		pins = pins.rotate((0,0,0), (0,0,1), rotation)
