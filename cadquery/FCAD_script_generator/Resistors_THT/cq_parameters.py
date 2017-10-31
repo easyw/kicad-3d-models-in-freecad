@@ -758,7 +758,7 @@ kicad_naming_params_resistors_tht = {
         shape = 'power',
         orient = 'v'
     ),    
-    'R_Axial_Power_L60.0mm_W14.0mm_P60.04mm': Params(	
+    'R_Axial_Power_L60.0mm_W14.0mm_P66.04mm': Params(	
         l = 60.0,
         d = 14.0,
         w = 14.0, 
