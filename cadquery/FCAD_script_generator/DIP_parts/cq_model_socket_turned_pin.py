@@ -9,7 +9,7 @@
 #* This is part of FreeCAD & cadquery tools                                 *
 #* to export generated models in STEP & VRML format.                        *
 #*   Copyright (c) 2017                                                     *
-#* Terje Io / Io Engineering                                                *
+#* Terje Io https://github.com/terjeio                                      *
 #* Maurice https://launchpad.net/~easyw                                     *
 #*                                                                          *
 #* All trademarks within this guide belong to their legitimate owners.      *
@@ -54,26 +54,22 @@ from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
 class dip_socket_turned_pin (part):
 
     default_model = "DIP-10"
+    default_model = "DIP-10_SMD"
 
     def __init__(self, params):
-        part.__init__(self)
-        self.make_me = params.num_pins > 2
+        part.__init__(self, params)
+        self.make_me = self.num_pins >= 4
         self.licAuthor = "Terje Io"
-        self.licEmail = "terjeio@online.no"
+        self.licEmail = "https://github.com/terjeio"
         self.destination_dir = "Housings_DIP.3dshapes"
         self.footprints_dir = "Housings_DIP.pretty"
-        self.isTHT = params.type == CASE_THT_TYPE
-        self.type = params.type
+        self.isTHT = self.type == CASE_THT_TYPE
         self.rotation = 270
-        self.num_pins = params.num_pins
-
-        self.pin_pitch  = 2.54
         self.pin_socket_diameter = 1.524
         self.pin_socket_radius = self.pin_socket_diameter / 2.0
         self.pin_radius = 0.508 / 2.0
-        self.pin_row_distance = params.pin_row_distance
 
-        self.body_width = self.pin_row_distance + 2.54
+        self.body_width = self.pin_rows_distance + 2.54
         self.body_height = 2.667
         self.body_length = self.num_pins * 1.27
         self.body_board_distance = 1.3
@@ -81,23 +77,21 @@ class dip_socket_turned_pin (part):
                                        else (1 if self.num_pins <= 10\
                                                 else (3 if self.num_pins > 28 else 2))
 
-        offsetX = (self.pin_row_distance / 2.0 if self.isTHT else 0)
-        offsetY = -(self.num_pins * self.pin_pitch / 4.0 - self.pin_pitch / 2.0 if self.isTHT else 0)
-        offsetZ = (self.body_board_distance if self.isTHT else 2.96)
-        self.offsets = (offsetX, offsetY, offsetZ)
+        self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
+
+        offsetX = (self.first_pin_pos[1] if self.isTHT else 0)
+        offsetY = (-self.first_pin_pos[0] if self.isTHT else 0)
+        self.offsets = (offsetX, offsetY, self.body_board_distance)
 
     def make_modelname(self, genericName):
-        width = self.pin_row_distance if self.isTHT else self.pin_row_distance + 1.27
+        width = self.pin_rows_distance if self.isTHT else self.pin_rows_distance + 1.27
         return 'DIP-' + '{:d}'.format(self.num_pins) + '_W' + '{:.2f}'.format(width) + \
                 ('mm_Socket' if self.isTHT else 'mm_SMDSocket_LongPads')
-
-    def _first_pin_pos(self):
-        return self.pin_pitch * (self.num_pins / 4.0 - 0.508)
 
     def _make_pinpockets(self):
 
         # create first pocket
-        pocket = cq.Workplane("XY", origin=(self._first_pin_pos(), self.pin_row_distance / 2.0, 0.0))\
+        pocket = cq.Workplane("XY", origin=(self.first_pin_pos + (0.0,)))\
                    .circle(self.pin_socket_radius)\
                    .extrude(self.body_height)
 
@@ -108,9 +102,7 @@ class dip_socket_turned_pin (part):
         return pockets.union(pockets.rotate((0,0,0), (0,0,1), 180))
 
     def _make_pin_socket (self):
-        pin = cq.Workplane("XY", origin=(self._first_pin_pos(),
-                                 self.pin_row_distance / 2.0,
-                                 -self.body_height / 2.0 + self.body_board_distance))\
+        pin = cq.Workplane("XY")\
                 .circle(self.pin_socket_radius).extrude(-self.body_board_distance)\
                 .faces("<Z").edges().chamfer(0.3)
 
@@ -188,7 +180,7 @@ class dip_socket_turned_pin (part):
 
         body = body.faces(">Z").workplane(centerOption='CenterOfBoundBox')\
                                .center(0.0, (-self.body_width + q1) / 2.0 + q2)\
-                               .rect(self.body_length, q1).cutBlind(-self.body_height/2)
+                               .rect(self.body_length, q1).cutBlind(-self.body_height / 2.0)
 
         return body
 
@@ -211,10 +203,13 @@ class dip_socket_turned_pin (part):
                  .lineTo(0.0, -L2)\
                  .threePointArc((r, s + r), (r2, s))\
                  .lineTo(L, s)
-        pin = cq.Workplane("XY").circle(self.pin_radius)\
-                                .sweep(path).faces(">Y")\
-                                .chamfer(.1)\
-                                .translate((self._first_pin_pos(), self.pin_row_distance / 2.0, -self.body_height / 2.0))
+        pin = cq.Workplane("XY")\
+                .circle(self.pin_radius)\
+                .sweep(path).faces(">Y")\
+                .chamfer(.1)\
+                .translate((0.0, 0.0, -1.3))
+
+        self.offsets = (self.offsets[0], self.offsets[1], self.offsets[2] - s + self.pin_radius)
 
         return self._make_pin_socket().union(pin)
 
@@ -223,7 +218,7 @@ class dip_socket_turned_pin (part):
         pin = self._make_pin_tht() if self.isTHT else self._make_pin_smd()
 
         # create other pins
-        pins = self.make_rest(pin)
+        pins = self.make_rest(pin.translate(self.first_pin_pos + (0.0,)))
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))

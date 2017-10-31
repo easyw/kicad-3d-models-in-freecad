@@ -17,14 +17,14 @@ CASE_SMD_TYPE = 'smd'
 model_to_build = 'DIP-10'
 
 Params = namedtuple("Params", [
-    'pin_row_distance', # package shoulder-to-shoulder width
-    'num_pins',         # number of pins
-    'type'              # THT and/or SMD
+    'pin_rows_distance', # package shoulder-to-shoulder width
+    'num_pins',          # number of pins
+    'type'               # THT and/or SMD
 ])
 
-def make_params(pin_row_distance, num_pins, type):
+def make_params(pin_rows_distance, num_pins, type):
     return Params(
-        pin_row_distance = pin_row_distance,    # pin rows distance
+        pin_rows_distance = pin_rows_distance,  # pin rows distance
         num_pins = num_pins,                    # total number of pins
         type = type                             # SMD and/or THT
     )
@@ -86,3 +86,36 @@ all_params = {
     "DIP-48_SMD"            : make_params(15.24,  48, CASE_SMD_TYPE),
     "DIP-64_SMD"            : make_params(15.24,  64, CASE_SMD_TYPE)
 }
+Model = namedtuple("Model", [
+    'variant',      # generic model name
+    'params',       # parameters
+    'model'         # model creator class
+])
+
+def get_all_models(model_classes):
+
+    models = {}
+
+    # instantiate generator classes in order to make a dictionary of all model names
+    for i in range(0, len(model_classes)):
+        for variant in all_params.keys():
+            params = all_params[variant]
+            model = model_classes[i](params)
+            if model.make_me:
+                models[model.make_modelname(variant)] = Model(variant, params, model_classes[i])
+
+    return models
+
+def get_sample_models(model_classes):
+
+    models = {}
+
+    # instantiate generator classes in order to make a dictionary of all model names for default variants
+    for i in range(0, len(model_classes)):
+        variant = model_classes[i].default_model
+        params = all_params[variant]
+        model = model_classes[i](params)
+        if model.make_me:
+            models[model.make_modelname(variant)] = Model(variant, params, model_classes[i])
+
+    return models

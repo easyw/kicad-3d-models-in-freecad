@@ -21,7 +21,8 @@
 #*                                                                          *
 #* cadquery script for generating DIP socket models in STEP AP214           *
 #*   Copyright (c) 2017                                                     *
-#* Maurice https://launchpad.net/~easyw                                     *                                *
+#* Maurice https://launchpad.net/~easyw                                     *
+#* Terje Io https://github.com/terjeio                                      *
 #* All trademarks within this guide belong to their legitimate owners.      *
 #*                                                                          *
 #*   This program is free software; you can redistribute it and/or modify   *
@@ -46,7 +47,7 @@ __title__ = "make assorted DIP part 3D models"
 __author__ = "maurice, hyOzd, Stefan, Terje"
 __Comment__ = 'make make assorted DIP part 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.0 27/10/2017"
+___ver___ = "1.0.0 31/10/2017"
 
 #
 # mods by Terje: made generic in order to support class based model scripts
@@ -69,10 +70,19 @@ import ImportGui
 import FreeCADGui as Gui
 #from Gui.Command import *
 
-outdir = os.path.dirname(os.path.realpath(__file__) + "/../_3Dmodels")
-scriptdir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
-sys.path.append(scriptdir)
+models_dir = None 
+#models_dir = os.getenv('KISYS3DMOD') # write directly to prod folder if configured, comment out to write relative to main script folder
+if models_dir == None:
+    models_dir = os.path.dirname(os.path.realpath(__file__))
+    models_dir = models_dir.split(models_dir.split(os.sep)[-1])[0] + "_3Dmodels"
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+footprints_dir = os.getenv('KISYSMOD')
+
+scriptsource = "https://github.com/easyw/kicad-3d-models-in-freecad/tree/master/cadquery/FCAD_script_generator/"
+
+#sys.path.append(models_dir)
+sys.path.append(script_dir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
@@ -106,49 +116,42 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-footprints_dir = os.environ['KISYSMOD']
-
 from cq_base_model import part
 from cq_parameters import * # Generic DIP parameters
 
-from cq_model_socket_turned_pin import *
-from cq_model_pin_switch import *
-from cq_model_piano_switch import *
-from cq_model_smd_switch import *
-from cq_model_smd_switch_copal import *
-from cq_model_smd_switch_omron_a6h import *
+import cq_model_socket_turned_pin
+import cq_model_pin_switch
+import cq_model_piano_switch
+import cq_model_smd_switch
+import cq_model_smd_switch_copal
+import cq_model_smd_switch_omron_a6h
 
-###########################
-#  Model scratchpad area  #
-###########################
-
-from math import sqrt, tan, radians
-
-###########################
-# End of scratchpad area  #
-###########################
-
-family = None # set to None to generate all series
+#reload(cq_model_smd_switch_omron_a6h)
 
 series = [
- dip_socket_turned_pin,
- dip_switch,
- dip_switch_low_profile,
- dip_switch_piano,
- dip_smd_switch,
- dip_switch_copal_CHS_A,
- dip_switch_copal_CHS_B,
- dip_switch_omron_a6h
+ cq_model_socket_turned_pin.dip_socket_turned_pin,
+ cq_model_pin_switch.dip_switch,
+ cq_model_pin_switch.dip_switch_low_profile,
+ cq_model_piano_switch.dip_switch_piano,
+ cq_model_smd_switch.dip_smd_switch,
+ cq_model_smd_switch_copal.dip_switch_copal_CHS_A,
+ cq_model_smd_switch_copal.dip_switch_copal_CHS_B,
+ cq_model_smd_switch_omron_a6h.dip_switch_omron_a6h
 ]
 
+family = 0 # set to None to generate all series
+
 global kicadStepUptools
-kicadStepUptools = None
+kicadStepUptools = None # set to False to disable, None to enable if present
+
+global license
+license = None
 
 def closeCurrentDoc(title):
     mw = FreeCADGui.getMainWindow()
     mdi = mw.findChild(QtGui.QMdiArea)
     mdiWin = mdi.currentSubWindow()
-    print mdiWin.windowTitle()
+#    print mdiWin.windowTitle()
 
     # We have a 3D view selected so we need to find the corresponding script window
     if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle():
@@ -169,9 +172,8 @@ def make_3D_model(models_dir, genericName, model, save_memory):
         FreeCAD.Console.PrintMessage(' - not made')
         return
 
+    global license
     global kicadStepUptools
-
-    LIST_license = ["",]
 
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
@@ -215,8 +217,6 @@ def make_3D_model(models_dir, genericName, model, save_memory):
     shape.translate(model.offsets)
     objs[0].Placement = shape.Placement
 
-    expVRML.say(models_dir)
-
     out_dir = models_dir + os.sep + model.destination_dir
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
@@ -224,11 +224,18 @@ def make_3D_model(models_dir, genericName, model, save_memory):
     # export STEP model
     exportSTEP(doc, modelName, out_dir)
 
-    if LIST_license[0] == "":
-        LIST_license = Lic.LIST_int_license
-        LIST_license.append("")
+    if license == None:
+        license = list(Lic.LIST_int_license) # make a copy to avoid modifying the original
+        license.append("")
+        license.append("")
+        if scriptsource != "":
+            license.append("Generated by script, source at:")
+            license.append(scriptsource + script_dir.split(os.sep)[-1])
+            license.append("")
 
-    Lic.addLicenseToStep(out_dir + os.sep, modelName + ".step", LIST_license, model.licAuthor, model.licEmail, model.licOrgSys, model.licOrg, model.licPreProc)
+    expVRML.say("")
+
+    Lic.addLicenseToStep(out_dir + os.sep, modelName + ".step", license, model.licAuthor, model.licEmail, model.licOrgSys, model.licOrg, model.licPreProc)
 
     # scale and export Vrml model
     scale = 1.0 / 2.54
@@ -239,7 +246,7 @@ def make_3D_model(models_dir, genericName, model, save_memory):
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
     export_file_name = out_dir + os.sep + modelName + '.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects, scale)
-    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, license)
 
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, modelName, out_dir)
@@ -286,35 +293,14 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
-    full_path = os.path.realpath(__file__)
-    expVRML.say(full_path)
-    scriptdir = os.path.dirname(os.path.realpath(__file__))
-    expVRML.say(scriptdir)
-    sub_path = full_path.split(scriptdir)
-    expVRML.say(sub_path)
-    sub_dir_name = full_path.split(os.sep)[-2]
-    expVRML.say(sub_dir_name)
-    sub_path = full_path.split(sub_dir_name)[0]
-    expVRML.say(sub_path)
-    models_dir = sub_path + "_3Dmodels"
+    expVRML.say(models_dir)
+    expVRML.say(script_dir)
+
     models_made = 0
 
     if len(sys.argv) >= 3 and not all_params.has_key(sys.argv[2]):
 
-        Model = namedtuple("Model", [
-            'variant',      # generic model name
-            'params',       # parameters
-            'model'         # model creator class
-        ])
-
-        models = {}
-
-        # instantiate generator classes in order to make a dictionary of all model names
-        for i in range(0, len(series)):
-            for variant in all_params.keys():
-                model = series[i](all_params[variant])            
-                if model.make_me:
-                    models[model.make_modelname(variant)] = Model(variant, all_params[variant], series[i])
+        models = get_all_models(series)
 
         if sys.argv[2] == "list":
             for variant in sorted(models):
@@ -331,17 +317,33 @@ if __name__ == "__main__" or __name__ == "main_generator":
                         models_made = models_made + 1
                         make_3D_model(models_dir, variant, model, True)
     else:
-        variant_to_build = "" if len(sys.argv) < 3 else sys.argv[2]
-        if variant_to_build == "":
-            FreeCAD.Console.PrintMessage('No variant name is given! building default variants')
-        for i in (range(0, len(series)) if family == None else range(family, family + 1)):
-            variant = series[i].default_model if variant_to_build == "" else variant_to_build
-            model = series[i](all_params[variant])
-            if model.make_me:
-                models_made = models_made + 1
-                make_3D_model(models_dir, variant, series[i](all_params[variant]), False)
-            else:    
-                FreeCAD.Console.PrintMessage('\r\n' + model.make_modelname(variant) + ' - not made')
+
+        if family == None:
+
+            models = get_sample_models(series)
+
+            for variant in models.keys():
+                params = models[variant].params
+                model = models[variant].model(params)
+                if model.make_me:
+                    models_made = models_made + 1
+                    make_3D_model(models_dir, variant, model, False)
+                else:    
+                    FreeCAD.Console.PrintMessage('\r\n' + model.make_modelname(variant) + ' - not made')
+
+        else:
+
+            variant_to_build = "" if len(sys.argv) < 3 else sys.argv[2]
+            if variant_to_build == "":
+                FreeCAD.Console.PrintMessage('No variant name is given! building default variants')
+            for i in range(family, family + 1):
+                variant = series[i].default_model if variant_to_build == "" else variant_to_build
+                model = series[i](all_params[variant])
+                if model.make_me:
+                    models_made = models_made + 1
+                    make_3D_model(models_dir, variant, series[i](all_params[variant]), False)
+                else:    
+                    FreeCAD.Console.PrintMessage('\r\n' + model.make_modelname(variant) + ' - not made')
 
     if models_made == 0:
         FreeCAD.Console.PrintMessage('\r\nDone - no models matched the provided filter!')

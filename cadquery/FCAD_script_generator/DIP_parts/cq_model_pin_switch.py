@@ -9,7 +9,7 @@
 #* This is part of FreeCAD & cadquery tools                                 *
 #* to export generated models in STEP & VRML format.                        *
 #*   Copyright (c) 2017                                                     *
-#* Terje Io / Io Engineering                                                *
+#* Terje Io https://github.com/terjeio                                      *
 #*                                                                          *
 #* All trademarks within this guide belong to their legitimate owners.      *
 #*                                                                          *
@@ -46,21 +46,18 @@ class dip_switch (part):
     default_model = "DIP-10"
 
     def __init__(self, params):
-        part.__init__(self)
-        self.make_me = params.type == CASE_THT_TYPE and params.num_pins >=  2 and params.num_pins <= 24 and params.pin_row_distance == 7.62
+        part.__init__(self, params)
+        self.make_me = params.type == CASE_THT_TYPE and params.num_pins >=  2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
 #        if self.make_me:
         self.licAuthor = "Terje Io"
-        self.licEmail = "terjeio@online.no"
+        self.licEmail = "https://github.com/terjeio"
         self.destination_dir = "Buttons_Switches_THT.3dshapes"
         self.footprints_dir = "Buttons_Switches_THT.pretty"
         self.rotation = 180
-        self.num_pins = params.num_pins
 
-        self.pin_pitch  = 2.54
         self.pin_width = 0.6
         self.pin_thickness = 0.2
         self.pin_length = 3.2
-        self.pin_row_distance = params.pin_row_distance
 
         self.body_width = 9.9
         self.body_height = 5.85
@@ -77,21 +74,16 @@ class dip_switch (part):
         self.color_keys.append("white body") #buttons
         self.color_keys.append("white body") #buttons
 
-        offsetX = self.num_pins * self.pin_pitch / 4.0 - self.pin_pitch / 2.0
-        offsetY = self.pin_row_distance / 2.0
-        offsetZ = self.body_board_distance
-        self.offsets = (offsetX, offsetY, offsetZ)
+        self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
+        self.offsets = self.first_pin_pos + (self.body_board_distance,)
 
     def make_modelname(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W7.62mm_Slide'
 
-    def _first_pin_pos(self):
-        return self.pin_pitch * (self.num_pins / 4.0 - 0.508)
-  
     def _make_switchpockets(self):
 
         # create first pocket
-        pocket = cq.Workplane("XY", origin=(self._first_pin_pos(), 0.0, 0.0))\
+        pocket = cq.Workplane("XY", origin=(self.first_pin_pos[0], 0.0, 0.0))\
                    .workplane(offset=self.body_height - 1.0)\
                    .rect(self.button_width, self.button_base).extrude(1.0)
 
@@ -118,11 +110,16 @@ class dip_switch (part):
         button_length_2 = self.button_length / 2.0
 
         # create first button
-        button = cq.Workplane("XY", origin=(self._first_pin_pos(), 0.0, self.body_height - 1.0))\
+        button = cq.Workplane("XY", origin=(self.first_pin_pos[0], 0.0, self.body_height - 1.0))\
                    .rect(self.button_width, self.button_base).extrude(0.7)
-        button = button.faces(">Z").center(0.0, -self.button_base / 2.0 + button_length_2).rect(self.button_width, self.button_length).extrude(self.button_heigth + 0.7)
-        button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(0, -(button_length_2 + o)).hole(d, self.button_heigth)
-        button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(0, button_length_2 + o).hole(d, self.button_heigth)
+        button = button.faces(">Z")\
+                       .center(0.0, -self.button_base / 2.0 + button_length_2)\
+                       .rect(self.button_width, self.button_length)\
+                       .extrude(self.button_heigth + 0.7)
+        button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox')\
+                       .center(0, -(button_length_2 + o)).hole(d, self.button_heigth)
+        button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox')\
+                       .center(0, button_length_2 + o).hole(d, self.button_heigth)
 
         return self.make_rest(button)
 
@@ -131,7 +128,7 @@ class dip_switch (part):
         l = self.pin_length + self.body_board_pad_height
     
         #create first pin
-        pin = cq.Workplane("XZ", (self._first_pin_pos(), self.pin_row_distance / 2.0 + self.pin_thickness / 2.0, self.body_board_pad_height))\
+        pin = cq.Workplane("XZ", (self.first_pin_pos[0], self.pin_rows_distance / 2.0 + self.pin_thickness / 2.0, self.body_board_pad_height))\
                 .moveTo(self.pin_width / 2.0, 0.0)\
                 .line(0.0, -(l - self.pin_width))\
                 .line(-self.pin_width / 4.0, -self.pin_width)\
@@ -151,7 +148,7 @@ class dip_switch (part):
         w = width / 2.0
         w3 = width / 3.0
 
-        return cq.Workplane("XY", origin=(self._first_pin_pos(), self.body_width / 2.0 - 0.6, self.body_height - h))\
+        return cq.Workplane("XY", origin=(self.first_pin_pos[0], self.body_width / 2.0 - 0.6, self.body_height - h))\
                  .line(-w, -w)\
                  .line(w3, 0.0)\
                  .line(0.0, -w3)\
