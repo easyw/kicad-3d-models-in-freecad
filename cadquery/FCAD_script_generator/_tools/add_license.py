@@ -158,8 +158,8 @@ def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAutho
     if os.path.isfile(FLDR_toStepFiles + os.sep + FNME_stepfile): # test if folder or file..
         fname, ext=os.path.splitext(FNME_stepfile)
         if LIST_license[0] == "":
-            LIST_license=LIST_int_license
-        LIST_int_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
+            LIST_license=list(LIST_int_license)
+        LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
         if ext == ".stp" or ext == ".step": # test if step file
             say("Starting of licensing\n")
             try:
