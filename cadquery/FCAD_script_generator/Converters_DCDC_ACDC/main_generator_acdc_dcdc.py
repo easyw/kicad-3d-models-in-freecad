@@ -302,7 +302,7 @@ def make_params_black_body_red_top(modelName, roundbelly, L, W, H, pinpadsize, p
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
 		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
-		show_top = 0,					# If top should be visible or not
+		show_top = 1,					# If top should be visible or not
 		body_color_key = "black body",
 		body_top_color_key = "red body",
 		pin_color_key = "metal grey pins"
