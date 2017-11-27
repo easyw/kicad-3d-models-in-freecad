@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-   
+
 #****************************************************************************
 #*                                                                          *
 #* class for generating piano style DIP switch models in STEP AP214         *
@@ -36,24 +36,24 @@ from Helpers import show
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+from cq_base_model import PartBase
+from cq_base_parameters import CaseType
 
 ## model generators
 
-class dip_switch_piano (part):
+class dip_switch_piano (PartBase):
 
     default_model = "DIP-20"
 
     def __init__(self, params):
-        part.__init__(self, params)
-        self.make_me = params.type == CASE_THT_TYPE and params.num_pins >= 2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
+        PartBase.__init__(self, params)
+        self.make_me = params.type == CaseType.THT and params.num_pins >= 2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
 #        if self.make_me:
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
-        self.destination_dir = "Buttons_Switches_THT.3dshapes"
-        self.footprints_dir = "Buttons_Switches_THT.pretty"
-        self.rotation = 180
+        self.destination_dir = "Button_Switch_THT.3dshapes"
+        self.footprints_dir = "Button_Switch_THT.pretty"
+        self.rotation = 90
 
         self.pin_width = 0.6
         self.pin_thickness = 0.2
@@ -75,9 +75,9 @@ class dip_switch_piano (part):
         self.color_keys.append("white body")  # pin mark
 
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
-        self.offsets = self.first_pin_pos + (self.body_board_distance,)
+        self.offsets =  ((self.first_pin_pos[1], -self.first_pin_pos[0], self.body_board_distance))
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W7.62mm_Piano'
 
     def _make_switchpockets(self):
@@ -95,14 +95,14 @@ class dip_switch_piano (part):
          .line(0.0, -1.6)\
          .line(3.2, -3.2)\
          .close().extrude(self.body_length - 2)
-                       
-        pockets = self.make_rest(pocket)         
-                 
+
+        pockets = self._mirror(pocket)
+
         # union and return all pockets
         return pockets.union(pocket2)
 
     def make_body(self):
- 
+
         body = cq.Workplane(cq.Plane.XY())\
                  .rect(self.body_length, self.body_width).extrude(self.body_height)\
                  .faces(">Y").cut(self._make_switchpockets())
@@ -114,7 +114,7 @@ class dip_switch_piano (part):
         bl = self.body_length / 2.0
         bw = self.body_width / 2.0
         bz = self.body_height
-       
+
         body = body.edges(BS((bl + 0.1, -bw - 0.1, bz - 0.1), (-bl - 0.1, -bw + 0.1, bz + 0.1))).chamfer(2.0)
         body = body.edges(BS((bl + 0.1, bw - 0.1, bz - 0.1), (-bl - 0.1, bw + 0.1, bz + 0.1))).fillet(1.0)
 
@@ -128,12 +128,12 @@ class dip_switch_piano (part):
                    .faces(">Y").center(0, self.button_base / 2 - self.button_length / 2.0)\
                    .rect(self.button_width, self.button_length).extrude(-(self.button_heigth + 0.7))
 
-        return self.make_rest(button)
+        return self._mirror(button)
 
     def make_pins(self):
 
         l = self.pin_length + self.body_board_pad_height
-    
+
         #create first pin
         pin = cq.Workplane("XZ", (self.first_pin_pos[0], self.pin_rows_distance / 2.0 + self.pin_thickness / 2.0, self.body_board_pad_height))\
                 .moveTo(self.pin_width / 2.0, 0.0)\
@@ -144,7 +144,7 @@ class dip_switch_piano (part):
                 .line(0.0, l - self.pin_width)\
                 .close().extrude(self.pin_thickness)
 
-        pins = self.make_rest(pin)
+        pins = self._mirror(pin)
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
@@ -164,10 +164,10 @@ class dip_switch_piano (part):
                  .line(w3, 0.0)\
                  .close().extrude(h)
 
-    def make(self):        
+    def make(self):
         show(self.make_body())
         show(self.make_pins())
         show(self.make_buttons())
         show(self.make_pinmark(self.button_width + 0.2))
-        
+
 ### EOF ###

@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-   
+
 #****************************************************************************
 #*                                                                          *
 #* generic class for generating SMD DIP switch models in STEP AP214         *
@@ -33,12 +33,11 @@
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+import cadquery as cq
 
 ## model generators
 
-from cq_model_smd_switch import *
+from cq_model_smd_switch import dip_smd_switch
 
 class dip_switch_omron_a6h (dip_smd_switch):
 
@@ -69,7 +68,7 @@ class dip_switch_omron_a6h (dip_smd_switch):
 
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W6.15mm_Slide_Omron_A6H'
 
     def _make_switchpockets(self):
@@ -78,7 +77,7 @@ class dip_switch_omron_a6h (dip_smd_switch):
 
         x0 = self.first_pin_pos[0]
         z0 = self.body_height - self.button_pocket_dept
-        
+
         pocket = cq.Workplane("XY", origin=(x0, 0.0, z0))\
                    .rect(self.button_width, self.button_base).extrude(self.button_pocket_dept)
 
@@ -86,11 +85,11 @@ class dip_switch_omron_a6h (dip_smd_switch):
 
         w2 = self.button_base / 2.0
         x2 = self.button_width / 2.0
-        
-        case = pocket.edges(BS((x0 + x2 + 0.1, -w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, -w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
-        case = pocket.edges(BS((x0 + x2 + 0.1, w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
-                   
-        return self.make_rest(pocket)
+
+        pocket.edges(BS((x0 + x2 + 0.1, -w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, -w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
+        pocket.edges(BS((x0 + x2 + 0.1, w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
+
+        return self._mirror(pocket)
 
     def _make_cornerpockets(self):
         width = 0.5
@@ -98,7 +97,7 @@ class dip_switch_omron_a6h (dip_smd_switch):
         pocket = cq.Workplane("XY", origin=(self.body_length / 2 - 0.5, self.body_width / 2.0 - 0.25, self.body_height))\
                    .rect(width, width).extrude(depth)\
                    .faces(">Z").center(0.0, -width / 2.0).circle(width / 2.0).extrude(depth)
-        
+
         pockets = pocket.union(pocket.translate((-self.body_length + 1.0, 0, 0)))
 
         return pockets.union(pockets.rotate((0,0,0), (0,0,1), 180))
@@ -111,7 +110,7 @@ class dip_switch_omron_a6h (dip_smd_switch):
                    .faces("<Z").edges().chamfer(-depth-0.01)
 
     def make_body(self):
-        body = dip_smd_switch.make_body(self, 0.2, 0.0).cut(self._make_buttonsrecess())\
+        body = super(dip_switch_omron_a6h, self).make_body(0.2, 0.0).cut(self._make_buttonsrecess())\
                                                        .cut(self._make_cornerpockets())
 
         self.body_edge_upper = self.body_edge_upper + 0.15 # move pin mark a bit
@@ -125,6 +124,6 @@ class dip_switch_omron_a6h (dip_smd_switch):
                    .faces(">Z").center(0, -self.button_base / 2.0 + self.button_length / 2.0 + self.button_pocket_dept)\
                    .rect(self.button_width, self.button_length).extrude(self.button_heigth + 0.1)
 
-        return self.make_rest(button)
+        return self._mirror(button)
 
 ### EOF ###

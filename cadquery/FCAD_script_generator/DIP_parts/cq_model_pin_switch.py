@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-   
+
 #****************************************************************************
 #*                                                                          *
 #* class for generating DIP switch models in STEP AP214                     *
@@ -36,24 +36,24 @@ from Helpers import show
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+from cq_base_model import PartBase
+from cq_base_parameters import CaseType
 
 ## model generator
 
-class dip_switch (part):
+class dip_switch (PartBase):
 
     default_model = "DIP-10"
 
     def __init__(self, params):
-        part.__init__(self, params)
-        self.make_me = params.type == CASE_THT_TYPE and params.num_pins >=  2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
+        PartBase.__init__(self, params)
+        self.make_me = params.type == CaseType.THT and params.num_pins >=  2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
 #        if self.make_me:
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
-        self.destination_dir = "Buttons_Switches_THT.3dshapes"
-        self.footprints_dir = "Buttons_Switches_THT.pretty"
-        self.rotation = 180
+        self.destination_dir = "Button_Switch_THT.3dshapes"
+        self.footprints_dir = "Button_Switch_THT.pretty"
+        self.rotation = 90
 
         self.pin_width = 0.6
         self.pin_thickness = 0.2
@@ -75,9 +75,9 @@ class dip_switch (part):
         self.color_keys.append("white body") #buttons
 
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
-        self.offsets = self.first_pin_pos + (self.body_board_distance,)
+        self.offsets =  ((self.first_pin_pos[1], -self.first_pin_pos[0], self.body_board_distance))
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W7.62mm_Slide'
 
     def _make_switchpockets(self):
@@ -88,19 +88,19 @@ class dip_switch (part):
                    .rect(self.button_width, self.button_base).extrude(1.0)
 
         # union and return all pockets
-        return self.make_rest(pocket)
+        return self._mirror(pocket)
 
     def make_body(self):
- 
+
         body = cq.Workplane(cq.Plane.XY())\
                  .rect(self.body_length, self.body_width).extrude(self.body_height)\
                  .faces(">Z").cut(self._make_switchpockets())
 
         body.faces("<Z").rect(self.body_length -1.0, self.body_width).cutBlind(self.body_board_pad_height)
         body.faces("<Z").rect(self.body_length, self.body_width - 3.0).cutBlind(self.body_board_pad_height)
-        
-        ##ok = Draft.makeShapeString("OK",'C:\windows\fonts\arial.ttf', 5) 
-        
+
+        ##ok = Draft.makeShapeString("OK",'C:\windows\fonts\arial.ttf', 5)
+
         return body
 
     def make_buttons(self):
@@ -121,12 +121,12 @@ class dip_switch (part):
         button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox')\
                        .center(0, button_length_2 + o).hole(d, self.button_heigth)
 
-        return self.make_rest(button)
+        return self._mirror(button)
 
     def make_pins(self):
 
         l = self.pin_length + self.body_board_pad_height
-    
+
         #create first pin
         pin = cq.Workplane("XZ", (self.first_pin_pos[0], self.pin_rows_distance / 2.0 + self.pin_thickness / 2.0, self.body_board_pad_height))\
                 .moveTo(self.pin_width / 2.0, 0.0)\
@@ -137,7 +137,7 @@ class dip_switch (part):
                 .line(0.0, l - self.pin_width)\
                 .close().extrude(self.pin_thickness)
 
-        pins = self.make_rest(pin)
+        pins = self._mirror(pin)
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
@@ -162,7 +162,7 @@ class dip_switch (part):
         show(self.make_pins())
         show(self.make_buttons())
         show(self.make_pinmark(self.button_width + 0.2))
- 
+
 class dip_switch_low_profile (dip_switch):
 
     def __init__(self, params):
@@ -170,7 +170,7 @@ class dip_switch_low_profile (dip_switch):
 
         self.body_height = 3.0
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W7.62mm_Slide_LowProfile'
 
 ### EOF ###

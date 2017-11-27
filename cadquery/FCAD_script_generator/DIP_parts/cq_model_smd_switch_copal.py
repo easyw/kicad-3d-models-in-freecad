@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-   
+
 #****************************************************************************
 #*                                                                          *
 #* generic class for generating SMD DIP switch models in STEP AP214         *
@@ -33,12 +33,11 @@
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+import cadquery as cq
 
 ## model generators
 
-from cq_model_smd_switch import *
+from cq_model_smd_switch import dip_smd_switch
 
 class dip_switch_copal_CHS_B (dip_smd_switch):
 
@@ -48,7 +47,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
         self.rotation = 90
 
         self.pin_pitch  = 1.27
-        self.pin_length = 3.2
+        self.pin_length = 2.0
         self.pin_thickness = 0.15
         self.pin_width = 0.4
         self.pin_bottom_length = 0.4
@@ -67,7 +66,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
 
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W7.62mm_Slide_Copal_CHS-B'
 
     def _make_switchpockets(self):
@@ -76,7 +75,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
 
         x0 = self.first_pin_pos[0]
         z0 = self.body_height - self.button_pocket_dept
-        
+
         pocket = cq.Workplane("XY", origin=(x0, 0.0, z0))\
                    .rect(self.button_width, self.button_base).extrude(self.button_pocket_dept)
 
@@ -84,11 +83,11 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
 
         w2 = self.button_base / 2.0
         x2 = self.button_width / 2.0
-        
-        case = pocket.edges(BS((x0 + x2 + 0.1, -w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, -w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
-        case = pocket.edges(BS((x0 + x2 + 0.1, w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
-                   
-        return self.make_rest(pocket)
+
+        pocket.edges(BS((x0 + x2 + 0.1, -w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, -w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
+        pocket.edges(BS((x0 + x2 + 0.1, w2 - 0.1, z0-0.1), (x0 - x2 - 0.1, w2 + 0.1, z0 + 0.1))).chamfer(self.button_pocket_dept - 0.01)
+
+        return self._mirror(pocket)
 
     def make_buttons(self):
 
@@ -97,7 +96,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch):
                    .faces(">Z").center(0, -self.button_base / 2.0 + self.button_length / 2.0 + self.button_pocket_dept)\
                    .rect(self.button_width, self.button_length).extrude(self.button_heigth + 0.1)
 
-        return self.make_rest(button)
+        return self._mirror(button)
 
 class dip_switch_copal_CHS_A (dip_switch_copal_CHS_B):
 
@@ -111,17 +110,16 @@ class dip_switch_copal_CHS_A (dip_switch_copal_CHS_B):
 
         self.offsets = (0.0, 0.0, self.body_board_distance)
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W5.08mm_Slide_Copal_CHS-A'
 
     def make_pins(self):
-    
+
         # create first pin
-        pin = self.make_Jhook_pin((self.body_height + self.body_board_distance) / 2.0, (self.body_overall_width - self.body_width) / 2.0,
-                                    self.pin_bottom_length, self.pin_width, self.pin_thickness)
+        pin = self._make_Jhook_pin((self.body_height + self.body_board_distance) / 2.0, self.pin_bottom_length)
         pin = pin.translate((self.first_pin_pos[0], self.body_overall_width / 2.0 - self.pin_thickness, -self.pin_thickness))
-        
-        pins = self.make_rest(pin)
+
+        pins = self._mirror(pin)
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))

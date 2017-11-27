@@ -1,121 +1,113 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-# This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
-#
-# from https://bitbucket.org/hyOzd/freecad-macros
-# author hyOzd
-#
-# Generic DIP parameters
-#
+
+#****************************************************************************
+#*                                                                          *
+#* class for generating generic parameters for DIP parts                    *
+#*                                                                          *
+#* This is part of FreeCAD & cadquery tools                                 *
+#* to export generated models in STEP & VRML format.                        *
+#*   Copyright (c) 2017                                                     *
+#* Terje Io https://github.com/terjeio                                      *
+#*                                                                          *
+#* All trademarks within this guide belong to their legitimate owners.      *
+#*                                                                          *
+#*   This program is free software; you can redistribute it and/or modify   *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)     *
+#*   as published by the Free Software Foundation; either version 2 of      *
+#*   the License, or (at your option) any later version.                    *
+#*   for detail see the LICENCE text file.                                  *
+#*                                                                          *
+#*   This program is distributed in the hope that it will be useful,        *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+#*   GNU Library General Public License for more details.                   *
+#*                                                                          *
+#*   You should have received a copy of the GNU Library General Public      *
+#*   License along with this program; if not, write to the Free Software    *
+#*   Foundation, Inc.,                                                      *
+#*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA           *
+#*                                                                          *
+#****************************************************************************
 
 from collections import namedtuple
+from cq_base_parameters import PartParametersBase, CaseType
 
-CASE_THT_TYPE = 'tht'
-CASE_SMD_TYPE = 'smd'
+class params (PartParametersBase):
 
-model_to_build = 'DIP-10'
+    Params = namedtuple("Params", [
+        'pin_rows_distance', # distance between pin rows
+        'num_pins',          # number of pins
+        'type'               # THT and/or SMD
+    ])
 
-Params = namedtuple("Params", [
-    'pin_rows_distance', # package shoulder-to-shoulder width
-    'num_pins',          # number of pins
-    'type'               # THT and/or SMD
-])
+    Model = namedtuple("Model", [
+        'variant',      # generic model name
+        'params',       # parameters
+        'model'         # model creator class
+    ])
 
-def make_params(pin_rows_distance, num_pins, type):
-    return Params(
-        pin_rows_distance = pin_rows_distance,  # pin rows distance
-        num_pins = num_pins,                    # total number of pins
-        type = type                             # SMD and/or THT
-    )
 
-all_params = {
-#
-# E - pin rows distance
-# P - total number of pins
-# Case - case type
-#   Generic name                          E        P  Case
-    "DIP-4"                 : make_params(7.62,    4, CASE_THT_TYPE),
-    "DIP-4_Wide"            : make_params(10.16,   4, CASE_THT_TYPE),
-    "DIP-6"                 : make_params(7.62,    6, CASE_THT_TYPE),
-    "DIP-6_Wide"            : make_params(10.16,   6, CASE_THT_TYPE),
-    "DIP-8"                 : make_params(7.62,    8, CASE_THT_TYPE),
-    "DIP-8_Wide"            : make_params(10.16,   8, CASE_THT_TYPE),
-    "DIP-10"                : make_params(7.62,   10, CASE_THT_TYPE),
-    "DIP-12"                : make_params(7.62,   12, CASE_THT_TYPE),
-    "DIP-14"                : make_params(7.62,   14, CASE_THT_TYPE),
-    "DIP-16"                : make_params(7.62,   16, CASE_THT_TYPE),
-    "DIP-18"                : make_params(7.62,   18, CASE_THT_TYPE),
-    "DIP-20"                : make_params(7.62,   20, CASE_THT_TYPE),
-    "DIP-22_Narrow"         : make_params(7.62,   22, CASE_THT_TYPE),
-    "DIP-22"                : make_params(10.16,  22, CASE_THT_TYPE),
-    "DIP-24_Narrow"         : make_params(7.62,   24, CASE_THT_TYPE),
-    "DIP-24"                : make_params(10.16,  24, CASE_THT_TYPE),
-    "DIP-24_Wide"           : make_params(15.24,  24, CASE_THT_TYPE),
-    "DIP-28_Narrow"         : make_params(7.62,   28, CASE_THT_TYPE),
-    "DIP-28"                : make_params(15.24,  28, CASE_THT_TYPE),
-    "DIP-32_Narrow"         : make_params(7.62,   32, CASE_THT_TYPE),
-    "DIP-32"                : make_params(15.24,  32, CASE_THT_TYPE),
-    "DIP-40"                : make_params(15.24,  40, CASE_THT_TYPE),
-    "DIP-48"                : make_params(15.24,  48, CASE_THT_TYPE),
-    "DIP-64"                : make_params(15.24,  64, CASE_THT_TYPE),
+    def __init__(self):
+        self.base_params = {
+            "DIP-4"                 : self.make_params(7.62,    4, CaseType.THT),
+            "DIP-4_Wide"            : self.make_params(10.16,   4, CaseType.THT),
+            "DIP-6"                 : self.make_params(7.62,    6, CaseType.THT),
+            "DIP-6_Wide"            : self.make_params(10.16,   6, CaseType.THT),
+            "DIP-8"                 : self.make_params(7.62,    8, CaseType.THT),
+            "DIP-8_Wide"            : self.make_params(10.16,   8, CaseType.THT),
+            "DIP-10"                : self.make_params(7.62,   10, CaseType.THT),
+            "DIP-12"                : self.make_params(7.62,   12, CaseType.THT),
+            "DIP-14"                : self.make_params(7.62,   14, CaseType.THT),
+            "DIP-16"                : self.make_params(7.62,   16, CaseType.THT),
+            "DIP-18"                : self.make_params(7.62,   18, CaseType.THT),
+            "DIP-20"                : self.make_params(7.62,   20, CaseType.THT),
+            "DIP-22_Narrow"         : self.make_params(7.62,   22, CaseType.THT),
+            "DIP-22"                : self.make_params(10.16,  22, CaseType.THT),
+            "DIP-24_Narrow"         : self.make_params(7.62,   24, CaseType.THT),
+            "DIP-24"                : self.make_params(10.16,  24, CaseType.THT),
+            "DIP-24_Wide"           : self.make_params(15.24,  24, CaseType.THT),
+            "DIP-28_Narrow"         : self.make_params(7.62,   28, CaseType.THT),
+            "DIP-28"                : self.make_params(15.24,  28, CaseType.THT),
+            "DIP-32_Narrow"         : self.make_params(7.62,   32, CaseType.THT),
+            "DIP-32"                : self.make_params(15.24,  32, CaseType.THT),
+            "DIP-40"                : self.make_params(15.24,  40, CaseType.THT),
+            "DIP-48"                : self.make_params(15.24,  48, CaseType.THT),
+            "DIP-64"                : self.make_params(15.24,  64, CaseType.THT),
 
-    "DIP-2_SMD"             : make_params(7.62,    2, CASE_SMD_TYPE),
-    "DIP-4_SMD"             : make_params(7.62,    4, CASE_SMD_TYPE),
-    "DIP-4_SMD_Wide"        : make_params(10.16,   4, CASE_SMD_TYPE),
-    "DIP-6_SMD"             : make_params(7.62,    6, CASE_SMD_TYPE),
-    "DIP-6_SMD_Wide"        : make_params(10.16,   6, CASE_SMD_TYPE),
-    "DIP-8_SMD"             : make_params(7.62,    8, CASE_SMD_TYPE),
-    "DIP-8_SMD_Wide"        : make_params(10.16,   8, CASE_SMD_TYPE),
-    "DIP-10_SMD"            : make_params(7.62,   10, CASE_SMD_TYPE),
-    "DIP-12_SMD"            : make_params(7.62,   12, CASE_SMD_TYPE),
-    "DIP-14_SMD"            : make_params(7.62,   14, CASE_SMD_TYPE),
-    "DIP-16_SMD"            : make_params(7.62,   16, CASE_SMD_TYPE),
-    "DIP-18_SMD"            : make_params(7.62,   18, CASE_SMD_TYPE),
-    "DIP-20_SMD"            : make_params(7.62,   20, CASE_SMD_TYPE),
-    "DIP-22_SMD_Narrow"     : make_params(7.62,   22, CASE_SMD_TYPE),
-    "DIP-22_SMD"            : make_params(10.16,  22, CASE_SMD_TYPE),
-    "DIP-24_SMD_Narrow"     : make_params(7.62,   24, CASE_SMD_TYPE),
-    "DIP-24_SMD"            : make_params(10.16,  24, CASE_SMD_TYPE),
-    "DIP-24_SMD_Wide"       : make_params(15.24,  24, CASE_SMD_TYPE),
-    "DIP-28_SMD_Narrow"     : make_params(7.62,   28, CASE_SMD_TYPE),
-    "DIP-28_SMD"            : make_params(15.24,  28, CASE_SMD_TYPE),
-    "DIP-32_SMD_Narrow"     : make_params(7.62,   32, CASE_SMD_TYPE),
-    "DIP-32_SMD"            : make_params(15.24,  32, CASE_SMD_TYPE),
-    "DIP-40_SMD"            : make_params(15.24,  40, CASE_SMD_TYPE),
-    "DIP-48_SMD"            : make_params(15.24,  48, CASE_SMD_TYPE),
-    "DIP-64_SMD"            : make_params(15.24,  64, CASE_SMD_TYPE)
-}
-Model = namedtuple("Model", [
-    'variant',      # generic model name
-    'params',       # parameters
-    'model'         # model creator class
-])
+            "DIP-2_SMD"             : self.make_params(7.62,    2, CaseType.SMD),
+            "DIP-4_SMD"             : self.make_params(7.62,    4, CaseType.SMD),
+            "DIP-4_SMD_Wide"        : self.make_params(10.16,   4, CaseType.SMD),
+            "DIP-6_SMD"             : self.make_params(7.62,    6, CaseType.SMD),
+            "DIP-6_SMD_Wide"        : self.make_params(10.16,   6, CaseType.SMD),
+            "DIP-8_SMD"             : self.make_params(7.62,    8, CaseType.SMD),
+            "DIP-8_SMD_Wide"        : self.make_params(10.16,   8, CaseType.SMD),
+            "DIP-10_SMD"            : self.make_params(7.62,   10, CaseType.SMD),
+            "DIP-12_SMD"            : self.make_params(7.62,   12, CaseType.SMD),
+            "DIP-14_SMD"            : self.make_params(7.62,   14, CaseType.SMD),
+            "DIP-16_SMD"            : self.make_params(7.62,   16, CaseType.SMD),
+            "DIP-18_SMD"            : self.make_params(7.62,   18, CaseType.SMD),
+            "DIP-20_SMD"            : self.make_params(7.62,   20, CaseType.SMD),
+            "DIP-22_SMD_Narrow"     : self.make_params(7.62,   22, CaseType.SMD),
+            "DIP-22_SMD"            : self.make_params(10.16,  22, CaseType.SMD),
+            "DIP-24_SMD_Narrow"     : self.make_params(7.62,   24, CaseType.SMD),
+            "DIP-24_SMD"            : self.make_params(10.16,  24, CaseType.SMD),
+            "DIP-24_SMD_Wide"       : self.make_params(15.24,  24, CaseType.SMD),
+            "DIP-28_SMD_Narrow"     : self.make_params(7.62,   28, CaseType.SMD),
+            "DIP-28_SMD"            : self.make_params(15.24,  28, CaseType.SMD),
+            "DIP-32_SMD_Narrow"     : self.make_params(7.62,   32, CaseType.SMD),
+            "DIP-32_SMD"            : self.make_params(15.24,  32, CaseType.SMD),
+            "DIP-40_SMD"            : self.make_params(15.24,  40, CaseType.SMD),
+            "DIP-48_SMD"            : self.make_params(15.24,  48, CaseType.SMD),
+            "DIP-64_SMD"            : self.make_params(15.24,  64, CaseType.SMD)
+        }
 
-def get_all_models(model_classes):
+    def make_params(self, pin_rows_distance, num_pins, type):
+        return self.Params(
+            pin_rows_distance = pin_rows_distance,  # pin rows distance
+            num_pins = num_pins,                    # total number of pins
+            type = type                             # SMD and/or THT
+        )
 
-    models = {}
-
-    # instantiate generator classes in order to make a dictionary of all model names
-    for i in range(0, len(model_classes)):
-        for variant in all_params.keys():
-            params = all_params[variant]
-            model = model_classes[i](params)
-            if model.make_me:
-                models[model.make_modelname(variant)] = Model(variant, params, model_classes[i])
-
-    return models
-
-def get_sample_models(model_classes):
-
-    models = {}
-
-    # instantiate generator classes in order to make a dictionary of all model names for default variants
-    for i in range(0, len(model_classes)):
-        variant = model_classes[i].default_model
-        params = all_params[variant]
-        model = model_classes[i](params)
-        if model.make_me:
-            models[model.make_modelname(variant)] = Model(variant, params, model_classes[i])
-
-    return models
+### EOF ###
