@@ -39,8 +39,8 @@ from math import sqrt
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+from cq_base_model import PartBase
+from cq_base_parameters import CaseType
 
 ## model generator
 
@@ -51,19 +51,19 @@ from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
 # NOTE: some are taken from on screen measurements
 #
 
-class dip_socket_turned_pin (part):
+class dip_socket_turned_pin (PartBase):
 
     default_model = "DIP-10"
     default_model = "DIP-10_SMD"
 
     def __init__(self, params):
-        part.__init__(self, params)
+        PartBase.__init__(self, params)
         self.make_me = self.num_pins >= 4
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
-        self.destination_dir = "Housings_DIP.3dshapes"
-        self.footprints_dir = "Housings_DIP.pretty"
-        self.isTHT = self.type == CASE_THT_TYPE
+        self.destination_dir = "Package_DIP.3dshapes"
+        self.footprints_dir = "Package_DIP.pretty"
+        self.isTHT = self.type == CaseType.THT
         self.rotation = 270
         self.pin_socket_diameter = 1.524
         self.pin_socket_radius = self.pin_socket_diameter / 2.0
@@ -83,7 +83,7 @@ class dip_socket_turned_pin (part):
         offsetY = (-self.first_pin_pos[0] if self.isTHT else 0)
         self.offsets = (offsetX, offsetY, self.body_board_distance)
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         width = self.pin_rows_distance if self.isTHT else self.pin_rows_distance + 1.27
         return 'DIP-' + '{:d}'.format(self.num_pins) + '_W' + '{:.2f}'.format(width) + \
                 ('mm_Socket' if self.isTHT else 'mm_SMDSocket_LongPads')
@@ -96,7 +96,7 @@ class dip_socket_turned_pin (part):
                    .extrude(self.body_height)
 
         # create other pockets
-        pockets = self.make_rest(pocket)
+        pockets = self._mirror(pocket)
 
         # create other side of the pockets
         return pockets.union(pockets.rotate((0,0,0), (0,0,1), 180))
@@ -111,7 +111,7 @@ class dip_socket_turned_pin (part):
                               .cskHole(self.pin_radius * 2.0, self.pin_socket_diameter, 82, depth=self.body_height)
 
     def make_body(self):
- 
+
         tq = 1.1 # package indent depth
         tr = 1.9 # package bridge width
         r = 0.5  # pocket corner radius
@@ -119,7 +119,7 @@ class dip_socket_turned_pin (part):
         h = self.body_width - 6.0 # top body pocket width
         o = r - r / sqrt(2.0)
         body_length_2 = self.body_length / 2.0
-        
+
         body = cq.Workplane(cq.Plane.XY())\
                  .rect(self.body_length, self.body_width).extrude(self.body_height)\
                  .faces(">Z").cut(self._make_pinpockets())
@@ -146,7 +146,7 @@ class dip_socket_turned_pin (part):
         if self.body_bottom_pockets > 0:
             w = (self.body_length - tq - tr * 2.0) / 2.0
             h = self.body_width - (6.0 if self.body_bottom_pockets < 3 else 6.8)
-        
+
             body = body.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(tq  / 2.0, -h / 2.0)\
                         .lineTo(w - r, 0) \
                         .threePointArc((w - o, o), (w, r)) \
@@ -185,7 +185,7 @@ class dip_socket_turned_pin (part):
         return body
 
     def _make_pin_tht(self):
- 
+
         # common dimensions
         L = 5.08 - self.body_board_distance # tip to seating plane
         return self._make_pin_socket().faces("<Z").circle(self.pin_radius).extrude(-L).faces("<Z").edges().chamfer(.1)
@@ -218,13 +218,13 @@ class dip_socket_turned_pin (part):
         pin = self._make_pin_tht() if self.isTHT else self._make_pin_smd()
 
         # create other pins
-        pins = self.make_rest(pin.translate(self.first_pin_pos + (0.0,)))
+        pins = self._mirror(pin.translate(self.first_pin_pos + (0.0,)))
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
-    def make(self):        
+    def make(self):
         show(self.make_body())
-        show(self.make_pins())       
+        show(self.make_pins())
 
 ## EOF ##

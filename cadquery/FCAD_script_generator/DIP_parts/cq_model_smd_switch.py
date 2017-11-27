@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-   
+
 #****************************************************************************
 #*                                                                          *
 #* generic class for generating SMD DIP switch models in STEP AP214         *
@@ -36,25 +36,25 @@ from Helpers import show
 
 ## base parametes & model
 
-from cq_base_model import part
-from cq_parameters import CASE_THT_TYPE, CASE_SMD_TYPE
+from cq_base_model import PartBase
+from cq_base_parameters import PinStyle, CaseType
 
 ## model generator
 
-class dip_smd_switch (part):
+class dip_smd_switch (PartBase):
 
     default_model = "DIP-12_SMD"
 
     def __init__(self, params):
-        part.__init__(self, params)
-        self.make_me = params.type == CASE_SMD_TYPE and params.num_pins >= 2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
+        PartBase.__init__(self, params)
+        self.make_me = params.type == CaseType.SMD and params.num_pins >= 2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
-        self.destination_dir = "Buttons_Switches_SMD.3dshapes"
-        self.footprints_dir = "Buttons_Switches_SMD.pretty"
-        self.rotation = 180
+        self.destination_dir = "Button_Switch_SMD.3dshapes"
+        self.footprints_dir = "Button_Switch_SMD.pretty"
+        self.rotation = 90
 
-        self.pin_length = 3.2
+        self.pin_length = 1.0
         self.pin_thickness = 0.2
         self.pin_width = 0.8
         self.pin_bottom_length = 0.6
@@ -79,19 +79,19 @@ class dip_smd_switch (part):
 
         self.offsets = (0.0, 0.0, self.body_board_distance)
 
-    def make_modelname(self, genericName):
+    def makeModelName(self, genericName):
         return 'SW_DIP_x' + '{:d}'.format(self.num_pins / 2) + '_W8.61mm_Slide_LowProfile'
 
     def _make_switchpockets(self):
 
-        # create first pocket 
+        # create first pocket
         pocket = cq.Workplane("XY", origin=(self.first_pin_pos[0], 0.0, self.body_height - self.button_pocket_dept))\
                    .rect(self.button_width, self.button_base).extrude(self.button_pocket_dept)
-                 
-        return self.make_rest(pocket)
+
+        return self._mirror(pocket)
 
     def make_body(self, pin_area_height=None, body_angle_top=12.0):
-        return part.make_plastic_body(self, pin_area_height, body_angle_top).cut(self._make_switchpockets())
+        return self._make_plastic_body(pin_area_height, body_angle_top).cut(self._make_switchpockets())
 
     def make_buttons(self):
 
@@ -107,18 +107,17 @@ class dip_smd_switch (part):
         button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(0, -(button_length_2 + o)).hole(d, self.button_heigth)
         button = button.faces(">Z").workplane(centerOption='CenterOfBoundBox').center(0, button_length_2 + o).hole(d, self.button_heigth)
 
-        return self.make_rest(button)
+        return self._mirror(button)
 
     def make_pins(self):
-    
+
         # create first pin
-        pin = self.make_gullwing_pin(self.body_height / 2.0, (self.body_overall_width - self.body_width) / 2.0,
-                                      self.pin_bottom_length, self.pin_width, self.pin_thickness)
-        pin = pin.translate((self.first_pin_pos + (-self.pin_thickness / 2.0,)))
+        pin = self._make_gullwing_pin(self.body_height / 2.0, self.pin_bottom_length)\
+                  .translate((self.first_pin_pos[0], self.body_overall_width / 2.0 - self.pin_length, - self.pin_thickness / 2.0))
 
-        pins = self.make_rest(pin)
+        pins = self._mirror(pin)
 
-        # create other side of the pins 
+        # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
     def make_pinmark(self, width):
@@ -136,7 +135,7 @@ class dip_smd_switch (part):
                  .line(w3, 0.0)\
                  .close().extrude(h)
 
-    def make(self):        
+    def make(self):
         show(self.make_body())
         show(self.make_pins())
         show(self.make_buttons())
