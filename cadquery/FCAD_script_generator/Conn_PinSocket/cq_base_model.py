@@ -31,7 +31,7 @@
 #*                                                                          *
 #****************************************************************************
 
-# 2017-11-25
+# 2017-11-30
 
 #
 # parts of this code is based on work by other contributors
@@ -393,7 +393,7 @@ class PartBase (object):
         # self.body_board_distance = kwargs.get('body_board_distance', 0.0)
 
 
-        self.first_pin_pos = (0.0, 0.0) if self.num_pins == None else (self.pin_pitch * (self.num_pins / 2.0 / self.num_pin_rows - 0.5), self.pin_rows_distance / 2.0)
+        self.first_pin_pos = (0.0, 0.0) if self.num_pins is None else (self.pin_pitch * (self.num_pins / 2.0 / self.num_pin_rows - 0.5), self.pin_rows_distance / 2.0)
         self.offsets = (0.0, 0.0, 0.0)
         self.color_keys = ["black body", "metal grey pins"]
 
@@ -408,10 +408,10 @@ class PartBase (object):
 
     def _mirror(self, obj, pins=None, pitch=None):
 
-        if pins == None:
+        if pins is None:
             pins = self.num_pins / 2
 
-        if pitch == None:
+        if pitch is None:
             pitch = self.pin_pitch
 
         objs = [obj]
@@ -438,7 +438,7 @@ class PartBase (object):
 
         self.say('\n###: ' + str(pin_area_height) + " " + str( body_angle_top))
 
-        if pin_area_height == None:
+        if pin_area_height is None:
             pin_area_height = self.pin_thickness             # top part of body is that much smaller
 
         the_t = 2.0 * tan(radians(body_angle_top))           # body angle top
@@ -477,7 +477,7 @@ class PartBase (object):
            Rendering example
 
         """
-        if pin_height == None:
+        if pin_height is None:
             pin_height = self.pin_length + self.body_board_distance
 
         return Polyline(cq.Workplane("XZ").workplane(offset=-self.pin_thickness / 2.0))\
@@ -507,7 +507,7 @@ class PartBase (object):
            Rendering example, THT style
 
         """
-        if pin_height == None:
+        if pin_height is None:
             pin_height = self.pin_length
 
         d = self.pin_width / 10.0
@@ -565,10 +565,10 @@ class PartBase (object):
         # r_lower_i - pin lower corner, inner radius
         # bottom_length - pin bottom flat part length (excluding corner arc)
 
-        if r_lower_i == None:
-            r_lower_i = self.pin_thickness / 2.0 if r_upper_i == None else r_upper_i
+        if r_lower_i is None:
+            r_lower_i = self.pin_thickness / 2.0 if r_upper_i is None else r_upper_i
 
-        if r_upper_i == None:
+        if r_upper_i is None:
             r_upper_i = self.pin_thickness / 2.0
 
         r_upper_o = r_upper_i + self.pin_thickness # pin upper corner, outer radius
@@ -609,10 +609,10 @@ class PartBase (object):
         # r_lower_i - pin lower corner, inner radius
         # bottom_length - pin bottom flat part length (excluding corner arc)
 
-        if r_lower_i == None:
-            r_lower_i = self.pin_thickness / 2.0 if r_upper_i == None else r_upper_i
+        if r_lower_i is None:
+            r_lower_i = self.pin_thickness / 2.0 if r_upper_i is None else r_upper_i
 
-        if r_upper_i == None:
+        if r_upper_i is None:
             r_upper_i = self.pin_thickness / 2.0
 
         r_upper_o = r_upper_i + self.pin_thickness # pin upper corner, outer radius
