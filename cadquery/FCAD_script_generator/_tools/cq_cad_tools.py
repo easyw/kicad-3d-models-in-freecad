@@ -477,7 +477,7 @@ def exportVRML(doc,modelName,scale,dir):
 #	Function to save in Native FreeCAD format the doc
 #
 ###################################################################
-def saveFCdoc(App, Gui, doc, modelName,dir):
+def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
 
     ## Save to disk in native format
     App.ActiveDocument=None
@@ -501,6 +501,11 @@ def saveFCdoc(App, Gui, doc, modelName,dir):
         os.remove(outdir+os.sep+modelName+'.FCStd1') #removing backup file
     except:
         pass
+    if saving == False:
+        try:
+            os.remove(outdir+os.sep+modelName+'.FCStd') #removing project file
+        except:
+            pass
         
     return 0
 
