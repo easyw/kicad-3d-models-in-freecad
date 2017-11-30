@@ -7,5 +7,5 @@ SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
 echo Best using FC 0.15
-#freecad  main_generator.py DIP-8_W7.62mm
-freecad  main_generator.py $1
+#freecad main_generator.py PinSocket_1x02_P1.27mm_Vertical
+freecad main_generator.py $1
