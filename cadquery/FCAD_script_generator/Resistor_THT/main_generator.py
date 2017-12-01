@@ -70,6 +70,8 @@ pins_color_key = "metal grey pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 ceramic_color_key = "white body"
 ceramic_color = shaderColors.named_colors[ceramic_color_key].getDiffuseFloat()
+marking_color_key = "black body"
+marking_color = shaderColors.named_colors[marking_color_key].getDiffuseFloat()
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -145,7 +147,19 @@ from cq_parameters import *
 
 all_params = kicad_naming_params_resistors_tht
 
-# make a resistor body based on input parameters
+# Make marking (only applies to array at this point)
+def MakeMarking(params, n=1):
+    if (params.shape == 'array'):
+        mr = 0.5 # radius of dot
+        mt = 0.01 # thickness of marking
+        moff = 2.0 # offset of marking from edge of body
+        c = 0.3 # height of body off board
+        marking = cq.Workplane("XZ").circle(mr).extrude(mt).translate((moff-params.px/2,-params.w/2,c+params.d-moff))
+    else:
+        marking = 0
+    return marking
+
+    # make a resistor body based on input parameters
 def MakeResistor(params, n=1):
 
     if (params.shape == 'array'):
@@ -364,9 +378,12 @@ def MakePart(params, name, n=1):
     FreeCAD.Console.PrintMessage(params)
     pins_output = MakeResistorPin(params, n)
     base_output = MakeResistor(params, n)
+    marking_output = MakeMarking(params, n)
     
     show(base_output)
     show(pins_output)
+    if not (marking_output == 0):
+        show(marking_output)
 
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
@@ -385,21 +402,33 @@ def MakePart(params, name, n=1):
         chosen_body_color = body_color
         chosen_body_color_key = body_color_key  
     
+    # body and pin colours
     Color_Objects(Gui,objs[0],chosen_body_color)
     Color_Objects(Gui,objs[1],pins_color)
-
     col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
     col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
     material_substitutions={
         col_body[:-1]:chosen_body_color_key,
-        col_pin[:-1]:pins_color_key,
+        col_pin[:-1]:pins_color_key
     }
+    
+    # optional marking bodies
+    if (len(objs) >= 3):
+        Color_Objects(Gui,objs[2],marking_color)
+        col_marking=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        material_substitutions[col_marking[:-1]] = marking_color_key
+        
     expVRML.say(material_substitutions)
 
-    FuseObjs_wColors(FreeCAD, FreeCADGui,
+    # fuse everything
+    while len(objs) > 1:
+        FreeCAD.Console.PrintMessage(len(objs))
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
                    doc.Name, objs[0].Name, objs[1].Name)
+        objs = GetListOfObjects(FreeCAD, doc)
+
     doc.Label=docname
-    objs=GetListOfObjects(FreeCAD, doc)
+    #objs=GetListOfObjects(FreeCAD, doc)
     objs[0].Label=docname
     restore_Main_Tools()
 
@@ -440,37 +469,37 @@ import add_license as Lic
 if __name__ == "__main__" or __name__ == "main_generator":
     
     from sys import argv
-    models = []
+    modelnames = [] # this will now be a list of string keys instead of Params
     pinrange = range(4,14+1) # 4 to 14 (i know why python does this but it's still weird)
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building example')
-        model_to_build = "R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+        modelnames = ["R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"]
     else:
-        model_to_build = sys.argv[2]
-
-    if model_to_build == 'all':
-        models = [all_params[model_to_build] for model_to_build in all_params.keys()]
-        save_memory = True
-    else:
-        models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
+        if (sys.argv[2] == 'all'):
+            modelnames = all_params.keys()
+            save_memory = True
+        else:
+            modelnames = sys.argv[2].split(',')
+    
+    FreeCAD.Console.PrintMessage(modelnames)
     
     #make all the seleted models
     pincount = 0
     basecount = 0
 
     print "\n m"
-    print models
+    print modelnames
     print pinrange
-    # slight change - use input name (params key) as filename
-    for model_to_build in all_params.keys():
-        model = all_params[model_to_build] # get params separately
+    # slight change - use input name (params key) as filename'
+    for modelname in modelnames:
         # only arrays will pay attention to n
-        if (model.shape == "array"):
+        params = all_params[modelname]
+        if (params.shape == "array"):
             for pin_number in pinrange:
-                MakePart(model, model_to_build + "{0}".format(pin_number), pin_number)
+                MakePart(params, modelname + "{0}".format(pin_number), pin_number)
         else:
-            MakePart(model, model_to_build)
+            MakePart(params, modelname)
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":
