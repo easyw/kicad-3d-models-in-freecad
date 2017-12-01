@@ -154,11 +154,11 @@ except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
 
-def make_Vertical_THT_base(n, pitch, base_width, base_height, base_chamfer):
+def make_Vertical_THT_base(n, pitch, rows, base_width, base_height, base_chamfer):
     if base_chamfer == 0:
-        base = cq.Workplane("XY").moveTo(-pitch/2.,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
+        base = cq.Workplane("XY").moveTo(-(base_width-(rows-1)*pitch)/2.,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
     else:
-        base = cq.Workplane("XY").moveTo(-pitch/2.+base_chamfer,pitch/2.)
+        base = cq.Workplane("XY").moveTo(-(base_width-(rows-1)*pitch)/2.+base_chamfer,pitch/2.)
         for x in range(0, n):
             base = base.line(-base_chamfer,-base_chamfer).vLine(-pitch+base_chamfer*2.).line(base_chamfer,-base_chamfer)
         base = base.hLine(base_width-base_chamfer*2.)
@@ -167,17 +167,17 @@ def make_Vertical_THT_base(n, pitch, base_width, base_height, base_chamfer):
     base = base.close().extrude(base_height)
     return base
 
-def make_Horizontal_THT_base(n, pitch, base_width, base_height, base_x_offset, base_chamfer):
+def make_Horizontal_THT_base(n, pitch, rows, base_width, base_height, base_x_offset, base_chamfer):
     if base_chamfer == 0:
-        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+base_height)).moveTo(0.0,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
+        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+(rows-1)*pitch)).moveTo(0.0,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
     else:
-        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+base_height)).moveTo(base_chamfer,pitch/2.)
+        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+(rows-1)*pitch)).moveTo(base_chamfer,pitch/2.)
         for x in range(0, n):
             base = base.line(-base_chamfer,-base_chamfer).vLine(-pitch+base_chamfer*2.).line(base_chamfer,-base_chamfer)
         base = base.hLine(base_width-base_chamfer*2.)
         for x in range(0, n):
             base = base.line(base_chamfer,base_chamfer).vLine(pitch-base_chamfer*2.).line(-base_chamfer,base_chamfer)
-    base = base.close().extrude(base_height)
+    base = base.close().extrude(-base_height)
     return base
 
 def make_Vertical_SMD_base(n, pitch, base_width, base_height, base_chamfer, base_z_offset = 0):
@@ -209,13 +209,13 @@ def make_Horizontal_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_b
     pin_array = []
     for row in range(rows):
         row_offset = row*pitch
-        pin_array.append(cq.Workplane("ZX").workplane(offset=-pin_width/2). \
-        moveTo(base_width/rows/2+pin_width/2+row_offset,base_x_offset+base_height+pin_length_above_base). \
-        hLine(-pin_width). \
-        vLine(-pin_length_above_base-base_height-base_x_offset-row_offset+pin_width/2). \
-        hLine(-(base_width/rows-pin_width)/2-pin_length_below_board-row_offset). \
+        pin_array.append(cq.Workplane("XZ").workplane(offset=-pin_width/2). \
+        moveTo(base_x_offset+(rows-1)*pitch+base_height+pin_length_above_base, (base_width-((rows-1)*pitch))/2+pin_width/2+(row)*pitch). \
         vLine(-pin_width). \
-        hLine(((base_width/rows)-pin_width)/2+pin_length_below_board+row_offset+pin_width). \
+        hLine(-pin_length_above_base-base_height-base_x_offset-row_offset+pin_width/2). \
+        vLine(-(base_width/rows-pin_width)/2-pin_length_below_board-row_offset). \
+        hLine(-pin_width). \
+        vLine(((base_width/rows)-pin_width)/2+pin_length_below_board+row_offset+pin_width). \
         close().extrude(pin_width).edges("<X and >Z").fillet(pin_width))
 
         if pin_end_chamfer > 0:
@@ -321,12 +321,12 @@ def MakeHeader(n, model, all_params):
 
     if header_type == 'Vertical_THT':
         pin_length_below_board = all_params[model]['pin_length_below_board']
-        base = make_Vertical_THT_base(n, pitch, base_width, base_height, base_chamfer)
+        base = make_Vertical_THT_base(n, pitch, rows, base_width, base_height, base_chamfer)
         pins = make_Vertical_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, pin_width, pin_end_chamfer)
     elif header_type == 'Horizontal_THT':
         pin_length_below_board = all_params[model]['pin_length_below_board']
         base_x_offset = all_params[model]['base_x_offset']
-        base = make_Horizontal_THT_base(n, pitch, base_width, base_height, base_x_offset, base_chamfer)
+        base = make_Horizontal_THT_base(n, pitch, rows, base_width, base_height, base_x_offset, base_chamfer)
         pins = make_Horizontal_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, base_width, pin_width, pin_end_chamfer, base_x_offset)
     elif header_type == 'Vertical_SMD':
         pin_length_horizontal = all_params[model]['pin_length_horizontal']
@@ -429,6 +429,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     models = []
     pinrange = []
 
+
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building:\n')
         model_to_build = all_params.keys()[0]
@@ -468,11 +469,15 @@ if __name__ == "__main__" or __name__ == "main_generator":
     if model_to_build == "all":
        	models = all_params
     else:
-    	models = [model_to_build]
+        models = [model_to_build]
+
+    updatepinrange = False
+    if len(pinrange) < 1:
+           updatepinrange = True
 
     for model in models:
-        if len(pinrange) < 1:
-    	   pinrange = range(all_params[model]['pins']['from'],all_params[model]['pins']['to']+1)
+        if updatepinrange == True:
+           pinrange = range(all_params[model]['pins']['from'],all_params[model]['pins']['to']+1)
         
         if len(pinrange) > 2:
             save_memory=True
