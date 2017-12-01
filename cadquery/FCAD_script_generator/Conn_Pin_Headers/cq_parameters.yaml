@@ -1,0 +1,534 @@
+PinHeader_1xyy_P2.54mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 2.54
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.54
+  base_height: 2.54
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx11121.pdf'
+
+PinHeader_2xyy_P2.54mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 2.54
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 5.08
+  base_height: 2.54
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx21121.pdf'
+
+PinHeader_1xyy_P2.54mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 2.54
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.54
+  base_height: 2.54
+  base_x_offset: 1.5
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx11021.pdf'
+
+PinHeader_2xyy_P2.54mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 2.54
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 5.08
+  base_height: 2.54
+  base_x_offset: 1.5
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx21021.pdf'
+
+PinHeader_1xyy_P2.54mm_Vertical_SMD_Pin1Left:
+  type: 'Vertical_SMD'
+  pitch: 2.54
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'left'
+  base_width: 2.54
+  base_height: 2.54
+  base_z_offset: 0.76
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_horizontal: 2.82
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6100xx18321.pdf'
+
+PinHeader_1xyy_P2.54mm_Vertical_SMD_Pin1Right:
+  type: 'Vertical_SMD'
+  pitch: 2.54
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'right'
+  base_width: 2.54
+  base_height: 2.54
+  base_z_offset: 0.76
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_horizontal: 2.82
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6100xx18321.pdf'
+
+PinHeader_2xyy_P2.54mm_Vertical_SMD:
+  type: 'Vertical_SMD'
+  pitch: 2.54
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 5.08
+  base_height: 2.54
+  base_z_offset: 0.76
+  base_chamfer: 'auto'
+  pin_width: 0.64
+  pin_length_above_base: 6.0
+  pin_length_horizontal: 2.82
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.54mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx21121.pdf'
+
+# 2.00mm Headers
+PinHeader_1xyy_P2.00mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 2.00
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.00
+  base_height: 2.00
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.0
+  pin_length_below_board: 2.8
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6200xx11121.pdf'
+
+PinHeader_2xyy_P2.00mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 2.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 4.0
+  base_height: 2.00
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.0
+  pin_length_below_board: 2.8
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6200xx21121.pdf'
+
+PinHeader_1xyy_P2.00mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 2.00
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.00
+  base_height: 2.00
+  base_x_offset: 1.5
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.2
+  pin_length_below_board: 2.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/M22-273.pdf'
+
+PinHeader_2xyy_P2.00mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 2.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 4.0
+  base_height: 2.00
+  base_x_offset: 1.5
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.2
+  pin_length_below_board: 2.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/M22-274.pdf'
+
+PinHeader_1xyy_P2.00mm_Vertical_SMD_Pin1Left:
+  type: 'Vertical_SMD'
+  pitch: 2.00
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'left'
+  base_width: 2.00
+  base_height: 1.5
+  base_z_offset: 0.5
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.0
+  pin_length_horizontal: 2.35
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'http://www.mouser.com/ds/2/4/page_280-282-24683.pdf'
+
+PinHeader_1xyy_P2.00mm_Vertical_SMD_Pin1Right:
+  type: 'Vertical_SMD'
+  pitch: 2.00
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'right'
+  base_width: 2.00
+  base_height: 1.5
+  base_z_offset: 0.5
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.0
+  pin_length_horizontal: 2.35
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'http://www.mouser.com/ds/2/4/page_280-282-24683.pdf'
+
+PinHeader_2xyy_P2.00mm_Vertical_SMD:
+  type: 'Vertical_SMD'
+  pitch: 2.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 4.00
+  base_height: 1.5
+  base_z_offset: 0.5
+  base_chamfer: 'auto'
+  pin_width: 0.5
+  pin_length_above_base: 4.0
+  pin_length_horizontal: 2.35
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_2.00mm.3dshapes'
+  source: 'http://www.mouser.com/ds/2/4/page_280-282-24683.pdf'
+
+# 1.27mm Headers
+PinHeader_1xyy_P1.27mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 1.27
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.1
+  base_height: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 3.0
+  pin_length_below_board: 2.3
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/M50-353.pdf'
+
+PinHeader_2xyy_P1.27mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 1.27
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 3.4
+  base_height: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 3.0
+  pin_length_below_board: 2.3
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/HF212-W.pdf'
+
+PinHeader_1xyy_P1.27mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 1.27
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.1
+  base_height: 1.0
+  base_x_offset: 0.5
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 4.0
+  pin_length_below_board: 2.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx21021.pdf'
+
+PinHeader_2xyy_P1.27mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 1.27
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 3.4
+  base_height: 1.0
+  base_x_offset: 0.5
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 4.0
+  pin_length_below_board: 2.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC020.pdf&t=1502019369628'
+
+PinHeader_1xyy_P1.27mm_Vertical_SMD_Pin1Left:
+  type: 'Vertical_SMD'
+  pitch: 1.27
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'left'
+  base_width: 2.1
+  base_height: 0.5
+  base_z_offset: 0.4
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 3.0
+  pin_length_horizontal: 2.65
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/M50-363.pdf'
+
+PinHeader_1xyy_P1.27mm_Vertical_SMD_Pin1Right:
+  type: 'Vertical_SMD'
+  pitch: 1.27
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'right'
+  base_width: 2.1
+  base_height: 0.5
+  base_z_offset: 0.4
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 3.0
+  pin_length_horizontal: 2.65
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/M50-363.pdf'
+
+PinHeader_2xyy_P1.27mm_Vertical_SMD:
+  type: 'Vertical_SMD'
+  pitch: 1.27
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 4.00
+  base_height: 0.5
+  base_z_offset: 0.4
+  base_chamfer: 'auto'
+  pin_width: 0.4
+  pin_length_above_base: 3.5
+  pin_length_horizontal: 2.35
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
+  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BD095.pdf&t=1512081975266'
+
+# 1.00mm Headers
+PinHeader_1xyy_P1.00mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 1.00
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 1.27
+  base_height: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 3.8
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC020.pdf&t=1502019369628'
+
+PinHeader_2xyy_P1.00mm_Vertical:
+  type: 'Vertical_THT'
+  pitch: 1.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 2.3
+  base_height: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 3.8
+  pin_length_below_board: 3.0
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'https://cdn.harwin.com/pdfs/HF212-W.pdf'
+
+PinHeader_1xyy_P1.00mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 1.00
+  rows: 1
+  pins:
+    from: 1
+    to: 40
+  base_width: 1.27
+  base_height: 1.0
+  base_x_offset: 0.25
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 2.0
+  pin_length_below_board: 2.5
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC030.pdf&t=1502031327147'
+
+PinHeader_2xyy_P1.00mm_Horizontal:
+  type: 'Horizontal_THT'
+  pitch: 1.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 3.4
+  base_height: 1.2
+  base_x_offset: 0.9
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 2.5
+  pin_length_below_board: 1.9
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'https://gct.co/files/drawings/bc045.pdf'
+
+PinHeader_1xyy_P1.00mm_Vertical_SMD_Pin1Left:
+  type: 'Vertical_SMD'
+  pitch: 1.00
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'left'
+  base_width: 1.27
+  base_height: 1.0
+  base_z_offset: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 2.0
+  pin_length_horizontal: 1.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'http://www.farnell.com/datasheets/1912818.pdf?_ga=2.101918145.1303212991.1501602361-984110936.1498471838'
+
+PinHeader_1xyy_P1.00mm_Vertical_SMD_Pin1Right:
+  type: 'Vertical_SMD'
+  pitch: 1.00
+  rows: 1
+  pins:
+    from: 2
+    to: 40
+  pin_1_start: 'right'
+  base_width: 1.27
+  base_height: 1.0
+  base_z_offset: 1.0
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 2.0
+  pin_length_horizontal: 1.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'http://www.farnell.com/datasheets/1912818.pdf?_ga=2.101918145.1303212991.1501602361-984110936.1498471838'
+
+PinHeader_2xyy_P1.00mm_Vertical_SMD:
+  type: 'Vertical_SMD'
+  pitch: 1.00
+  rows: 2
+  pins:
+    from: 1
+    to: 40
+  base_width: 3.1
+  base_height: 1.0
+  base_z_offset: 0.6
+  base_chamfer: 'auto'
+  pin_width: 0.3
+  pin_length_above_base: 2.0
+  pin_length_horizontal: 1.4
+  pin_end_chamfer: 'auto'
+  rotation: 0
+  output_directory: '/Conn_PinHeader_1.00mm.3dshapes'
+  source: 'http://katalog.we-online.de/em/datasheet/6130xx21121.pdf'

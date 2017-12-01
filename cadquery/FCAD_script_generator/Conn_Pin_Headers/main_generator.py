@@ -43,11 +43,11 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make pin header 3D models"
-__author__ = "maurice and hyOzd"
+__title__ = "make Pin header 3D models"
+__author__ = "maurice and Shack"
 __Comment__ = 'make pin header 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.4.2 26/02/2017"
+___ver___ = "2.0.0 21/11/2017"
 
 
 #sleep ### NB il modello presenta errori di geometria
@@ -80,7 +80,8 @@ pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
-
+import argparse
+import yaml
 import logging
 logging.getLogger('builder').addHandler(logging.NullHandler())
 #logger = logging.getLogger('builder')
@@ -147,102 +148,128 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-import cq_parameters  # modules parameters
-from cq_parameters import *
 
-all_params = kicad_naming_params_pin_headers
-
-#Make a single plastic base block (chamfered if required)
-def MakeBaseBlock(params):
-    block = cq.Workplane("XY").rect(params.p, params.w).extrude(params.h)
-    #chamfer
-    if params.c > 0:
-        block = block.edges("|Z").chamfer(params.c)
-        #move the base to the 'middle'
-    if params.rows > 1:
-        offset = params.p * (params.rows - 1) / 2.0
-        block = block.translate((0,offset,0))
-    if params.type == 'Angled':
-        block = block.rotate((0, 0, 0),(1, 0, 0), 90).translate((0,params.hb+params.h+(params.rows-1)*params.p,params.h/2))
-    return block
-    
-#Make the plastic base
-#Note - making the 'blocks' separately and then making a UNION of the blocks seems to be the best way to get them to merge
-#make the plastic base
-def MakeBase(n, params, pinarray):
-    global basecount
-    global base
-    if n == pinarray[0]:
-        base = MakeBaseBlock(params)
-        basecount = 1
-    for i in range(basecount,n):
-        block = MakeBaseBlock(params).translate((i*params.p,0,0))
-        base = base.union(block)
-    basecount = n
+def make_Vertical_THT_base(n, pitch, base_width, base_height, base_chamfer):
+    if base_chamfer == 0:
+        base = cq.Workplane("XY").moveTo(-pitch/2.,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
+    else:
+        base = cq.Workplane("XY").moveTo(-pitch/2.+base_chamfer,pitch/2.)
+        for x in range(0, n):
+            base = base.line(-base_chamfer,-base_chamfer).vLine(-pitch+base_chamfer*2.).line(base_chamfer,-base_chamfer)
+        base = base.hLine(base_width-base_chamfer*2.)
+        for x in range(0, n):
+            base = base.line(base_chamfer,base_chamfer).vLine(pitch-base_chamfer*2.).line(-base_chamfer,base_chamfer)
+    base = base.close().extrude(base_height)
     return base
-    
-#make a single pin
-def MakePin(n, row, params):
-    row_offset = row*params.p
-    if params.type == 'Straight':
-        single_pin = cq.Workplane("XY").workplane(offset=-params.ph+params.hb).rect(params.pw,params.pw).extrude(params.ph+params.pa).translate((0,row_offset,0))
-    
-        #chamfer each end of the pin if required
-        if params.pc > 0:
-            single_pin = single_pin.faces("<Z").chamfer(params.pc)
-            single_pin = single_pin.faces(">Z").chamfer(params.pc)
-        
-    elif params.type == 'Angled':
-        R1 = params.pw/2 # pin upper corner inner radius
-        R1_o = R1+params.pw # pin upper corner, outer radius
 
-        single_pin = cq.Workplane("YZ", (0,0,0,)). \
-        moveTo(params.pa+params.hb+row_offset, (params.w/params.rows-params.pw)/2). \
-        line(-params.pa-params.hb-row_offset+R1+params.pw/2, 0). \
-        threePointArc((params.pw/sqrt(2), (params.w/params.rows-params.pw)/2-R1*(1-1/sqrt(2))),
-                      ((params.pw/2, (params.w/params.rows-params.pw)/2-R1))). \
-        line(0, -(params.w/params.rows-params.pw)/2-R1-params.ph-row_offset). \
-        line(-params.pw,0). \
-        line(0, ((params.w/params.rows)-params.pw)/2+R1+params.ph+row_offset). \
-        threePointArc((-(R1-params.pw/2)/sqrt(2), (params.w/params.rows+params.pw)/2-R1_o*(1-1/sqrt(2))),
-                      (R1_o-params.pw/2, (params.w/params.rows+params.pw)/2)). \
-        line(params.pa+params.hb-R1_o+params.pw/2+row_offset, 0).close().extrude(params.pw).translate((-params.pw/2,params.p*(params.rows-1-row),row_offset))
-        
-        if params.pc > 0:
-            single_pin = single_pin.faces("<Z").chamfer(params.pc)
-            single_pin = single_pin.faces(">Y").chamfer(params.pc)
-    return single_pin
-    
-#make all the pinarray
-def MakePinRow(n, ROW, params, pinarray):
-    global pincount
-    global pin
-    global pinset
-    #make some pins
-    if n == pinarray[0]:
-        pinset = MakePin(1, 0, params)
-        if params.rows > 1:
-            for i in range(1,params.rows):
-                pinset = pinset.union(MakePin(1, i, params))
-        pin = pinset
-        pincount = 0
-    
-    for i in range(pincount,n):
-        pin = pin.union(pinset.translate((params.p * i,0,0)))
-    pincount = n
-    return pin
+def make_Horizontal_THT_base(n, pitch, base_width, base_height, base_x_offset, base_chamfer):
+    if base_chamfer == 0:
+        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+base_height)).moveTo(0.0,pitch/2.).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
+    else:
+        base = cq.Workplane("ZY").workplane(offset=-(base_x_offset+base_height)).moveTo(base_chamfer,pitch/2.)
+        for x in range(0, n):
+            base = base.line(-base_chamfer,-base_chamfer).vLine(-pitch+base_chamfer*2.).line(base_chamfer,-base_chamfer)
+        base = base.hLine(base_width-base_chamfer*2.)
+        for x in range(0, n):
+            base = base.line(base_chamfer,base_chamfer).vLine(pitch-base_chamfer*2.).line(-base_chamfer,base_chamfer)
+    base = base.close().extrude(base_height)
+    return base
 
-#generate a name for the pin header
-def HeaderName(n, params):
-    return "Pin_Header_{}_{r:01}x{n:02}_Pitch{p:.2f}mm".format(params.type,r=params.rows,n=n,p=params.p)
-    
+def make_Vertical_SMD_base(n, pitch, base_width, base_height, base_chamfer, base_z_offset = 0):
+    if base_chamfer == 0:
+        base = cq.Workplane("XY").workplane(offset=base_z_offset).moveTo(-base_width/2.0,n/2.*pitch).vLine(n*-pitch).hLine(base_width).vLine(n*pitch)
+    else:
+        base = cq.Workplane("XY").workplane(offset=base_z_offset).moveTo(-base_width/2.0+base_chamfer,n/2.*pitch)
+        for x in range(0, n):
+            base = base.line(-base_chamfer,-base_chamfer).vLine(-pitch+base_chamfer*2.).line(base_chamfer,-base_chamfer)
+        base = base.hLine(base_width-base_chamfer*2.)
+        for x in range(0, n):
+            base = base.line(base_chamfer,base_chamfer).vLine(pitch-base_chamfer*2.).line(-base_chamfer,base_chamfer)
+    base = base.close().extrude(base_height)
+    return base
+
+def make_Vertical_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, pin_width, pin_end_chamfer):
+    total_length = pin_length_below_board + base_height + pin_length_above_base
+    pin = cq.Workplane("XY").workplane(offset=-pin_length_below_board).box(pin_width, pin_width, total_length, centered = (True,True,False))
+    if pin_end_chamfer > 0:
+        pin = pin.edges("#Z").chamfer(pin_end_chamfer)
+    pins = cq.Workplane("XY").workplane(offset=-pin_length_below_board)
+    for x in range(rows):
+        for y in range(n):
+            pins = pins.union(pin.translate((x*pitch,y*-pitch,0)))
+    return pins
+
+def make_Horizontal_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, base_width, pin_width, pin_end_chamfer, base_x_offset):
+    R1 = pin_width
+    pin_array = []
+    for row in range(rows):
+        row_offset = row*pitch
+        pin_array.append(cq.Workplane("ZX").workplane(offset=-pin_width/2). \
+        moveTo(base_width/rows/2+pin_width/2+row_offset,base_x_offset+base_height+pin_length_above_base). \
+        hLine(-pin_width). \
+        vLine(-pin_length_above_base-base_height-base_x_offset-row_offset+pin_width/2). \
+        hLine(-(base_width/rows-pin_width)/2-pin_length_below_board-row_offset). \
+        vLine(-pin_width). \
+        hLine(((base_width/rows)-pin_width)/2+pin_length_below_board+row_offset+pin_width). \
+        close().extrude(pin_width).edges("<X and >Z").fillet(pin_width))
+
+        if pin_end_chamfer > 0:
+            pin_array[row] = pin_array[row].faces("<Z").chamfer(pin_end_chamfer)
+            pin_array[row] = pin_array[row].faces(">X").chamfer(pin_end_chamfer)
+    pins = cq.Workplane("XY") #.workplane(offset=-pin_length_below_board)
+    for x in range(rows):
+        for y in range(n):
+            pins = pins.union(pin_array[x].translate((0 ,y*-pitch,0)))
+    return pins
+
+def make_Vertical_SMD_pins(n, pitch, rows, pin_length_above_base, pin_length_horizontal, base_height, base_width, pin_width, pin_end_chamfer, base_z_offset, pin_1_start = None):
+    R1 = pin_width
+    pin_array = []
+    pin_array.append(cq.Workplane("XZ").workplane(offset=-((n-1)*pitch+pin_width)/2).moveTo(-((rows-1)*pitch-pin_width)/2,base_z_offset+base_height+pin_length_above_base). \
+        hLine(-pin_width). \
+        vLine(-base_z_offset-base_height-pin_length_above_base+pin_width). \
+        hLine(-pin_length_horizontal+pin_width). \
+        vLine(-pin_width). \
+        hLine(pin_length_horizontal). \
+        close().extrude(pin_width).edges(">X and <Z").fillet(pin_width))
+    if pin_end_chamfer > 0:
+        pin_array[0] = pin_array[0].faces(">Z").chamfer(pin_end_chamfer)
+        pin_array[0] = pin_array[0].faces("<X").chamfer(pin_end_chamfer)
+    pin_array.append(cq.Workplane("XZ").workplane(offset=-((n-1)*pitch+pin_width)/2).moveTo(((rows-1)*pitch-pin_width)/2,base_z_offset+base_height+pin_length_above_base). \
+        hLine(pin_width). \
+        vLine(-base_z_offset-base_height-pin_length_above_base+pin_width). \
+        hLine(pin_length_horizontal-pin_width). \
+        vLine(-pin_width). \
+        hLine(-pin_length_horizontal). \
+        close().extrude(pin_width).edges("<X and <Z").fillet(pin_width))
+    if pin_end_chamfer > 0:
+        pin_array[1] = pin_array[1].faces(">Z").chamfer(pin_end_chamfer)
+        pin_array[1] = pin_array[1].faces(">X").chamfer(pin_end_chamfer)
+    pins = cq.Workplane("XY") #.workplane(offset=-pin_length_below_board)
+    if rows == 1:
+        if pin_1_start == 'right':
+            right_pin = range(1,n, 2)
+            left_pin = range(0, n, 2)
+        elif pin_1_start == 'left':
+            right_pin = range(0,n, 2)
+            left_pin = range(1, n, 2)
+        else:
+            print 'not found'
+    else:
+        right_pin = range(n)
+        left_pin = range(n)
+
+    for y in right_pin:
+            pins = pins.union(pin_array[0].translate((0 ,y*-pitch,0)))
+    for y in left_pin:
+            pins = pins.union(pin_array[1].translate((0 ,y*-pitch,0)))
+    return pins
+
 #make a pin header using supplied parameters, n pins in each row
-def MakeHeader(n, params, pinarray):
+def MakeHeader(n, model, all_params):
     global formerDOC
     global LIST_license
-    name = HeaderName(n,params)
-    
-    # destination_dir="/Pin_Headers"
+    name = model.replace('yy', "{n:02}".format(n=n))
 
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
@@ -258,26 +285,61 @@ def MakeHeader(n, params, pinarray):
     script_dir=os.path.dirname(os.path.realpath(__file__))
     #models_dir=script_dir+"/../_3Dmodels"
     expVRML.say(models_dir)
-    out_dir=models_dir+destination_dir
+    out_dir=models_dir+all_params[model]['output_directory']
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    #having a period '.' character in the model name REALLY messes with things.
-    docname = name.replace(".","")
+    docname = name.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
    
     newdoc = App.newDocument(docname)
     App.setActiveDocument(docname)
     App.ActiveDocument=App.getDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
     
-    pins_output = MakePinRow(n,0,params,pinarray)
+    header_type = all_params[model]['type']
+    pitch = all_params[model]['pitch']
+    rows = all_params[model]['rows']
+    base_width = all_params[model]['base_width']
+    base_height = all_params[model]['base_height']
+    base_chamfer = all_params[model]['base_chamfer']
+    pin_width = all_params[model]['pin_width']
+    pin_length_above_base = all_params[model]['pin_length_above_base']
     
-    #duplicate pin rows
+    pin_end_chamfer = all_params[model]['pin_end_chamfer']
+    rotation = all_params[model]['rotation']
+    
+    if base_chamfer == 'auto':
+        base_chamfer = pitch/10.
 
-    base_output = MakeBase(n,params,pinarray)
+    if pin_end_chamfer == 'auto':
+        pin_end_chamfer = pin_width/4.
 
-    show(base_output)
-    show(pins_output)
+    if header_type == 'Vertical_THT':
+        pin_length_below_board = all_params[model]['pin_length_below_board']
+        base = make_Vertical_THT_base(n, pitch, base_width, base_height, base_chamfer)
+        pins = make_Vertical_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, pin_width, pin_end_chamfer)
+    elif header_type == 'Horizontal_THT':
+        pin_length_below_board = all_params[model]['pin_length_below_board']
+        base_x_offset = all_params[model]['base_x_offset']
+        base = make_Horizontal_THT_base(n, pitch, base_width, base_height, base_x_offset, base_chamfer)
+        pins = make_Horizontal_THT_pins(n, pitch, rows, pin_length_above_base, pin_length_below_board, base_height, base_width, pin_width, pin_end_chamfer, base_x_offset)
+    elif header_type == 'Vertical_SMD':
+        pin_length_horizontal = all_params[model]['pin_length_horizontal']
+        base_z_offset = all_params[model]['base_z_offset']
+        if rows == 1:
+            pin_1_start = all_params[model]['pin_1_start']
+        else:
+            pin_1_start = None
+        pins = make_Vertical_SMD_pins(n, pitch, rows, pin_length_above_base, pin_length_horizontal, base_height, base_width, pin_width, pin_end_chamfer, base_z_offset, pin_1_start)
+        base = make_Vertical_SMD_base(n, pitch, base_width, base_height, base_chamfer, base_z_offset)
+    else:
+        print 'Header type: '
+        print header_type
+        print ' is not recognized, please check parameters'
+        stop
+
+    show(base)
+    show(pins)
 
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
@@ -296,13 +358,6 @@ def MakeHeader(n, params, pinarray):
     }
     expVRML.say(material_substitutions)
 
-    ##assign some colors
-    #base_color = (50,50,50)
-    #pins_color = (225,175,0)
-    #
-    #show(base,base_color+(0,))
-    #show(pins,pins_color+(0,))
-    
     #objs=GetListOfObjects(FreeCAD, doc)
     FuseObjs_wColors(FreeCAD, FreeCADGui,
                    doc.Name, objs[0].Name, objs[1].Name)
@@ -311,8 +366,8 @@ def MakeHeader(n, params, pinarray):
     objs[0].Label=docname
     restore_Main_Tools()
 
-    if (params.rot !=0):
-        z_RotateObject(doc, params.rot)
+    if (rotation !=0):
+        z_RotateObject(doc, rotation)
     
     #out_dir = models_dir+"/generated_pinheaders"
     
@@ -347,7 +402,7 @@ def MakeHeader(n, params, pinarray):
         Gui.activeDocument().activeView().viewAxometric()
     
     # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, name,out_dir)
+    saveFCdoc(App, Gui, doc, name,out_dir, False)
     if save_memory == True:
         closeCurrentDoc(docname)
     return 0
@@ -356,67 +411,26 @@ def MakeHeader(n, params, pinarray):
 import add_license as Lic
 
 if __name__ == "__main__" or __name__ == "main_generator":
-    
+    try:
+        with open('cq_parameters.yaml', 'r') as f:
+            all_params = yaml.load(f)
+    except yaml.YAMLError as exc:
+        print(exc)
+    '''
+    for models_to_build in all_params:
+        print models_to_build
+    '''
     from sys import argv
     models = []
     pinrange = []
-    pinrange = [1]
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building 254single')
-        model_to_build = "Pin_Header_Straight_1xyy_Pitch2.54mm"
-        pinrange = [1]
+        FreeCAD.Console.PrintMessage('No variant name is given! building:\n')
+        model_to_build = all_params.keys()[0]
     else:
         model_to_build = sys.argv[2]
     if len(sys.argv) > 3:
-        #if sys.argv[2] == 'all':
-        #Pin_Header_Straight_1xyy_Pitch2.54mm
-        model_to_build = sys.argv[2]
-        
-        #else
-    #print model_to_build
-    if model_to_build == 'all':
-        models = [all_params[model_to_build] for model_to_build in all_params.keys()]
-        pinrange = range(1,41)
-        save_memory = True
-    else:
-        models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
-    if len(sys.argv) == 4:
-#   254single 1-10
-#   254dual 1-10
-#   200single 1-10
-#   200dual 1-10
-#   127single 1-10
-#   127dual 1-10    
-        #if sys.argv[2] != 'all':
-        #    FreeCAD.Console.PrintMessage("No pins specified, building 254single 1")
-        #    p = "1"
-        #else:
-        family=sys.argv[2]
-        #print family
-        model_to_build='Pin_Header'
-        if 'angled' not in family.lower():
-            model_to_build+='_Straight'
-        else:
-            model_to_build+='_Angled'
-        if 'single' in family or '_1xyy' in family:
-            model_to_build+='_1xyy'
-        else:
-            model_to_build+='_2xyy'
-        if '254' in family:
-            model_to_build+='_Pitch2.54mm'
-        elif '200' in family:
-            model_to_build+='_Pitch2.00mm'
-        elif '127' in family:
-            model_to_build+='_Pitch1.27mm'
-        else:
-            model_to_build+='_Pitch1.00mm'
-
-        models = [all_params[i] for i in model_to_build.split(',') if i in all_params.keys()]#separate model types with comma
         p = sys.argv[3].strip()
-        
-        #print models
-        #stop
         #comma separarated pin numberings
         if ',' in p:
             try:
@@ -445,18 +459,24 @@ if __name__ == "__main__" or __name__ == "main_generator":
             except:
                 FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid")
                 pinrange = []
-    
-    #stop    
-    #make all the seleted models
-    pincount = 0
-    basecount = 0
 
-    print "\n m"
-    print models
-    print pinrange
+    if model_to_build == "all":
+       	models = all_params
+    else:
+    	models = [model_to_build]
+
     for model in models:
-        for pin_number in pinrange:
-            MakeHeader(pin_number,model,pinrange)
+        if len(pinrange) < 1:
+    	   pinrange = range(all_params[model]['pins']['from'],all_params[model]['pins']['to']+1)
+        
+        if len(pinrange) > 2:
+            save_memory=True
+        print model
+        print "\n"
+        print 'pins:'
+        print pinrange
+        for pins in pinrange:
+            MakeHeader(pins, model, all_params)
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":
