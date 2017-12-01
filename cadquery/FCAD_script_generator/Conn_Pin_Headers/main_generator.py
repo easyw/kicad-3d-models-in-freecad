@@ -109,42 +109,47 @@ LIST_license = ["",]
 
 # Import cad_tools
 import cq_cad_tools
-
 # Reload tools
 reload(cq_cad_tools)
-
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, Color_Objects, \
+ checkRequirements, closeCurrentDoc
 
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
+#
 
-# from export_x3d import exportX3D, Mesh
 try:
     # Gui.SendMsgToActiveView("Run")
-    # cq Gui
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
-except:
-    try:
-        from CadQuery.Gui.Command import *
-        Gui.activateWorkbench("CadQueryWorkbench")
-        import cadquery as cq
-        from Helpers import show
-    except: # catch *all* exceptions
-        msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-        # maui end
+    # maui end
+
+# Sphinx workaround #2
+try:
+    cq
+    checkRequirements(cq)
+except NameError:
+    cq = None
+#
 
 #checking requirements
-checkRequirements(cq)
 
 try:
-    close_CQ_Example(App, Gui)
+    close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
