@@ -340,6 +340,7 @@ class seriesParams():
 
     body_width = 8.6
     body_height = 12.0
+    body_roundover_r = 0.5
 
 
     plug_width = 5.3
