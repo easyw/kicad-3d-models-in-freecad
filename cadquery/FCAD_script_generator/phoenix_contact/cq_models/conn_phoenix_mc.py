@@ -54,7 +54,6 @@ ___ver___ = "1.0 20/07/2016"
 
 import sys
 import os
-from conn_phoenix_global_params import *
 from conn_phoenix_mc_params import *
 
 import cadquery as cq

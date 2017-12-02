@@ -57,7 +57,7 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
-
+import yaml
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
@@ -163,17 +163,34 @@ import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
 import step_license as L
 
-def export_one_part(modul, variant, with_plug=False):
+def export_one_part(modul, variant, configuration, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
 
-    destination_dir="Connectors_Phoenix.3dshapes"
+    params = modul.all_params[variant]
+    series_params = modul.seriesParams
+    series = series_params.series_name
+
+    subseries, connector_style = params.series_name.split('-')
+    pitch_mpn = '-{:g}'.format(params.pin_pitch)
+    lib_name = configuration['lib_name_format_str'].format(series=series[0], style=series[1], pitch=params.pin_pitch)
+    mpn = configuration['mpn_format_string'].format(subseries=subseries, style = connector_style,
+        rating=series[1], num_pins=params.num_pins, pitch=pitch_mpn)
+    FileName = configuration['fp_name_format_string'].format(man = configuration['manufacturer'],
+        series = series[0], mpn = mpn, num_rows = 1,
+        num_pins = params.num_pins, pitch = params.pin_pitch,
+        orientation = configuration['orientation_str'][1] if params.angled else configuration['orientation_str'][0],
+        flanged = configuration['flanged_str'][1] if params.flanged else configuration['flanged_str'][0],
+        mount_hole = configuration['mount_hole_str'][1] if params.mount_hole else configuration['mount_hole_str'][0])
+
+    destination_dir=lib_name
     if with_plug:
-        destination_dir="Connectors_Phoenix__with_plug.3dshapes"
+        destination_dir += "__with_plug"
+    destination_dir+=".3dshapes"
+
     ModelName = variant
     ModelName = ModelName.replace(".","_")
-    FileName = modul.all_params[variant].file_name
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
@@ -278,6 +295,45 @@ def export_one_part(modul, variant, with_plug=False):
     FreeCADGui.SendMsgToActiveView("ViewFit")
     FreeCADGui.activeDocument().activeView().viewAxometric()
 
+class argparse():
+    def __init__(self):
+        self.config = 'config_phoenix_KLCv3.0.yaml'
+        self.model_filter = '*'
+        self.series = ['mc','mstb']
+        self.with_plug = False
+
+    def parse_args(self, args):
+        for arg in args:
+            if '=' in arg:
+                self.parseValueArg(*arg.split('='))
+            else:
+                self.argSwitchArg(arg)
+
+    def parseValueArg(self, name, value):
+        if name == 'config':
+            self.config = value
+        elif name == 'model_filter':
+            self.model_filter = value
+        elif name == 'series':
+            self.series = value.split(',')
+
+    def argSwitchArg(self, name):
+        if name == '?':
+            self.print_usage()
+        elif name == 'with_plug':
+            self.with_plug = True
+
+    def print_usage(self):
+        print("Generater script for phoenix contact 3d models.")
+        print('usage: FreeCAD export_conn_phoenix.py [optional arguments]')
+        print('optional arguments:')
+        print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
+        print('\tmodel_filter=[filter using linux file filter syntax]')
+        print('\tseries=[series name],[series name],...')
+    def __str__(self):
+        return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
+            self.config, self.model_filter, str(self.series), self.with_plug)
+
 if __name__ == "__main__":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
@@ -286,20 +342,18 @@ if __name__ == "__main__":
     modelfilter = ""
     with_plug = False
 
-    for arg in sys.argv[1:]:
-        if arg.startswith("series="):
-            series_to_build += arg[len("series="):].split(',')
-        if arg.startswith("filter="):
-            modelfilter = arg[len("filter="):]
-        if arg.lower() == 'with_plug':
-            with_plug = True;
+    args = argparse()
+    args.parse_args(sys.argv)
 
+    with open(args.config, 'r') as config_stream:
+        try:
+            configuration = yaml.load(config_stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
-    if len(series_to_build) == 0:
-        series_to_build = ['mc', 'mstb']
-
-    if len(modelfilter) == 0:
-        modelfilter = "*"
+    series_to_build = map(str.lower, args.series)
+    print(args)
+    modelfilter = args.model_filter
 
     series = []
     if 'mc' in series_to_build:
@@ -308,10 +362,13 @@ if __name__ == "__main__":
         series += [MSTB]
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
+    print("########################################")
+
+    print(args.model_filter)
     for typ in series:
         for variant in typ.all_params.keys():
             if model_filter_regobj.match(variant):
                 FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                export_one_part(typ, variant, with_plug)
+                export_one_part(typ, variant, configuration, with_plug)
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
