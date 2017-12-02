@@ -57,6 +57,8 @@ ___ver___ = "1.3.2 10/02/2017"
 # maui from Helpers import show
 from math import tan, radians, sqrt
 from collections import namedtuple
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
 
 import sys, os
 import datetime
@@ -77,6 +79,7 @@ top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
+import yaml
 #from Gui.Command import *
 
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
@@ -106,66 +109,72 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements, closeCurrentDoc
+
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
+#
 
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
 
+# Sphinx workaround #2
+try:
+    cq
+    checkRequirements(cq)
+except NameError:
+    cq = None
+#
+
 #checking requirements
-checkRequirements(cq)
 
 try:
-    close_CQ_Example(App, Gui)
+    close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-import cq_parameters  # modules parameters
-from cq_parameters import *
-
-#all_params= all_params_res
-all_params= kicad_naming_params_res
-
-def make_chip(params):
+def make_chip(model, all_params):
     # dimensions for chip capacitors
-    L = params.L    # package length
-    W = params.W    # package width
-    T = params.T    # package height
+    length = all_params[model]['length'] # package length
+    width = all_params[model]['width'] # package width
+    height = all_params[model]['height'] # package height
 
-    pb = params.pb  # pin band
-    pt = params.pt  # pin thickness
+    pin_band = all_params[model]['pin_band'] # pin band
+    pin_thickness = all_params[model]['pin_thickness'] # pin thickness
+    if pin_thickness == 'auto':
+        pin_thickness = height/10.
 
-    ef = params.ef  # fillet of edges
-    modelName = params.modelName  # Model Name
-    rotation = params.rotation   # rotation
-
-    # Create a 3D box based on the dimension variables above and fillet it
-    case = cq.Workplane("XY").box(L-4*pt, W, T-4*pt)
-    # case.edges("|X").fillet(ef)
-    # body.edges("|Z").fillet(ef)
-    # translate the object
-    case=case.translate((0,0,T/2)).rotate((0,0,0), (0,0,1), 0)
-    top = cq.Workplane("XY").box(L-2*pb, W, 2*pt)
-    # top = top.edges("|X").fillet(ef)
-    top=top.translate((0,0,T-pt)).rotate((0,0,0), (0,0,1), 0)
-
+    edge_fillet = all_params[model]['edge_fillet'] # fillet of edges
+    if edge_fillet == 'auto':
+        edge_fillet = pin_thickness
 
     # Create a 3D box based on the dimension variables above and fillet it
-    pin1 = cq.Workplane("XY").box(pb, W, T)
-    pin1.edges("|Y").fillet(ef)
-    pin1=pin1.translate((-L/2+pb/2,0,T/2)).rotate((0,0,0), (0,0,1), 0)
-    pin2 = cq.Workplane("XY").box(pb, W, T)
-    pin2.edges("|Y").fillet(ef)
-    pin2=pin2.translate((L/2-pb/2,0,T/2)).rotate((0,0,0), (0,0,1), 0)
+    case = cq.Workplane("XY").workplane(offset=pin_thickness). \
+    box(length-2*pin_thickness, width, height-2*pin_thickness,centered=(True, True, False))
+    top = cq.Workplane("XY").workplane(offset=height-pin_thickness).box(length-2*pin_band, width, pin_thickness,centered=(True, True, False))
+
+    # Create a 3D box based on the dimension variables above and fillet it
+    pin1 = cq.Workplane("XY").box(pin_band, width, height)
+    pin1.edges("|Y").fillet(edge_fillet)
+    pin1=pin1.translate((-length/2+pin_band/2,0,height/2)).rotate((0,0,0), (0,0,1), 0)
+    pin2 = cq.Workplane("XY").box(pin_band, width, height)
+    pin2.edges("|Y").fillet(edge_fillet)
+    pin2=pin2.translate((length/2-pin_band/2,0,height/2)).rotate((0,0,0), (0,0,1), 0)
     pins = pin1.union(pin2)
     #body_copy.ShapeColor=result.ShapeColor
 
@@ -179,6 +188,8 @@ def make_chip(params):
 import add_license as Lic
 
 if __name__ == "__main__" or __name__ == "main_generator":
+    destination_dir = '/Resistor_SMD.3dshapes'
+
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
     
@@ -196,31 +207,40 @@ if __name__ == "__main__" or __name__ == "main_generator":
     #expVRML.say(models_dir)
     #stop
 
+    try:
+        with open('cq_parameters.yaml', 'r') as f:
+            all_params = yaml.load(f)
+    except yaml.YAMLError as exc:
+        print(exc)
+
+    from sys import argv
+    models = []
+
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building R_0402')
-        model_to_build='R_0402'
+        FreeCAD.Console.PrintMessage('No variant name is given! building:\n')
+        model_to_build = all_params.keys()[0]
+        print model_to_build
     else:
-        model_to_build=sys.argv[2]
+        model_to_build = sys.argv[2]
 
     if model_to_build == "all":
-        variants = all_params.keys()
+        models = all_params
+        save_memory=True
     else:
-        variants = [model_to_build]
+        models = [model_to_build]
 
-    for variant in variants:
-        excluded_pins_x=() ##no pin excluded
-        excluded_pins_xmirror=() ##no pin excluded
-        
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in all_params:
+    for model in models:
+        if not model in all_params.keys():
             print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
             continue
-        ModelName = all_params[variant].modelName
+
+        ModelName = model
         CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        body, pins, top = make_chip(all_params[variant])
+
+        body, pins, top = make_chip(model, all_params)
 
         show(body)
         show(pins)
@@ -252,9 +272,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         objs[0].Label = CheckedModelName
         restore_Main_Tools()
         #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
+        rotation = all_params[model]['rotation']
+        if (rotation!=0):
+            z_RotateObject(doc, rotation)
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
         #models_dir=script_dir+"/../_3Dmodels"
@@ -283,9 +303,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
         # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        #display BBox
-        #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
+        if save_memory == False:
+            Gui.SendMsgToActiveView("ViewFit")
+            Gui.activeDocument().activeView().viewAxometric()
+        
+        # Save the doc in Native FC format
+        saveFCdoc(App, Gui, doc, ModelName,out_dir, False)
+        if save_memory == True:
+            closeCurrentDoc(CheckedModelName)
