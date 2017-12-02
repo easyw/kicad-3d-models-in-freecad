@@ -250,10 +250,15 @@ def generate_straight_body(params ,calc_dim, with_details):
         body = body.cut(thread_insert)
         insert = cq.Workplane("XY").workplane(offset=body_height)\
             .moveTo(-mount_hole_to_pin, 0)\
-            .circle(thread_insert_r).circle(thread_r)\
+            .circle(thread_insert_r)\
             .moveTo(mount_hole_to_pin+(num_pins-1)*pin_pitch, 0)\
-            .circle(thread_insert_r).circle(thread_r)\
-            .extrude(-thread_depth-0.1)
+            .circle(thread_insert_r)\
+            .extrude(-thread_depth-0.1)\
+            .moveTo(-mount_hole_to_pin, 0)\
+            .circle(thread_r)\
+            .moveTo(mount_hole_to_pin+(num_pins-1)*pin_pitch, 0)\
+            .circle(thread_r)\
+            .cutThruAll()
 
     return body, insert
 
@@ -467,8 +472,10 @@ if "module" in __name__ :
     #part_to_build = 'MSTB_01x02_GF_5.00mm_MH'
     part_to_build = 'MSTBV_01x02_GF_5.00mm_MH'
 
+    With_plug = False
+
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    (pins, body, insert, mount_screw, plug, plug_screws) = generate_part(part_to_build, True)
+    (pins, body, insert, mount_screw, plug, plug_screws) = generate_part(part_to_build, With_plug)
     show(pins)
     show(body)
     if insert is not None:
