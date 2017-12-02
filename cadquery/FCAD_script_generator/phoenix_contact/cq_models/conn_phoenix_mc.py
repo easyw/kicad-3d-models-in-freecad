@@ -255,10 +255,15 @@ def generate_straight_body(params, calc_dim, with_details):
         body = body.cut(thread_insert)
         insert = cq.Workplane("XY").workplane(offset=seriesParams.body_height)\
             .moveTo(-params.mount_hole_to_pin, 0)\
-            .circle(seriesParams.thread_insert_r).circle(seriesParams.thread_r)\
+            .circle(seriesParams.thread_insert_r)\
             .moveTo(params.mount_hole_to_pin+(params.num_pins-1)*params.pin_pitch, 0)\
-            .circle(seriesParams.thread_insert_r).circle(seriesParams.thread_r)\
-            .extrude(-seriesParams.thread_depth-0.1)
+            .circle(seriesParams.thread_insert_r)\
+            .extrude(-seriesParams.thread_depth-0.1)\
+            .moveTo(-params.mount_hole_to_pin, 0)\
+            .circle(seriesParams.thread_r)\
+            .moveTo(params.mount_hole_to_pin+(params.num_pins-1)*params.pin_pitch, 0)\
+            .circle(seriesParams.thread_r)\
+            .cutThruAll()
 
     return body, insert
 
@@ -372,8 +377,8 @@ def generate_plug_staight(params, calc_dim):
             .moveTo(calc_dim.left_to_pin, -plug_params.flange_width/2)\
             .hLine(calc_dim.length).vLine(plug_params.flange_width)\
             .hLine(-calc_dim.length)\
-            .close().extrude(plug_params.flange_height)\
-            .edges("|Z").fillet(flange_radius)
+            .close().extrude(plug_params.flange_height)#\
+            #.edges("|Z").fillet(flange_radius)
 
         flange_screw_cutouts = cq.Workplane("XY")\
             .workplane(offset=seriesParams.body_height+plug_params.flange_height)\
@@ -385,6 +390,15 @@ def generate_plug_staight(params, calc_dim):
         flange = flange.cut(flange_screw_cutouts)
 
         plug_body = plug_body.union(flange)
+
+        BS = cq.selectors.BoxSelector
+        p1 = (calc_dim.left_to_pin-0.01,
+              -seriesParams.body_width-params.back_to_pin-0.01,
+              plug_bottom+1)
+        p2 = (calc_dim.length,
+              calc_dim.body_front_y+seriesParams.body_flange_width+0.01,
+              plug_bottom+plug_params.flange_height-0.1)
+        plug_body = plug_body.edges(BS(p1, p2)).fillet(seriesParams.body_roundover_r)
 
     first_hole_pos = (params.num_pins-1)*params.pin_pitch/2.0
 
@@ -462,10 +476,10 @@ def generate_part(part_key, with_plug=False):
 
 # opend from within freecad
 if "module" in __name__:
-    #part_to_build = "MCV_01x04_GF_3.5mm_MH"
+    part_to_build = "MCV_01x04_GF_3.5mm_MH"
     #part_to_build = "MCV_01x04_G_3.5mm"
     #part_to_build = "MC_01x04_G_3.5mm"
-    part_to_build = "MC_01x04_GF_3.5mm_MH"
+    #part_to_build = "MC_01x04_GF_3.5mm_MH"
     with_plug = True
 
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +

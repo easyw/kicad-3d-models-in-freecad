@@ -57,6 +57,7 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
+
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
