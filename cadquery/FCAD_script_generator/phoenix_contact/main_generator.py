@@ -58,6 +58,9 @@ import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
 import yaml
+
+save_memory = True #reducing memory consuming for all generation params
+
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
@@ -65,32 +68,7 @@ STR_licEmail = "poeschlr@gmail.com"
 STR_licOrgSys = ""
 STR_licPreProc = ""
 
-LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor,
-                "",
-                "This program is free software: you can redistribute it and/or modify",
-                "it under the terms of the GNU General Public License (GPL)",
-                "as published by the Free Software Foundation, either version 2 of",
-                "the License, or any later version.",
-                "",
-                "As a special exception, if you create a design which uses this 3d model",
-                "and embed this 3d model or unaltered portions of this 3d model into the",
-                "design, this 3d model does not by itself cause the resulting design to",
-                "be covered by the GNU General Public License. This exception does not",
-                "however invalidate any other reasons why the design itself might be",
-                "covered by the GNU General Public License. If you modify this",
-                "3d model, you may extend this exception to your version of the",
-                "3d model, but you are not obligated to do so. If you do not",
-                "wish to do so, delete this exception statement from your version.",
-                "",
-                "This program is distributed in the hope that it will be useful,",
-                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
-                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
-                "GNU General Public License for more details.",
-                "",
-                "You should have received a copy of the GNU General Public License",
-                "along with this program.  If not, see http://www.gnu.org/licenses/.",
-                ""
-                ]
+LIST_license = ["",]
 #################################################################################################
 
 body_color_key = "green body"
@@ -139,8 +117,9 @@ import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,\
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors,\
+ closeCurrentDoc
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -162,6 +141,11 @@ import conn_phoenix_mstb as MSTB
 import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
 import step_license as L
+import add_license as L
+
+if LIST_license[0]=="":
+    LIST_license=L.LIST_int_license
+    LIST_license.append("")
 
 def export_one_part(modul, variant, configuration, with_plug=False):
     if not variant in modul.all_params:
@@ -288,12 +272,16 @@ def export_one_part(modul, variant, configuration, with_plug=False):
     L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
-
     FreeCAD.activeDocument().recompute()
     # FreeCADGui.activateWorkbench("PartWorkbench")
-    FreeCADGui.SendMsgToActiveView("ViewFit")
-    FreeCADGui.activeDocument().activeView().viewAxometric()
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    # Save the doc in Native FC format
+    saveFCdoc(App, Gui, doc, FileName, out_dir)
+    if save_memory == True:
+        closeCurrentDoc(ModelName)
 
 class argparse():
     def __init__(self):
@@ -334,7 +322,7 @@ class argparse():
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
             self.config, self.model_filter, str(self.series), self.with_plug)
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
