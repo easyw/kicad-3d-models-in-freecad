@@ -406,10 +406,41 @@ def MakeHeader(n, model, all_params):
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
     
-    # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, name,out_dir, False)
-    if save_memory == True:
-        closeCurrentDoc(docname)
+    check_Model=True
+    if save_memory == True or check_Model==True:
+        closeCurrentDoc(CheckedModelName)
+    step_path=os.path.join(out_dir,ModelName+u'.step')
+    if check_Model==True:
+        #ImportGui.insert(step_path,ModelName)
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        if cq_cad_tools.checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+        else:
+            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+            stop
+        FC_majorV=int(FreeCAD.Version()[0])
+        FC_minorV=int(FreeCAD.Version()[1])
+        if FC_majorV == 0 and FC_minorV >= 17:
+            for o in docu.Objects:
+                if hasattr(o,'Shape'):
+                    chks=cq_cad_tools.checkBOP(o.Shape)
+                    print 'chks ',chks
+                    print cq_cad_tools.mk_string(o.Label)
+                    if chks != True:
+                        msg='shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' is INVALID!\n'
+                        FreeCAD.Console.PrintError(msg)
+                        FreeCAD.Console.PrintWarning(chks[0])
+                        stop
+                    else:
+                        msg='shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' is valid\n'
+                        FreeCAD.Console.PrintMessage(msg)
+        else:
+            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+        # Save the doc in Native FC format
+        saveFCdoc(App, Gui, doc, name,out_dir, False)
+        if save_memory == True:
+            closeCurrentDoc(docname)
     return 0
     
 #import step_license as L
