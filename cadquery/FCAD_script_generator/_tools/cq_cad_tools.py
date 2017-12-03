@@ -28,14 +28,14 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.3 16/08/2015"
+___ver___ = "1.2.4 02/12/2017"
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 #from Gui.Command import *
-import os
+import os, sys
 
 #helper funcs for displaying messages in FreeCAD
 def say(*arg):
@@ -46,7 +46,53 @@ def sayw(*arg):
 
 def saye(*arg):
     FreeCAD.Console.PrintError(" ".join(map(str,arg)) + "\r\n")
+
+def mk_string(input):
+    if (sys.version_info > (3, 0)):  #py3
+        if isinstance(input, str):
+            return input
+        else:
+            input =  input.encode('utf-8')
+            return input
+    else:  #py2
+        if type(input) == unicode:
+            input =  input.encode('utf-8')
+            return input
+        else:
+            return input
+##
+
+def checkUnion(docu):
+    """ counting NBR of objects in the doc
+        if NBR>1, then the STEP file is not correctly Unioned in a siingle object
+    """
+    i=0
+    for o in docu.Objects:
+        i+=1
+    if i != 1:
+        return False
+    else:
+        return True
+##
+
+def checkBOP(shape):
+    """ checking BOP errors of a shape 
+    returns:
+      - True if Shape is Valid
+      - the Shape errors 
+    """
     
+    # enabling BOP check 
+    paramGt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/CheckGeometry")
+    paramGt.SetBool("RunBOPCheck",True)
+
+    try:
+        shape.check(True)
+        return True
+    except:
+        return sys.exc_info()[1] #ValueError #sys.exc_info() #False
+##
+
 #from an argument string, extract a list of numbers
 #numbers can be individual e.g. "3"
 #numbers can be comma delimited e.g. "3,5"

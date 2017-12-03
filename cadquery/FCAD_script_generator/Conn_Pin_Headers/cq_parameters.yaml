@@ -176,7 +176,7 @@ PinHeader_1xyy_P2.00mm_Horizontal:
     from: 1
     to: 40
   base_width: 2.00
-  base_height: 2.00
+  base_height: 1.5
   base_x_offset: 1.5
   base_chamfer: 'auto'
   pin_width: 0.5
@@ -338,7 +338,7 @@ PinHeader_2xyy_P1.27mm_Horizontal:
   pin_end_chamfer: 'auto'
   rotation: 0
   output_directory: '/Conn_PinHeader_1.27mm.3dshapes'
-  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BC020.pdf&t=1502019369628'
+  source: 'https://gct.co/pdfjs/web/viewer.html?file=/Files/Drawings/BD030.pdf&t=1512166753559'
 
 PinHeader_1xyy_P1.27mm_Vertical_SMD_Pin1Left:
   type: 'Vertical_SMD'
@@ -387,7 +387,7 @@ PinHeader_2xyy_P1.27mm_Vertical_SMD:
   pins:
     from: 1
     to: 40
-  base_width: 4.00
+  base_width: 3.4
   base_height: 0.5
   base_z_offset: 0.4
   base_chamfer: 'auto'
@@ -462,12 +462,12 @@ PinHeader_2xyy_P1.00mm_Horizontal:
   pins:
     from: 1
     to: 40
-  base_width: 3.4
+  base_width: 2.3
   base_height: 1.2
   base_x_offset: 0.9
   base_chamfer: 'auto'
   pin_width: 0.3
-  pin_length_above_base: 2.5
+  pin_length_above_base: 1.9
   pin_length_below_board: 1.9
   pin_end_chamfer: 'auto'
   rotation: 0
@@ -527,7 +527,7 @@ PinHeader_2xyy_P1.00mm_Vertical_SMD:
   base_chamfer: 'auto'
   pin_width: 0.3
   pin_length_above_base: 2.0
-  pin_length_horizontal: 1.4
+  pin_length_horizontal: 2.1
   pin_end_chamfer: 'auto'
   rotation: 0
   output_directory: '/Conn_PinHeader_1.00mm.3dshapes'

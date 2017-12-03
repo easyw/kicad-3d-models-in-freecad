@@ -1,0 +1,169 @@
+R_01005_0402Metric:
+  length: 0.4
+  width:  0.2
+  height: 0.13
+  pin_band: 0.1
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'http://www.vishay.com/docs/20056/crcw01005e3.pdf'
+
+R_0201_0603Metric:
+  length: 0.6
+  width: 0.3
+  height: 0.23
+  pin_band: 0.1
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20052/crcw0201e3.pdf'
+
+R_0402_1005Metric:
+  length: 1.0
+  width: 0.5
+  height: 0.35
+  pin_band: 0.2
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_0603_1608Metric:
+  length: 1.6
+  width: 0.8
+  height: 0.45
+  pin_band: 0.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_0612_1632Metric:
+  length: 1.6
+  width: 3.2
+  height: 0.45
+  pin_band: 0.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'http://www.vishay.com/docs/30183/wsl1020.pdf'
+
+R_0805_2012Metric:
+  length: 2.0
+  width: 1.2
+  height: 0.45
+  pin_band: 0.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_0815_2038Metric:
+  length: 2.0
+  width: 3.8
+  height: 0.45
+  pin_band: 0.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_1020_1632Metric:
+  length: 1.6
+  width: 3.2
+  height: 0.6
+  pin_band: 0.55
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'http://www.vishay.com/docs/30183/wsl1020.pdf'
+
+R_1206_3216Metric:
+  length: 3.2
+  width: 1.6
+  height: 0.55
+  pin_band: 0.4
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_1210_3225Metric:
+  length: 3.2
+  width: 2.5
+  height: 0.55
+  pin_band: 0.4
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_1218_3246Metric:
+  length: 3.2
+  width: 4.6
+  height: 0.55
+  pin_band: 0.4
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_1806_4516Metric:
+  length: 4.5
+  width: 1.6
+  height: 0.6
+  pin_band: 0.5
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C301.pdf'
+
+R_1812_4532Metric:
+  length: 4.5
+  width: 3.2
+  height: 0.6
+  pin_band: 0.5
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C301.pdf'
+
+R_2010_5025Metric:
+  length: 5.0
+  width: 2.5
+  height: 0.6
+  pin_band: 0.6
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_2512_6332Metric:
+  length: 6.3
+  width: 3.2
+  height: 0.6
+  pin_band: 0.6
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
+
+R_2816_7142Metric:
+  length: 7.1
+  width: 4.2
+  height: 0.6
+  pin_band: 1.5
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.vishay.com/docs/30100/wsl.pdf'
+
+R_4020_10251Metric:
+  length: 10.2
+  width: 5.1
+  height: 0.6
+  pin_band: 0.9
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'http://www.willow.co.uk/CRW.pdf'
