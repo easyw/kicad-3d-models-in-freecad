@@ -52,6 +52,20 @@ __Comment__ = 'model description for Molex 53398 Connectors using cadquery'
 
 ___ver___ = "1.0 10/04/2016"
 
+import sys
+
+# DIRTY HACK TO ALLOW CENTRALICED HELPER SCRIPTS. (freecad cadquery does copy the file to /tmp and we can therefore not use relative paths for importing)
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'molex/cq_models':
+            p1 = path.replace('molex/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from cq_helpers import *
 
 import cadquery as cq
 from math import sqrt
@@ -120,37 +134,6 @@ mount_back = pin_tip_y-pin_protrution-mount_pin_back_to_body_back
 top_cutout_width = 0.5
 top_cutout_len = 0.5
 top_cutout_depth = 0.4
-
-def v_add(p1, p2):
-    return (p1[0]+p2[0],p1[1]+p2[1])
-
-def v_sub(p1, p2):
-    return (p1[0]-p2[0],p1[1]-p2[1])
-#v_add(pcs2, (-body_cutout_radius*(1-1/sqrt(2)), -1/sqrt(2)*body_cutout_radius))
-def get_third_arc_point1(starting_point, end_point):
-    px = v_sub(end_point, starting_point)
-    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
-    return v_add((px[0]*(1-1/sqrt(2)),px[1]*(1/sqrt(2))),starting_point)
-
-def get_third_arc_point2(starting_point, end_point):
-    px = v_sub(end_point, starting_point)
-    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
-    return v_add((px[0]*(1/sqrt(2)),px[1]*(1-1/sqrt(2))),starting_point)
-
-def add_p_to_chain(chain, rel_point):
-    chain.append(v_add(chain[len(chain)-1], rel_point))
-
-def mirror(chain):
-    result = []
-    for point in chain:
-        result.append((point[0]*-1,point[1]))
-    return result
-
-def poline(points, plane):
-    sp = points.pop()
-    plane=plane.moveTo(sp[0],sp[1])
-    plane=plane.polyline(points)
-    return plane
 
 Params = namedtuple("Params",[
     'file_name',
@@ -270,7 +253,7 @@ def generate_pins(params):
         .lineTo(*mount_pin_points[10]).threePointArc(arc_points[3],mount_pin_points[11])\
         .close().extrude(mount_pin_width)
 
-    mount_pin1 = mount_pin1.faces(">X").edges("|Z").fillet(mount_pin_fillet)
+    #mount_pin1 = mount_pin1.faces(">X").edges("|Z").fillet(mount_pin_fillet)
 
     mount_pin_points=mirror(mount_pin_points)
     arc_points=mirror(arc_points)
@@ -283,7 +266,7 @@ def generate_pins(params):
         .lineTo(*mount_pin_points[8]).threePointArc(arc_points[2],mount_pin_points[9])\
         .lineTo(*mount_pin_points[10]).threePointArc(arc_points[3],mount_pin_points[11])\
         .close().extrude(mount_pin_width)
-    mount_pin2 = mount_pin2.faces("<X").edges("|Z").fillet(mount_pin_fillet)
+    #mount_pin2 = mount_pin2.faces("<X").edges("|Z").fillet(mount_pin_fillet)
 
     pins = pins.union(mount_pin1)
     pins = pins.union(mount_pin2)
