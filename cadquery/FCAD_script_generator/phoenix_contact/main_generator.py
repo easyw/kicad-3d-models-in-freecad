@@ -60,6 +60,7 @@ import re, fnmatch
 import yaml
 
 save_memory = True #reducing memory consuming for all generation params
+check_Model = True
 
 # Licence information of the generated models.
 #################################################################################################
@@ -119,7 +120,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,\
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors,\
- closeCurrentDoc
+ closeCurrentDoc, checkBOP, checkUnion
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -269,19 +270,62 @@ def export_one_part(modul, variant, configuration, with_plug=False):
                      ModelName, objs, keepOriginals=True)
 
     exportSTEP(doc,FileName,out_dir,fusion)
-    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
+
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=FileName)
+
+    L.addLicenseToStep(out_dir, '{:s}.step'.format(FileName), LIST_license,\
         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
     FreeCAD.activeDocument().recompute()
     # FreeCADGui.activateWorkbench("PartWorkbench")
-    if save_memory == False:
+    if save_memory == False and check_Model==False:
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
 
+
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, FileName, out_dir)
-    if save_memory == True:
+    if save_memory == True or check_Model==True:
         closeCurrentDoc(ModelName)
+
+
+    if check_Model==True:
+        #ImportGui.insert(step_path,ModelName)
+
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        docu.Label=ModelName
+
+        if checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+        else:
+            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+            stop
+        FC_majorV=int(FreeCAD.Version()[0])
+        FC_minorV=int(FreeCAD.Version()[1])
+        if FC_majorV == 0 and FC_minorV >= 17:
+            for o in docu.Objects:
+                if hasattr(o,'Shape'):
+                    chks=checkBOP(o.Shape)
+                    #print 'chks ',chks
+                    if chks != True:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
+                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintError(msg)
+                        FreeCAD.Console.PrintWarning(chks[0])
+                        stop
+                    else:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
+                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintMessage(msg)
+        else:
+            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+
+        if save_memory == True:
+            saveFCdoc(App, Gui, docu, 'temp', out_dir)
+            docu = FreeCAD.ActiveDocument
+            closeCurrentDoc(docu.Label)
+    return out_dir
 
 class argparse():
     def __init__(self):
@@ -310,6 +354,12 @@ class argparse():
             self.print_usage()
         elif name == 'with_plug':
             self.with_plug = True
+        elif name == 'disable_check':
+            global check_Model
+            check_Model = False
+        elif name == 'disable_Memory_reduction':
+            global save_memory
+            save_memory = False
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
@@ -357,6 +407,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
         for variant in typ.all_params.keys():
             if model_filter_regobj.match(variant):
                 FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                export_one_part(typ, variant, configuration, with_plug)
+                out_dir = export_one_part(typ, variant, configuration, with_plug)
+        if save_memory == True:
+            os.remove('{}/temp.FCStd'.format(out_dir))
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
