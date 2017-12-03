@@ -3,7 +3,6 @@ from conn_phoenix_global_params import generate_footprint_name
 
 Params = namedtuple("Params",[
     'series_name',
-    'file_name',
     'angled',
     'flanged',
     'num_pins',
@@ -20,7 +19,6 @@ def generate_params(num_pins, series_name, pin_pitch, angled, flanged, order_inf
 
     return Params(
         series_name=series_name,
-        file_name=generate_footprint_name(series_name, num_pins, pin_pitch, angled, mount_hole, flanged),
         angled=angled,
         flanged=flanged,
         num_pins=num_pins,
@@ -308,6 +306,7 @@ all_params = {
 }
 
 class seriesParams():
+    series_name = ['MC', '1,5']
     flange_lenght = 4.8
     scoreline_from_bottom = 6.0
     scoreline_width = 0.6
@@ -364,11 +363,3 @@ def dimensions(params):
         # We use this becaus we want to be consistent with the footprint generation script.
         body_front_y = -seriesParams.body_width-params.back_to_pin
     )
-
-def generate_description(params):
-    d = "Generic Phoenix Contact connector footprint for series: " + params.series_name + "; number of pins: " + ("%02d" %params.num_pins) + "; pin pitch: " + (('%.2f' % params.pin_pitch))\
-        +"mm" + ('; Angled' if params.angled else '; Vertical')\
-        + ('; threaded flange' + (' (footprint includes mount hole)' if params.mount_hole else '') if params.flanged else '')
-    for order_num, info in params.order_info.iteritems():
-        d += " || order number: " + order_num + " " + info
-    return d

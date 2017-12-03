@@ -57,6 +57,12 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 import re, fnmatch
+import yaml
+
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
+
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "Rene Poeschl"
@@ -64,32 +70,7 @@ STR_licEmail = "poeschlr@gmail.com"
 STR_licOrgSys = ""
 STR_licPreProc = ""
 
-LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor,
-                "",
-                "This program is free software: you can redistribute it and/or modify",
-                "it under the terms of the GNU General Public License (GPL)",
-                "as published by the Free Software Foundation, either version 2 of",
-                "the License, or any later version.",
-                "",
-                "As a special exception, if you create a design which uses this 3d model",
-                "and embed this 3d model or unaltered portions of this 3d model into the",
-                "design, this 3d model does not by itself cause the resulting design to",
-                "be covered by the GNU General Public License. This exception does not",
-                "however invalidate any other reasons why the design itself might be",
-                "covered by the GNU General Public License. If you modify this",
-                "3d model, you may extend this exception to your version of the",
-                "3d model, but you are not obligated to do so. If you do not",
-                "wish to do so, delete this exception statement from your version.",
-                "",
-                "This program is distributed in the hope that it will be useful,",
-                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
-                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
-                "GNU General Public License for more details.",
-                "",
-                "You should have received a copy of the GNU General Public License",
-                "along with this program.  If not, see http://www.gnu.org/licenses/.",
-                ""
-                ]
+LIST_license = ["",]
 #################################################################################################
 
 body_color_key = "green body"
@@ -138,8 +119,9 @@ import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,\
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors,\
+ closeCurrentDoc, checkBOP, checkUnion
 
 # Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -161,18 +143,46 @@ import conn_phoenix_mstb as MSTB
 import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
 import step_license as L
+import add_license as L
 
-def export_one_part(modul, variant, with_plug=False):
+if LIST_license[0]=="":
+    LIST_license=L.LIST_int_license
+    LIST_license.append("")
+
+def export_one_part(modul, variant, configuration, log, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
 
-    destination_dir="Connectors_Phoenix.3dshapes"
+    params = modul.all_params[variant]
+    series_params = modul.seriesParams
+    series = series_params.series_name
+
+    subseries, connector_style = params.series_name.split('-')
+    pitch_mpn = '-{:g}'.format(params.pin_pitch)
+    if series[0] == 'MSTB':
+        pitch_mpn = ''
+        if params.pin_pitch == 5.08:
+            pitch_mpn = '-5,08'
+        elif params.pin_pitch == 7.62:
+            pitch_mpn = '-7,62'
+    lib_name = configuration['lib_name_format_str'].format(series=series[0], style=series[1], pitch=params.pin_pitch)
+    mpn = configuration['mpn_format_string'].format(subseries=subseries, style = connector_style,
+        rating=series[1], num_pins=params.num_pins, pitch=pitch_mpn)
+    FileName = configuration['fp_name_format_string'].format(man = configuration['manufacturer'],
+        series = series[0], mpn = mpn, num_rows = 1,
+        num_pins = params.num_pins, pitch = params.pin_pitch,
+        orientation = configuration['orientation_str'][1] if params.angled else configuration['orientation_str'][0],
+        flanged = configuration['flanged_str'][1] if params.flanged else configuration['flanged_str'][0],
+        mount_hole = configuration['mount_hole_str'][1] if params.mount_hole else configuration['mount_hole_str'][0])
+
+    destination_dir=lib_name
     if with_plug:
-        destination_dir="Connectors_Phoenix__with_plug.3dshapes"
+        destination_dir += "__with_plug"
+    destination_dir+=".3dshapes"
+
     ModelName = variant
     ModelName = ModelName.replace(".","_")
-    FileName = modul.all_params[variant].file_name
     Newdoc = FreeCAD.newDocument(ModelName)
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
@@ -267,17 +277,117 @@ def export_one_part(modul, variant, with_plug=False):
                      ModelName, objs, keepOriginals=True)
 
     exportSTEP(doc,FileName,out_dir,fusion)
-    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=FileName)
+
+    L.addLicenseToStep(out_dir, '{:s}.step'.format(FileName), LIST_license,\
+        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
     FreeCAD.activeDocument().recompute()
     # FreeCADGui.activateWorkbench("PartWorkbench")
-    FreeCADGui.SendMsgToActiveView("ViewFit")
-    FreeCADGui.activeDocument().activeView().viewAxometric()
+    if save_memory == False and check_Model==False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
 
-if __name__ == "__main__":
+
+    # Save the doc in Native FC format
+    saveFCdoc(App, Gui, doc, FileName, out_dir)
+    if save_memory == True or check_Model==True:
+        closeCurrentDoc(ModelName)
+
+
+    if check_Model==True:
+        #ImportGui.insert(step_path,ModelName)
+
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        docu.Label=ModelName
+        log.write('\n## Checking {:s}\n'.format(ModelName))
+
+        if checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+            log.write('\t- Union check:    [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+            log.write('\t- Union check:    [    FAIL    ]\n')
+            #stop
+        FC_majorV=int(FreeCAD.Version()[0])
+        FC_minorV=int(FreeCAD.Version()[1])
+        if FC_majorV == 0 and FC_minorV >= 17:
+            for o in docu.Objects:
+                if hasattr(o,'Shape'):
+                    chks=checkBOP(o.Shape)
+                    #print 'chks ',chks
+                    if chks != True:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
+                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintError(msg)
+                        FreeCAD.Console.PrintWarning(chks[0])
+                        log.write('\t- Geometry check: [    FAIL    ]\n')
+                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
+                        #stop
+                    else:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
+                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintMessage(msg)
+                        log.write('\t- Geometry check: [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+            log.write('\t- Geometry check: [  skipped   ]\n')
+            log.write('\t\t- Geometry check needs FC 0.17+\n')
+
+        if save_memory == True:
+            saveFCdoc(App, Gui, docu, 'temp', out_dir)
+            docu = FreeCAD.ActiveDocument
+            closeCurrentDoc(docu.Label)
+    return out_dir
+
+class argparse():
+    def __init__(self):
+        self.config = 'config_phoenix_KLCv3.0.yaml'
+        self.model_filter = '*'
+        self.series = ['mc','mstb']
+        self.with_plug = False
+
+    def parse_args(self, args):
+        for arg in args:
+            if '=' in arg:
+                self.parseValueArg(*arg.split('='))
+            else:
+                self.argSwitchArg(arg)
+
+    def parseValueArg(self, name, value):
+        if name == 'config':
+            self.config = value
+        elif name == 'model_filter':
+            self.model_filter = value
+        elif name == 'series':
+            self.series = value.split(',')
+
+    def argSwitchArg(self, name):
+        if name == '?':
+            self.print_usage()
+        elif name == 'with_plug':
+            self.with_plug = True
+        elif name == 'disable_check':
+            global check_Model
+            check_Model = False
+        elif name == 'disable_Memory_reduction':
+            global save_memory
+            save_memory = False
+
+    def print_usage(self):
+        print("Generater script for phoenix contact 3d models.")
+        print('usage: FreeCAD export_conn_phoenix.py [optional arguments]')
+        print('optional arguments:')
+        print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
+        print('\tmodel_filter=[filter using linux file filter syntax]')
+        print('\tseries=[series name],[series name],...')
+    def __str__(self):
+        return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
+            self.config, self.model_filter, str(self.series), self.with_plug)
+
+if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -285,20 +395,18 @@ if __name__ == "__main__":
     modelfilter = ""
     with_plug = False
 
-    for arg in sys.argv[1:]:
-        if arg.startswith("series="):
-            series_to_build += arg[len("series="):].split(',')
-        if arg.startswith("filter="):
-            modelfilter = arg[len("filter="):]
-        if arg.lower() == 'with_plug':
-            with_plug = True;
+    args = argparse()
+    args.parse_args(sys.argv)
 
+    with open(args.config, 'r') as config_stream:
+        try:
+            configuration = yaml.load(config_stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
-    if len(series_to_build) == 0:
-        series_to_build = ['mc', 'mstb']
-
-    if len(modelfilter) == 0:
-        modelfilter = "*"
+    series_to_build = map(str.lower, args.series)
+    print(args)
+    modelfilter = args.model_filter
 
     series = []
     if 'mc' in series_to_build:
@@ -307,10 +415,17 @@ if __name__ == "__main__":
         series += [MSTB]
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
-    for typ in series:
-        for variant in typ.all_params.keys():
-            if model_filter_regobj.match(variant):
-                FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                export_one_part(typ, variant, with_plug)
+    print("########################################")
+
+    print(args.model_filter)
+    with open(check_log_file, 'w') as log:
+        log.write('# Check report for Phoenix Contact 3d model genration\n')
+        for typ in series:
+            for variant in typ.all_params.keys():
+                if model_filter_regobj.match(variant):
+                    FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+                    out_dir = export_one_part(typ, variant, configuration, log, with_plug)
+            if save_memory == True:
+                os.remove('{}/temp.FCStd'.format(out_dir))
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
