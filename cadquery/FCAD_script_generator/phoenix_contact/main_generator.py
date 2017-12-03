@@ -61,6 +61,7 @@ import yaml
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+check_log_file = 'check-log.md'
 
 # Licence information of the generated models.
 #################################################################################################
@@ -148,7 +149,7 @@ if LIST_license[0]=="":
     LIST_license=L.LIST_int_license
     LIST_license.append("")
 
-def export_one_part(modul, variant, configuration, with_plug=False):
+def export_one_part(modul, variant, configuration, log, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
@@ -159,6 +160,12 @@ def export_one_part(modul, variant, configuration, with_plug=False):
 
     subseries, connector_style = params.series_name.split('-')
     pitch_mpn = '-{:g}'.format(params.pin_pitch)
+    if series[0] == 'MSTB':
+        pitch_mpn = ''
+        if params.pin_pitch == 5.08:
+            pitch_mpn = '-5,08'
+        elif params.pin_pitch == 7.62:
+            pitch_mpn = '-7,62'
     lib_name = configuration['lib_name_format_str'].format(series=series[0], style=series[1], pitch=params.pin_pitch)
     mpn = configuration['mpn_format_string'].format(subseries=subseries, style = connector_style,
         rating=series[1], num_pins=params.num_pins, pitch=pitch_mpn)
@@ -295,12 +302,15 @@ def export_one_part(modul, variant, configuration, with_plug=False):
         ImportGui.open(step_path)
         docu = FreeCAD.ActiveDocument
         docu.Label=ModelName
+        log.write('\n## Checking {:s}\n'.format(ModelName))
 
         if checkUnion(docu) == True:
             FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+            log.write('\t- Union check:    [    pass    ]\n')
         else:
             FreeCAD.Console.PrintError('step file is NOT Unioned\n')
-            stop
+            log.write('\t- Union check:    [    FAIL    ]\n')
+            #stop
         FC_majorV=int(FreeCAD.Version()[0])
         FC_minorV=int(FreeCAD.Version()[1])
         if FC_majorV == 0 and FC_minorV >= 17:
@@ -313,13 +323,18 @@ def export_one_part(modul, variant, configuration, with_plug=False):
                         msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
                         FreeCAD.Console.PrintError(msg)
                         FreeCAD.Console.PrintWarning(chks[0])
-                        stop
+                        log.write('\t- Geometry check: [    FAIL    ]\n')
+                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
+                        #stop
                     else:
                         #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
                         msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
                         FreeCAD.Console.PrintMessage(msg)
+                        log.write('\t- Geometry check: [    pass    ]\n')
         else:
             FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+            log.write('\t- Geometry check: [  skipped   ]\n')
+            log.write('\t\t- Geometry check needs FC 0.17+\n')
 
         if save_memory == True:
             saveFCdoc(App, Gui, docu, 'temp', out_dir)
@@ -403,12 +418,14 @@ if __name__ == "__main__" or __name__ == "main_generator":
     print("########################################")
 
     print(args.model_filter)
-    for typ in series:
-        for variant in typ.all_params.keys():
-            if model_filter_regobj.match(variant):
-                FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                out_dir = export_one_part(typ, variant, configuration, with_plug)
-        if save_memory == True:
-            os.remove('{}/temp.FCStd'.format(out_dir))
+    with open(check_log_file, 'w') as log:
+        log.write('# Check report for Phoenix Contact 3d model genration\n')
+        for typ in series:
+            for variant in typ.all_params.keys():
+                if model_filter_regobj.match(variant):
+                    FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+                    out_dir = export_one_part(typ, variant, configuration, log, with_plug)
+            if save_memory == True:
+                os.remove('{}/temp.FCStd'.format(out_dir))
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
