@@ -50,7 +50,7 @@ __title__ = "model description for Phoenix Series MSTB Connectors"
 __author__ = "poeschlr"
 __Comment__ = 'model description for Phoenix Series MSTB Connectors using cadquery'
 
-___ver___ = "1.1 18/04/2016"
+___ver___ = "1.2 03/12/2017"
 
 
 import cadquery as cq

@@ -51,7 +51,30 @@ __author__ = "poeschlr"
 __Comment__ = 'model description for Molex 53398 Connectors using cadquery'
 
 ___ver___ = "1.0 10/04/2016"
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Rene Poeschl"
+    STR_licEmail = "poeschlr@gmail.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
 
+    LIST_license = ["",]
+    ############################################################################
+
+import sys
+
+# DIRTY HACK TO ALLOW CENTRALICED HELPER SCRIPTS. (freecad cadquery does copy the file to /tmp and we can therefore not use relative paths for importing)
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'molex/cq_models':
+            p1 = path.replace('molex/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from cq_helpers import *
 
 import cadquery as cq
 from math import sqrt
@@ -60,6 +83,28 @@ from collections import namedtuple
 import FreeCAD
 
 #global parameter
+
+mounting_pad_size_y = 3.0
+# y dimensions for pad given relative to mounting pad edge
+rel_pad_y_outside_edge = 4.9
+rel_pad_y_inside_edge = 3.6
+
+y_origin_from_mountpad = -rel_pad_y_outside_edge/2 + mounting_pad_size_y/2
+
+
+mount_pin_lenght = 1.7
+mount_pin_width = 2.2
+mount_pin_thickness = 0.25
+mount_pin_bend_radius = 0.1 #estimated
+mount_pin_height = 1.6 #Measured
+mount_pin_top_len = 0.8 #Measured
+mount_pin_fillet = 0.3
+
+mount_holder_len = 1.5
+mount_holder_width = 2.8
+mount_holder_top_z = 2.65 #Measured
+mount_holder_chamfer = 0.5 #Measured (+/-0.1 at least)
+
 pin_width = 0.32
 pin_pitch = 1.25
 pin_protrution = 0.5
@@ -90,105 +135,46 @@ body_pin_cutout_len = 0.9 #Measured
 body_front_plastic_protution = 0.2 # estimated
 body_center_y = -pin_tip_y+pin_protrution+body_width/2
 body_support_width = 0.5
-body_cutout_depth = 3
-body_front_cutout_depth = 1 #Measured (+/-0.1 at least)
+body_cutout_depth = 3.0
+body_front_cutout_depth = 1.0 #Measured (+/-0.1 at least)
 body_top_chamfer=0.2 #estimated
 
 body_cutout_width = 2.4
 
 connector_height = 4.7
 
-mount_pin_prodrution = 1.7
-mount_pin_lenght = 1.48
-mount_pin_width = 2.2
-mount_pin_thickness = 0.25
-mount_pin_bend_radius = 0.1 #estimated
-mount_pin_height = 1.6 #Measured
-mount_pin_top_len = 0.8 #Measured
-mount_pin_fillet = 0.3
-
-back_cutout_center_to_side = 2 #Measured
+back_cutout_center_to_side = 2.0 #Measured
 back_cutout_b_height = 1.15
 back_cutout_b_width = 1.15
 back_cutout_t_height = 1.45
 back_cutout_t_width = 0.3 #Measured (+/-0.1 at least)
 
-mount_holder_len = 1.75
-mount_holder_width = 2.8
-mount_holder_top_z = 2.65 #Measured
-mount_holder_chamfer = 0.5 #Measured (+/-0.1 at least)
+class series_params():
+    manufacturer = 'Molex'
+    series = "PicoBlade"
+    mpn_format_string = '53398-{pincount:02d}71'
+    orientation = 'V'
+    datasheet = 'http://www.molex.com/pdm_docs/sd/533980271_sd.pdf'
+    pinrange = range(2,16)
 
-def v_add(p1, p2):
-    return (p1[0]+p2[0],p1[1]+p2[1])
+    body_color_key = "white body"
+    pins_color_key = "metal grey pins"
 
-def v_sub(p1, p2):
-    return (p1[0]-p2[0],p1[1]-p2[1])
-#v_add(pcs2, (-body_cutout_radius*(1-1/sqrt(2)), -1/sqrt(2)*body_cutout_radius))
-def get_third_arc_point1(starting_point, end_point):
-    px = v_sub(end_point, starting_point)
-    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
-    return v_add((px[0]*(1-1/sqrt(2)),px[1]*(1/sqrt(2))),starting_point)
-
-def get_third_arc_point2(starting_point, end_point):
-    px = v_sub(end_point, starting_point)
-    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
-    return v_add((px[0]*(1/sqrt(2)),px[1]*(1-1/sqrt(2))),starting_point)
-
-def add_p_to_chain(chain, rel_point):
-    chain.append(v_add(chain[len(chain)-1], rel_point))
-
-def mirror(chain):
-    result = []
-    for point in chain:
-        result.append((point[0]*-1,point[1]))
-    return result
-
-def poline(points, plane):
-    sp = points.pop()
-    plane=plane.moveTo(sp[0],sp[1])
-    plane=plane.polyline(points)
-    return plane
+    pitch = pin_pitch
 
 Params = namedtuple("Params",[
-    'file_name',
     'num_pins',
-    'model_name',
     'body_length',
     'body_front_cutout_len'
 ])
 
-def make_params(num_pins, name):
+def make_params(num_pins):
     bl=3+(num_pins-1)*pin_pitch
     return Params(
         num_pins=num_pins,
-        model_name=name,
         body_length=bl,
-        file_name="Molex_PicoBlade_53398-"+ ('%02d' % num_pins) +"71_" + ('%02d' % num_pins) + "x" + ('%.2f' % pin_pitch) +"mm_Straight",
         body_front_cutout_len=bl-1.9
     )
-
-all_params = {
-    "0271" : make_params( 2, 'Molex_53398_0271'),
-    "0371" : make_params( 3, 'Molex_53398_0371'),
-    "0471" : make_params( 4, 'Molex_53398_0471'),
-    "0571" : make_params( 5, 'Molex_53398_0571'),
-    "0671" : make_params( 6, 'Molex_53398_0671'),
-    "0771" : make_params( 7, 'Molex_53398_0771'),
-    "0871" : make_params( 8, 'Molex_53398_0871'),
-    "0971" : make_params( 9, 'Molex_53398_0971'),
-    "1071" : make_params(10, 'Molex_53398_1071'),
-    "1171" : make_params(11, 'Molex_53398_1171'),
-    "1271" : make_params(12, 'Molex_53398_1271'),
-    "1371" : make_params(13, 'Molex_53398_1371'),
-    "1471" : make_params(14, 'Molex_53398_1471'),
-    "1571" : make_params(15, 'Molex_53398_1571')
-}
-
-def union_all(objects):
-    o = objects[0]
-    for i in range(1,len(objects)):
-        o = o.union(objects[i])
-    return o
 
 
 def generate_pins(params):
@@ -216,8 +202,8 @@ def generate_pins(params):
         .chamfer(contact_chamfer_width, contact_chamfer_depth)
     pin = pin.faces(">Z").edges("<X")\
         .chamfer(contact_chamfer_width, contact_chamfer_depth)
-    pin = pin.faces(">Y").edges("|X")\
-        .chamfer(pin_tip_chamfer)
+    #pin = pin.faces(">Y").edges("|X")\
+    #    .chamfer(pin_tip_chamfer)
     pins = pin
     for i in range(0,num_pins):
         pins = pins.union(pin.translate((-i*pin_pitch,0,0)))
@@ -252,7 +238,11 @@ def generate_pins(params):
         .lineTo(*mount_pin_points[10]).threePointArc(arc_points[3],mount_pin_points[11])\
         .close().extrude(mount_pin_width)
 
-    mount_pin1 = mount_pin1.faces(">X").edges("|Z").fillet(mount_pin_fillet)
+    #mount_pin1 = mount_pin1.faces(">X").edges("|Z").fillet(mount_pin_fillet)
+    mount_pin1 = mount_pin1.faces(">Y").edges(">X")\
+        .chamfer(mount_pin_fillet, mount_pin_fillet)
+    mount_pin1 = mount_pin1.faces("<Y").edges(">X")\
+        .chamfer(mount_pin_fillet, mount_pin_fillet)
 
     mount_pin_points=mirror(mount_pin_points)
     arc_points=mirror(arc_points)
@@ -265,7 +255,11 @@ def generate_pins(params):
         .lineTo(*mount_pin_points[8]).threePointArc(arc_points[2],mount_pin_points[9])\
         .lineTo(*mount_pin_points[10]).threePointArc(arc_points[3],mount_pin_points[11])\
         .close().extrude(mount_pin_width)
-    mount_pin2 = mount_pin2.faces("<X").edges("|Z").fillet(mount_pin_fillet)
+    #mount_pin2 = mount_pin2.faces("<X").edges("|Z").fillet(mount_pin_fillet)
+    mount_pin2 = mount_pin2.faces(">Y").edges("<X")\
+        .chamfer(mount_pin_fillet, mount_pin_fillet)
+    mount_pin2 = mount_pin2.faces("<Y").edges("<X")\
+        .chamfer(mount_pin_fillet, mount_pin_fillet)
 
     pins = pins.union(mount_pin1)
     pins = pins.union(mount_pin2)
@@ -376,19 +370,20 @@ def generate_body(params):
     body = body.cut(mount_holder2_cutout)
     return body
 
-def generate_part(part_key, y_origin_from_mountpad = 0):
-    pins = generate_pins(all_params[part_key])
-    body = generate_body(all_params[part_key])
-    pins = pins.translate((0,y_origin_from_mountpad,0))
-    body = body.translate((0,y_origin_from_mountpad,0))
+def generate_part(pincount):
+    params = make_params(pincount)
+    pins = generate_pins(params)
+    body = generate_body(params)
+    pins = pins.translate((0, y_origin_from_mountpad, 0))
+    body = body.translate((0, y_origin_from_mountpad, 0))
     return (pins, body)
 
 
 #opend from within freecad
 if "module" in __name__ :
-    #part_to_build = "0271"
-    part_to_build = "0471"
-    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    (pins, body) = generate_part(part_to_build, -(3.0/2+0.6+1.3/2)/2.0)
+    #part_to_build = 2
+    part_to_build = 4
+    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +str(part_to_build)+"\n")
+    (pins, body) = generate_part(part_to_build)
     show(pins)
     show(body)
