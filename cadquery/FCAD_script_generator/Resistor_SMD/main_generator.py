@@ -231,7 +231,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     for model in models:
         if not model in all_params.keys():
-            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
+            print("Parameters for %s doesn't exist in 'all_params', skipping." % model)
             continue
 
         ModelName = model
