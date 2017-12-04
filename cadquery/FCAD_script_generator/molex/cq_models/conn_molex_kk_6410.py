@@ -75,9 +75,19 @@ class series_params():
     orientation = 'V'
     datasheet = 'http://www.molex.com/pdm_docs/sd/022272021_sd.pdf'
     pinrange = range(2, 17)
+    
+    number_of_rows = 2
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
 
     pitch = 2.54
 
@@ -200,7 +210,7 @@ def generate_part(num_pins):
     calc_dim = dimensions(num_pins)
     pins = generate_pins(num_pins)
     body, insert = generate_body(num_pins, calc_dim)
-    return (pins, body)
+    return (body, pins)
 
 
 # opened from within freecad
@@ -209,7 +219,7 @@ if "module" in __name__:
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
                                  str(part_to_build) + "pin variant\n")
-    (pins, body) = generate_part(part_to_build)
+    (body, pins) = generate_part(part_to_build)
 
     show(pins)
     show(body)

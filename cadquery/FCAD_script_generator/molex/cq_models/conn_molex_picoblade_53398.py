@@ -161,6 +161,15 @@ class series_params():
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
 
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
+
     pitch = pin_pitch
 
 Params = namedtuple("Params",[
@@ -377,7 +386,7 @@ def generate_part(pincount):
     body = generate_body(params)
     pins = pins.translate((0, y_origin_from_mountpad, 0))
     body = body.translate((0, y_origin_from_mountpad, 0))
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad

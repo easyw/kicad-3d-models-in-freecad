@@ -91,7 +91,7 @@ except: # catch *all* exceptions
 
 #######################################################################
 
-from Gui.Command import *
+#from Gui.Command import *
 
 # Import cad_tools
 #sys.path.append("../_tools")
@@ -99,7 +99,7 @@ import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
  closeCurrentDoc, checkBOP, checkUnion
 
@@ -118,11 +118,6 @@ import ImportGui
 
 def export_one_part(module, pincount, configuration, log):
     series_definition = module.series_params
-
-    body_color_key = series_definition.body_color_key
-    body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
-    pins_color_key = series_definition.pins_color_key
-    pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
     if module.LICENCE_Info.LIST_license[0]=="":
         LIST_license=L.LIST_int_license
@@ -155,19 +150,27 @@ def export_one_part(module, pincount, configuration, log):
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = module.generate_part(pincount)
 
-    color_attr = body_color + (0,)
-    show(body, color_attr)
+    color_keys = series_definition.color_keys
+    obj_suffixes = series_definition.obj_suffixes
+    colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
-    color_attr = pins_color + (0,)
-    show(pins, color_attr)
+    cq_obj_data = module.generate_part(pincount)
+
+
+    for i in range(len(cq_obj_data)):
+        color_i = colors[i] + (0,)
+        show(cq_obj_data[i], color_i)
+
 
     doc = FreeCAD.ActiveDocument
     doc.Label = ModelName
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = ModelName + "__body"
-    objs[1].Label = ModelName + "__pins"
+
+
+    for i in range(len(objs)):
+        objs[i].Label = ModelName + obj_suffixes[i]
+
 
     restore_Main_Tools()
 
@@ -175,23 +178,21 @@ def export_one_part(module, pincount, configuration, log):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    used_color_keys = [body_color_key, pins_color_key]
+    used_color_keys = color_keys
     export_file_name=out_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
-    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-            shape_color=body_color_key,
-            face_colors=None))
-    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-            shape_color=pins_color_key,
-            face_colors=None))
+    for i in range(len(objs)):
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=color_keys[i],
+                face_colors=None))
 
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
-    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
+                     ModelName, objs, keepOriginals=True)
     exportSTEP(doc,FileName,out_dir,fusion)
 
     step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=FileName)

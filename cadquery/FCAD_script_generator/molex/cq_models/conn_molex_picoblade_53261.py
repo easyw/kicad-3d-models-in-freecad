@@ -168,6 +168,14 @@ class series_params():
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
 
     pitch = pin_pitch
 
@@ -394,7 +402,7 @@ def generate_part(pincount):
     body = generate_body(params)
     # pins = pins.translate((0, y_origin_from_mountpad, 0))
     # body = body.translate((0, y_origin_from_mountpad, 0))
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad
@@ -402,6 +410,6 @@ if "module" in __name__ :
     part_to_build = 17
     #part_to_build = 4
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +str(part_to_build)+"\n")
-    (pins, body) = generate_part(part_to_build)
+    (body, pins) = generate_part(part_to_build)
     show(pins)
     show(body)

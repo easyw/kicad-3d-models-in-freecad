@@ -97,6 +97,15 @@ class series_params():
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
+
 
     pin_inside_distance = 1.05 + 0.5                # Distance between centre of end pin and end of body
     pocket_inside_distance = (10.1 - (8.95 + 0.5)) / 2.0     # Distance between end of pocket and end of body
