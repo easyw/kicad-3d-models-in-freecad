@@ -48,7 +48,7 @@ __title__ = "make 3D models of phoenix contact connectors (MSTB and MC series)."
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
 __Comment__ = '''make 3D models of phoenix contact types MSTB and MC.'''
 
-___ver___ = "1.1 12/04/2016"
+___ver___ = "1.2 03/12/2017"
 
 import sys, os
 import datetime
@@ -142,7 +142,6 @@ sys.path.append("cq_models")
 import conn_phoenix_mstb as MSTB
 import conn_phoenix_mc as MC
 #import conn_molex_53398 as M2
-import step_license as L
 import add_license as L
 
 if LIST_license[0]=="":
@@ -153,6 +152,7 @@ def export_one_part(modul, variant, configuration, log, with_plug=False):
     if not variant in modul.all_params:
         FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'M.all_params', skipping." % variant)
         return
+    LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
 
     params = modul.all_params[variant]
     series_params = modul.seriesParams
