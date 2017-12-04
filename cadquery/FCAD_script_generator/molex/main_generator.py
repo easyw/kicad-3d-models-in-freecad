@@ -44,18 +44,28 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of molex 53261-Connectors."
-__author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
+__title__ = "main generator for molex connector models"
+__author__ = "scripts: maurice and hyOzd; models: see cq_model files"
+__Comment__ = '''This generator loads cadquery model scripts and generates step/wrl files for the official kicad library.'''
 
 ___ver___ = "1.2 03/12/2017"
+
+
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
 
 import sys, os
 import datetime
 from datetime import datetime
+from math import sqrt
+from collections import namedtuple
+
 sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
+import add_license as L
+
 import re, fnmatch
 import yaml
 
@@ -66,29 +76,21 @@ check_log_file = 'check-log.md'
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(M.all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+try:
+    # Gui.SendMsgToActiveView("Run")
+#    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
+
 from Gui.Command import *
 
 # Import cad_tools
@@ -102,23 +104,17 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
  closeCurrentDoc, checkBOP, checkUnion
 
 # Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+#Gui.activateWorkbench("CadQueryWorkbench")
+#import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
 except:
     FreeCAD.Console.PrintMessage("can't close example.")
 
-
-import cadquery as cq
-from math import sqrt
-from Helpers import show
-from collections import namedtuple
-import FreeCAD, Draft, FreeCADGui
+#import FreeCAD, Draft, FreeCADGui
 import ImportGui
-sys.path.append("cq_models")
-import add_license as L
+
 
 def export_one_part(module, pincount, configuration, log):
     series_definition = module.series_params
@@ -168,7 +164,7 @@ def export_one_part(module, pincount, configuration, log):
     show(pins, color_attr)
 
     doc = FreeCAD.ActiveDocument
-    doc.Label=ModelName
+    doc.Label = ModelName
     objs=GetListOfObjects(FreeCAD, doc)
     objs[0].Label = ModelName + "__body"
     objs[1].Label = ModelName + "__pins"
@@ -207,9 +203,10 @@ def export_one_part(module, pincount, configuration, log):
             module.LICENCE_Info.STR_licOrgSys,
             module.LICENCE_Info.STR_licPreProc)
 
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
-
     FreeCAD.activeDocument().recompute()
+
+    saveFCdoc(App, Gui, doc, FileName, out_dir)
+
     #FreeCADGui.activateWorkbench("PartWorkbench")
     if save_memory == False and check_Model==False:
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -223,7 +220,7 @@ def export_one_part(module, pincount, configuration, log):
 
         ImportGui.open(step_path)
         docu = FreeCAD.ActiveDocument
-        docu.Label=ModelName
+        docu.Label = ModelName
         log.write('\n## Checking {:s}\n'.format(ModelName))
 
         if checkUnion(docu) == True:
@@ -236,6 +233,8 @@ def export_one_part(module, pincount, configuration, log):
         FC_majorV=int(FreeCAD.Version()[0])
         FC_minorV=int(FreeCAD.Version()[1])
         if FC_majorV == 0 and FC_minorV >= 17:
+            if docu.Objects == 0:
+                FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
             for o in docu.Objects:
                 if hasattr(o,'Shape'):
                     chks=checkBOP(o.Shape)
@@ -271,8 +270,13 @@ def exportSeries(module, configuration, log, model_filter_regobj):
     if save_memory == True:
         os.remove('{}/temp.FCStd'.format(out_dir))
 
+#########################  ADD MODEL GENERATORS #########################
+
+sys.path.append("cq_models")
 import conn_molex_53261
 import conn_molex_53398
+
+#########################################################################
 
 class argparse():
     def __init__(self):
@@ -299,10 +303,12 @@ class argparse():
             series_str = value.split(',')
             self.series = []
             for s in series_str:
+                #####################  ADD MODEL GENERATORS ###################
                 if '53261' in s:
                     series_str.append(conn_molex_53261)
                 elif '53398' in s:
                     series_str.append(conn_molex_53398)
+                ###############################################################
 
     def argSwitchArg(self, name):
         if name == '?':
@@ -330,7 +336,7 @@ class argparse():
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
             self.config, self.model_filter, str(self.series), self.with_plug)
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "main_generator":
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
     args = argparse()
