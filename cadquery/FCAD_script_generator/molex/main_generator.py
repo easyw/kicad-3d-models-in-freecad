@@ -273,8 +273,8 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 #########################  ADD MODEL GENERATORS #########################
 
 sys.path.append("cq_models")
-import conn_molex_53261
-import conn_molex_53398
+import conn_molex_picoblade_53261
+import conn_molex_picoblade_53398
 
 #########################################################################
 
@@ -305,9 +305,9 @@ class argparse():
             for s in series_str:
                 #####################  ADD MODEL GENERATORS ###################
                 if '53261' in s:
-                    series_str.append(conn_molex_53261)
+                    series_str.append(conn_molex_picoblade_53261)
                 elif '53398' in s:
-                    series_str.append(conn_molex_53398)
+                    series_str.append(conn_molex_picoblade_53398)
                 ###############################################################
 
     def argSwitchArg(self, name):
