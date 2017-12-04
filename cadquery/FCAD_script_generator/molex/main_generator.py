@@ -275,6 +275,13 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 sys.path.append("cq_models")
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
+import conn_molex_kk_6410
+
+all_series = [
+    conn_molex_picoblade_53261,
+    conn_molex_picoblade_53398,
+    conn_molex_kk_6410
+]
 
 #########################################################################
 
@@ -282,7 +289,7 @@ class argparse():
     def __init__(self):
         self.config = 'conn_config_KLCv3.yaml'
         self.model_filter = '*'
-        self.series = [conn_molex_53261, conn_molex_53398]
+        self.series = all_series
 
     def parse_args(self, args):
         for arg in args:
@@ -300,14 +307,18 @@ class argparse():
             global check_log_file
             check_log_file = value
         elif name == 'series':
+            print("param series:")
+            print(value)
             series_str = value.split(',')
             self.series = []
             for s in series_str:
                 #####################  ADD MODEL GENERATORS ###################
                 if '53261' in s:
-                    series_str.append(conn_molex_picoblade_53261)
+                    self.series.append(conn_molex_picoblade_53261)
                 elif '53398' in s:
-                    series_str.append(conn_molex_picoblade_53398)
+                    self.series.append(conn_molex_picoblade_53398)
+                elif '6410' in s:
+                    self.series.append(conn_molex_kk_6410)
                 ###############################################################
 
     def argSwitchArg(self, name):
