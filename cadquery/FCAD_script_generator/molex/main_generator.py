@@ -131,15 +131,15 @@ def export_one_part(module, pincount, configuration, log):
         LIST_license=module.LICENCE_Info.LIST_license
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
-
-    mpn = series_definition.mpn_format_string.format(pincount=pincount)
+    pins_per_row = pincount/series_definition.number_of_rows
+    mpn = series_definition.mpn_format_string.format(pincount=pincount, pins_per_row=pins_per_row)
 
 
     orientation = configuration['orientation_options'][series_definition.orientation]
     FileName = configuration['fp_name_format_string'].\
         format(man=series_definition.manufacturer,
             series=series_definition.series,
-            mpn=mpn, num_rows=1, pins_per_row=pincount,
+            mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
             pitch=series_definition.pitch, orientation=orientation)
     FileName = FileName.replace('__', '_')
 
@@ -264,11 +264,15 @@ def export_one_part(module, pincount, configuration, log):
     return out_dir
 
 def exportSeries(module, configuration, log, model_filter_regobj):
+    out_dir = None
     for pins in module.series_params.pinrange:
         if model_filter_regobj.match(str(pins)):
             out_dir = export_one_part(module, pins, configuration, log)
     if save_memory == True:
-        os.remove('{}/temp.FCStd'.format(out_dir))
+        if out_dir == None:
+            print("Nothing to do for series {:s}".format(module.series_params.series))
+        else:
+            os.remove('{}/temp.FCStd'.format(out_dir))
 
 #########################  ADD MODEL GENERATORS #########################
 
@@ -276,11 +280,13 @@ sys.path.append("cq_models")
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
 import conn_molex_kk_6410
+import conn_molex_SlimStack_54722
 
 all_series = [
     conn_molex_picoblade_53261,
     conn_molex_picoblade_53398,
-    conn_molex_kk_6410
+    conn_molex_kk_6410,
+    conn_molex_SlimStack_54722
 ]
 
 #########################################################################
@@ -319,6 +325,9 @@ class argparse():
                     self.series.append(conn_molex_picoblade_53398)
                 elif '6410' in s:
                     self.series.append(conn_molex_kk_6410)
+                elif '54722' in s:
+                    self.series.append(conn_molex_SlimStack_54722)
+
                 ###############################################################
 
     def argSwitchArg(self, name):

@@ -21,7 +21,7 @@ class Ribbon:
        expansion of line represented by a list of "turtle graphics" style
        plotting commands.  From the starting position, the left hand side of
        of the ribbon is drawn by parsing the commmands from start to finish.
-       The right hand side of the ribbon is then drawn by parsing the commands 
+       The right hand side of the ribbon is then drawn by parsing the commands
        in reverse order.
 
        Arguments:
@@ -29,7 +29,7 @@ class Ribbon:
        commands -- list of plotting commands
 
        Returns:
-       cq -- CadQuery object with closed wire added    
+       cq -- CadQuery object with closed wire added
        """
 
     def __init__(self, cq, commands):
@@ -72,7 +72,7 @@ class Ribbon:
            turn_degrees -- angle of turning in degrees (+ve for CCW, -ve for CW)
 
            Returns:
-           qmx, qmy -- x,y coordinates of a mid point of the three point arc    
+           qmx, qmy -- x,y coordinates of a mid point of the three point arc
            qex, qey -- x,y coordinates of the end point of the three point arc
            rx, ry -- x,y coordinates of the centre of rotation of the arc
            """
@@ -102,12 +102,15 @@ class Ribbon:
            direction_multiplier -- +1 for left hand side of ribbon, -1 for right hand side
 
            Returns:
-           cq -- CadQuery object with edges added    
+           cq -- CadQuery object with edges added
            """
         for c in commands:
             if c[0] == 'start':
                 pass
             elif c[0] == 'line':
+                if 'angle' in c[1]:
+                    angle = c[1]['angle'] * direction_multiplier
+                    self.direction += angle
                 vx = c[1]['length'] * np.cos(np.deg2rad(self.direction))
                 vy = c[1]['length'] * np.sin(np.deg2rad(self.direction))
                 self.current_x += vx
@@ -156,4 +159,3 @@ class Ribbon:
         self.cq = self._parseCommands(self.commands[:0:-1], half_width, -1, debug)
         self.cq = self.cq.close()
         return self.cq
-

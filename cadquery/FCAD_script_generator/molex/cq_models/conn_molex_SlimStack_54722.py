@@ -50,29 +50,127 @@ __title__ = "model description for Molex SlimStack 54722 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for Molex SlimStack 54722 series connectors using cadquery'
 
-___ver___ = "0.1 20/04/2017"
+___ver___ = "0.2 04/12/2017"
+
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Ray Benitez"
+    STR_licEmail = "hackscribble@outlook.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
+
+import sys
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'molex/cq_models':
+            p1 = path.replace('molex/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from ribbon import Ribbon
 
 
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from conn_molex_54722_params import *
-
-from ribbon import Ribbon
 
 
-def generate_contact(params, calc_dim):
+class series_params():
+    series = "SlimStack"
+    series_long = 'SlimStack Fine-Pitch SMT Board-to-Board Connectors'
+    manufacturer = 'Molex'
+    orientation = 'V'
+    number_of_rows = 2
+    datasheet = 'http://www.molex.com/pdm_docs/sd/547220804_sd.pdf'
+    mpn_format_string = "54722-0{pincount:02}4"
+
+
+    #pins_per_row per row
+    pinrange = [16,20,22,24,30,34,40,50,60,80]
+
+    body_color_key = "white body"
+    pins_color_key = "metal grey pins"
+
+    pin_inside_distance = 1.05 + 0.5                # Distance between centre of end pin and end of body
+    pocket_inside_distance = (10.1 - (8.95 + 0.5)) / 2.0     # Distance between end of pocket and end of body
+    island_inside_distance = (10.1 - 8.0) / 2.0             # Distance between end of island and end of body
+
+    pitch = 0.5
+
+    body_width = 5.0
+    body_height = 1.15
+    body_fillet_radius = 0.15
+    body_chamfer = 0.1
+    pin_recess_height = 0.4
+
+    pocket_width = 2.8
+    pocket_base_thickness = 0.2
+    pocket_fillet_radius = 0.05
+
+    island_width = 1.65
+
+    hole_width = 0.3
+    hole_length = 0.3
+    hole_offset = (body_width + pocket_width) / 4.0
+
+    rib_width = 0.25
+    rib_depth = 2.0 * body_chamfer
+
+    slot_height = body_height - 0.05
+    slot_depth = 0.3
+
+    notch_width = 1.2
+    notch_depth = 0.1
+
+    pin_width = 0.15
+    pin_thickness = 0.075
+    pin_minimum_radius = 0.005 + pin_thickness / 2.0
+    pin_y_offset = 0.5
+
+    recess_breakpoint = 29                    # Above this number of pins, the body has housings on the side
+    recess_width = 2.0
+    recess_height = 0.575
+    recess_depth = 0.05
+    recess_pitch = 2.5
+
+
+calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length', 'island_length', 'rib_group_outer_width', 'slot_width', 'num_recesses', 'recess_offset'])
+
+
+def dimensions(num_pins):
+    pin_group_width = ((num_pins / 2) - 1) * series_params.pitch
+    length =  pin_group_width + 2 * series_params.pin_inside_distance
+    pocket_length = length - 2.0 * series_params.pocket_inside_distance
+    island_length = length - 2.0 * series_params.island_inside_distance
+    rib_group_outer_width = pin_group_width + series_params.pitch + series_params.rib_width
+    slot_width = series_params.pitch - series_params.rib_width
+    if num_pins > series_params.recess_breakpoint:
+        num_recesses = num_pins // 10
+        recess_offset = (num_pins % 10) * series_params.pitch / 4.0
+    else:
+        num_recesses = recess_offset = 0
+    return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length,
+                   island_length = island_length, rib_group_outer_width=rib_group_outer_width,
+                   slot_width=slot_width, num_recesses=num_recesses, recess_offset=recess_offset)
+
+def generate_contact(calc_dim):
     pin_group_width = calc_dim.pin_group_width
-    pin_width = seriesParams.pin_width
-    pin_thickness = seriesParams.pin_thickness
-    pin_minimum_radius = seriesParams.pin_minimum_radius
-    pin_pitch = params.pin_pitch
-    pin_y_offset = seriesParams.pin_y_offset
-    body_width = seriesParams.body_width
-    hole_length = seriesParams.hole_length
-    hole_offset = seriesParams.hole_offset
-    slot_height = seriesParams.slot_height
+    pin_width = series_params.pin_width
+    pin_thickness = series_params.pin_thickness
+    pin_minimum_radius = series_params.pin_minimum_radius
+    pitch = series_params.pitch
+    pin_y_offset = series_params.pin_y_offset
+    body_width = series_params.body_width
+    hole_length = series_params.hole_length-0.02
+    hole_offset = series_params.hole_offset
+    slot_height = series_params.slot_height
     c1_list = [
         ('start', {'position': ((-body_width/2 - pin_y_offset, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
         ('line', {'length': pin_y_offset}),
@@ -107,15 +205,14 @@ def generate_contact(params, calc_dim):
     return contact1
 
 
-def generate_contacts(params, calc_dim):
-    num_pins=params.num_pins
-    pin_pitch=params.pin_pitch
-    contact1 = generate_contact(params, calc_dim)
+def generate_contacts(num_pins, calc_dim):
+    pitch=series_params.pitch
+    contact1 = generate_contact(calc_dim)
     contact2=contact1.mirror("XZ")
     contact_pair = contact1.union(contact2)
     contacts = contact_pair
     for i in range(0, num_pins / 2):
-        contacts = contacts.union(contact_pair.translate((i*pin_pitch,0,0)))
+        contacts = contacts.union(contact_pair.translate((i*pitch,0,0)))
     return contacts
 
 
@@ -156,48 +253,47 @@ def my_rarray(self, xSpacing, ySpacing, xCount, yCount, center=True):
         return self.pushPoints(lpoints)
 
 
-def generate_body(params, calc_dim):
+def generate_body(num_pins, calc_dim):
 
     body_length = calc_dim.length
-    body_width = seriesParams.body_width
-    body_height = seriesParams.body_height
-    body_fillet_radius = seriesParams.body_fillet_radius
-    body_chamfer = seriesParams.body_chamfer
-    pin_recess_height = seriesParams.pin_recess_height
+    body_width = series_params.body_width
+    body_height = series_params.body_height
+    body_fillet_radius = series_params.body_fillet_radius
+    body_chamfer = series_params.body_chamfer
+    pin_recess_height = series_params.pin_recess_height
 
-    pin_inside_distance = seriesParams.pin_inside_distance
-    num_pins = params.num_pins
-    pin_pitch = params.pin_pitch
+    pin_inside_distance = series_params.pin_inside_distance
+    pitch = series_params.pitch
 
-    pocket_inside_distance = seriesParams.pocket_inside_distance
-    pocket_width = seriesParams.pocket_width
-    pocket_base_thickness = seriesParams.pocket_base_thickness
-    pocket_fillet_radius = seriesParams.pocket_fillet_radius
+    pocket_inside_distance = series_params.pocket_inside_distance
+    pocket_width = series_params.pocket_width
+    pocket_base_thickness = series_params.pocket_base_thickness
+    pocket_fillet_radius = series_params.pocket_fillet_radius
 
-    island_inside_distance = seriesParams.island_inside_distance
-    island_width = seriesParams.island_width
+    island_inside_distance = series_params.island_inside_distance
+    island_width = series_params.island_width
 
-    hole_width = seriesParams.hole_width
-    hole_length = seriesParams.hole_length
-    hole_offset = seriesParams.hole_offset
+    hole_width = series_params.hole_width
+    hole_length = series_params.hole_length
+    hole_offset = series_params.hole_offset
 
     rib_group_outer_width = calc_dim.rib_group_outer_width
-    rib_depth = seriesParams.rib_depth
-    rib_width = seriesParams.rib_width
+    rib_depth = series_params.rib_depth
+    rib_width = series_params.rib_width
 
     slot_width = calc_dim.slot_width
-    slot_height = seriesParams.slot_height
-    slot_depth = seriesParams.slot_depth
+    slot_height = series_params.slot_height
+    slot_depth = series_params.slot_depth
 
-    notch_width = seriesParams.notch_width
-    notch_depth = seriesParams.notch_depth
+    notch_width = series_params.notch_width
+    notch_depth = series_params.notch_depth
 
-    recess_height = seriesParams.recess_height
-    recess_width = seriesParams.recess_width
-    recess_depth = seriesParams.recess_depth
+    recess_height = series_params.recess_height
+    recess_width = series_params.recess_width
+    recess_depth = series_params.recess_depth
     num_recesses = calc_dim.num_recesses
     recess_offset = calc_dim.recess_offset
-    recess_pitch = seriesParams.recess_pitch
+    recess_pitch = series_params.recess_pitch
 
     # body
     body = cq.Workplane("XY")\
@@ -235,10 +331,10 @@ def generate_body(params, calc_dim):
     # contact holes
     body = body.faces(">Z").workplane().center(0, hole_offset)
 
-    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+    body = my_rarray(body, pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
         .center(0, -2*hole_offset)
 
-    body = my_rarray(body, pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+    body = my_rarray(body, pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
        .cutBlind(-2)
 
     # ribs recess
@@ -251,7 +347,7 @@ def generate_body(params, calc_dim):
     # ribs
     ribs = cq.Workplane("XY")
 
-    ribs = my_rarray(ribs, pin_pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
+    ribs = my_rarray(ribs, pitch, pocket_width + body_chamfer, (num_pins/2)+1, 2).rect(rib_width,rib_depth).extrude(body_height)\
         .faces(">Z").edges("|X").fillet((rib_depth-0.001)/2.0)
 
     body = body.union(ribs)
@@ -259,10 +355,10 @@ def generate_body(params, calc_dim):
     # slots for contacts
     slot_cutter = cq.Workplane("XY").center(-slot_width/2.0, (island_width / 2.0) - slot_depth)
 
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)\
+    slot_cutter = my_rarray(slot_cutter, pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)\
        .center(0, -island_width-slot_depth)
 
-    slot_cutter = my_rarray(slot_cutter, pin_pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)
+    slot_cutter = my_rarray(slot_cutter, pitch, 1, num_pins/2, 1).rect(slot_width, slot_depth+(pocket_width-island_width)/2.0, centered=False).extrude(slot_height)
 
     body = body.cut(slot_cutter)
 
@@ -279,24 +375,23 @@ def generate_body(params, calc_dim):
     return body
 
 
-def generate_part(part_key):
-    params = all_params[part_key]
-    calc_dim = dimensions(params)
-    body = generate_body(params, calc_dim)
-    contacts = generate_contacts(params, calc_dim)
+def generate_part(num_pins):
+    calc_dim = dimensions(num_pins)
+    body = generate_body(num_pins, calc_dim)
+    contacts = generate_contacts(num_pins, calc_dim)
     return (body, contacts)
 
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'molex_54722_2x08'
+    num_pins = 16
     # part_to_build = 'molex_54722_2x15'
     # part_to_build = 'molex_54722_2x17'
     # part_to_build = 'molex_54722_2x40'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
-                                 part_to_build + "\n")
-    (body, contacts) = generate_part(part_to_build)
+                                 str(num_pins) + "pins variant\n")
+    (body, contacts) = generate_part(num_pins)
 
     show(body)
     show(contacts)

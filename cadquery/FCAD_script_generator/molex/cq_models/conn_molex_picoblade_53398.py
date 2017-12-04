@@ -152,8 +152,9 @@ back_cutout_t_width = 0.3 #Measured (+/-0.1 at least)
 class series_params():
     manufacturer = 'Molex'
     series = "PicoBlade"
-    mpn_format_string = '53398-{pincount:02d}71'
+    mpn_format_string = '53398-{pins_per_row:02d}71'
     orientation = 'V'
+    number_of_rows = 1
     datasheet = 'http://www.molex.com/pdm_docs/sd/533980271_sd.pdf'
     pinrange = range(2,16)
 
