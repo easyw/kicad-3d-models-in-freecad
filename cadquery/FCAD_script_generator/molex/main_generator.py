@@ -282,12 +282,14 @@ import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
 import conn_molex_kk_6410
 import conn_molex_SlimStack_54722
+import conn_molex_SlimStack_55560
 
 all_series = [
     conn_molex_picoblade_53261,
     conn_molex_picoblade_53398,
     conn_molex_kk_6410,
-    conn_molex_SlimStack_54722
+    conn_molex_SlimStack_54722,
+    conn_molex_SlimStack_55560
 ]
 
 #########################################################################
@@ -328,6 +330,8 @@ class argparse():
                     self.series.append(conn_molex_kk_6410)
                 elif '54722' in s:
                     self.series.append(conn_molex_SlimStack_54722)
+                elif '55560' in s:
+                    self.series.append(conn_molex_SlimStack_55560)
 
                 ###############################################################
 
