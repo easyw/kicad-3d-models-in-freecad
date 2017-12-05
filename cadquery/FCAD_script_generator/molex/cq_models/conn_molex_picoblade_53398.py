@@ -89,7 +89,9 @@ mounting_pad_size_y = 3.0
 rel_pad_y_outside_edge = 4.9
 rel_pad_y_inside_edge = 3.6
 
-y_origin_from_mountpad = -rel_pad_y_outside_edge/2 + mounting_pad_size_y/2
+# amount to shift y position of center for pick-and-place (positive -> shift whole footprint up)
+center_shift_y = -0.55
+y_origin_from_mountpad = -rel_pad_y_outside_edge/2 + mounting_pad_size_y/2 + center_shift_y
 
 
 mount_pin_lenght = 1.7
