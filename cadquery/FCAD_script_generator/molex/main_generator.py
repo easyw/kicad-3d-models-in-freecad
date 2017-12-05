@@ -300,7 +300,7 @@ all_series = [
 
 class argparse():
     def __init__(self):
-        self.config = 'conn_config_KLCv3.yaml'
+        self.config = '../_tools/config/connector_config_KLCv3.yaml'
         self.model_filter = '*'
         self.series = all_series
 
