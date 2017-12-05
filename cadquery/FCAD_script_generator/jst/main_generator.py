@@ -285,9 +285,11 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 
 sys.path.append("cq_models")
 import conn_jst_eh_models
+import conn_jst_ph_models
 
 all_series = [
-    conn_jst_eh_models
+    conn_jst_eh_models,
+    conn_jst_ph_models
 ]
 
 #########################################################################
@@ -322,6 +324,8 @@ class argparse():
                 #####################  ADD MODEL GENERATORS ###################
                 if 'EH' in s:
                     self.series.append(conn_jst_eh_models)
+                elif 'PH' in s:
+                    self.series.append(conn_jst_ph_models)
 
                 ###############################################################
 

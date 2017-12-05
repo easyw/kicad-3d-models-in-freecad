@@ -51,20 +51,37 @@ __author__ = "poeschlr"
 __Comment__ = 'model description for JST-PH Connectors using cadquery. Datasheet: http://www.jst-mfg.com/product/pdf/eng/ePH.pdf'
 
 ___ver___ = "1.0 02/03/2017"
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Rene Poeschl"
+    STR_licEmail = "poeschlr@gmail.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
 
 import sys
+
+# DIRTY HACK TO ALLOW CENTRALICED HELPER SCRIPTS. (freecad cadquery does copy the file to /tmp and we can therefore not use relative paths for importing)
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'jst/cq_models' in path:
+            p1 = path.replace('jst/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from cq_helpers import *
+
+
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
 from conn_jst_ph_params import *
-
-def union_all(objects):
-    o = objects[0]
-    for i in range(1,len(objects)):
-        o = o.union(objects[i])
-    return o
-
 
 def generate_pins(params):
     if params.angled:
@@ -321,16 +338,14 @@ def generate_part(params):
     center_x=body_corner_x+body_lenght/2
     pins = pins.rotate((center_x,0,0),(0,0,1),180)
     body = body.rotate((center_x,0,0),(0,0,1),180)
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "B02B_PH_K"
-    part_to_build = "S03B_PH_K"
-    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    all_params=params_straight
-    all_params.update(params_angled)
-    (pins, body) = generate_part(all_params[part_to_build])
+    #params=series_params.variant_params['top_entry']['param_generator'](3)
+    params=series_params.variant_params['side_entry']['param_generator'](3)
+
+    (body, pins) = generate_part(params)
     show(pins)
     show(body)
