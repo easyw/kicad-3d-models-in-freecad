@@ -44,18 +44,28 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of molex 53261-Connectors."
-__author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-XH-Connectors types molex 53261. (Top entry)'''
+__title__ = "main generator for molex connector models"
+__author__ = "scripts: maurice and hyOzd; models: see cq_model files"
+__Comment__ = '''This generator loads cadquery model scripts and generates step/wrl files for the official kicad library.'''
 
 ___ver___ = "1.2 03/12/2017"
+
+
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
 
 import sys, os
 import datetime
 from datetime import datetime
+from math import sqrt
+from collections import namedtuple
+
 sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
+import add_license as L
+
 import re, fnmatch
 import yaml
 
@@ -66,30 +76,22 @@ check_log_file = 'check-log.md'
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(M.all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+try:
+    # Gui.SendMsgToActiveView("Run")
+#    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
-from Gui.Command import *
+
+#from Gui.Command import *
 
 # Import cad_tools
 #sys.path.append("../_tools")
@@ -97,36 +99,25 @@ import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
  closeCurrentDoc, checkBOP, checkUnion
 
 # Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+#Gui.activateWorkbench("CadQueryWorkbench")
+#import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
 except:
     FreeCAD.Console.PrintMessage("can't close example.")
 
-
-import cadquery as cq
-from math import sqrt
-from Helpers import show
-from collections import namedtuple
-import FreeCAD, Draft, FreeCADGui
+#import FreeCAD, Draft, FreeCADGui
 import ImportGui
-sys.path.append("cq_models")
-import add_license as L
+
 
 def export_one_part(module, pincount, configuration, log):
     series_definition = module.series_params
-
-    body_color_key = series_definition.body_color_key
-    body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
-    pins_color_key = series_definition.pins_color_key
-    pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
 
     if module.LICENCE_Info.LIST_license[0]=="":
         LIST_license=L.LIST_int_license
@@ -135,15 +126,15 @@ def export_one_part(module, pincount, configuration, log):
         LIST_license=module.LICENCE_Info.LIST_license
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
-
-    mpn = series_definition.mpn_format_string.format(pincount=pincount)
+    pins_per_row = pincount/series_definition.number_of_rows
+    mpn = series_definition.mpn_format_string.format(pincount=pincount, pins_per_row=pins_per_row)
 
 
     orientation = configuration['orientation_options'][series_definition.orientation]
     FileName = configuration['fp_name_format_string'].\
         format(man=series_definition.manufacturer,
             series=series_definition.series,
-            mpn=mpn, num_rows=1, pins_per_row=pincount,
+            mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
             pitch=series_definition.pitch, orientation=orientation)
     FileName = FileName.replace('__', '_')
 
@@ -159,19 +150,27 @@ def export_one_part(module, pincount, configuration, log):
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = module.generate_part(pincount)
 
-    color_attr = body_color + (0,)
-    show(body, color_attr)
+    color_keys = series_definition.color_keys
+    obj_suffixes = series_definition.obj_suffixes
+    colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
-    color_attr = pins_color + (0,)
-    show(pins, color_attr)
+    cq_obj_data = module.generate_part(pincount)
+
+
+    for i in range(len(cq_obj_data)):
+        color_i = colors[i] + (0,)
+        show(cq_obj_data[i], color_i)
+
 
     doc = FreeCAD.ActiveDocument
-    doc.Label=ModelName
+    doc.Label = ModelName
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = ModelName + "__body"
-    objs[1].Label = ModelName + "__pins"
+
+
+    for i in range(len(objs)):
+        objs[i].Label = ModelName + obj_suffixes[i]
+
 
     restore_Main_Tools()
 
@@ -179,23 +178,21 @@ def export_one_part(module, pincount, configuration, log):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    used_color_keys = [body_color_key, pins_color_key]
+    used_color_keys = color_keys
     export_file_name=out_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
-    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-            shape_color=body_color_key,
-            face_colors=None))
-    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-            shape_color=pins_color_key,
-            face_colors=None))
+    for i in range(len(objs)):
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=color_keys[i],
+                face_colors=None))
 
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
-    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
+                     ModelName, objs, keepOriginals=True)
     exportSTEP(doc,FileName,out_dir,fusion)
 
     step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=FileName)
@@ -207,9 +204,10 @@ def export_one_part(module, pincount, configuration, log):
             module.LICENCE_Info.STR_licOrgSys,
             module.LICENCE_Info.STR_licPreProc)
 
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
-
     FreeCAD.activeDocument().recompute()
+
+    saveFCdoc(App, Gui, doc, FileName, out_dir)
+
     #FreeCADGui.activateWorkbench("PartWorkbench")
     if save_memory == False and check_Model==False:
         FreeCADGui.SendMsgToActiveView("ViewFit")
@@ -223,7 +221,7 @@ def export_one_part(module, pincount, configuration, log):
 
         ImportGui.open(step_path)
         docu = FreeCAD.ActiveDocument
-        docu.Label=ModelName
+        docu.Label = ModelName
         log.write('\n## Checking {:s}\n'.format(ModelName))
 
         if checkUnion(docu) == True:
@@ -236,6 +234,8 @@ def export_one_part(module, pincount, configuration, log):
         FC_majorV=int(FreeCAD.Version()[0])
         FC_minorV=int(FreeCAD.Version()[1])
         if FC_majorV == 0 and FC_minorV >= 17:
+            if docu.Objects == 0:
+                FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
             for o in docu.Objects:
                 if hasattr(o,'Shape'):
                     chks=checkBOP(o.Shape)
@@ -265,20 +265,44 @@ def export_one_part(module, pincount, configuration, log):
     return out_dir
 
 def exportSeries(module, configuration, log, model_filter_regobj):
+    out_dir = None
     for pins in module.series_params.pinrange:
         if model_filter_regobj.match(str(pins)):
             out_dir = export_one_part(module, pins, configuration, log)
     if save_memory == True:
-        os.remove('{}/temp.FCStd'.format(out_dir))
+        if out_dir == None:
+            print("Nothing to do for series {:s}".format(module.series_params.series))
+        else:
+            os.remove('{}/temp.FCStd'.format(out_dir))
 
-import conn_molex_53261
-import conn_molex_53398
+#########################  ADD MODEL GENERATORS #########################
+
+sys.path.append("cq_models")
+import conn_molex_picoblade_53261
+import conn_molex_picoblade_53398
+import conn_molex_kk_6410
+import conn_molex_SlimStack_54722
+import conn_molex_SlimStack_55560
+import conn_molex_picoflex_90325
+import conn_molex_picoflex_90814
+
+all_series = [
+    conn_molex_picoblade_53261,
+    conn_molex_picoblade_53398,
+    conn_molex_kk_6410,
+    conn_molex_SlimStack_54722,
+    conn_molex_SlimStack_55560,
+    conn_molex_picoflex_90325,
+    conn_molex_picoflex_90814
+]
+
+#########################################################################
 
 class argparse():
     def __init__(self):
         self.config = 'conn_config_KLCv3.yaml'
         self.model_filter = '*'
-        self.series = [conn_molex_53261, conn_molex_53398]
+        self.series = all_series
 
     def parse_args(self, args):
         for arg in args:
@@ -296,13 +320,28 @@ class argparse():
             global check_log_file
             check_log_file = value
         elif name == 'series':
+            print("param series:")
+            print(value)
             series_str = value.split(',')
             self.series = []
             for s in series_str:
+                #####################  ADD MODEL GENERATORS ###################
                 if '53261' in s:
-                    series_str.append(conn_molex_53261)
+                    self.series.append(conn_molex_picoblade_53261)
                 elif '53398' in s:
-                    series_str.append(conn_molex_53398)
+                    self.series.append(conn_molex_picoblade_53398)
+                elif '6410' in s:
+                    self.series.append(conn_molex_kk_6410)
+                elif '54722' in s:
+                    self.series.append(conn_molex_SlimStack_54722)
+                elif '55560' in s:
+                    self.series.append(conn_molex_SlimStack_55560)
+                elif '90325' in s:
+                    self.series.append(conn_molex_picoflex_90325)
+                elif '90814' in s:
+                    self.series.append(conn_molex_picoflex_90814)
+
+                ###############################################################
 
     def argSwitchArg(self, name):
         if name == '?':
@@ -330,7 +369,7 @@ class argparse():
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
             self.config, self.model_filter, str(self.series), self.with_plug)
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "main_generator":
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
     args = argparse()

@@ -50,23 +50,87 @@ __title__ = "model description for Molex KK 6410 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for Molex KK 6410 series connectors using cadquery'
 
-___ver___ = "0.2 14/04/2017"
+___ver___ = "0.3 04/12/2017"
+
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Ray Benitez"
+    STR_licEmail = "hackscribble@outlook.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
 
 
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from conn_molex_6410_params import *
+
+class series_params():
+    series = "KK-254"
+    manufacturer = 'Molex'
+    mpn_format_string = 'AE-6410-{pincount:02d}A'
+    orientation = 'V'
+    datasheet = 'http://www.molex.com/pdm_docs/sd/022272021_sd.pdf'
+    pinrange = range(2, 17)
+    
+    number_of_rows = 2
+
+    body_color_key = "white body"
+    pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
+
+    pitch = 2.54
+
+    pin_width = 0.64
+    pin_chamfer_long = 0.25
+    pin_chamfer_short = 0.25
+    pin_height = 14.22				# DIMENSION C
+    pin_depth = 3.56				# DIMENSION F depth below bottom surface of base
+    pin_inside_distance = 1.27			# Distance between centre of end pin and end of body
+
+    body_width = 5.8
+    body_height = 3.17
+    body_channel_depth = 0.6
+    body_channel_width = 1.5
+    body_cutout_length = 1.2
+    body_cutout_width = 0.6
+
+    ramp_split_breakpoint = 6			# Above this number of pins, the tab is split into two parts
+    ramp_chamfer_x = 0.3
+    ramp_chamfer_y = 0.7
 
 
-def generate_straight_pin(params):
-    pin_width=seriesParams.pin_width
-    pin_depth=seriesParams.pin_depth
-    pin_height=seriesParams.pin_height
-    pin_inside_distance=seriesParams.pin_inside_distance
-    chamfer_long = seriesParams.pin_chamfer_long
-    chamfer_short = seriesParams.pin_chamfer_short
+calcDim = namedtuple( 'calcDim', ['length', 'ramp_height', 'ramp_width', 'ramp_offset'])
+
+
+def dimensions(num_pins):
+    length = (num_pins-1) * series_params.pitch + 2 * series_params.pin_inside_distance
+    ramp_height = 11.7 - series_params.body_height
+    if num_pins > series_params.ramp_split_breakpoint:
+        ramp_width = series_params.pitch * 2
+        ramp_offset = series_params.pitch * (num_pins -5) / 2
+    else:
+        ramp_width = (num_pins - 1) * series_params.pitch / 2
+        ramp_offset = 0
+    return calcDim(length = length, ramp_height = ramp_height, ramp_width = ramp_width, ramp_offset = ramp_offset)
+
+def generate_straight_pin():
+    pin_width=series_params.pin_width
+    pin_depth=series_params.pin_depth
+    pin_height=series_params.pin_height
+    pin_inside_distance=series_params.pin_inside_distance
+    chamfer_long = series_params.pin_chamfer_long
+    chamfer_short = series_params.pin_chamfer_short
 
     pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
         .moveTo(-pin_width/2.0, -pin_depth)\
@@ -84,44 +148,42 @@ def generate_straight_pin(params):
     return pin
 
 
-def generate_pins(params):
-    pin_pitch=params.pin_pitch
-    num_pins=params.num_pins
-    pin=generate_straight_pin(params)
+def generate_pins(num_pins):
+    pitch=series_params.pitch
+    pin=generate_straight_pin()
     pins = pin
     for i in range(0, num_pins):
-        pins = pins.union(pin.translate((i * pin_pitch, 0, 0)))
+        pins = pins.union(pin.translate((i * pitch, 0, 0)))
     return pins
 
 
-def generate_body(params ,calc_dim, with_details=False):
-    pin_inside_distance = seriesParams.pin_inside_distance
-    pin_width = seriesParams.pin_width
-    num_pins = params.num_pins
-    pin_pitch = params.pin_pitch
+def generate_body(num_pins ,calc_dim):
+    pin_inside_distance = series_params.pin_inside_distance
+    pin_width = series_params.pin_width
+    pitch = series_params.pitch
 
     body_len = calc_dim.length
-    body_width = seriesParams.body_width
-    body_height = seriesParams.body_height
+    body_width = series_params.body_width
+    body_height = series_params.body_height
 
-    body_channel_depth = seriesParams.body_channel_depth
-    body_channel_width = seriesParams.body_channel_width
-    body_cutout_length = seriesParams.body_cutout_length
-    body_cutout_width = seriesParams.body_cutout_width
+    body_channel_depth = series_params.body_channel_depth
+    body_channel_width = series_params.body_channel_width
+    body_cutout_length = series_params.body_cutout_length
+    body_cutout_width = series_params.body_cutout_width
 
-    # ramp_split_breakpoint = seriesParams.ramp_split_breakpoint
-    ramp_chamfer_x = seriesParams.ramp_chamfer_x
-    ramp_chamfer_y = seriesParams.ramp_chamfer_y
+    # ramp_split_breakpoint = series_params.ramp_split_breakpoint
+    ramp_chamfer_x = series_params.ramp_chamfer_x
+    ramp_chamfer_y = series_params.ramp_chamfer_y
     ramp_height = calc_dim.ramp_height
-    ramp_width = calc_dim.ramp_width 
+    ramp_width = calc_dim.ramp_width
     ramp_offset = calc_dim.ramp_offset
 
-    body = cq.Workplane("XY").moveTo(((num_pins-1)*pin_pitch)/2.0, 0).rect(body_len, body_width).extrude(body_height).edges("|Z").fillet(0.05)
+    body = cq.Workplane("XY").moveTo(((num_pins-1)*pitch)/2.0, 0).rect(body_len, body_width).extrude(body_height)#.edges("|Z").fillet(0.05)
 
-    body = body.faces("<Z").workplane().rarray(pin_pitch, 1, num_pins, 1)\
+    body = body.faces("<Z").workplane().rarray(pitch, 1, num_pins, 1)\
         .rect(body_channel_width, body_width).cutBlind(-body_channel_depth)
 
-    body = body.faces(">Z").workplane().moveTo(((num_pins-1)*pin_pitch)/2.0, 0).rarray(pin_pitch, 1, num_pins-1, 1)\
+    body = body.faces(">Z").workplane().moveTo(((num_pins-1)*pitch)/2.0, 0).rarray(pitch, 1, num_pins-1, 1)\
         .rect(body_cutout_width, body_cutout_length).cutThruAll(False)
 
     ramp = cq.Workplane("YZ").workplane(offset=ramp_offset).moveTo(-body_width/2.0, body_height)\
@@ -137,29 +199,27 @@ def generate_body(params ,calc_dim, with_details=False):
 
     ramp_mirror = ramp.mirror("YZ")
 
-    ramp = ramp.union(ramp_mirror).translate(((num_pins - 1) * pin_pitch / 2.0, 0, 0))
-    
+    ramp = ramp.union(ramp_mirror).translate(((num_pins - 1) * pitch / 2.0, 0, 0))
+
     body = body.union(ramp)
- 
+
     return body, None
 
 
-def generate_part(part_key, with_plug=False):
-    params = all_params[part_key]
-    calc_dim = dimensions(params)
-    pins = generate_pins(params)
-    body, insert = generate_body(params, calc_dim, not with_plug)
-    return (pins, body)
+def generate_part(num_pins):
+    calc_dim = dimensions(num_pins)
+    pins = generate_pins(num_pins)
+    body, insert = generate_body(num_pins, calc_dim)
+    return (body, pins)
 
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = "KK_6410_01x16_2.54mm"
+    part_to_build = 16
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
-                                 part_to_build + "\n")
-    (pins, body) = generate_part(part_to_build, True)
+                                 str(part_to_build) + "pin variant\n")
+    (body, pins) = generate_part(part_to_build)
 
     show(pins)
     show(body)
-

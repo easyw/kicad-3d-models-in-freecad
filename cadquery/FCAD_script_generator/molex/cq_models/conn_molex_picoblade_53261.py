@@ -160,13 +160,22 @@ Params = namedtuple("Params",[
 class series_params():
     series = "PicoBlade"
     manufacturer = 'Molex'
-    mpn_format_string = '53261-{pincount:02d}71'
+    mpn_format_string = '53261-{pins_per_row:02d}71'
     orientation = 'H'
+    number_of_rows = 1
     datasheet = 'http://www.molex.com/pdm_docs/sd/532610271_sd.pdf'
     pinrange = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,17]
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
 
     pitch = pin_pitch
 
@@ -393,7 +402,7 @@ def generate_part(pincount):
     body = generate_body(params)
     # pins = pins.translate((0, y_origin_from_mountpad, 0))
     # body = body.translate((0, y_origin_from_mountpad, 0))
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad
@@ -401,6 +410,6 @@ if "module" in __name__ :
     part_to_build = 17
     #part_to_build = 4
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +str(part_to_build)+"\n")
-    (pins, body) = generate_part(part_to_build)
+    (body, pins) = generate_part(part_to_build)
     show(pins)
     show(body)

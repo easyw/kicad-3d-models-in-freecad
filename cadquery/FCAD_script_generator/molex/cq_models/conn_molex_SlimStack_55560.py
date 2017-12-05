@@ -50,25 +50,120 @@ __title__ = "model description for Molex SlimStack 55560 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for Molex SlimStack 55560 series connectors using cadquery'
 
-___ver___ = "0.1 21/04/2017"
+___ver___ = "0.2 04/12/2017"
 
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Ray Benitez"
+    STR_licEmail = "hackscribble@outlook.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
+
+import sys
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'molex/cq_models':
+            p1 = path.replace('molex/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from ribbon import Ribbon
 
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
-from conn_molex_55560_params import *
 
-from ribbon import Ribbon
+lock_positions = {
+    16: ['all'],
+    20: ['all'],
+    22: ['all'],
+    24: ['all'],
+    30: ['all'],
+    34: [2,3,4,5,7,8,9,10,11,13,14,15,16],
+    40: [2,3,5,6,8,9,12,13,15,16,18,19],
+    46: [2,4,8,10,14,16,20,22],
+    50: [2,4,8,10,16,18,22,24],
+    60: [10,21],
+    80: ['none']
+}
 
-def generate_pin(params, calc_dim):
+class series_params():
+    series = "SlimStack"
+    series_long = 'SlimStack Fine-Pitch SMT Board-to-Board Connectors'
+    manufacturer = 'Molex'
+    orientation = 'V'
+    number_of_rows = 2
+    datasheet = 'http://www.molex.com/pdm_docs/sd/555600207_sd.pdf'
+    mpn_format_string = "55560-0{pincount:02}1"
+
+    body_color_key = "dark grey body"
+    pins_color_key = "gold pins"
+    contacts_color_key = "gold pins"
+
+    color_keys = [
+        body_color_key,
+        pins_color_key,
+        contacts_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins',
+        '__contacts'
+    ]
+
+    pitch = 0.5
+
+    pinrange = lock_positions.keys()
+
+    pin_inside_distance = 0.45 + 0.525				# Distance between centre of end pin and end of body
+    pocket_inside_distance = 0.45			 	# Distance between end of pocket and end of body
+
+    body_width = 2.83
+    body_height = 1.15
+    body_fillet_radius = 0.15
+    body_chamfer = 0.1
+    pin_recess_height = 0.4
+
+    pocket_width = 1.65
+    pocket_base_thickness = 0.2
+    pocket_fillet_radius = 0.15
+
+    pin_width = 0.15
+    pin_thickness = 0.075
+    pin_minimum_radius = 0.005 + pin_thickness / 2.0
+    pin_y_offset = 0.735
+
+    contact_width = 0.2
+    contact_thickness = 0.15
+    contact_minimum_radius = 0.005 + contact_thickness / 2.0
+    contact_slot_width = 0.3
+    top_slot_offset = (body_width + pocket_width) / 4.0
+
+
+calcDim = namedtuple( 'calcDim', ['pin_group_width', 'length', 'pocket_length'])
+
+
+def dimensions(num_pins):
+    pin_group_width = ((num_pins / 2) - 1) * series_params.pitch
+    length =  pin_group_width + 2 * series_params.pin_inside_distance
+    pocket_length = length - 2.0 * series_params.pocket_inside_distance
+    return calcDim(pin_group_width=pin_group_width, length = length, pocket_length=pocket_length)
+
+def generate_pin(num_pins, calc_dim):
     pin_group_width = calc_dim.pin_group_width
-    pin_width = seriesParams.pin_width
-    pin_thickness = seriesParams.pin_thickness
-    pin_pitch = params.pin_pitch
-    body_width = seriesParams.body_width
-    pin_minimum_radius = seriesParams.pin_minimum_radius
-    pin_y_offset = seriesParams.pin_y_offset
+    pin_width = series_params.pin_width
+    pin_thickness = series_params.pin_thickness
+    pin_pitch = series_params.pitch
+    body_width = series_params.body_width
+    pin_minimum_radius = series_params.pin_minimum_radius
+    pin_y_offset = series_params.pin_y_offset
     p_list = [
         ('start', {'position': ((-body_width/2 - pin_y_offset, pin_thickness/2.0)), 'direction': 0.0, 'width':pin_thickness}),
         ('line', {'length': pin_y_offset}),
@@ -82,10 +177,9 @@ def generate_pin(params, calc_dim):
     return pin
 
 
-def generate_pins(params, calc_dim):
-    num_pins=params.num_pins
-    pin_pitch=params.pin_pitch
-    pin_A = generate_pin(params, calc_dim)
+def generate_pins(num_pins, calc_dim):
+    pin_pitch=series_params.pitch
+    pin_A = generate_pin(num_pins, calc_dim)
     pin_B = pin_A.mirror("XZ")
     pin_pair = pin_A.union(pin_B)
     pins = pin_pair
@@ -94,15 +188,15 @@ def generate_pins(params, calc_dim):
     return pins
 
 
-def generate_contact(params, calc_dim):
+def generate_contact(calc_dim):
     pin_group_width = calc_dim.pin_group_width
-    contact_width = seriesParams.contact_width
-    contact_thickness = seriesParams.contact_thickness
-    contact_minimum_radius = seriesParams.contact_minimum_radius
-    pin_pitch = params.pin_pitch
-    pocket_width = seriesParams.pocket_width
-    body_height = seriesParams.body_height
-    pocket_base_thickness = seriesParams.pocket_base_thickness
+    contact_width = series_params.contact_width
+    contact_thickness = series_params.contact_thickness
+    contact_minimum_radius = series_params.contact_minimum_radius
+    pin_pitch = series_params.pitch
+    pocket_width = series_params.pocket_width
+    body_height = series_params.body_height
+    pocket_base_thickness = series_params.pocket_base_thickness
     c_list = [
         ('start', {'position': ((-pocket_width/2 - contact_thickness / 2.0, pocket_base_thickness)), 'direction': 90.0, 'width':contact_thickness}),
         ('line', {'length': body_height  - pocket_base_thickness - contact_minimum_radius - contact_thickness / 2.0}),
@@ -115,10 +209,9 @@ def generate_contact(params, calc_dim):
     return contact
 
 
-def generate_contacts(params, calc_dim):
-    num_pins=params.num_pins
-    pin_pitch=params.pin_pitch
-    contact1 = generate_contact(params, calc_dim)
+def generate_contacts(num_pins, calc_dim):
+    pin_pitch=series_params.pitch
+    contact1 = generate_contact(calc_dim)
     contact2=contact1.mirror("XZ")
     contact_pair = contact1.union(contact2)
     contacts = contact_pair
@@ -163,29 +256,27 @@ def my_rarray(self, xSpacing, ySpacing, xCount, yCount, center=True):
         return self.pushPoints(lpoints)
 
 
-def generate_body(params, calc_dim):
+def generate_body(num_pins, calc_dim):
 
     body_length = calc_dim.length
-    body_width = seriesParams.body_width
-    body_height = seriesParams.body_height
-    body_fillet_radius = seriesParams.body_fillet_radius
-    body_chamfer = seriesParams.body_chamfer
-    pin_recess_height = seriesParams.pin_recess_height
+    body_width = series_params.body_width
+    body_height = series_params.body_height
+    body_fillet_radius = series_params.body_fillet_radius
+    body_chamfer = series_params.body_chamfer
+    pin_recess_height = series_params.pin_recess_height
 
-    pin_inside_distance = seriesParams.pin_inside_distance
-    num_pins = params.num_pins
-    pin_pitch = params.pin_pitch
+    pin_inside_distance = series_params.pin_inside_distance
+    pin_pitch = series_params.pitch
 
-    pocket_inside_distance = seriesParams.pocket_inside_distance
-    pocket_width = seriesParams.pocket_width
-    pocket_base_thickness = seriesParams.pocket_base_thickness
-    pocket_fillet_radius = seriesParams.pocket_fillet_radius
+    pocket_inside_distance = series_params.pocket_inside_distance
+    pocket_width = series_params.pocket_width
+    pocket_base_thickness = series_params.pocket_base_thickness
+    pocket_fillet_radius = series_params.pocket_fillet_radius
 
-    contact_thickness = seriesParams.contact_thickness
-    contact_slot_width = seriesParams.contact_slot_width
-    top_slot_offset = seriesParams.top_slot_offset
+    contact_thickness = series_params.contact_thickness
+    contact_slot_width = series_params.contact_slot_width
+    top_slot_offset = series_params.top_slot_offset
 
-    lock_positions = params.lock_positions
     pin_group_width = calc_dim.pin_group_width
 
 
@@ -206,7 +297,7 @@ def generate_body(params, calc_dim):
         .extrude(-(body_height - pocket_base_thickness)).edges("|Z").fillet(pocket_fillet_radius)
     body_B = body_B.cut(pocket)
 
-    body_B = body_B.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
+    #body_B = body_B.faces(">Z").edges("not(<X or >X or <Y or >Y)").fillet(body_chamfer)
     body = body_A.union(body_B)
 
     # cut slots for contacts
@@ -261,18 +352,17 @@ def generate_body(params, calc_dim):
     return body
 
 
-def generate_part(part_key):
-    params = all_params[part_key]
-    calc_dim = dimensions(params)
-    body = generate_body(params, calc_dim)
-    pins = generate_pins(params, calc_dim)
-    contacts = generate_contacts(params, calc_dim)
+def generate_part(num_pins):
+    calc_dim = dimensions(num_pins)
+    body = generate_body(num_pins, calc_dim)
+    pins = generate_pins(num_pins, calc_dim)
+    contacts = generate_contacts(num_pins, calc_dim)
     return (body, pins, contacts)
 
 
 # opened from within freecad
 if "module" in __name__:
-    part_to_build = 'molex_55560_2x08'
+    num_pins = 2*8
     # part_to_build = 'molex_55560_2x10'
     # part_to_build = 'molex_55560_2x11'
     # part_to_build = 'molex_55560_2x12'
@@ -285,9 +375,9 @@ if "module" in __name__:
     # part_to_build = 'molex_55560_2x40'
 
     FreeCAD.Console.PrintMessage("Started from CadQuery: building " +
-                                 part_to_build + "\n")
-    (body, pins, contacts) = generate_part(part_to_build)
-    
+                                 str(num_pins) + "pins variant\n")
+    (body, pins, contacts) = generate_part(num_pins)
+
     show(body)
     show(pins)
     show(contacts)
