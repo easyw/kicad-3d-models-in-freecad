@@ -77,38 +77,9 @@ body_back_to_pin = 1.6
 body_corner_x = -body_side_to_pin
 body_corner_y = -Body_width+body_back_to_pin
 
-
-def v_add(p1, p2):
-    return (p1[0]+p2[0],p1[1]+p2[1])
-
-def v_sub(p1, p2):
-    return (p1[0]-p2[0],p1[1]-p2[1])
-#v_add(pcs2, (-body_cutout_radius*(1-1/sqrt(2)), -1/sqrt(2)*body_cutout_radius))
-def get_third_arc_point(starting_point, end_point):
-    px = v_sub(end_point, starting_point)
-    #FreeCAD.Console.PrintMessage("("+str(px[0])+","+str(px[1])+")")
-    return v_add((px[0]*(1-1/sqrt(2)),px[1]*(1/sqrt(2))),starting_point)
-
-def add_p_to_chain(chain, rel_point):
-    chain.append(v_add(chain[len(chain)-1], rel_point))
-
-def mirror(chain):
-    result = []
-    for point in chain:
-        result.append((point[0]*-1,point[1]))
-    return result
-
-def poline(points, plane):
-    sp = points.pop()
-    plane=plane.moveTo(sp[0],sp[1])
-    plane=plane.polyline(points)
-    return plane
-
 Params = namedtuple("Params",[
-    'file_name',
     'angled',
     'num_pins',
-    'model_name',
     'pin_angle_distance',
     'pin_angle_length',
     'body_width',
@@ -117,68 +88,61 @@ Params = namedtuple("Params",[
     'zdistance'
 ])
 
-def make_params_angled(num_pins, name):
-
+def make_params_angled(num_pins):
     return Params(
         angled=True,
         num_pins=num_pins,
-        model_name=name,
         pin_angle_distance=6.7-6,
         pin_angle_length=6.7-0.5,
         body_width=Body_width,
         body_height=Body_height,
         body_length=2*body_side_to_pin+(num_pins-1)*pin_pitch,
-        zdistance=Body_width_difference_between_angled_and_straight,
-        file_name="JST_EH_S{num_pins:02d}B-EH_{num_pins:02d}x{pin_pitch:.2f}mm_Angled".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        zdistance=Body_width_difference_between_angled_and_straight
     )
-def make_params_straight(num_pins, name):
+
+def make_params_straight(num_pins):
     return Params(
         angled=False,
         num_pins=num_pins,
-        model_name=name,
         pin_angle_distance=0,
         pin_angle_length=0,
         body_width=Body_width,
         body_height=Body_height,
         body_length=2*body_side_to_pin+(num_pins-1)*pin_pitch,
-        zdistance=Body_width_difference_between_angled_and_straight,
-        file_name="JST_EH_B{num_pins:02d}B-EH-A_{num_pins:02d}x{pin_pitch:.2f}mm_Straight".format(num_pins=num_pins, pin_pitch=pin_pitch)
+        zdistance=Body_width_difference_between_angled_and_straight
     )
 
-params_straight = {
-    "B02B_EH_A" : make_params_straight( 2, 'B02B_EH_A'),
-    "B03B_EH_A" : make_params_straight( 3, 'B03B_EH_A'),
-    "B04B_EH_A" : make_params_straight( 4, 'B04B_EH_A'),
-    "B05B_EH_A" : make_params_straight( 5, 'B05B_EH_A'),
-    "B06B_EH_A" : make_params_straight( 6, 'B06B_EH_A'),
-    "B07B_EH_A" : make_params_straight( 7, 'B07B_EH_A'),
-    "B08B_EH_A" : make_params_straight( 8, 'B08B_EH_A'),
-    "B09B_EH_A" : make_params_straight( 9, 'B09B_EH_A'),
-    "B10B_EH_A" : make_params_straight(10, 'B10B_EH_A'),
-    "B11B_EH_A" : make_params_straight(11, 'B11B_EH_A'),
-    "B12B_EH_A" : make_params_straight(12, 'B12B_EH_A'),
-    "B13B_EH_A" : make_params_straight(13, 'B13B_EH_A'),
-    "B14B_EH_A" : make_params_straight(14, 'B14B_EH_A'),
-    "B15B_EH_A" : make_params_straight(15, 'B15B_EH_A')
-}
+class series_params():
+    series = "EH"
+    manufacturer = 'JST'
+    number_of_rows = 1
 
+    body_color_key = "white body"
+    pins_color_key = "metal grey pins"
+    color_keys = [
+        body_color_key,
+        pins_color_key
+    ]
+    obj_suffixes = [
+        '__body',
+        '__pins'
+    ]
 
-params_angled = {
-    "S02B_EH_A" : make_params_angled( 2, 'S02B_EH_A'),
-    "S03B_EH_A" : make_params_angled( 3, 'S03B_EH_A'),
-    "S04B_EH_A" : make_params_angled( 4, 'S04B_EH_A'),
-    "S05B_EH_A" : make_params_angled( 5, 'S05B_EH_A'),
-    "S06B_EH_A" : make_params_angled( 6, 'S06B_EH_A'),
-    "S07B_EH_A" : make_params_angled( 7, 'S07B_EH_A'),
-    "S08B_EH_A" : make_params_angled( 8, 'S08B_EH_A'),
-    "S09B_EH_A" : make_params_angled( 9, 'S09B_EH_A'),
-    "S10B_EH_A" : make_params_angled(10, 'S10B_EH_A'),
-    "S11B_EH_A" : make_params_angled(11, 'S11B_EH_A'),
-    "S12B_EH_A" : make_params_angled(12, 'S12B_EH_A'),
-    "S13B_EH_A" : make_params_angled(13, 'S13B_EH_A'),
-    "S14B_EH_A" : make_params_angled(14, 'S14B_EH_A'),
-    "S15B_EH_A" : make_params_angled(15, 'S15B_EH_A')
-}
+    pitch = pin_pitch
 
-all_params=params_straight
-all_params.update(params_angled)
+    variant_params = {
+        'top_entry':{
+            'mpn_format_string': 'B{pincount:02}B-EH-A',
+            'orientation': 'V',
+            'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eEH.pdf',
+            'param_generator': make_params_straight,
+            'pinrange': range(2, 17)
+        },
+        'side_entry':{
+            'mpn_format_string': 'S{pincount:02}B-EH',
+            'orientation': 'H',
+            'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eEH.pdf',
+            'param_generator': make_params_angled,
+            'pinrange': range(2, 17)
+        }
+    }

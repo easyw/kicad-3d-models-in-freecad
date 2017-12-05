@@ -44,240 +44,333 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make 3D models of JST-PH-Connectors."
-__author__ = "scripts: maurice and hyOzd; models: poeschlr"
-__Comment__ = '''make 3D models of JST-PH-Connectors types B??B-PH-K. (THT Top entry),
-                S??B-PH-K (THT Side entry)'''
+__title__ = "main generator for molex connector models"
+__author__ = "scripts: maurice and hyOzd; models: see cq_model files"
+__Comment__ = '''This generator loads cadquery model scripts and generates step/wrl files for the official kicad library.'''
 
-___ver___ = "1.1 10/04/2016"
+___ver___ = "1.2 03/12/2017"
+
+
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
 
 import sys, os
 import datetime
 from datetime import datetime
+from math import sqrt
+from collections import namedtuple
+
 sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
+import add_license as L
+
 import re, fnmatch
+import yaml
 
-# Licence information of the generated models.
-#################################################################################################
-STR_licAuthor = "Rene Poeschl"
-STR_licEmail = "poeschlr@gmail.com"
-STR_licOrgSys = ""
-STR_licPreProc = ""
-
-LIST_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor,
-                "",
-                "This program is free software: you can redistribute it and/or modify",
-                "it under the terms of the GNU General Public License (GPL)",
-                "as published by the Free Software Foundation, either version 2 of",
-                "the License, or any later version.",
-                "",
-                "As a special exception, if you create a design which uses this 3d model",
-                "and embed this 3d model or unaltered portions of this 3d model into the",
-                "design, this 3d model does not by itself cause the resulting design to",
-                "be covered by the GNU General Public License. This exception does not",
-                "however invalidate any other reasons why the design itself might be",
-                "covered by the GNU General Public License. If you modify this",
-                "3d model, you may extend this exception to your version of the",
-                "3d model, but you are not obligated to do so. If you do not",
-                "wish to do so, delete this exception statement from your version.",
-                "",
-                "This program is distributed in the hope that it will be useful,",
-                "but WITHOUT ANY WARRANTY; without even the implied warranty of",
-                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
-                "GNU General Public License for more details.",
-                "",
-                "You should have received a copy of the GNU General Public License",
-                "along with this program.  If not, see http://www.gnu.org/licenses/.",
-                ""
-                ]
-#################################################################################################
-
-body_color_key = "white body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseInt()
-pins_color_key = "metal grey pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseInt()
-
-destination_dir="Connectors_JST.3dshapes"
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-#checking requirements
-#######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(M.all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+try:
+    # Gui.SendMsgToActiveView("Run")
+#    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
-from Gui.Command import *
 
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
+#from Gui.Command import *
 
 # Import cad_tools
-#sys.path.append("../")
+#sys.path.append("../_tools")
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject
+from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
+ closeCurrentDoc, checkBOP, checkUnion
 
 # Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+#Gui.activateWorkbench("CadQueryWorkbench")
+#import FreeCADGui as Gui
 
 try:
     close_CQ_Example(App, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+except:
+    FreeCAD.Console.PrintMessage("can't close example.")
 
-
-import cadquery as cq
-
-#check version
-cqv=cq.__version__.split(".")
-#say2(cqv)
-if int(cqv[0])==0 and int(cqv[1])<3:
-    msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
-    reply = QtGui.QMessageBox.information(None, "Info ...", msg)
-    say("cq needs to be at least 0.3.0")
-    stop
-
-from math import sqrt
-from Helpers import show
-from collections import namedtuple
-import FreeCAD, Draft, FreeCADGui
+#import FreeCAD, Draft, FreeCADGui
 import ImportGui
-sys.path.append("cq_models")
-import conn_jst_ph_models as ModelPH
-import conn_jst_eh_models as ModelEH
-import conn_jst_xh_models as ModelXH
-import step_license as L
-
-if float(cq.__version__[:-2]) < 0.3:
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    msg+="actual CQ version "+cq.__version__
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 
-def export_one_part(params, series):
-    FreeCAD.Console.PrintMessage('\r\n'+params.model_name)
-    ModelName = params.model_name
-    FileName = params.file_name
+def export_one_part(module, variant, pincount, configuration, log):
+    series_definition = module.series_params
+    variant_params = series_definition.variant_params[variant]
+    params = variant_params['param_generator'](pincount)
+
+    if module.LICENCE_Info.LIST_license[0]=="":
+        LIST_license=L.LIST_int_license
+        LIST_license.append("")
+    else:
+        LIST_license=module.LICENCE_Info.LIST_license
+
+    LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
+    pins_per_row = pincount/series_definition.number_of_rows
+    mpn = variant_params['mpn_format_string'].format(pincount=pincount, pins_per_row=pins_per_row)
+
+
+    orientation = configuration['orientation_options'][variant_params['orientation']]
+    FileName = configuration['fp_name_format_string'].\
+        format(man=series_definition.manufacturer,
+            series=series_definition.series,
+            mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
+            pitch=series_definition.pitch, orientation=orientation)
+    FileName = FileName.replace('__', '_')
+
+    lib_name = configuration['lib_name_format_string'].format(man=series_definition.manufacturer)
+    fc_mpn = mpn.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+
+    ModelName = '{:s}_{:s}'.format(series_definition.manufacturer, fc_mpn) # For some reason the Model name can not start with a number.
+
+    FreeCAD.Console.PrintMessage('\r\n'+FileName+'\r\n')
+    #FileName = modul.all_params[variant].file_name
     Newdoc = FreeCAD.newDocument(ModelName)
+    print(Newdoc.Label)
     App.setActiveDocument(ModelName)
+    App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
-    (pins, body) = series.generate_part(params)
 
-    color_attr = body_color + (0,)
-    show(body, color_attr)
+    color_keys = series_definition.color_keys
+    obj_suffixes = series_definition.obj_suffixes
+    colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
-    color_attr = pins_color + (0,)
-    show(pins, color_attr)
+    cq_obj_data = module.generate_part(params)
+
+
+    for i in range(len(cq_obj_data)):
+        color_i = colors[i] + (0,)
+        show(cq_obj_data[i], color_i)
+
 
     doc = FreeCAD.ActiveDocument
-    doc.Label=ModelName
+    doc.Label = ModelName
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = ModelName + "__body"
-    objs[1].Label = ModelName + "__pins"
+
+
+    for i in range(len(objs)):
+        objs[i].Label = ModelName + obj_suffixes[i]
+
 
     restore_Main_Tools()
 
-    out_dir=destination_dir
+    out_dir='{:s}.3dshapes'.format(lib_name)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
 
-
-    used_color_keys = [body_color_key, pins_color_key]
-    export_file_name=destination_dir+os.sep+FileName+'.wrl'
+    used_color_keys = color_keys
+    export_file_name=out_dir+os.sep+FileName+'.wrl'
 
     export_objects = []
-    export_objects.append(expVRML.exportObject(freecad_object = objs[0],
-            shape_color=body_color_key,
-            face_colors=None))
-    export_objects.append(expVRML.exportObject(freecad_object = objs[1],
-            shape_color=pins_color_key,
-            face_colors=None))
+    for i in range(len(objs)):
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=color_keys[i],
+                face_colors=None))
 
     scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
-    fusion = FuseObjs_wColors(FreeCAD, FreeCADGui,
-                    ModelName, objs[0].Name, objs[1].Name, keepOriginals=True)
+    fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
+                     ModelName, objs, keepOriginals=True)
     exportSTEP(doc,FileName,out_dir,fusion)
-    L.addLicenseToStep(out_dir+'/', FileName+".step", LIST_license,\
-        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licPreProc)
 
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=FileName)
+
+    L.addLicenseToStep(out_dir, '{:s}.step'.\
+        format(FileName), LIST_license,
+            module.LICENCE_Info.STR_licAuthor,
+            module.LICENCE_Info.STR_licEmail,
+            module.LICENCE_Info.STR_licOrgSys,
+            module.LICENCE_Info.STR_licPreProc)
 
     FreeCAD.activeDocument().recompute()
+
+    saveFCdoc(App, Gui, doc, FileName, out_dir)
+
     #FreeCADGui.activateWorkbench("PartWorkbench")
-    FreeCADGui.SendMsgToActiveView("ViewFit")
-    FreeCADGui.activeDocument().activeView().viewAxometric()
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
 
-    saveFCdoc(App, Gui, doc, FileName,out_dir)
+    if save_memory == True or check_Model==True:
+        closeCurrentDoc(ModelName)
 
-def exportSeries(series_params, model_filter_regobj, series):
-    for key in series_params.keys():
-        if model_filter_regobj.match(key):
-            FreeCAD.Console.PrintMessage('Current Model: '+str(key)+'\r\n')
-            export_one_part(series_params[key], series)
+    if check_Model==True:
+        #ImportGui.insert(step_path,ModelName)
 
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        docu.Label = ModelName
+        log.write('\n## Checking {:s}\n'.format(ModelName))
 
-if __name__ == "__main__":
+        if checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+            log.write('\t- Union check:    [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+            log.write('\t- Union check:    [    FAIL    ]\n')
+            #stop
+        FC_majorV=int(FreeCAD.Version()[0])
+        FC_minorV=int(FreeCAD.Version()[1])
+        if FC_majorV == 0 and FC_minorV >= 17:
+            if docu.Objects == 0:
+                FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
+            for o in docu.Objects:
+                if hasattr(o,'Shape'):
+                    chks=checkBOP(o.Shape)
+                    #print 'chks ',chks
+                    if chks != True:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
+                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintError(msg)
+                        FreeCAD.Console.PrintWarning(chks[0])
+                        log.write('\t- Geometry check: [    FAIL    ]\n')
+                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
+                        #stop
+                    else:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
+                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintMessage(msg)
+                        log.write('\t- Geometry check: [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+            log.write('\t- Geometry check: [  skipped   ]\n')
+            log.write('\t\t- Geometry check needs FC 0.17+\n')
+
+        if save_memory == True:
+            saveFCdoc(App, Gui, docu, 'temp', out_dir)
+            docu = FreeCAD.ActiveDocument
+            closeCurrentDoc(docu.Label)
+    return out_dir
+
+def exportSeries(module, configuration, log, model_filter_regobj):
+    out_dir = None
+    series_definition = module.series_params
+    for variant in series_definition.variant_params:
+        print(variant)
+        pinrange = series_definition.variant_params[variant]['pinrange']
+        for pins in pinrange:
+            if model_filter_regobj.match(str(pins)):
+                out_dir = export_one_part(module, variant, pins, configuration, log)
+    if save_memory == True:
+        if out_dir == None:
+            print("Nothing to do for series {:s}".format(module.series_params.series))
+        else:
+            os.remove('{}/temp.FCStd'.format(out_dir))
+
+#########################  ADD MODEL GENERATORS #########################
+
+sys.path.append("cq_models")
+import conn_jst_eh_models
+
+all_series = [
+    conn_jst_eh_models
+]
+
+#########################################################################
+
+class argparse():
+    def __init__(self):
+        self.config = '../_tools/config/connector_config_KLCv3.yaml'
+        self.model_filter = '*'
+        self.series = all_series
+
+    def parse_args(self, args):
+        for arg in args:
+            if '=' in arg:
+                self.parseValueArg(*arg.split('='))
+            else:
+                self.argSwitchArg(arg)
+
+    def parseValueArg(self, name, value):
+        if name == 'config':
+            self.config = value
+        elif name == 'model_filter':
+            self.model_filter = value
+        elif name == 'log':
+            global check_log_file
+            check_log_file = value
+        elif name == 'series':
+            print("param series:")
+            print(value)
+            series_str = value.split(',')
+            self.series = []
+            for s in series_str:
+                #####################  ADD MODEL GENERATORS ###################
+                if 'EH' in s:
+                    self.series.append(conn_jst_eh_models)
+
+                ###############################################################
+
+    def argSwitchArg(self, name):
+        if name == '?':
+            self.print_usage()
+        elif name == 'disable_check':
+            global check_Model
+            check_Model = False
+        elif name == 'disable_Memory_reduction':
+            global save_memory
+            save_memory = False
+
+    def print_usage(self):
+        print("Generater script for phoenix contact 3d models.")
+        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print('optional arguments:')
+        print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
+        print('\tmodel_filter=[filter pincount using linux file filter syntax]')
+        print('\tlog=[log file path]')
+        print('\tseries=[series name],[series name],...')
+        print('switches:')
+        print('\tdisable_check')
+        print('\tdisable_Memory_reduction')
+
+    def __str__(self):
+        return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
+            self.config, self.model_filter, str(self.series), self.with_plug)
+
+if __name__ == "__main__" or __name__ == "main_generator":
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
-    if not os.path.exists(destination_dir):
-        os.makedirs(destination_dir)
-    series_to_build = []
-    modelfilter = "*"
 
+    args = argparse()
+    args.parse_args(sys.argv)
+    modelfilter = args.model_filter
 
-    for arg in sys.argv[2:]:
-        if arg.startswith("series="):
-            series_to_build += arg[len("series="):].lower().split(',')
-        elif arg.startswith("filter="):
-            modelfilter = arg[len("filter="):]
-        elif len(sys.argv) == 3:
-            #fallback mode: only one parameter. This parameter is either all or the name of the model to build.
-            if sys.argv[2] == "all":
-                series_to_build = ['xh', 'eh', 'ph']
-                modelfilter = "*"
-            elif not '=' in sys.argv[2]:
-                modelfilter = sys.argv[2]
-
-
-
-    if len(series_to_build) == 0:
-        series_to_build = ['xh', 'eh', 'ph']
-
-    series = []
-    if 'xh' in series_to_build:
-        series += [ModelXH]
-    if 'eh' in series_to_build:
-        series += [ModelEH]
-    if 'ph' in series_to_build:
-        series += [ModelPH]
+    with open(args.config, 'r') as config_stream:
+        try:
+            configuration = yaml.load(config_stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
-    for current_series in series:
-        exportSeries(current_series.all_params, model_filter_regobj, current_series)
 
-    FreeCAD.Console.PrintMessage('\r\nDone\r\n')
+
+    with open(check_log_file, 'w') as log:
+        log.write('# Check report for Molex 3d model genration\n')
+        for typ in args.series:
+            exportSeries(typ, configuration, log, model_filter_regobj)
+
+
+    FreeCAD.Console.PrintMessage('\r\Done\r\n')

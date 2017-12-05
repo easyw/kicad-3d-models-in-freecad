@@ -52,17 +52,35 @@ __Comment__ = 'model description for JST-EH Connectors using cadquery'
 
 ___ver___ = "1.1 04/01/2016"
 
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Rene Poeschl"
+    STR_licEmail = "poeschlr@gmail.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
+
+import sys
+
+# DIRTY HACK TO ALLOW CENTRALICED HELPER SCRIPTS. (freecad cadquery does copy the file to /tmp and we can therefore not use relative paths for importing)
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'jst/cq_models' in path:
+            p1 = path.replace('jst/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from cq_helpers import *
+
 import cadquery as cq
 from Helpers import show
 import FreeCAD
-from cq_helpers import *
 from conn_jst_eh_params import *
-
-def union_all(objects):
-    o = objects[0]
-    for i in range(1,len(objects)):
-        o = o.union(objects[i])
-    return o
 
 
 def generate_pins(params):
@@ -275,16 +293,14 @@ def generate_part(params):
     body_lenght=params.body_length
     #made an error, need to rotate it by 180 degree
     center_x=body_corner_x+body_lenght/2
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "S03B_EH_A"
-    #part_to_build = "B03B_EH_A"
-    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    all_params=params_straight
-    all_params.update(params_angled)
-    (pins, body) = generate_part(all_params[part_to_build])
+    #params=series_params.variant_params['top_entry']['param_generator'](3)
+    params=series_params.variant_params['side_entry']['param_generator'](3)
+
+    (body, pins) = generate_part(params)
     show(pins)
     show(body)
