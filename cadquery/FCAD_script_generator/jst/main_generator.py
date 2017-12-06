@@ -286,10 +286,12 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 sys.path.append("cq_models")
 import conn_jst_eh_models
 import conn_jst_ph_models
+import conn_jst_xh_models
 
 all_series = [
     conn_jst_eh_models,
-    conn_jst_ph_models
+    conn_jst_ph_models,
+    conn_jst_xh_models
 ]
 
 #########################################################################
@@ -326,6 +328,8 @@ class argparse():
                     self.series.append(conn_jst_eh_models)
                 elif 'PH' in s:
                     self.series.append(conn_jst_ph_models)
+                elif 'XH' in s:
+                    self.series.append(conn_jst_xh_models)
 
                 ###############################################################
 

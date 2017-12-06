@@ -115,7 +115,7 @@ def make_params_straight(num_pins):
     )
 
 class series_params():
-    series = "EH"
+    series = "PH"
     manufacturer = 'JST'
     number_of_rows = 1
 

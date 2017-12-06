@@ -52,18 +52,36 @@ __Comment__ = 'model description for JST-XH Connectors using cadquery'
 
 ___ver___ = "1.1 10/04/2016"
 
+class LICENCE_Info():
+    ############################################################################
+    STR_licAuthor = "Rene Poeschl"
+    STR_licEmail = "poeschlr@gmail.com"
+    STR_licOrgSys = ""
+    STR_licPreProc = ""
+
+    LIST_license = ["",]
+    ############################################################################
+
 import sys
+
+# DIRTY HACK TO ALLOW CENTRALICED HELPER SCRIPTS. (freecad cadquery does copy the file to /tmp and we can therefore not use relative paths for importing)
+
+if "module" in __name__ :
+    for path in sys.path:
+        if 'jst/cq_models' in path:
+            p1 = path.replace('jst/cq_models','_tools')
+    if not p1 in sys.path:
+        sys.path.append(p1)
+else:
+    sys.path.append('../_tools')
+
+from cq_helpers import *
+
 import cadquery as cq
 from Helpers import show
 from collections import namedtuple
 import FreeCAD
 from conn_jst_xh_params import *
-
-def union_all(objects):
-    o = objects[0]
-    for i in range(1,len(objects)):
-        o = o.union(objects[i])
-    return o
 
 
 def generate_pins(params):
@@ -220,7 +238,7 @@ def generate_straight_body(params):
     pcs1 = (body_width/2-body_front_width, body_height/2)
     pcs2 = v_add(pcs1, (0, -body_side_cutout_depth+body_cutout_radius))
     pcs3 = v_add(pcs2, (-body_cutout_radius, -body_cutout_radius))
-    pcsam = get_third_arc_point(pcs2, pcs3)
+    pcsam = get_third_arc_point1(pcs2, pcs3)
 
     body = body.faces("<X").workplane()\
         .moveTo(pcs1[0], pcs1[1])\
@@ -290,15 +308,14 @@ def generate_part(params):
     center_x=body_corner_x+body_lenght/2
     pins = pins.rotate((center_x,0,0),(0,0,1),180)
     body = body.rotate((center_x,0,0),(0,0,1),180)
-    return (pins, body)
+    return (body, pins)
 
 
 #opend from within freecad
 if "module" in __name__ :
-    part_to_build = "S02B_XH_A"
-    #part_to_build = "B02B_XH_A"
-    FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
-    
-    (pins, body) = generate_part(all_params[part_to_build])
+    #params=series_params.variant_params['top_entry']['param_generator'](3)
+    params=series_params.variant_params['side_entry']['param_generator'](3)
+
+    (body, pins) = generate_part(params)
     show(pins)
     show(body)
