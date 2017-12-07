@@ -214,7 +214,7 @@ named_colors = {
     "led red":shaderColor(
         name="LED-RED",
         ambientIntensity= 0.789,
-        diffuseColor= (0.700, 0.100, 0.050),
+        diffuseColor= (0.701, 0.100, 0.050),
         specularColor= (0.300, 0.400, 0.150),
         transparency= 0.10,
         shininess= 0.125
@@ -222,7 +222,7 @@ named_colors = {
     "led green":shaderColor(
         name="LED-GREEN",
         ambientIntensity= 0.789,
-        diffuseColor= (0.400, 0.700, 0.150),
+        diffuseColor= (0.401, 0.700, 0.150),
         specularColor= (0.600, 0.300, 0.100),
         transparency= 0.10,
         shininess= 0.05
@@ -230,7 +230,7 @@ named_colors = {
     "led blue":shaderColor(
         name="LED-BLUE",
         ambientIntensity= 0.789,
-        diffuseColor= (0.100, 0.250, 0.700),
+        diffuseColor= (0.101, 0.250, 0.700),
         specularColor= (0.500, 0.600, 0.300),
         transparency= 0.10,
         shininess= 0.125
