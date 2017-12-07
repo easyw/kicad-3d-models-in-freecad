@@ -238,7 +238,7 @@ named_colors = {
     "led white":shaderColor(
         name="LED-WHITE",
         ambientIntensity=0.494,
-        diffuseColor=(0.895, 0.891, 0.813),
+        diffuseColor=(0.894, 0.891, 0.813),
         specularColor=(0.047, 0.055, 0.109),
         transparency=0.10,
         shininess=0.125

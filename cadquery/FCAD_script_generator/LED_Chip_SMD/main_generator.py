@@ -65,7 +65,7 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "white body"
+body_color_key = "white body"  #"light brown body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 pins_color_key = "gold pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
@@ -169,8 +169,8 @@ def make_chip(params):
     ef = params.ef  # fillet of edges
     modelName = params.modelName  # Model Name
     rotation = params.rotation   # rotation
-    internals = False
-    die = None
+    internals = True #  False
+    die = True # None
     # Create a 3D box based on the dimension variables above and fillet it
     case = cq.Workplane("XY").box(L-2*pt, W, ph-2*pt)
     if pintype == 'concave':
@@ -278,12 +278,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Color_Objects(Gui,objs[3],pinmark_color)
         if die:
         	Color_Objects(Gui,objs[4],die_color)
-
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
         col_pinmark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
-        if die:
+        if die is not None:
         	col_die=Gui.ActiveDocument.getObject(objs[4].Name).DiffuseColor[0]
         	material_substitutions={
         	    col_body[:-1]:body_color_key,
@@ -302,23 +301,29 @@ if __name__ == "__main__" or __name__ == "main_generator":
         expVRML.say(material_substitutions)
         del objs
 
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        if die:
-        	objs=GetListOfObjects(FreeCAD, doc)
-        	FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        # if die:
+        # 	objs=GetListOfObjects(FreeCAD, doc)
+        # 	##FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        if die is None:
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
+        if die is not None:
+            FreeCADGui.ActiveDocument.getObject(objs[1].Name).Transparency = 70
         objs[0].Label = CheckedModelName
         restore_Main_Tools()
+        #stop
         #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
+        ## if (all_params[variant].rotation!=0):
+        ##     rot= all_params[variant].rotation
+        ##     z_RotateObject(doc, rot)
+        #stop
         #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
         script_dir=os.path.dirname(os.path.realpath(__file__))
         #models_dir=script_dir+"/../_3Dmodels"
@@ -328,7 +333,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
             os.makedirs(out_dir)
         #out_dir="./generated_qfp/"
         # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
         if LIST_license[0]=="":
             LIST_license=Lic.LIST_int_license
             LIST_license.append("")
@@ -346,6 +350,19 @@ if __name__ == "__main__" or __name__ == "main_generator":
         export_file_name=out_dir+os.sep+ModelName+'.wrl'
         colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
         expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)        
+        if die is not None:
+            objs=GetListOfObjects(FreeCAD, doc)
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)        
+        
+        exportSTEP(doc, ModelName, out_dir)
+        
+        
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         #display BBox
