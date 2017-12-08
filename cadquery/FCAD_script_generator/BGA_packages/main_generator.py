@@ -96,7 +96,7 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
@@ -161,7 +161,7 @@ def make_plg(wp, rw, rh, cv1, cv):
     sp = points.pop()
     wp=wp.moveTo(sp[0],sp[1])
     wp=wp.polyline(points).close().wire()
-    
+
     return wp
     #return wp.polyline(points).wire() #, forConstruction=True)
 ##
@@ -190,15 +190,15 @@ def make_case(params):
     mN  = params.modelName
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
-    
+
     if cf is None:
         cf = cff
-        
+
     if params.excluded_pins is not None:
         epl = list(params.excluded_pins)
         #expVRML.say(epl)
         i=0
-        for i in range (0, len(epl)):           
+        for i in range (0, len(epl)):
             if isinstance(epl[i], ( int, long )):
                 epl[i]=str(int(epl[i]))
                 i=i+1
@@ -206,9 +206,9 @@ def make_case(params):
         #expVRML.say(excluded_pins)
         #stop
     else:
-        excluded_pins=() ##no pin excluded 
+        excluded_pins=() ##no pin excluded
 
-        
+
     sphere_r = b/2 *(1.05) #added extra 0.5% diameter for fusion
     s_center =(0,0,0)
     sphere = cq.Workplane("XY", s_center). \
@@ -261,7 +261,7 @@ def make_case(params):
         case_bot = case_bot.extrude(A2-0.01)
         case_bot = case_bot.translate((0,0,A1))
         #show(case_bot)
-            
+
         case = cq.Workplane("XY").workplane(offset=A1)
         #case = make_plg(case, cw, cl, cce, cce)
         case = make_plg(case, D1, E1, 3*cf, 3*cf)
@@ -274,7 +274,7 @@ def make_case(params):
             loft(ruled=True)
         # fillet the bottom vertical edges
         if ef!=0:
-            case = case.edges("|Z").fillet(ef)    
+            case = case.edges("|Z").fillet(ef)
         # fillet top and side faces of the top molded part
         if ef!=0:
             BS = cq.selectors.BoxSelector
@@ -304,10 +304,10 @@ def make_case(params):
             case.edges("|Z").fillet(ef)
         #translate the object
         case=case.translate((0,0,A2/2+A1-sp)).rotate((0,0,0), (0,0,1), 0)
-    
+
         #sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
         #sphere_z = A + sphere_r * 2 - fp_z - sphere_r
-    
+
         pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A2+A1-sp))#+fp_z))
         #pinmark=pinmark.translate((0,0,A1-sp))
         #stop
@@ -320,7 +320,7 @@ def make_case(params):
         #show(pinmark)
         #show(case)
         #stop
-    
+
 
     #show(pins)
     #show(case)
@@ -333,7 +333,7 @@ def make_case(params):
 
 #import step_license as L
 import add_license as Lic
-global ksu_present
+#global ksu_present
 ksu_present=False
 
 # when run from command line
@@ -399,7 +399,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         show(pins)
         show(pinmark)
         #stop
-        
+
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
 
@@ -408,7 +408,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             Color_Objects(Gui,objs[1],body_color)
             Color_Objects(Gui,objs[2],pins_color)
             Color_Objects(Gui,objs[3],marking_color)
-    
+
             col_body_bot=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
             col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
             col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
@@ -439,7 +439,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             Color_Objects(Gui,objs[0],body_color)
             Color_Objects(Gui,objs[1],pins_color)
             Color_Objects(Gui,objs[2],marking_color)
-    
+
             col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
             col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
             col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
@@ -538,7 +538,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 kicadStepUptools.KSUWidget.close()
                 #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
                 #kicadStepUptools.KSUWidget.destroy()
-            
+
         #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
         #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
         if save_memory == False:
