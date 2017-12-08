@@ -314,8 +314,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
         
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
-        if die is not None:
-            FreeCADGui.ActiveDocument.getObject(objs[1].Name).Transparency = 70
+        # if die is not None:
+        #     FreeCADGui.ActiveDocument.getObject(objs[1].Name).Transparency = 70
         objs[0].Label = CheckedModelName
         restore_Main_Tools()
         #stop
