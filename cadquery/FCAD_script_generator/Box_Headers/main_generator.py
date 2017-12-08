@@ -49,97 +49,80 @@ __Comment__ = 'make pin header 3D models exported to STEP and VRML for Kicad Ste
 
 ___ver___ = "1.4.2 26/02/2017"
 
-
-#sleep ### NB il modello presenta errori di geometria
-
-# maui import cadquery as cq
-# maui from Helpers import show
-from math import tan, radians, sqrt
-from collections import namedtuple
-
-#from cq_cad_tools import say, sayw, saye
-
-import sys, os
-import datetime
-from datetime import datetime
-sys.path.append("../_tools")
-import exportPartToVRML as expVRML
-import shaderColors
-
-body_color_key = "black body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-pins_color_key = "gold pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-#marking_color_key = "light brown label"
-#marking_color = shaderColors.named_colors[marking_color_key].getDiffuseFloat()
-
-# maui start
-import FreeCAD, Draft, FreeCADGui
-import ImportGui
-import FreeCADGui as Gui
-
-if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
-
 # Licence information of the generated models.
 #################################################################################################
 STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
 
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+check_log_file = 'check-log.md'
 
-# Import cad_tools
-import cq_cad_tools
-from cq_cad_tools import say, sayw, saye
+body_color_key = "black body"
+pins_color_key = "gold pins"
+color_keys = [body_color_key, pins_color_key]
 
-# Reload tools
-reload(cq_cad_tools)
+import sys, os
+import datetime
+from datetime import datetime
+from math import sqrt
+from collections import namedtuple
 
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+sys.path.append("../_tools")
+import exportPartToVRML as expVRML
+import shaderColors
+import add_license as Lic
 
+import re, fnmatch
+import yaml
 
-# from export_x3d import exportX3D, Mesh
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
 try:
     # Gui.SendMsgToActiveView("Run")
-    # cq Gui
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-    # maui end
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
-#checking requirements
-checkRequirements(cq)
+#######################################################################
+
+# Import cad_tools
+import cq_cad_tools
+
+# Reload tools
+reload(cq_cad_tools)
+
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, CutObjs_wColors, checkRequirements, multiFuseObjs_wColors, closeCurrentDoc, checkBOP, checkUnion
+
 
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-# import cq_parameters  # modules parameters
-# from cq_parameters import *
 
+import ImportGui
 
 #Make a single plastic base block (chamfered if required)
 # dimensions taken from Wurth Elektronik (WE) 612 0xx 216 21: http://katalog.we-online.de/em/datasheet/6120xx21621.pdf
 # dimensions not shown on drawing are estimated or taken from physical example
 def MakeBase(pins, highDetail=True):
-    
+
     #length of the base block
     L = pins * 2.54 + 7.66
     #Width of base block
@@ -155,30 +138,30 @@ def MakeBase(pins, highDetail=True):
     base = cq.Workplane("XY").rect(W1,L).extrude(H)
     #wall height H2
     H2 = 6.50
-    
+
     #extrude the edge up around the base
     wall = cq.Workplane("XY").workplane(offset=H).rect(W1,L).extrude(H2)
     wall = wall.cut(cq.Workplane("XY").rect(W2,(pins-1)*2.54+7.88).extrude(8.85))
     # add a chamfer to the wall inner (only for high detail version)
-    if (highDetail):
-        wall = wall.faces(">Z").edges("not(<X or >X or <Y or >Y)").chamfer(0.5)       
+    # if (highDetail):
+    #     wall = wall.faces(">Z").edges("not(<X or >X or <Y or >Y)").chamfer(0.5)
     base = base.union(wall)
-    
-    #cut a notch out of one side 
+
+    #cut a notch out of one side
     CW = 4.5
-    
+
     # in detail version, this tab extends slightly below base top surface
     if (highDetail):
         undercut = 0.5
     else:
         undercut = 0.0
-        
+
     cutout = cq.Workplane("XY").workplane(offset=H-undercut).rect(2*2.0,CW).extrude(H2+undercut).translate((-W1/2,0,0))
     base = base.cut(cutout)
-    
+
     # add visual / non-critical details
     if (highDetail):
-    
+
         # long bobbles
         bobbleR = 0.5
         bobbleH = 9.10-8.85
@@ -188,24 +171,24 @@ def MakeBase(pins, highDetail=True):
         base = base.union(longbobble1)
         base = base.union(longbobble2)
         base = base.union(longbobble3)
-        
+
         # wee bobbles
         weebobbles = cq.Workplane("XY").center(2.85, L/2-2.5).circle(0.5).extrude(8.85-9.10)
         weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, 0).circle(0.5).extrude(8.85-9.10))
-        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, -L/2+2.5).circle(0.5).extrude(8.85-9.10))    
+        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, -L/2+2.5).circle(0.5).extrude(8.85-9.10))
         weebobbles = weebobbles.union(weebobbles.translate((-5.7,0,0)))
         base = base.union(weebobbles)
-        
+
         # sidecuts
         sidecut = cq.Workplane("XY").rect(3.5, 1.25*2).extrude(H2).translate((0,L/2,0))
         sidecut = sidecut.union(sidecut.translate((0,-L,0)))
         base = base.cut(sidecut)
-    
+
     #now offset the location of the base appropriately
     base = base.translate((1.27,(pins-1)*-1.27,9.10-8.85))
-    
+
     return base
-    
+
 #make a single pin
 def MakePin(Z, H):
 
@@ -220,7 +203,7 @@ def MakePin(Z, H):
     C = 0.2
     pin = pin.faces("<Z").chamfer(C)
     pin = pin.faces(">Z").chamfer(C)
-    
+
     return pin
 
 # make a single angle pin
@@ -233,78 +216,78 @@ def MakeAnglePin(Z, H, L, highDetail=False):
     C = 0.2
     pin = pin.faces("<Z").chamfer(C)
     pin = pin.faces(">X").chamfer(C)
-    
+
     # fillet on back of pin
     if (highDetail):
         R = size
         pin = pin.faces(">Z").edges("<X").fillet(R)
-        
+
     return pin
-    
+
 # make a row of straight pins
 def MakePinRow(n, Z, H):
 
     #make some pins
     pin = MakePin(Z, H)
-    
+
     for i in range(1,n):
         pin = pin.union(MakePin(Z, H).translate((0,-2.54 * i,0)))
-    
+
     return pin
 
 # make a row of angled (bent) pins
 def MakeAnglePinRow(n, Z, H, L, highDetail=False):
-    
+
     pin = MakeAnglePin(Z, H, L, highDetail)
 
     for i in range(1,n):
         pin = pin.union(MakeAnglePin(Z, H, L, highDetail).translate((0,-2.54 * i,0)))
-    
+
     return pin
-    
+
 # generate a name for the pin header
 def HeaderName(n, isAngled):
-    if (isAngled):    
-        return "IDC-Header_2x{n:02}_Pitch2.54mm_Angled".format(n=n)
+    if (isAngled):
+        return "IDC-Header_2x{n:02}_P2.54mm_Horizontal".format(n=n)
     else:
-        return "IDC-Header_2x{n:02}_Pitch2.54mm_Straight".format(n=n)
-    
+        return "IDC-Header_2x{n:02}_P2.54mm_Vertical".format(n=n)
+
 # make a pin header using supplied parameters, n pins in each row
-def MakeHeader(n, isAngled, highDetail=False):
-    
-    global LIST_license, docname
+
+def MakeHeader(n, isAngled, log, highDetail=False):
+    global LIST_license
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+
+    LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
+
     name = HeaderName(n, isAngled)
-    
-    destination_dir="/IDC-Headers"
-    
+    print('\n############ ' + name + ' #############\n')
+
+    lib_name='Connector_IDC'
+
+
     full_path=os.path.realpath(__file__)
-    expVRML.say(full_path)
-    scriptdir=os.path.dirname(os.path.realpath(__file__))
-    expVRML.say(scriptdir)
-    sub_path = full_path.split(scriptdir)
-    expVRML.say(sub_path)
     sub_dir_name =full_path.split(os.sep)[-2]
-    expVRML.say(sub_dir_name)
     sub_path = full_path.split(sub_dir_name)[0]
-    expVRML.say(sub_path)
-    models_dir=sub_path+"_3Dmodels"
-    script_dir=os.path.dirname(os.path.realpath(__file__))
+    models_dir=sub_path+"_3Dmodels"+os.sep
     #models_dir=script_dir+"/../_3Dmodels"
-    expVRML.say(models_dir)
-    out_dir=models_dir+destination_dir
+
+    out_dir=models_dir+'{:s}.3dshapes'.format(lib_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    
+
     #having a period '.' or '-' character in the model name REALLY messes with things.
-    docname = name.replace(".","").replace("-","_")
-    
-    newdoc = App.newDocument(docname)
+    docname = name.replace(".","").replace("-","_").replace('(', '').replace(')', '')
+
+    Newdoc = FreeCAD.newDocument(docname)
     App.setActiveDocument(docname)
-    a_doc = Gui.ActiveDocument
+    App.ActiveDocument=App.getDocument(docname)
     Gui.ActiveDocument=Gui.getDocument(docname)
-    
+
     base = MakeBase(n, highDetail)
-    
+
     if (isAngled):
         pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
         pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
@@ -313,91 +296,123 @@ def MakeHeader(n, isAngled, highDetail=False):
     else:
         pins = MakePinRow(n, -3.0, 8.0)
         pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54,0,0)))
-        
-    ##assign some colors
-    #base_color = (50,50,50)
-    #pins_color = (225,175,0)
-    #
-    #show(base,base_color+(0,))
-    #show(pins,pins_color+(0,))
-    show(base)
-    show(pins)
-    
+
+
+    colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
+
+    cq_obj_data = [base, pins]
+    obj_suffixes = ['__base', '__pins']
+
+
+    for i in range(len(cq_obj_data)):
+        color_i = colors[i] + (0,)
+        show(cq_obj_data[i], color_i)
+
+
     doc = FreeCAD.ActiveDocument
-    objs=GetListOfObjects(FreeCAD, doc)
-    
-    Color_Objects(Gui,objs[0],body_color)
-    Color_Objects(Gui,objs[1],pins_color)
-    #Color_Objects(Gui,objs[2],marking_color)
-
-    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-    #col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-    material_substitutions={
-        col_body[:-1]:body_color_key,
-        col_pin[:-1]:pins_color_key,
-        #col_mark[:-1]:marking_color_key
-    }
-    expVRML.say(material_substitutions)
-    
-    #objs=GetListOfObjects(FreeCAD, doc)
-    FuseObjs_wColors(FreeCAD, FreeCADGui,
-                   doc.Name, objs[0].Name, objs[1].Name)
-    doc.Label=docname
-    objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label=name
-    restore_Main_Tools()
-    
-    #out_dir = "./generated_pinheaders/"
-    
     doc.Label = docname
-    
-    #save the STEP file
-    exportSTEP(doc, name, out_dir)
-    if LIST_license[0]=="":
-        LIST_license=Lic.LIST_int_license
-        LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', name+".step", LIST_license,\
-                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
-    # scale and export Vrml model
-    scale=1/2.54
-    #exportVRML(doc,ModelName,scale,out_dir)
     objs=GetListOfObjects(FreeCAD, doc)
-    expVRML.say("######################################################################")
-    expVRML.say(objs)
-    expVRML.say("######################################################################")
-    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+
+    for i in range(len(objs)):
+        objs[i].Label = docname + obj_suffixes[i]
+
+    restore_Main_Tools()
+
+    used_color_keys = color_keys
     export_file_name=out_dir+os.sep+name+'.wrl'
+
+    export_objects = []
+    for i in range(len(objs)):
+        export_objects.append(expVRML.exportObject(freecad_object = objs[i],
+                shape_color=color_keys[i],
+                face_colors=None))
+
+    scale=1/2.54
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
-    ###save the VRML file
-    ##scale=0.3937001
-    ##exportVRML(doc,name,scale,out_dir)
-    
-    # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, name,out_dir)
+    fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
+                     doc.Label, objs, keepOriginals=True)
+    exportSTEP(doc,name,out_dir,fusion)
 
-    if close_doc != True: # avoid operations for memory leak
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=name)
 
-    return 0
-    
-import add_license as Lic
+    Lic.addLicenseToStep(out_dir, '{:s}.step'.\
+        format(name), LIST_license,
+            STR_licAuthor,
+            STR_licEmail,
+            STR_licOrgSys,
+            STR_licPreProc)
+
+    FreeCAD.activeDocument().recompute()
+    print("Safe to: {}".format(out_dir))
+    saveFCdoc(App, Gui, doc, name, out_dir)
+
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
+
+    if save_memory == True or check_Model==True:
+        print("closing: {}".format(doc.Label))
+        closeCurrentDoc(doc.Label)
+
+    if check_Model==True:
+        #ImportGui.insert(step_path,docname)
+
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        docu.Label = docname
+        log.write('\n## Checking {:s}\n'.format(docname))
+
+        if checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+            log.write('\t- Union check:    [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+            log.write('\t- Union check:    [    FAIL    ]\n')
+            #stop
+        FC_majorV=int(FreeCAD.Version()[0])
+        FC_minorV=int(FreeCAD.Version()[1])
+        if FC_majorV == 0 and FC_minorV >= 17:
+            if docu.Objects == 0:
+                FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
+            for o in docu.Objects:
+                if hasattr(o,'Shape'):
+                    chks=checkBOP(o.Shape)
+                    #print 'chks ',chks
+                    if chks != True:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
+                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintError(msg)
+                        FreeCAD.Console.PrintWarning(chks[0])
+                        log.write('\t- Geometry check: [    FAIL    ]\n')
+                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
+                        #stop
+                    else:
+                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
+                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
+                        FreeCAD.Console.PrintMessage(msg)
+                        log.write('\t- Geometry check: [    pass    ]\n')
+        else:
+            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
+            log.write('\t- Geometry check: [  skipped   ]\n')
+            log.write('\t\t- Geometry check needs FC 0.17+\n')
+
+        if save_memory == True:
+            saveFCdoc(App, Gui, docu, 'temp', out_dir)
+            docu = FreeCAD.ActiveDocument
+            closeCurrentDoc(docu.Label)
+    return out_dir
 
 if __name__ == "__main__" or __name__ == "main_generator":
-    
-    global docname
     pins = []
-    
     # select whether to include visual detail features
     highDetail = True
-    
+
     close_doc=False
     if len(sys.argv) < 3:
-        say("Nothing specified to build...")
+        print("Nothing specified to build...")
         pins = cq_cad_tools.getListOfNumbers("10")
     else:
         arg = sys.argv[2]
@@ -406,20 +421,19 @@ if __name__ == "__main__" or __name__ == "main_generator":
             pins = (3, 4, 5, 6, 7, 8, 10, 13, 15, 17, 20, 25, 30, 32)
         else:
             pins = cq_cad_tools.getListOfNumbers(sys.argv[2])
-    
-    for pin in pins:
-        # make an angled and a straight version
-        for isAngled in (True, False):
-            MakeHeader(pin, isAngled, highDetail)
-            App.setActiveDocument(docname)
-            doc = FreeCAD.ActiveDocument
-            if close_doc: #closing doc to avoid memory leak
-                expVRML.say("closing doc to save memory")
-                expVRML.say(docname)
-                App.closeDocument(doc.Name)
-                App.setActiveDocument("")
-                App.ActiveDocument=None
-                Gui.ActiveDocument=None
+
+    with open(check_log_file, 'w') as log:
+        out_dir = None
+        log.write('# Check report for IDC Header 3d model genration\n')
+        for pin in pins:
+            # make an angled and a straight version
+            for isAngled in (True, False):
+                out_dir = MakeHeader(pin, isAngled, log, highDetail)
+        if save_memory == True:
+            if out_dir == None:
+                print("Nothing to do for series {:s}".format(module.series_params.series))
+            else:
+                os.remove('{}/temp.FCStd'.format(out_dir))
 
 
 
@@ -435,5 +449,3 @@ if __name__ == "temp.module":
     ##
     ## show(case, (60,60,60,0))
     ## show(pins)
-
-
