@@ -274,7 +274,7 @@ def make_Vertical_SMD_pins(n, pitch, rows, pin_length_above_base, pin_length_hor
 def MakeHeader(n, model, all_params):
     global formerDOC
     global LIST_license
-    name = model.replace('yy', "{n:02}".format(n=n))
+    ModelName = model.replace('yy', "{n:02}".format(n=n))
 
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
@@ -294,12 +294,12 @@ def MakeHeader(n, model, all_params):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    docname = name.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
    
-    newdoc = App.newDocument(docname)
-    App.setActiveDocument(docname)
-    App.ActiveDocument=App.getDocument(docname)
-    Gui.ActiveDocument=Gui.getDocument(docname)
+    newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    App.ActiveDocument=App.getDocument(CheckedModelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
     
     header_type = all_params[model]['type']
     pitch = all_params[model]['pitch']
@@ -366,9 +366,9 @@ def MakeHeader(n, model, all_params):
     #objs=GetListOfObjects(FreeCAD, doc)
     FuseObjs_wColors(FreeCAD, FreeCADGui,
                    doc.Name, objs[0].Name, objs[1].Name)
-    doc.Label=docname
+    doc.Label=CheckedModelName
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label=docname
+    objs[0].Label=CheckedModelName
     restore_Main_Tools()
 
     if (rotation !=0):
@@ -376,14 +376,14 @@ def MakeHeader(n, model, all_params):
     
     #out_dir = models_dir+"/generated_pinheaders"
     
-    doc.Label = docname
+    doc.Label = CheckedModelName
     
     #save the STEP file
-    exportSTEP(doc, name, out_dir)
+    exportSTEP(doc, ModelName, out_dir)
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
         LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', name+".step", LIST_license,\
+    Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
     
     # scale and export Vrml model
@@ -394,7 +394,7 @@ def MakeHeader(n, model, all_params):
     expVRML.say(objs)
     expVRML.say("######################################################################")
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-    export_file_name=out_dir+os.sep+name+'.wrl'
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
@@ -405,6 +405,9 @@ def MakeHeader(n, model, all_params):
     if save_memory == False:
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
+
+    # Save the doc in Native FC format 
+    saveFCdoc(App, Gui, doc, ModelName, out_dir, False) 
     
     check_Model=True
     if save_memory == True or check_Model==True:
@@ -437,10 +440,10 @@ def MakeHeader(n, model, all_params):
                         FreeCAD.Console.PrintMessage(msg)
         else:
             FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
-        # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, name,out_dir, False)
-        if save_memory == True:
-            closeCurrentDoc(docname)
+            # Save the doc in Native FC format
+        saveFCdoc(App, Gui, docu, ModelName,out_dir, False)
+        closeCurrentDoc(docu.Label)
+        
     return 0
     
 #import step_license as L

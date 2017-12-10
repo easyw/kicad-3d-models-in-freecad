@@ -161,7 +161,7 @@ def make_chip(model, all_params):
     pin_band = all_params[model]['pin_band'] # pin band
     pin_thickness = all_params[model]['pin_thickness'] # pin thickness
     if pin_thickness == 'auto':
-        pin_thickness = height/20.
+        pin_thickness = pin_band/10.0
 
     edge_fillet = all_params[model]['edge_fillet'] # fillet of edges
     if edge_fillet == 'auto':
@@ -193,7 +193,7 @@ import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
-    destination_dir = '/Capacitors_SMD.3dshapes'
+    destination_dir = '/Capacitor_SMD.3dshapes'
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
