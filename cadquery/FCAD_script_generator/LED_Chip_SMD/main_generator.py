@@ -45,7 +45,7 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make chip capacitors 3D models"
+__title__ = "make chip LED's 3D models"
 __author__ = "maurice"
 __Comment__ = 'make chip capacitos 3D models exported to STEP and VRML for Kicad StepUP script'
 
@@ -156,7 +156,7 @@ from cq_parameters import *
 all_params= kicad_naming_params_res
 
 def make_chip(params):
-    # dimensions for chip capacitors
+    # dimensions for chip LED's
     L = params.L    # package length
     W = params.W    # package width
     T = params.T    # package height
@@ -191,22 +191,6 @@ def make_chip(params):
         pins = pins.workplane(offset=ph).moveTo(-L/2, -W/4).threePointArc((-L/2+pb/2, 0),(-L/2, W/4),forConstruction=False).close().cutThruAll().moveTo(L/2, -W/4).threePointArc((L/2-pb/2, 0),(L/2, W/4),forConstruction=False).close().cutThruAll()
     elif pintype == 'convex':
         pins = pins.workplane(offset=ph).moveTo(0, W/2).rect(L-pb/2, W/4, centered=True).cutThruAll().moveTo(0, -W/2).rect(L-pb/2, W/4, centered=True).cutThruAll()
-    if internals:
-        F = (L/2-pb)-L/8+W/16
-        pins = pins.union(cq.Workplane("XY").workplane(offset=ph-pt).rect(W/2, W/2, centered=True).extrude(pt).moveTo(-F/2 ,0).rect(F, W/8, centered=True).extrude(pt).\
-        moveTo((L/2-pb)/2 ,0).rect(L/2-W/4, W/16, centered=True).extrude(pt))
-        d = W/32
-        F = (L/2-pb)-L/8+W/16
-        D = (d*1.5+pt)*2
-        lead1 = cq.Workplane("XY").workplane(offset=ph-pt).center(-F/2,0).circle(d/2).extrude(D/2-d)
-        lead1 = lead1.union(cq.Workplane("XY").workplane(offset=D/2-d+ph-pt).center(-F/2,0).circle(d/2).center(-F/2+d/2,0).revolve(90,(-F/2+d/2+d,d)))
-        lead1 = lead1.rotate((-F/2,0,0), (0,0,1), -90)
-        lead2 = lead1.rotate((-F/2,0,0), (0,0,1), 180).translate((F,0,0))
-        Hlead = cq.Workplane("YZ").workplane(offset=-F/2+d).center(0,D/2+ph-pt).circle(d/2).extrude(F-d*2)
-        leads = lead1.union(lead2).union(Hlead).translate((-F/2,0,0))
-        pins = pins.union(leads)
-
-        die = cq.Workplane("XY").workplane(offset=ph).rect(W/4, W/4, centered=True).rect(W/8, W/8, centered=True).extrude(pt)
     #body_copy.ShapeColor=result.ShapeColor
     pinmark_side = W*0.7
     pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
@@ -266,9 +250,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         show(pins)
         show(top)
         show(pinmark)
-        if die:
-        	show(die)
-        
+
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
 
@@ -276,42 +258,26 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Color_Objects(Gui,objs[1],top_color)
         Color_Objects(Gui,objs[2],pins_color)
         Color_Objects(Gui,objs[3],pinmark_color)
-        if die:
-        	Color_Objects(Gui,objs[4],die_color)
+
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
         col_pinmark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
-        if die is not None:
-        	col_die=Gui.ActiveDocument.getObject(objs[4].Name).DiffuseColor[0]
-        	material_substitutions={
-        	    col_body[:-1]:body_color_key,
-        	    col_pin[:-1]:pins_color_key,
-        	    col_top[:-1]:top_color_key,
-        	    col_pinmark[:-1]:pinmark_color_key,
-        	    col_die[:-1]:die_color_key
-        	}
-        else:
-        	material_substitutions={
-        	    col_body[:-1]:body_color_key,
-        	    col_pin[:-1]:pins_color_key,
-        	    col_top[:-1]:top_color_key,
-        	    col_pinmark[:-1]:pinmark_color_key
-        	}
+       	material_substitutions={
+       	    col_body[:-1]:body_color_key,
+       	    col_pin[:-1]:pins_color_key,
+       	    col_top[:-1]:top_color_key,
+       	    col_pinmark[:-1]:pinmark_color_key
+       	}
         expVRML.say(material_substitutions)
         del objs
 
-        # if die:
-        # 	objs=GetListOfObjects(FreeCAD, doc)
-        # 	##FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        if die is None:
-            objs=GetListOfObjects(FreeCAD, doc)
-            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-            objs=GetListOfObjects(FreeCAD, doc)
-            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-            objs=GetListOfObjects(FreeCAD, doc)
-            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
         # if die is not None:
