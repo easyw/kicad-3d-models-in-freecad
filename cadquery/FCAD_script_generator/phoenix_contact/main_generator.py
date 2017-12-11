@@ -87,31 +87,21 @@ if FreeCAD.GuiUp:
 
 #checking requirements
 #######################################################################
-FreeCAD.Console.PrintMessage("FC Version \r\n")
-FreeCAD.Console.PrintMessage(FreeCAD.Version())
-FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
-FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-
-if int(FC_majorV) <= 0:
-    if int(FC_minorV) < 15:
-        reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
-
-
-# FreeCAD.Console.PrintMessage(M.all_params_soic)
-FreeCAD.Console.PrintMessage(FreeCAD.ConfigGet("AppHomePath")+'Mod/')
-file_path_cq=FreeCAD.ConfigGet("AppHomePath")+'Mod/CadQuery'
-if os.path.exists(file_path_cq):
-    FreeCAD.Console.PrintMessage('CadQuery exists\r\n')
-else:
-    msg="missing CadQuery Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+try:
+    # Gui.SendMsgToActiveView("Run")
+#    from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 #######################################################################
 from Gui.Command import *
-
-outdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
 
 # Import cad_tools
 #sys.path.append("../")
@@ -119,29 +109,24 @@ import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,\
+from cq_cad_tools import GetListOfObjects, restore_Main_Tools,\
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors,\
- closeCurrentDoc, checkBOP, checkUnion
-
-# Gui.SendMsgToActiveView("Run")
-Gui.activateWorkbench("CadQueryWorkbench")
-import FreeCADGui as Gui
+ closeCurrentDoc, runGeometryCheck
 
 try:
     close_CQ_Example(App, Gui)
 except:
     FreeCAD.Console.PrintMessage("can't close example.")
 
-import cadquery as cq
 from math import sqrt
-from Helpers import show
 from collections import namedtuple
-import FreeCAD, Draft, FreeCADGui
+#import FreeCAD, Draft, FreeCADGui
 import ImportGui
+
 sys.path.append("cq_models")
 import conn_phoenix_mstb as MSTB
 import conn_phoenix_mc as MC
-#import conn_molex_53398 as M2
+
 import add_license as L
 
 if LIST_license[0]=="":
@@ -297,50 +282,8 @@ def export_one_part(modul, variant, configuration, log, with_plug=False):
 
 
     if check_Model==True:
-        #ImportGui.insert(step_path,ModelName)
-
-        ImportGui.open(step_path)
-        docu = FreeCAD.ActiveDocument
-        docu.Label=ModelName
-        log.write('\n## Checking {:s}\n'.format(ModelName))
-
-        if checkUnion(docu) == True:
-            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
-            log.write('\t- Union check:    [    pass    ]\n')
-        else:
-            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
-            log.write('\t- Union check:    [    FAIL    ]\n')
-            #stop
-        FC_majorV=int(FreeCAD.Version()[0])
-        FC_minorV=int(FreeCAD.Version()[1])
-        if FC_majorV == 0 and FC_minorV >= 17:
-            for o in docu.Objects:
-                if hasattr(o,'Shape'):
-                    chks=checkBOP(o.Shape)
-                    #print 'chks ',chks
-                    if chks != True:
-                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
-                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
-                        FreeCAD.Console.PrintError(msg)
-                        FreeCAD.Console.PrintWarning(chks[0])
-                        log.write('\t- Geometry check: [    FAIL    ]\n')
-                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
-                        #stop
-                    else:
-                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
-                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
-                        FreeCAD.Console.PrintMessage(msg)
-                        log.write('\t- Geometry check: [    pass    ]\n')
-        else:
-            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
-            log.write('\t- Geometry check: [  skipped   ]\n')
-            log.write('\t\t- Geometry check needs FC 0.17+\n')
-
-        if save_memory == True:
-            saveFCdoc(App, Gui, docu, 'temp', out_dir)
-            docu = FreeCAD.ActiveDocument
-            closeCurrentDoc(docu.Label)
-    return out_dir
+        runGeometryCheck(App, Gui, step_path,
+            log, ModelName, save_memory=save_memory)
 
 class argparse():
     def __init__(self):
@@ -424,8 +367,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
             for variant in typ.all_params.keys():
                 if model_filter_regobj.match(variant):
                     FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                    out_dir = export_one_part(typ, variant, configuration, log, with_plug)
-            if save_memory == True:
-                os.remove('{}/temp.FCStd'.format(out_dir))
+                    export_one_part(typ, variant, configuration, log, with_plug)
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
