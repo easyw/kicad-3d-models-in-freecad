@@ -92,7 +92,7 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
@@ -148,15 +148,15 @@ def make_tantalum(params):
     E = params.E
     pml = params.pml
     rot = params.rotation
-    dest_dir_pref = params.dest_dir_prefix
+    #dest_dir_pref = params.dest_dir_prefix
 
     Lb = L - 2.*T        # body lenght
     ppH = (H * 0.45)    # pivot point height
-    
+
     ma_rad=radians(ma_deg)
     dtop = (H-ppH) * tan(ma_rad)
     dbot = (ppH-T) * tan(ma_rad)
-    
+
     body_base = cq.Workplane(cq.Plane.XY()).workplane(offset=0).rect(E, G). \
                 workplane(offset=T).rect(E,G). \
                 loft(ruled=True)
@@ -169,15 +169,15 @@ def make_tantalum(params):
     if B!=0:
         BS = cq.selectors.BoxSelector
         body = body.edges(BS((-(W-2.*dtop)/2, (Lb-2.*dtop)/2., H-0.2), ((W+2.*dtop)/2, (Lb+2.*dtop)/2., H+0.2))).chamfer(B)
-    
+
     body=body.union(body_base)
     #sleep
     pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=H-T*0.01).rect(W-dtop-dtop, pml). \
                 workplane(offset=T*0.01).rect(W-dtop-dtop, pml). \
                 loft(ruled=True)
 
-    #translate the object  
-    pinmark=pinmark.translate((0,Lb/2.-B-pml/2.-dtop/2.-dtop/2.,0)).rotate((0,0,0), (0,1,0), 0)    
+    #translate the object
+    pinmark=pinmark.translate((0,Lb/2.-B-pml/2.-dtop/2.-dtop/2.,0)).rotate((0,0,0), (0,1,0), 0)
     # Create a pin object at the center of top side.
         #threePointArc((L+K/sqrt(2), b/2-K*(1-1/sqrt(2))),
         #              (L+K, b/2-K)). \
@@ -189,7 +189,7 @@ def make_tantalum(params):
         close().extrude(T+0.01*T)
     bpin1=bpin1.translate((-F/2.,0,0))
     bpin=bpin1.rotate((0,(Lb/2.-S)/2.,F/2.), (0,0,1), 180).translate((0,-Lb/2.+S,0))
-    
+
     delta=0.01
     hpin=ppH-delta*ppH
     bpin2 = cq.Workplane("XY"). \
@@ -200,8 +200,8 @@ def make_tantalum(params):
         close().extrude(hpin)
     bpin2=bpin2.translate((-F/2.,0,0))
     BS = cq.selectors.BoxSelector
-    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,hpin-delta), (0+delta,L/2.+delta,hpin+delta))).fillet(T*2./3.)    
-    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,0-delta), (0+delta,L/2.+delta,0+delta))).fillet(T*2./3.)    
+    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,hpin-delta), (0+delta,L/2.+delta,hpin+delta))).fillet(T*2./3.)
+    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,0-delta), (0+delta,L/2.+delta,0+delta))).fillet(T*2./3.)
     bpinv=bpin2.rotate((0,(T)/2.,F/2.), (0,0,1), 180).translate((0,-T,0))
     #show (bpinv)
     if P!=0:
@@ -217,7 +217,7 @@ def make_tantalum(params):
     #show (bpinv)
     #show(bpin1)
     #show (bpin)
-    
+
     merged_pins=bpin
     merged_pins=merged_pins.union(bpin1)
     merged_pins=merged_pins.union(bpin2)
@@ -286,7 +286,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         show(body)
         show(pins)
         show(mark)
-        
+
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
 
