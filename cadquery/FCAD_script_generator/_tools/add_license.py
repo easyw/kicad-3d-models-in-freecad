@@ -42,7 +42,7 @@ STR_int_licAuthor = "your name"
 STR_int_licEmail = "your email"
 STR_int_licOrgSys = ""
 STR_int_licPreProc = ""
-STR_int_licOrg = "FreeCAD"   
+STR_int_licOrg = "FreeCAD"
 
 LIST_int_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_int_licAuthor,
                 "",
@@ -148,7 +148,7 @@ def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAutho
             LIST_license=list(LIST_int_license)
         LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
         if ext == ".stp" or ext == ".step": # test if step file
-            say("Starting of licensing\n")
+            #say("Starting of licensing\n")
             try:
                 HDLR_stepfile = open(FLDR_toStepFiles + os.sep  + FNME_stepfile, 'r') # open
             except:
@@ -200,6 +200,6 @@ def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAutho
                 for line in PMBL_stepfile[(DICT_positions["A"]-1):]:
                     HDLR_stepfile_w.write(line.strip() + "\n")
                 HDLR_stepfile_w.close()
-    say ("done")
+    say ("License addition successful")
 
 ###
