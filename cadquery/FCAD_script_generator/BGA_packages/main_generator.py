@@ -109,7 +109,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc, checkBOP, checkUnion
+ CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -553,49 +553,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 closeCurrentDoc(doc.Label)
 
             if check_Model==True:
-                #ImportGui.insert(step_path,docname)
-                step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=ModelName)
-                ImportGui.open(step_path)
-                docu = FreeCAD.ActiveDocument
-                docu.Label = CheckedModelName
-                log.write('\n## Checking {:s}\n'.format(ModelName))
-
-                if checkUnion(docu) == True:
-                    FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
-                    log.write('\t- Union check:    [    pass    ]\n')
-                else:
-                    FreeCAD.Console.PrintError('step file is NOT Unioned\n')
-                    log.write('\t- Union check:    [    FAIL    ]\n')
-                    #stop
-                FC_majorV=int(FreeCAD.Version()[0])
-                FC_minorV=int(FreeCAD.Version()[1])
-                if FC_majorV == 0 and FC_minorV >= 17:
-                    if docu.Objects == 0:
-                        FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
-                    for o in docu.Objects:
-                        if hasattr(o,'Shape'):
-                            chks=checkBOP(o.Shape)
-                            #print 'chks ',chks
-                            if chks != True:
-                                #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
-                                msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
-                                FreeCAD.Console.PrintError(msg)
-                                FreeCAD.Console.PrintWarning(chks[0])
-                                log.write('\t- Geometry check: [    FAIL    ]\n')
-                                log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
-                                #stop
-                            else:
-                                #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
-                                msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
-                                FreeCAD.Console.PrintMessage(msg)
-                                log.write('\t- Geometry check: [    pass    ]\n')
-                else:
-                    FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
-                    log.write('\t- Geometry check: [  skipped   ]\n')
-                    log.write('\t\t- Geometry check needs FC 0.17+\n')
-
-                if save_memory == True:
-                    saveFCdoc(App, Gui, docu, 'temp', out_dir)
-                    docu = FreeCAD.ActiveDocument
-                    closeCurrentDoc(docu.Label)
-    os.remove('{}/temp.FCStd'.format(out_dir))
+                step_path = out_dir + '/' + ModelName + ".step"
+                runGeometryCheck(App, Gui, step_path,
+                    log, ModelName, save_memory=save_memory)
