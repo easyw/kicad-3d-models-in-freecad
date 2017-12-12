@@ -623,16 +623,21 @@ def runGeometryCheck(App, Gui, step_path, log,
     docu = FreeCAD.ActiveDocument
     docu.Label = ModelName
     log.write('\n## Checking {:s}\n'.format(ModelName))
+    FC_majorV=int(FreeCAD.Version()[0])
+    FC_minorV=int(FreeCAD.Version()[1])
+    FC_subV=int(FreeCAD.Version()[2].split(" ")[0])
 
     if checkUnion(docu):
         FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
-        log.write('\t- Union check:    [    pass    ]\n')
+        if FC_majorV == 0 and FC_minorV == 16 and FC_subV < 6712:
+            log.write('\t- Union check:    [  skipped   ]\n')
+            log.write('\t\t- Union check is unreliable for FreeCAD version 0.16 prior release 6712. Please update FreeCAD\n')
+        else:
+            log.write('\t- Union check:    [    pass    ]\n')
     else:
         FreeCAD.Console.PrintError('step file is NOT Unioned\n')
         log.write('\t- Union check:    [    FAIL    ]\n')
         #stop
-    FC_majorV=int(FreeCAD.Version()[0])
-    FC_minorV=int(FreeCAD.Version()[1])
     if FC_majorV == 0 and FC_minorV >= 17:
         if docu.Objects == 0:
             FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
