@@ -53,8 +53,10 @@ ___ver___ = "1.2 03/12/2017"
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+stop_on_first_error = True
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
+
 
 import sys, os
 import datetime
@@ -63,6 +65,7 @@ from math import sqrt
 from collections import namedtuple
 
 sys.path.append("../_tools")
+from cqToolsExceptions import *
 import exportPartToVRML as expVRML
 import shaderColors
 import add_license as L
@@ -77,6 +80,8 @@ check_log_file = 'check-log.md'
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
+import FreeCADGui as Gui
+
 try:
     # Gui.SendMsgToActiveView("Run")
 #    from Gui.Command import *
@@ -84,7 +89,8 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     if QtGui is not None:
@@ -118,6 +124,7 @@ import ImportGui
 
 
 def export_one_part(module, variant, pincount, configuration, log):
+    print('\n##########################################################')
     series_definition = module.series_params
     variant_params = series_definition.variant_params[variant]
     params = variant_params['param_generator'](pincount)
@@ -226,11 +233,20 @@ def export_one_part(module, variant, pincount, configuration, log):
 def exportSeries(module, configuration, log, model_filter_regobj):
     series_definition = module.series_params
     for variant in series_definition.variant_params:
-        print(variant)
+        #print(variant)
         pinrange = series_definition.variant_params[variant]['pinrange']
         for pins in pinrange:
-            if model_filter_regobj.match(str(pins)):
-                export_one_part(module, variant, pins, configuration, log)
+            try:
+                if model_filter_regobj.match(str(pins)):
+                    export_one_part(module, variant, pins, configuration, log)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
+                    return -1
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                return -1
+    return 0
 
 
 #########################  ADD MODEL GENERATORS #########################
@@ -270,8 +286,8 @@ class argparse():
             global check_log_file
             check_log_file = value
         elif name == 'series':
-            print("param series:")
-            print(value)
+            #print("param series:")
+            #print(value)
             series_str = value.split(',')
             self.series = []
             for s in series_str:
@@ -294,6 +310,8 @@ class argparse():
         elif name == 'disable_Memory_reduction':
             global save_memory
             save_memory = False
+        elif name == 'error_tolerant':
+            stop_on_first_error = False
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
@@ -330,7 +348,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for Molex 3d model genration\n')
         for typ in args.series:
-            exportSeries(typ, configuration, log, model_filter_regobj)
+            if exportSeries(typ, configuration, log, model_filter_regobj) != 0:
+                break
 
 
-    FreeCAD.Console.PrintMessage('\r\Done\r\n')
+
+    FreeCAD.Console.PrintMessage('\n\nDone\n')
