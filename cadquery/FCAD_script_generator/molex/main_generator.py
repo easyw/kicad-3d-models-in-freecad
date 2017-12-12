@@ -317,6 +317,9 @@ class argparse():
         elif name == 'disable_Memory_reduction':
             global save_memory
             save_memory = False
+        elif name == 'error_tolerant':
+            global stop_on_first_error
+            stop_on_first_error = False
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
