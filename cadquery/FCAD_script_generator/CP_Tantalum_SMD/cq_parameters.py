@@ -30,13 +30,13 @@ Params = namedtuple("Params", [
     'G',    # length of bump underneath body
     'E',    # width of the bump underneath body
     'pml',  # pin mark lenght
-    'modelName', #modelName
+    'modelName_old', #modelName
     'rotation', #rotation if required
     'dest_dir_prefix' #destination dir prefix
 ])
 
-all_params_tantalum = {
-    'A_3216_18': Params( # kemet Tantalum A 3216 H18
+all_params_tantalum_max = {
+    'EIA-3216-18': Params( # kemet Tantalum A 3216 H18
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.4,
@@ -51,11 +51,9 @@ all_params_tantalum = {
         G = 1.1,
         E = 1.3,
         pml = 0.6,
-        modelName = 'Tantalum_A_3216H18', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'B_3528_21': Params( # kemet Tantalum B 3528 H21
+    'EIA-3528-21': Params( # kemet Tantalum B 3528 H21
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.7,
@@ -70,11 +68,9 @@ all_params_tantalum = {
         G = 1.8,
         E = 2.2,
         pml = 0.6,
-        modelName = 'Tantalum_B_3528H21', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'C_6032_28': Params( # kemet Tantalum C 6032 H28
+    'EIA-6032-28': Params( # kemet Tantalum C 6032 H28
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 6.3,
@@ -89,11 +85,9 @@ all_params_tantalum = {
         G = 2.8,
         E = 2.4,
         pml = 0.6,
-        modelName = 'Tantalum_C_6032H28', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'D_7343_31': Params( # kemet Tantalum D 7343 H31
+    'EIA-7343-31': Params( # kemet Tantalum D 7343 H31
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.6,
@@ -108,11 +102,9 @@ all_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'Tantalum_D_7343H31', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'X_7343_43': Params( # kemet Tantalum X 7343 H43
+    'EIA-7343-43': Params( # kemet Tantalum X 7343 H43
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.6,
@@ -127,11 +119,9 @@ all_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'Tantalum_X_7343H43', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'E_7360_38': Params( # kemet Tantalum E 7360 H38
+    'EIA-7360-38': Params( # kemet Tantalum E 7360 H38
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.6,
@@ -146,11 +136,9 @@ all_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'Tantalum_E_7360H38', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'S_3216_12': Params( # kemet Tantalum S 3216 H12
+    'EIA-3216-12': Params( # kemet Tantalum S 3216 H12
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.4,
@@ -165,11 +153,9 @@ all_params_tantalum = {
         G = 1.1,
         E = 1.3,
         pml = 0.6,
-        modelName = 'Tantalum_S_3216H12', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'T_3528_12': Params( # kemet Tantalum T 3528 H12
+    'EIA-3528-12': Params( # kemet Tantalum T 3528 H12
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.7,
@@ -184,11 +170,9 @@ all_params_tantalum = {
         G = 1.8,
         E = 2.2,
         pml = 0.6,
-        modelName = 'Tantalum_T_3528H12', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'U_6032_15': Params( # kemet Tantalum U 6032 H15
+    'EIA-6032-15': Params( # kemet Tantalum U 6032 H15
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 6.3,
@@ -203,11 +187,9 @@ all_params_tantalum = {
         G = 2.8,
         E = 2.4,
         pml = 0.6,
-        modelName = 'Tantalum_U_6032H15', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'V_7343_20': Params( # kemet Tantalum W 7443 H20
+    'EIA-7343-20': Params( # kemet Tantalum W 7443 H20
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.6,
@@ -222,11 +204,9 @@ all_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'Tantalum_V_7443H15', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'W_7343_15': Params( # kemet Tantalum W 7343 H15
+    'EIA-7343-15': Params( # kemet Tantalum W 7343 H15
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.3,
@@ -241,14 +221,12 @@ all_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'Tantalum_W_7343H15', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
 }
 
-kicad_naming_params_tantalum = {
-    'CP_Tantalum_Case-A_EIA-3216-18': Params( # kemet Tantalum A 3216 H18
+all_params_tantalum_nominal = {
+    'EIA-3216-18': Params( # kemet Tantalum A 3216 H18
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.2,
@@ -263,11 +241,9 @@ kicad_naming_params_tantalum = {
         G = 1.1,
         E = 1.3,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-A_EIA-3216-18', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-B_EIA-3528-21': Params( # kemet Tantalum B 3528 H21
+    'EIA-3528-21': Params( # kemet Tantalum B 3528 H21
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.5,
@@ -282,11 +258,9 @@ kicad_naming_params_tantalum = {
         G = 1.8,
         E = 2.2,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-B_EIA-3528-21', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-C_EIA-6032-28': Params( # kemet Tantalum C 6032 H28
+    'EIA-6032-28': Params( # kemet Tantalum C 6032 H28
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 6.0,
@@ -301,11 +275,9 @@ kicad_naming_params_tantalum = {
         G = 2.8,
         E = 2.4,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-C_EIA-6032-28', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-D_EIA-7343-31': Params( # kemet Tantalum D 7343 H31
+    'EIA-7343-31': Params( # kemet Tantalum D 7343 H31
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.3,
@@ -320,30 +292,26 @@ kicad_naming_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'CP_Tantalum_Case-D_EIA-7343-31', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-E_EIA-7260-38': Params( # kemet Tantalum E 7260 H38
-        # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
-        # Length, width, height of the tantalum cap
-        L = 7.2,
-        W = 6.0,
-        H = 3.8,
-        F = 4.1,
-        S = 1.3,
-        B = 0.5,
-        P = 1.2,
-        R = 2.0,
-        T = 0.1,
-        G = 3.5,
-        E = 3.5,
-        pml = 1.2,
-        modelName = 'CP_Tantalum_Case-E_EIA-7260-38', #modelName
-        rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
-        ),
-    'CP_Tantalum_Case-R_EIA-2012-12': Params(
+    # 'EIA-7260-38': Params( # kemet Tantalum E 7260 H38
+    #     # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
+    #     # Length, width, height of the tantalum cap
+    #     L = 7.2,
+    #     W = 6.0,
+    #     H = 3.8,
+    #     F = 4.1,
+    #     S = 1.3,
+    #     B = 0.5,
+    #     P = 1.2,
+    #     R = 2.0,
+    #     T = 0.1,
+    #     G = 3.5,
+    #     E = 3.5,
+    #     pml = 1.2,
+    #     rotation = 90, # rotation if required
+    #     ),
+    'EIA-2012-12': Params(
         # Length, width, height of the tantalum cap
         L = 2.0,
         W = 1.2,
@@ -357,11 +325,9 @@ kicad_naming_params_tantalum = {
         G = 0.5,
         E = 0.8,
         pml = 0.4,
-        modelName = 'CP_Tantalum_Case-R_EIA-2012-12', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-S_EIA-3216-12': Params( # kemet Tantalum S 3216 H12
+    'EIA-3216-12': Params( # kemet Tantalum S 3216 H12
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.4,
@@ -376,11 +342,9 @@ kicad_naming_params_tantalum = {
         G = 1.1,
         E = 1.3,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-S_EIA-3216-12', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-T_EIA-3528-12': Params( # kemet Tantalum T 3528 H12
+    'EIA-3528-12': Params( # kemet Tantalum T 3528 H12
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 3.7,
@@ -395,11 +359,9 @@ kicad_naming_params_tantalum = {
         G = 1.8,
         E = 2.2,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-T_EIA-3528-12', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-U_EIA-6032-15': Params( # kemet Tantalum U 6032 H15
+    'EIA-6032-15': Params( # kemet Tantalum U 6032 H15
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 6.3,
@@ -414,11 +376,9 @@ kicad_naming_params_tantalum = {
         G = 2.8,
         E = 2.4,
         pml = 0.6,
-        modelName = 'CP_Tantalum_Case-U_EIA-6032-15', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-V_EIA-7343-20': Params( # kemet Tantalum W 7343 H20
+    'EIA-7343-20': Params( # kemet Tantalum W 7343 H20
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.5,
@@ -433,11 +393,9 @@ kicad_naming_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'CP_Tantalum_Case-V_EIA-7343-20', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
-    'CP_Tantalum_Case-X_EIA-7343-43': Params( # kemet Tantalum X 7343 H43
+    'EIA-7343-43': Params( # kemet Tantalum X 7343 H43
         # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
         # Length, width, height of the tantalum cap
         L = 7.6,
@@ -452,8 +410,141 @@ kicad_naming_params_tantalum = {
         G = 3.5,
         E = 3.5,
         pml = 1.2,
-        modelName = 'CP_Tantalum_Case-X_EIA-7343-43', #modelName
         rotation = 90, # rotation if required
-        dest_dir_prefix = 'cap_tantalum'
         ),
+}
+
+name_info = {
+    'EIA-1608-08':{
+        'modelName_old': 'CP_Tantalum_Case-J_EIA-1608-08', #modelName
+        'modelName_maui': 'Tantalum_J_1608H08', #modelName
+        'code_metric': '1608-08',
+        'code_letter': 'AVX-J'
+    },
+    'EIA-1608-10':{
+        'modelName_old': 'CP_Tantalum_Case-L_EIA-1608-10', #modelName
+        'modelName_maui': 'Tantalum_L_1608H10', #modelName
+        'code_metric': '1608-10',
+        'code_letter': 'AVX-L'
+    },
+    'EIA-2012-12':{
+        'modelName_old': 'CP_Tantalum_Case-R_EIA-2012-12', #modelName
+        'modelName_maui': 'Tantalum_R_2012H12', #modelName
+        'code_metric': '2012-12',
+        'code_letter': 'Kemet-R'
+    },
+    'EIA-2012-15':{
+        'modelName_old': 'CP_Tantalum_Case-P_EIA-2012-15', #modelName
+        'modelName_maui': 'Tantalum_P_2012H15', #modelName
+        'code_metric': '2012-15',
+        'code_letter': 'AVX-P'
+    },
+    'EIA-3216-10':{
+        'modelName_old': 'CP_Tantalum_Case-I_EIA-3216-10', #modelName
+        'modelName_maui': 'Tantalum_I_3216H10', #modelName
+        'code_metric': '3216-10',
+        'code_letter': 'Kemet-I'
+    },
+    'EIA-3216-12':{
+        'modelName_old': 'CP_Tantalum_Case-S_EIA-3216-12', #modelName
+        'modelName_maui': 'Tantalum_S_3216H12', #modelName
+        'code_metric': '3216-12',
+        'code_letter': 'Kemet-S'
+    },
+    'EIA-3216-18':{
+        'modelName_old': 'CP_Tantalum_Case-A_EIA-3216-18', #modelName
+        'modelName_maui': 'Tantalum_A_3216H18', #modelName
+        'code_metric': '3216-18',
+        'code_letter': 'Kemet-A'
+    },
+    'EIA-3528-12':{
+        'modelName_old': 'CP_Tantalum_Case-T_EIA-3528-12', #modelName
+        'modelName_maui': 'Tantalum_T_3528H12', #modelName
+        'code_metric': '3528-12',
+        'code_letter': 'Kemet-T'
+    },
+    'EIA-3528-15':{
+        'modelName_old': 'CP_Tantalum_Case-H_EIA-3528-15', #modelName
+        'modelName_maui': 'Tantalum_H_3528H15', #modelName
+        'code_metric': '3528-15',
+        'code_letter': 'AVX-H'
+    }
+    'EIA-3528-21':{
+        'modelName_old': 'CP_Tantalum_Case-B_EIA-3528-21', #modelName
+        'modelName_maui': 'Tantalum_B_3528H21', #modelName
+        'code_metric': '3528-21',
+        'code_letter': 'Kemet-B'
+    },
+    'EIA-6032-15':{
+        'modelName_old': 'CP_Tantalum_Case-U_EIA-6032-15', #modelName
+        'modelName_maui': 'Tantalum_U_6032H15', #modelName
+        'code_metric': '6032-15',
+        'code_letter': 'Kemet-U'
+    },
+    'EIA-6032-20':{
+        'modelName_old': 'CP_Tantalum_Case-F_EIA-6032-20', #modelName
+        'modelName_maui': 'Tantalum_F_6032H20', #modelName
+        'code_metric': '6032-20',
+        'code_letter': 'AVX-F'
+    }
+    'EIA-6032-28':{
+        'modelName_old': 'CP_Tantalum_Case-C_EIA-6032-28', #modelName
+        'modelName_maui': 'Tantalum_C_6032H28', #modelName
+        'code_metric': '6032-28',
+        'code_letter': 'Kemet-C'
+    },
+    'EIA-7343-15':{
+        'modelName_old': 'CP_Tantalum_Case-W_EIA-7343-15', #modelName
+        'modelName_maui': 'Tantalum_W_7343H15', #modelName
+        'code_metric': '7343-15',
+        'code_letter': 'Kemet-W'
+    },
+    'EIA-7343-20':{
+        'modelName_old': 'CP_Tantalum_Case-V_EIA-7343-20', #modelName
+        'modelName_maui': 'Tantalum_V_7343H20', #modelName
+        'code_metric': '7343-20',
+        'code_letter': 'Kemet-V'
+    },
+    'EIA-7343-30':{
+        'modelName_old': 'CP_Tantalum_Case-N_EIA-7343-30', #modelName
+        'modelName_maui': 'Tantalum_N_7343H30', #modelName
+        'code_metric': '7343-30',
+        'code_letter': 'AVX-N'
+    },
+    'EIA-7343-31':{
+        'modelName_old': 'CP_Tantalum_Case-D_EIA-7343-31', #modelName
+        'modelName_maui': 'Tantalum_D_7343H31', #modelName
+        'code_metric': '7343-31',
+        'code_letter': 'Kemet-D'
+    },
+    'EIA-7343-38':{
+        'modelName_old': 'CP_Tantalum_Case-V_EIA-7343-38', #modelName
+        'modelName_maui': 'Tantalum_V_7343H38', #modelName
+        'code_metric': '7361-38',
+        'code_letter': 'AVX-V'
+    },
+    'EIA-7343-438':{
+        'modelName_old': 'CP_Tantalum_Case-U_EIA-7343-438', #modelName
+        'modelName_maui': 'Tantalum_U_7343H438', #modelName
+        'code_metric': '7361-438',
+        'code_letter': 'AVX-U'
+    },
+    'EIA-7360-38':{
+        'modelName_old': 'CP_Tantalum_Case-E_EIA-7360-38', #modelName
+        'modelName_maui': 'Tantalum_E_7360H38', #modelName
+        'code_metric': '7360-38',
+        'code_letter': 'Kemet-E'
+    },
+    'EIA-7360-38':{
+        'modelName_old': 'CP_Tantalum_Case-E_EIA-7360-38', #modelName
+        'modelName_maui': 'Tantalum_E_7360H38', #modelName
+        'code_metric': '7343-40',
+        'code_letter': 'Kemet-Y'
+    },
+    'EIA-7343-43':{
+        'modelName_old': 'CP_Tantalum_Case-X_EIA-7343-43', #modelName
+        'modelName_maui': 'Tantalum_X_7343H43', #modelName
+        'code_metric': '7343-43',
+        'code_letter': 'Kemet-X'
+    }
 }

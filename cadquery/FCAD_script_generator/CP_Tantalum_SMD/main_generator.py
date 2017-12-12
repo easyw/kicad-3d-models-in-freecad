@@ -252,8 +252,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
 # maui     run()
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building CP_Tantalum_Case-B_EIA-3528-21')
-        model_to_build='CP_Tantalum_Case-B_EIA-3528-21'
+        FreeCAD.Console.PrintMessage('No variant name is given! building EIA-3528-21')
+        model_to_build='EIA-3528-21'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
