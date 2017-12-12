@@ -61,6 +61,7 @@ import yaml
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+stop_on_first_error = True
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 
@@ -106,6 +107,7 @@ from Gui.Command import *
 
 # Import cad_tools
 #sys.path.append("../")
+from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
@@ -319,6 +321,9 @@ class argparse():
         elif name == 'disable_Memory_reduction':
             global save_memory
             save_memory = False
+        elif name == 'error_tolerant':
+            global stop_on_first_error
+            stop_on_first_error = False
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
@@ -330,6 +335,21 @@ class argparse():
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
             self.config, self.model_filter, str(self.series), self.with_plug)
+
+def exportSeries(series_params, log):
+    for variant in series_params.all_params.keys():
+        if model_filter_regobj.match(variant):
+            #FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
+            try:
+                export_one_part(series_params, variant, configuration, log, with_plug)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
+                    return -1
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                return -1
+    return 0
 
 if __name__ == "__main__" or __name__ == "main_generator":
 
@@ -365,9 +385,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for Phoenix Contact 3d model genration\n')
         for typ in series:
-            for variant in typ.all_params.keys():
-                if model_filter_regobj.match(variant):
-                    FreeCAD.Console.PrintMessage('\r\n'+variant+'\r\n')
-                    export_one_part(typ, variant, configuration, log, with_plug)
+            if exportSeries(typ, log) != 0:
+                break
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')
