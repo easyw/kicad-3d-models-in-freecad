@@ -65,7 +65,6 @@ from math import sqrt
 from collections import namedtuple
 
 sys.path.append("../_tools")
-from cqToolsExceptions import *
 import exportPartToVRML as expVRML
 import shaderColors
 import add_license as L
@@ -79,8 +78,6 @@ check_log_file = 'check-log.md'
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
-
-import FreeCADGui as Gui
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -102,6 +99,7 @@ except Exception as e: # catch *all* exceptions
 
 # Import cad_tools
 #sys.path.append("../_tools")
+from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
