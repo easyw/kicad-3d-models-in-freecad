@@ -54,6 +54,7 @@ ___ver___ = "1.2 03/12/2017"
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
 
 import sys, os
 import datetime
@@ -101,7 +102,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
- closeCurrentDoc, checkBOP, checkUnion
+ closeCurrentDoc, runGeometryCheck
 
 # Gui.SendMsgToActiveView("Run")
 #Gui.activateWorkbench("CadQueryWorkbench")
@@ -176,7 +177,7 @@ def export_one_part(module, variant, pincount, configuration, log):
 
     restore_Main_Tools()
 
-    out_dir='{:s}.3dshapes'.format(lib_name)
+    out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, lib_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -219,67 +220,18 @@ def export_one_part(module, variant, pincount, configuration, log):
         closeCurrentDoc(ModelName)
 
     if check_Model==True:
-        #ImportGui.insert(step_path,ModelName)
-
-        ImportGui.open(step_path)
-        docu = FreeCAD.ActiveDocument
-        docu.Label = ModelName
-        log.write('\n## Checking {:s}\n'.format(ModelName))
-
-        if checkUnion(docu) == True:
-            FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
-            log.write('\t- Union check:    [    pass    ]\n')
-        else:
-            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
-            log.write('\t- Union check:    [    FAIL    ]\n')
-            #stop
-        FC_majorV=int(FreeCAD.Version()[0])
-        FC_minorV=int(FreeCAD.Version()[1])
-        if FC_majorV == 0 and FC_minorV >= 17:
-            if docu.Objects == 0:
-                FreeCAD.Console.PrintError('Step import seems to fail. No objects to check')
-            for o in docu.Objects:
-                if hasattr(o,'Shape'):
-                    chks=checkBOP(o.Shape)
-                    #print 'chks ',chks
-                    if chks != True:
-                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
-                        msg = 'shape "{name:s}" "{label:s}" is INVALID'.format(name=o.Name, label=o.Label)
-                        FreeCAD.Console.PrintError(msg)
-                        FreeCAD.Console.PrintWarning(chks[0])
-                        log.write('\t- Geometry check: [    FAIL    ]\n')
-                        log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
-                        #stop
-                    else:
-                        #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
-                        msg = 'shape "{name:s}" "{label:s}" is valid'.format(name=o.Name, label=o.Label)
-                        FreeCAD.Console.PrintMessage(msg)
-                        log.write('\t- Geometry check: [    pass    ]\n')
-        else:
-            FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
-            log.write('\t- Geometry check: [  skipped   ]\n')
-            log.write('\t\t- Geometry check needs FC 0.17+\n')
-
-        if save_memory == True:
-            saveFCdoc(App, Gui, docu, 'temp', out_dir)
-            docu = FreeCAD.ActiveDocument
-            closeCurrentDoc(docu.Label)
-    return out_dir
+        runGeometryCheck(App, Gui, step_path,
+            log, ModelName, save_memory=save_memory)
 
 def exportSeries(module, configuration, log, model_filter_regobj):
-    out_dir = None
     series_definition = module.series_params
     for variant in series_definition.variant_params:
         print(variant)
         pinrange = series_definition.variant_params[variant]['pinrange']
         for pins in pinrange:
             if model_filter_regobj.match(str(pins)):
-                out_dir = export_one_part(module, variant, pins, configuration, log)
-    if save_memory == True:
-        if out_dir == None:
-            print("Nothing to do for series {:s}".format(module.series_params.series))
-        else:
-            os.remove('{}/temp.FCStd'.format(out_dir))
+                export_one_part(module, variant, pins, configuration, log)
+
 
 #########################  ADD MODEL GENERATORS #########################
 

@@ -62,6 +62,7 @@ import yaml
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
 
 # Licence information of the generated models.
 #################################################################################################
@@ -161,7 +162,7 @@ def export_one_part(modul, variant, configuration, log, with_plug=False):
         flanged = configuration['flanged_str'][1] if params.flanged else configuration['flanged_str'][0],
         mount_hole = configuration['mount_hole_str'][1] if params.mount_hole else configuration['mount_hole_str'][0])
 
-    destination_dir=lib_name
+    destination_dir=global_3dpath+lib_name
     if with_plug:
         destination_dir += "__with_plug"
     destination_dir+=".3dshapes"

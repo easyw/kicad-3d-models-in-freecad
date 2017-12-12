@@ -54,6 +54,7 @@ ___ver___ = "1.2 03/12/2017"
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
 
 import sys, os
 import datetime
@@ -174,7 +175,7 @@ def export_one_part(module, pincount, configuration, log):
 
     restore_Main_Tools()
 
-    out_dir='{:s}.3dshapes'.format(lib_name)
+    out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, lib_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
