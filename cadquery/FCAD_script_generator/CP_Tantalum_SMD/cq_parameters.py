@@ -14,8 +14,8 @@ from collections import namedtuple
 
 use_nominal_size = True
 
-destination_dir_old="/Capacitors_Tantalum_SMD"
-destination_dir="/Capacitor_Tantalum_SMD"
+destination_dir_old="/Capacitors_Tantalum_SMD.3dshapes"
+destination_dir="/Capacitor_Tantalum_SMD.3dshapes"
 
 rotation_plus_pin1 = 90
 rotation_minus_pin1 =-90
