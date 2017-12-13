@@ -68,9 +68,9 @@ R_0815_2038Metric:
   rotation: 0
   source: 'https://www.vishay.com/docs/20035/dcrcwe3.pdf'
 
-R_1020_1632Metric:
-  length: 1.6
-  width: 3.2
+R_1020_2550Metric:
+  length: 2.5
+  width: 5.0
   height: 0.6
   pin_band: 0.55
   pin_thickness: 'auto'
