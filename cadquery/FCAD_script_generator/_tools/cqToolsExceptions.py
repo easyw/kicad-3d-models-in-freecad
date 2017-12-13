@@ -33,7 +33,7 @@ class GeometryError(Exception):
         self.union_error = None
         self.bob_errors = []
         self.error_encountered = False
-    def append(e):
+    def append(self,e):
         self.error_encountered = True
         if isinstance(e, BOBError):
             self.bob_errors.append(e)
@@ -43,6 +43,6 @@ class GeometryError(Exception):
         if self.union_error:
             FreeCAD.Console.PrintError(self.union_error)
         for bob_error in self.bob_errors:
-            FreeCAD.Console.PrintError(self.bob_error)
+            FreeCAD.Console.PrintError(bob_error)
             if with_details:
-                FreeCAD.Console.PrintWarning(bob_error.getDetails)
+                FreeCAD.Console.PrintWarning(bob_error.getDetails())

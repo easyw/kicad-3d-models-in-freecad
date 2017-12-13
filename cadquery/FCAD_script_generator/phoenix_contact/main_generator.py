@@ -96,7 +96,8 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     if QtGui is not None:

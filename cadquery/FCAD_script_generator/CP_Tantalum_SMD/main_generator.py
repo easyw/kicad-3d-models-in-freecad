@@ -52,6 +52,7 @@ ___ver___ = "1.3.2 10/02/2017"
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+stop_on_first_error = True
 check_log_file = 'check-log.md'
 
 # thanks to Frank Severinsen Shack for including vrml materials
@@ -101,15 +102,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, runGeometryCheck, closeCurrentDoc
-
 try:
     # Gui.SendMsgToActiveView("Run")
     from Gui.Command import *
@@ -117,11 +109,22 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+# Import cad_tools
+from cqToolsExceptions import *
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, runGeometryCheck, closeCurrentDoc
 
 #checking requirements
 checkRequirements(cq)
@@ -375,4 +378,12 @@ if __name__ == "__main__" or __name__ == "main_generator":
         log.write('# Check report for Molex 3d model genration\n')
         for variant in variants:
             part_params = all_params[variant]
-            generateOneModel(part_params, log)
+            try:
+                generateOneModel(part_params, log)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
+                    break
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                break

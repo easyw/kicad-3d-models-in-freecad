@@ -52,6 +52,7 @@ ___ver___ = "1.0.5 25/Feb/2017"
 global save_memory
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+stop_on_first_error = True
 check_log_file = 'check-log.md'
 
 # maui import cadquery as cq
@@ -102,15 +103,6 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
-
 try:
     # Gui.SendMsgToActiveView("Run")
     from Gui.Command import *
@@ -118,11 +110,22 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+# Import cad_tools
+from cqToolsExceptions import *
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -554,5 +557,13 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
             if check_Model==True:
                 step_path = out_dir + '/' + ModelName + ".step"
-                runGeometryCheck(App, Gui, step_path,
-                    log, ModelName, save_memory=save_memory)
+                try:
+                    runGeometryCheck(App, Gui, step_path,
+                        log, ModelName, save_memory=save_memory)
+                except GeometryError as e:
+                    e.print_errors(stop_on_first_error)
+                    if stop_on_first_error:
+                        break
+                except FreeCADVersionError as e:
+                    FreeCAD.Console.PrintError(e)
+                    break

@@ -621,7 +621,7 @@ def closeCurrentDoc(title):
 #
 ###################################################################
 def runGeometryCheck(App, Gui, step_path, log,
-        ModelName, save_memory=True, stop_on_first_error = True):
+        modelName, save_memory=True, stop_on_first_error = True):
 
     FC_majorV=int(FreeCAD.Version()[0])
     FC_minorV=int(FreeCAD.Version()[1])
@@ -634,8 +634,8 @@ def runGeometryCheck(App, Gui, step_path, log,
 
     ImportGui.open(step_path)
     docu = FreeCAD.ActiveDocument
-    docu.Label = ModelName
-    log.write('\n## Checking {:s}\n'.format(ModelName))
+    docu.Label = modelName
+    log.write('\n## Checking {:s}\n'.format(modelName))
 
 
     if checkUnion(docu):
@@ -658,7 +658,7 @@ def runGeometryCheck(App, Gui, step_path, log,
                     msg = 'shape "{name:s}" "{label:s}" is INVALID\n'.format(name=o.Name, label=o.Label)
                     #FreeCAD.Console.PrintError(msg)
                     #FreeCAD.Console.PrintWarning(chks[0])
-                    geometry_error_container.append(BOBError(modelName, o.Name, o.Label))
+                    geometry_error_container.append(BOBError(modelName, o.Name, o.Label, chks[0]))
                     log.write('\t- Geometry check: [    FAIL    ]\n')
                     log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
                     #stop
