@@ -239,7 +239,7 @@ def generateOneModel(part_params, log):
     place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
 
     FreeCAD.Console.PrintMessage(
-        '\n##############  ' +
+        '\n\n##############  ' +
         part_params['code_metric'] +
         '  ###############\n')
     dim_params = part_params['param_nominal'] if use_nominal_size else part_params['param_max']
@@ -279,7 +279,7 @@ def generateOneModel(part_params, log):
         col_pin[:-1]:pins_color_key,
         col_mark[:-1]:mark_color_key
     }
-    expVRML.say(material_substitutions)
+    #expVRML.say(material_substitutions)
     del objs
     objs=GetListOfObjects(FreeCAD, doc)
     if (color_pin_mark==True) and (place_pinMark==True):
@@ -387,3 +387,4 @@ if __name__ == "__main__" or __name__ == "main_generator":
             except FreeCADVersionError as e:
                 FreeCAD.Console.PrintError(e)
                 break
+    FreeCAD.Console.PrintMessage("\nDone\n")

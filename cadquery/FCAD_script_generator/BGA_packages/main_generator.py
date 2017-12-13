@@ -340,10 +340,189 @@ import add_license as Lic
 global ksu_present
 ksu_present=False
 
+def generateOneModel(params, log):
+    excluded_pins_x=() ##no pin excluded
+    excluded_pins_xmirror=() ##no pin excluded
+    place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+
+
+    ModelName = params.modelName
+    FreeCAD.Console.PrintMessage(
+        '\n\n##############  ' +
+        ModelName +
+        '  ###############\n')
+    CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+    #case, pins, pinmark = make_case(params)
+    case_bot, case, pins, pinmark = make_case(params)
+
+    if case_bot is not None:
+        show(case_bot)
+    show(case)
+    show(pins)
+    show(pinmark)
+    #stop
+
+    doc = FreeCAD.ActiveDocument
+    objs=GetListOfObjects(FreeCAD, doc)
+
+    if case_bot is not None:
+        Color_Objects(Gui,objs[0],body_bot_color)
+        Color_Objects(Gui,objs[1],body_color)
+        Color_Objects(Gui,objs[2],pins_color)
+        Color_Objects(Gui,objs[3],marking_color)
+
+        col_body_bot=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        col_mark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
+        material_substitutions={
+            col_body_bot[:-1]:body_bot_color_key,
+            col_body[:-1]:body_color_key,
+            col_pin[:-1]:pins_color_key,
+            col_mark[:-1]:marking_color_key
+        }
+        expVRML.say(material_substitutions)
+        if (color_pin_mark==True) and (place_pinMark==True):
+            CutObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[1].Name, objs[3].Name)
+        else:
+            #removing pinMark
+            App.getDocument(doc.Name).removeObject(objs[3].Name)
+        ###
+        #sleep
+        del objs
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[1].Name)
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[1].Name)
+    else:
+        Color_Objects(Gui,objs[0],body_color)
+        Color_Objects(Gui,objs[1],pins_color)
+        Color_Objects(Gui,objs[2],marking_color)
+
+        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        material_substitutions={
+            col_body[:-1]:body_color_key,
+            col_pin[:-1]:pins_color_key,
+            col_mark[:-1]:marking_color_key
+        }
+        #expVRML.say(material_substitutions)
+        if (color_pin_mark==True) and (place_pinMark==True):
+            CutObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[2].Name)
+        else:
+            #removing pinMark
+            App.getDocument(doc.Name).removeObject(objs[2].Name)
+        ###
+        #sleep
+        del objs
+        objs=GetListOfObjects(FreeCAD, doc)
+        FuseObjs_wColors(FreeCAD, FreeCADGui,
+                        doc.Name, objs[0].Name, objs[1].Name)
+    ## objs[0].Label='body'
+    ## objs[1].Label='pins'
+    ## objs[2].Label='mark'
+    ###
+    ## print objs[0].Name, objs[1].Name, objs[2].Name
+
+    ## sleep
+    doc.Label=CheckedModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label=CheckedModelName
+    restore_Main_Tools()
+    #rotate if required
+    if (params.rotation!=0):
+        rot= params.rotation
+        z_RotateObject(doc, rot)
+    #out_dir=destination_dir+params.dest_dir_prefix+'/'
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    #models_dir=script_dir+"/../_3Dmodels"
+    #expVRML.say(models_dir)
+    if len(params.dest_dir_prefix)>=1:
+        out_dir=models_dir+destination_dir+os.sep+params.dest_dir_prefix
+    else:
+        out_dir=models_dir+destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    #out_dir="./generated_qfp/"
+    # export STEP model
+    exportSTEP(doc, ModelName, out_dir)
+    global LIST_license
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,ModelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    #expVRML.writeVRMLFile added creaeAngle
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license, 0.9)
+    # Save the doc in Native FC format
+    #saveFCdoc(App, Gui, doc, ModelName,out_dir)
+    #display BBox
+    #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
+    if footprints_dir is not None and os.path.isdir(footprints_dir) and not save_memory and not check_Model: #it doesn't make sense to import the footprint right before we close the file.
+        #expVRML.say (ModelName)
+        #stop
+        sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+        #setup = get_setup_file()  # << You need the parentheses
+        expVRML.say(sys.argv[2])
+        if not ksu_present:
+            try:
+                import kicadStepUptools
+                ksu_present=True
+                expVRML.say("ksu present!")
+                kicadStepUptools.KSUWidget.close()
+                #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+                #kicadStepUptools.KSUWidget.destroy()
+                #for i in QtGui.qApp.topLevelWidgets():
+                #    if i.objectName() == "kicadStepUp":
+                #        i.deleteLater()
+                kicadStepUptools.KSUWidget.close()
+            except:
+                ksu_present=False
+                expVRML.say("ksu not present")
+        else:
+            kicadStepUptools.KSUWidget.close()
+            reload(kicadStepUptools)
+            kicadStepUptools.KSUWidget.close()
+            #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+            #kicadStepUptools.KSUWidget.destroy()
+
+    #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
+    #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
+    if save_memory == False:
+        Gui.activateWorkbench("PartWorkbench")
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewBottom()
+        #Gui.activeDocument().activeView().viewAxometric()
+    saveFCdoc(App, Gui, doc, ModelName,out_dir)
+
+    if save_memory == True or check_Model==True:
+        print("closing: {}".format(doc.Label))
+        closeCurrentDoc(doc.Label)
+
+    if check_Model==True:
+        step_path = out_dir + '/' + ModelName + ".step"
+        runGeometryCheck(App, Gui, step_path,
+            log, ModelName, save_memory=save_memory)
+
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
-
-
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -380,190 +559,17 @@ if __name__ == "__main__" or __name__ == "main_generator":
         variants = [model_to_build]
     with open(check_log_file, 'w') as log:
         for variant in variants:
-            excluded_pins_x=() ##no pin excluded
-            excluded_pins_xmirror=() ##no pin excluded
-            place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
-
-            FreeCAD.Console.PrintMessage('\r\n'+variant)
             if not variant in all_params:
                 print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
                 continue
-            ModelName = all_params[variant].modelName
-            CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-            Newdoc = App.newDocument(CheckedModelName)
-            App.setActiveDocument(CheckedModelName)
-            Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-            #case, pins, pinmark = make_case(all_params[variant])
-            case_bot, case, pins, pinmark = make_case(all_params[variant])
-
-            if case_bot is not None:
-                show(case_bot)
-            show(case)
-            show(pins)
-            show(pinmark)
-            #stop
-
-            doc = FreeCAD.ActiveDocument
-            objs=GetListOfObjects(FreeCAD, doc)
-
-            if case_bot is not None:
-                Color_Objects(Gui,objs[0],body_bot_color)
-                Color_Objects(Gui,objs[1],body_color)
-                Color_Objects(Gui,objs[2],pins_color)
-                Color_Objects(Gui,objs[3],marking_color)
-
-                col_body_bot=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-                col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-                col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-                col_mark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
-                material_substitutions={
-                    col_body_bot[:-1]:body_bot_color_key,
-                    col_body[:-1]:body_color_key,
-                    col_pin[:-1]:pins_color_key,
-                    col_mark[:-1]:marking_color_key
-                }
-                expVRML.say(material_substitutions)
-                if (color_pin_mark==True) and (place_pinMark==True):
-                    CutObjs_wColors(FreeCAD, FreeCADGui,
-                                doc.Name, objs[1].Name, objs[3].Name)
-                else:
-                    #removing pinMark
-                    App.getDocument(doc.Name).removeObject(objs[3].Name)
-                ###
-                #sleep
-                del objs
-                objs=GetListOfObjects(FreeCAD, doc)
-                FuseObjs_wColors(FreeCAD, FreeCADGui,
-                                doc.Name, objs[0].Name, objs[1].Name)
-                objs=GetListOfObjects(FreeCAD, doc)
-                FuseObjs_wColors(FreeCAD, FreeCADGui,
-                                doc.Name, objs[0].Name, objs[1].Name)
-            else:
-                Color_Objects(Gui,objs[0],body_color)
-                Color_Objects(Gui,objs[1],pins_color)
-                Color_Objects(Gui,objs[2],marking_color)
-
-                col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-                col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-                col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-                material_substitutions={
-                    col_body[:-1]:body_color_key,
-                    col_pin[:-1]:pins_color_key,
-                    col_mark[:-1]:marking_color_key
-                }
-                expVRML.say(material_substitutions)
-                if (color_pin_mark==True) and (place_pinMark==True):
-                    CutObjs_wColors(FreeCAD, FreeCADGui,
-                                doc.Name, objs[0].Name, objs[2].Name)
-                else:
-                    #removing pinMark
-                    App.getDocument(doc.Name).removeObject(objs[2].Name)
-                ###
-                #sleep
-                del objs
-                objs=GetListOfObjects(FreeCAD, doc)
-                FuseObjs_wColors(FreeCAD, FreeCADGui,
-                                doc.Name, objs[0].Name, objs[1].Name)
-            ## objs[0].Label='body'
-            ## objs[1].Label='pins'
-            ## objs[2].Label='mark'
-            ###
-            ## print objs[0].Name, objs[1].Name, objs[2].Name
-
-            ## sleep
-            doc.Label=CheckedModelName
-            objs=GetListOfObjects(FreeCAD, doc)
-            objs[0].Label=CheckedModelName
-            restore_Main_Tools()
-            #rotate if required
-            if (all_params[variant].rotation!=0):
-                rot= all_params[variant].rotation
-                z_RotateObject(doc, rot)
-            #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-            script_dir=os.path.dirname(os.path.realpath(__file__))
-            #models_dir=script_dir+"/../_3Dmodels"
-            expVRML.say(models_dir)
-            if len(all_params[variant].dest_dir_prefix)>=1:
-                out_dir=models_dir+destination_dir+os.sep+all_params[variant].dest_dir_prefix
-            else:
-                out_dir=models_dir+destination_dir
-            if not os.path.exists(out_dir):
-                os.makedirs(out_dir)
-            #out_dir="./generated_qfp/"
-            # export STEP model
-            exportSTEP(doc, ModelName, out_dir)
-            if LIST_license[0]=="":
-                LIST_license=Lic.LIST_int_license
-                LIST_license.append("")
-            Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
-                               STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
-            # scale and export Vrml model
-            scale=1/2.54
-            #exportVRML(doc,ModelName,scale,out_dir)
-            objs=GetListOfObjects(FreeCAD, doc)
-            expVRML.say("######################################################################")
-            expVRML.say(objs)
-            expVRML.say("######################################################################")
-            export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-            export_file_name=out_dir+os.sep+ModelName+'.wrl'
-            colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-            #expVRML.writeVRMLFile added creaeAngle
-            expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license, 0.9)
-            # Save the doc in Native FC format
-            #saveFCdoc(App, Gui, doc, ModelName,out_dir)
-            #display BBox
-            #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-            if footprints_dir is not None and os.path.isdir(footprints_dir) and not save_memory and not check_Model: #it doesn't make sense to import the footprint right before we close the file.
-                #expVRML.say (ModelName)
-                #stop
-                sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
-                #setup = get_setup_file()  # << You need the parentheses
-                expVRML.say(sys.argv[2])
-                if not ksu_present:
-                    try:
-                        import kicadStepUptools
-                        ksu_present=True
-                        expVRML.say("ksu present!")
-                        kicadStepUptools.KSUWidget.close()
-                        #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
-                        #kicadStepUptools.KSUWidget.destroy()
-                        #for i in QtGui.qApp.topLevelWidgets():
-                        #    if i.objectName() == "kicadStepUp":
-                        #        i.deleteLater()
-                        kicadStepUptools.KSUWidget.close()
-                    except:
-                        ksu_present=False
-                        expVRML.say("ksu not present")
-                else:
-                    kicadStepUptools.KSUWidget.close()
-                    reload(kicadStepUptools)
-                    kicadStepUptools.KSUWidget.close()
-                    #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
-                    #kicadStepUptools.KSUWidget.destroy()
-
-            #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
-            #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
-            if save_memory == False:
-                Gui.activateWorkbench("PartWorkbench")
-                Gui.SendMsgToActiveView("ViewFit")
-                Gui.activeDocument().activeView().viewBottom()
-                #Gui.activeDocument().activeView().viewAxometric()
-            saveFCdoc(App, Gui, doc, ModelName,out_dir)
-
-            if save_memory == True or check_Model==True:
-                print("closing: {}".format(doc.Label))
-                closeCurrentDoc(doc.Label)
-
-            if check_Model==True:
-                step_path = out_dir + '/' + ModelName + ".step"
-                try:
-                    runGeometryCheck(App, Gui, step_path,
-                        log, ModelName, save_memory=save_memory)
-                except GeometryError as e:
-                    e.print_errors(stop_on_first_error)
-                    if stop_on_first_error:
-                        break
-                except FreeCADVersionError as e:
-                    FreeCAD.Console.PrintError(e)
+            params = all_params[variant]
+            try:
+                generateOneModel(params, log)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
                     break
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                break
+    FreeCAD.Console.PrintMessage("\nDone\n")
