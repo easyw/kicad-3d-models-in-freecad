@@ -67,7 +67,7 @@ def say(msg):
 def sayw(msg):
     FreeCAD.Console.PrintWarning(msg)
     FreeCAD.Console.PrintWarning('\n')
-    
+
 def sayerr(msg):
     FreeCAD.Console.PrintError(msg)
     FreeCAD.Console.PrintWarning('\n')
@@ -175,13 +175,13 @@ def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None, creaseA
 
     `Mesh` structure is defined at root."""
     used_colors = None
-    
+
     #creaseAngle=creaseAngle_default #creaseAngle=0.5 good compromise
-    
+
     if used_color_keys is not None:
         used_colors = { x: shaderColors.named_colors[x] for x in used_color_keys }
-    say(used_color_keys)
-    say(used_colors.values())
+    #say(used_color_keys)
+    #say(used_colors.values())
     with open(filepath, 'w') as f:
         # write the standard VRML header
         f.write("#VRML V2.0 utf8\n#kicad StepUp wrl exported\n\n")
@@ -221,7 +221,7 @@ def writeVRMLFile(objects, filepath, used_color_keys, licence_info=None, creaseA
 ###
 def comboBox_Changed(text_combo):
     global ui
-    say(text_combo)
+    #say(text_combo)
     if text_combo not in shaderColors.named_colors:
         return
     if len(shaderColors.named_colors)>1:
@@ -285,7 +285,7 @@ def determineColors(Gui, objects, know_material_substitutions=None):
         for color in freecad_object.DiffuseColor:
             color = color[:-1]
             if color not in know_material_substitutions:
-                say(color)
+                #say(color)
                 pal = QtGui.QPalette()
                 bgc = QtGui.QColor(color[0]*255, color[1]*255, color[2]*255)
                 pal.setColor(QtGui.QPalette.Base, bgc)
@@ -320,7 +320,7 @@ def generateFileName(label, fullFilePathName, scale):
         filename=path+os.sep+label+'.wrl'
     else:
         filename=path+os.sep+label+'_1_1.wrl'
-    say(filename)
+    #say(filename)
     return filename
 
 def exportVRMLfromSelction(Gui, fullFilePathName):
@@ -339,5 +339,5 @@ def exportVRMLfromSelction(Gui, fullFilePathName):
         export_file_name = generateFileName(sel[0].Label, fullFilePathName, scale)
         #export(objs, fullFilePathName, scale=None)
         colored_meshes = getColoredMesh(Gui, export_objects , scale)
-        say(used_color_keys)
+        #say(used_color_keys)
         writeVRMLFile(colored_meshes, export_file_name, used_color_keys)

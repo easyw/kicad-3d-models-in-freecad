@@ -31,6 +31,7 @@ __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML mode
 ___ver___ = "1.2.4 02/12/2017"
 
 import FreeCAD, Draft, FreeCADGui
+from cqToolsExceptions import *
 import ImportGui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -76,13 +77,13 @@ def checkUnion(docu):
 ##
 
 def checkBOP(shape):
-    """ checking BOP errors of a shape 
+    """ checking BOP errors of a shape
     returns:
       - True if Shape is Valid
-      - the Shape errors 
+      - the Shape errors
     """
-    
-    # enabling BOP check 
+
+    # enabling BOP check
     paramGt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/CheckGeometry")
     paramGt.SetBool("RunBOPCheck",True)
 
@@ -98,7 +99,7 @@ def checkBOP(shape):
 #numbers can be comma delimited e.g. "3,5"
 #numbers can be in a range e.g. "3-8"
 #numbers can't be < 1
-def getListOfNumbers(string): 
+def getListOfNumbers(string):
     numbers = []
     #does this number contain a hyphen?
     if '-' in string:
@@ -111,7 +112,7 @@ def getListOfNumbers(string):
                     numbers = [i for i in range(a,b+1)]
             except:
                 pass
-                
+
     elif ',' in string:
         #Now, split by comma
         ss = string.split(",")
@@ -127,7 +128,7 @@ def getListOfNumbers(string):
             numbers = [int(string)]
         except:
             numbers = []
-        
+
     return numbers
 
 
@@ -388,8 +389,8 @@ def GetListOfObjects(App, docName):
     for obj in docName.Objects:
         # do what you want to automate
         objs.append(App.ActiveDocument.getObject(obj.Name))
-        FreeCAD.Console.PrintMessage(obj.Name)
-        FreeCAD.Console.PrintMessage(' objName\r\n')
+        #FreeCAD.Console.PrintMessage(obj.Name)
+        #FreeCAD.Console.PrintMessage(' objName\r\n')
 
     return objs
 
@@ -399,13 +400,13 @@ def GetListOfObjects(App, docName):
 ###################################################################
 def Color_Objects(Gui,obj,color):
 
-    FreeCAD.Console.PrintMessage(obj.Name+'\r\n')
+    #FreeCAD.Console.PrintMessage(obj.Name+'\r\n')
     Gui.ActiveDocument.getObject(obj.Name).ShapeColor = color
     Gui.ActiveDocument.getObject(obj.Name).LineColor = color
     Gui.ActiveDocument.getObject(obj.Name).PointColor = color
     Gui.ActiveDocument.getObject(obj.Name).DiffuseColor = color
-    FreeCAD.Console.PrintMessage(obj.Name)
-    FreeCAD.Console.PrintMessage(' objName\r\n')
+    #FreeCAD.Console.PrintMessage(obj.Name)
+    #FreeCAD.Console.PrintMessage(' objName\r\n')
     #obj.Label=ModelName
 
     return 0
@@ -458,7 +459,7 @@ def exportSTEP(doc,modelName, dir, objectToExport=None):
 
     ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
     outdir=dir
-    FreeCAD.Console.PrintMessage('\r\n'+outdir)
+    #FreeCAD.Console.PrintMessage('\r\n'+outdir)
     StepFileName=outdir+os.sep+modelName+'.step'
     objs=[]
     if objectToExport is None:
@@ -466,10 +467,11 @@ def exportSTEP(doc,modelName, dir, objectToExport=None):
     else:
         objs.append(objectToExport)
     import ImportGui
-    FreeCAD.Console.PrintMessage('\r\n'+StepFileName)
+    #FreeCAD.Console.PrintMessage('\r\n'+StepFileName)
     # FreeCAD.Console.PrintMessage(objs)
-    FreeCAD.Console.PrintMessage('\r\n'+outdir)
+    #FreeCAD.Console.PrintMessage('\r\n'+outdir)
     ImportGui.export(objs,StepFileName)
+    FreeCAD.Console.PrintMessage(StepFileName + ' exported\n')
 
     return 0
 
@@ -484,7 +486,7 @@ def exportVRML(doc,modelName,scale,dir):
     #VrmlFileName='.//'+doc.Label+'.wrl'
     ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
     outdir=dir
-    FreeCAD.Console.PrintMessage('\r\n'+outdir)
+    #FreeCAD.Console.PrintMessage('\r\n'+outdir)
     VrmlFileName=outdir+'/'+modelName+'.wrl'
     StepFileName=outdir+'/'+modelName+'.step'
     objs=[]
@@ -534,9 +536,9 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
 
     ## outdir=os.path.dirname(os.path.realpath(__file__))+dir
     outdir=dir
-    FreeCAD.Console.PrintMessage('\r\n'+outdir)
+    #FreeCAD.Console.PrintMessage('\r\n'+outdir)
     FCName=outdir+os.sep+modelName+'.FCStd'
-    FreeCAD.Console.PrintMessage('\r\n'+FCName+'\r\n')
+    #FreeCAD.Console.PrintMessage('\r\n'+FCName+'\r\n')
     App.getDocument(doc.Name).saveAs(FCName)
     App.ActiveDocument.recompute()
 
@@ -552,7 +554,8 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
             os.remove(outdir+os.sep+modelName+'.FCStd') #removing project file
         except:
             pass
-        
+    else:
+        FreeCAD.Console.PrintMessage(outdir+os.sep+modelName+'.FCStd saved\n')
     return 0
 
 ###################################################################
@@ -567,7 +570,7 @@ def checkRequirements(cq):
     FreeCAD.Console.PrintMessage(FreeCAD.Version())
     FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
     FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
-    
+
     if int(FC_majorV) <= 0:
         if int(FC_minorV) < 15:
             reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
@@ -580,7 +583,7 @@ def checkRequirements(cq):
         reply = QtGui.QMessageBox.information(None, "Info ...", msg)
         say("cq needs to be at least 0.3.0")
         stop
-    
+
     if float(cq.__version__[:-2]) < 0.3:
         msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
         msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
@@ -595,18 +598,87 @@ def checkRequirements(cq):
 #
 ###################################################################
 
-def closeCurrentDoc(title): 
-    mw = FreeCADGui.getMainWindow() 
-    mdi = mw.findChild(QtGui.QMdiArea) 
-    mdiWin = mdi.currentSubWindow() 
-    print mdiWin.windowTitle() 
- 
-    # We have a 3D view selected so we need to find the corresponding script window 
-    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle(): 
-        subList = mdi.subWindowList() 
- 
-        for sub in subList: 
-            print sub.windowTitle().split(':')[0].strip() 
-            if sub.windowTitle().split(':')[0].strip() == title: 
-                sub.close() 
+def closeCurrentDoc(title):
+    mw = FreeCADGui.getMainWindow()
+    mdi = mw.findChild(QtGui.QMdiArea)
+    mdiWin = mdi.currentSubWindow()
+    #print mdiWin.windowTitle()
+
+    # We have a 3D view selected so we need to find the corresponding script window
+    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle():
+        subList = mdi.subWindowList()
+
+        for sub in subList:
+            #print sub.windowTitle().split(':')[0].strip()
+            if sub.windowTitle().split(':')[0].strip() == title:
+                sub.close()
                 return
+
+
+###################################################################
+# closeCurrentDoc()  maui/poeschlr
+#   Do the geometry check.
+#
+###################################################################
+def runGeometryCheck(App, Gui, step_path, log,
+        modelName, save_memory=True, stop_on_first_error = True):
+
+    FC_majorV=int(FreeCAD.Version()[0])
+    FC_minorV=int(FreeCAD.Version()[1])
+    FC_subV=int(FreeCAD.Version()[2].split(" ")[0])
+
+    if FC_majorV == 0 and FC_minorV == 16 and FC_subV < 6712:
+        raise FreeCADVersionError('0.16-6712', 'old 0.16 releases have a bug in the step exporter.')
+
+    geometry_error_container = GeometryError()
+
+    ImportGui.open(step_path)
+    docu = FreeCAD.ActiveDocument
+    docu.Label = modelName
+    log.write('\n## Checking {:s}\n'.format(modelName))
+
+
+    if checkUnion(docu):
+        FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
+        log.write('\t- Union check:    [    pass    ]\n')
+    else:
+        #FreeCAD.Console.PrintError('step file is NOT Unioned\n')
+        log.write('\t- Union check:    [    FAIL    ]\n')
+        geometry_error_container.append(NotUnionedError(modelName))
+        #stop
+    if FC_majorV == 0 and FC_minorV >= 17:
+        if docu.Objects == 0:
+            FreeCAD.Console.PrintError('Step import seems to fail. No objects to check\n')
+        for o in docu.Objects:
+            if hasattr(o,'Shape'):
+                chks=checkBOP(o.Shape)
+                #print 'chks ',chks
+                if chks != True:
+                    #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is INVALID!\n'
+                    msg = 'shape "{name:s}" "{label:s}" is INVALID\n'.format(name=o.Name, label=o.Label)
+                    #FreeCAD.Console.PrintError(msg)
+                    #FreeCAD.Console.PrintWarning(chks[0])
+                    geometry_error_container.append(BOBError(modelName, o.Name, o.Label, chks[0]))
+                    log.write('\t- Geometry check: [    FAIL    ]\n')
+                    log.write('\t\t- Effected shape: "{name:s}" "{label:s}"\n'.format(name=o.Name, label=o.Label))
+                    #stop
+                else:
+                    #msg='shape \''+o.Name+'\' \''+ mk_string(o.Label)+'\' is valid\n'
+                    msg = 'shape "{name:s}" "{label:s}" is valid\n'.format(name=o.Name, label=o.Label)
+                    FreeCAD.Console.PrintMessage(msg)
+                    log.write('\t- Geometry check: [    pass    ]\n')
+    else:
+        log.write('\t- Geometry check: [  skipped   ]\n')
+        log.write('\t\t- Geometry check needs FC 0.17+\n')
+        raise FreeCADVersionError('0.17', 'Geometry check needs FC 0.17')
+
+    if stop_on_first_error and geometry_error_container.error_encountered:
+        raise geometry_error_container
+
+    if save_memory == True:
+        saveFCdoc(App, Gui, docu, 'temp', './', False)
+        docu = FreeCAD.ActiveDocument
+        closeCurrentDoc(docu.Label)
+
+    if geometry_error_container.error_encountered:
+        raise geometry_error_container

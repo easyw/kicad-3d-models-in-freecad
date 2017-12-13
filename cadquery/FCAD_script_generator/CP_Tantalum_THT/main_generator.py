@@ -58,6 +58,9 @@ from collections import namedtuple
 
 global save_memory
 save_memory = False #reducing memory consuming for all generation params, closeCurrentDoc
+check_Model = True
+stop_on_first_error = True
+check_log_file = 'check-log.md'
 
 import sys, os
 import datetime
@@ -95,7 +98,7 @@ if cd_new_notfound and cd_notfound:
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
 
-    
+
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
@@ -110,34 +113,35 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
 
+try:
+    # Gui.SendMsgToActiveView("Run")
+    # cq Gui
+    #from Gui.Command import *
+    Gui.activateWorkbench("CadQueryWorkbench")
+    import cadquery as cq
+    from Helpers import show
+    # CadQuery Gui
+except Exception as e: # catch *all* exceptions
+    print(e)
+    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    # maui end
+
 # Import cad_tools
+from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
 reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
-
-
-try:
-    # Gui.SendMsgToActiveView("Run")
-    # cq Gui            
-    #from Gui.Command import *
-    Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
-    from Helpers import show
-    # CadQuery Gui
-except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-    # maui end
+ CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -197,9 +201,101 @@ def make_tantalum_th(params):
     #show(leads)
     return (body, leads, pinmark) #body, pins
 
-    
+
 #import step_license as L
 import add_license as Lic
+
+def generateOneModel(params, log):
+    ModelName = params.modelName
+    FreeCAD.Console.PrintMessage(
+        '\n\n##############  ' +
+        part_params['code_metric'] +
+        '  ###############\n')
+    CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+    #body, base, mark, pins = make_tantalum_th(params)
+    body, pins, pinmark= make_tantalum_th(params) #body, base, mark, pins, top
+
+    show(body)
+    show(pins)
+    show(pinmark)
+
+    doc = FreeCAD.ActiveDocument
+    print(GetListOfObjects(FreeCAD, doc))
+    objs = GetListOfObjects(FreeCAD, doc)
+
+    Color_Objects(Gui,objs[0],body_color)
+    Color_Objects(Gui,objs[1],pins_color)
+    Color_Objects(Gui,objs[2],marking_color)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+    col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+
+    material_substitutions={
+        col_body[:-1]:body_color_key,
+        col_pin[:-1]:pins_color_key,
+        col_mark[:-1]:marking_color_key
+    }
+    expVRML.say(material_substitutions)
+    del objs
+
+    objs=GetListOfObjects(FreeCAD, doc)
+    FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+    objs=GetListOfObjects(FreeCAD, doc)
+    FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+    #stop
+    doc.Label = CheckedModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = CheckedModelName
+    restore_Main_Tools()
+    #rotate if required
+    objs=GetListOfObjects(FreeCAD, doc)
+    FreeCAD.getDocument(doc.Name).getObject(objs[0].Name).Placement = FreeCAD.Placement(FreeCAD.Vector(params.F/2,0,0),
+    FreeCAD.Rotation(FreeCAD.Vector(0,0,1),params.rotation))
+    #out_dir=destination_dir+params.dest_dir_prefix+'/'
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+
+    expVRML.say(script_dir)
+    #out_dir=script_dir+os.sep+destination_dir+os.sep+params.dest_dir_prefix
+
+    out_dir=models_dir+destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    #out_dir="./generated_qfp/"
+    # export STEP model
+
+    exportSTEP(doc, ModelName, out_dir)
+
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,ModelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+    expVRML.say("######################################################################")
+    expVRML.say(objs)
+    expVRML.say("######################################################################")
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    # Save the doc in Native FC format
+    saveFCdoc(App, Gui, doc, ModelName,out_dir)
+    if save_memory == True:
+        closeCurrentDoc(CheckedModelName)
+
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
@@ -237,94 +333,19 @@ if __name__ == "__main__" or __name__ == "main_generator":
         save_memory = True
     else:
         variants = [model_to_build]
-
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-            continue
-        ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-        Newdoc = App.newDocument(CheckedModelName)
-        App.setActiveDocument(CheckedModelName)
-        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        #body, base, mark, pins = make_tantalum_th(all_params[variant])
-        body, pins, pinmark= make_tantalum_th(all_params[variant]) #body, base, mark, pins, top
-        
-        show(body)
-        show(pins)
-        show(pinmark)
-        
-        doc = FreeCAD.ActiveDocument
-        print(GetListOfObjects(FreeCAD, doc))
-        objs = GetListOfObjects(FreeCAD, doc)
-
-        Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
-        Color_Objects(Gui,objs[2],marking_color)
-
-        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_mark[:-1]:marking_color_key
-        }
-        expVRML.say(material_substitutions)
-        del objs
-
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        #stop
-        doc.Label = CheckedModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = CheckedModelName
-        restore_Main_Tools()
-        #rotate if required
-        objs=GetListOfObjects(FreeCAD, doc)
-        FreeCAD.getDocument(doc.Name).getObject(objs[0].Name).Placement = FreeCAD.Placement(FreeCAD.Vector(all_params[variant].F/2,0,0),
-        FreeCAD.Rotation(FreeCAD.Vector(0,0,1),all_params[variant].rotation))
-        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-
-        expVRML.say(script_dir)
-        #out_dir=script_dir+os.sep+destination_dir+os.sep+all_params[variant].dest_dir_prefix
-        
-        out_dir=models_dir+destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
-        # export STEP model
-
-        exportSTEP(doc, ModelName, out_dir)
-
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
-        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
-                           STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
-        # scale and export Vrml model
-        scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
-        objs=GetListOfObjects(FreeCAD, doc)
-        expVRML.say("######################################################################")
-        expVRML.say(objs)
-        expVRML.say("######################################################################")
-        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-        
-        if save_memory == False:
-            Gui.SendMsgToActiveView("ViewFit")
-            Gui.activeDocument().activeView().viewAxometric()
-    
-        # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        if save_memory == True:
-            closeCurrentDoc(CheckedModelName)
+    with open(check_log_file, 'w') as log:
+        for variant in variants:
+            FreeCAD.Console.PrintMessage('\r\n'+variant)
+            if not variant in all_params:
+                print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
+                continue
+            params = all_params[variant]
+            try:
+                generateOneModel(params, log)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
+                    break
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                break

@@ -50,6 +50,11 @@ __Comment__ = 'make Tantalum Caps 3D models exported to STEP and VRML for Kicad 
 
 ___ver___ = "1.3.2 10/02/2017"
 
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+stop_on_first_error = True
+check_log_file = 'check-log.md'
+
 # thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
@@ -92,19 +97,10 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
-
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -113,11 +109,22 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+# Import cad_tools
+from cqToolsExceptions import *
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, runGeometryCheck, closeCurrentDoc
 
 #checking requirements
 checkRequirements(cq)
@@ -129,9 +136,6 @@ except: # catch *all* exceptions
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
-
-#all_params= all_params_tantalum
-all_params= kicad_naming_params_tantalum
 
 def make_tantalum(params):
 
@@ -147,16 +151,15 @@ def make_tantalum(params):
     G = params.G
     E = params.E
     pml = params.pml
-    rot = params.rotation
-    dest_dir_pref = params.dest_dir_prefix
+    #dest_dir_pref = params.dest_dir_prefix
 
     Lb = L - 2.*T        # body lenght
     ppH = (H * 0.45)    # pivot point height
-    
+
     ma_rad=radians(ma_deg)
     dtop = (H-ppH) * tan(ma_rad)
     dbot = (ppH-T) * tan(ma_rad)
-    
+
     body_base = cq.Workplane(cq.Plane.XY()).workplane(offset=0).rect(E, G). \
                 workplane(offset=T).rect(E,G). \
                 loft(ruled=True)
@@ -169,15 +172,15 @@ def make_tantalum(params):
     if B!=0:
         BS = cq.selectors.BoxSelector
         body = body.edges(BS((-(W-2.*dtop)/2, (Lb-2.*dtop)/2., H-0.2), ((W+2.*dtop)/2, (Lb+2.*dtop)/2., H+0.2))).chamfer(B)
-    
+
     body=body.union(body_base)
     #sleep
     pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=H-T*0.01).rect(W-dtop-dtop, pml). \
                 workplane(offset=T*0.01).rect(W-dtop-dtop, pml). \
                 loft(ruled=True)
 
-    #translate the object  
-    pinmark=pinmark.translate((0,Lb/2.-B-pml/2.-dtop/2.-dtop/2.,0)).rotate((0,0,0), (0,1,0), 0)    
+    #translate the object
+    pinmark=pinmark.translate((0,Lb/2.-B-pml/2.-dtop/2.-dtop/2.,0)).rotate((0,0,0), (0,1,0), 0)
     # Create a pin object at the center of top side.
         #threePointArc((L+K/sqrt(2), b/2-K*(1-1/sqrt(2))),
         #              (L+K, b/2-K)). \
@@ -189,7 +192,7 @@ def make_tantalum(params):
         close().extrude(T+0.01*T)
     bpin1=bpin1.translate((-F/2.,0,0))
     bpin=bpin1.rotate((0,(Lb/2.-S)/2.,F/2.), (0,0,1), 180).translate((0,-Lb/2.+S,0))
-    
+
     delta=0.01
     hpin=ppH-delta*ppH
     bpin2 = cq.Workplane("XY"). \
@@ -200,8 +203,8 @@ def make_tantalum(params):
         close().extrude(hpin)
     bpin2=bpin2.translate((-F/2.,0,0))
     BS = cq.selectors.BoxSelector
-    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,hpin-delta), (0+delta,L/2.+delta,hpin+delta))).fillet(T*2./3.)    
-    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,0-delta), (0+delta,L/2.+delta,0+delta))).fillet(T*2./3.)    
+    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,hpin-delta), (0+delta,L/2.+delta,hpin+delta))).fillet(T*2./3.)
+    bpin2 = bpin2.edges(BS((0-delta,L/2.-delta,0-delta), (0+delta,L/2.+delta,0+delta))).fillet(T*2./3.)
     bpinv=bpin2.rotate((0,(T)/2.,F/2.), (0,0,1), 180).translate((0,-T,0))
     #show (bpinv)
     if P!=0:
@@ -217,7 +220,7 @@ def make_tantalum(params):
     #show (bpinv)
     #show(bpin1)
     #show (bpin)
-    
+
     merged_pins=bpin
     merged_pins=merged_pins.union(bpin1)
     merged_pins=merged_pins.union(bpin2)
@@ -231,6 +234,110 @@ def make_tantalum(params):
 
 #import step_license as L
 import add_license as Lic
+
+def generateOneModel(part_params, log):
+    place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+
+    FreeCAD.Console.PrintMessage(
+        '\n\n##############  ' +
+        part_params['code_metric'] +
+        '  ###############\n')
+    dim_params = part_params['param_nominal'] if use_nominal_size else part_params['param_max']
+    if dim_params == None:
+        FreeCAD.Console.PrintMessage('No params found for current variant. Skipped\n')
+        return
+
+    ModelName = model_name_format_str.format(
+      prefix=model_name_prefix,
+      code_metric=part_params['code_metric'],
+      code_letter=part_params['code_letter'],
+      old_name=part_params['modelName_old'],
+      maui_name=part_params['modelName_maui']
+    )
+    CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+    body, pins, mark = make_tantalum(dim_params)
+
+    show(body)
+    show(pins)
+    show(mark)
+
+    doc = FreeCAD.ActiveDocument
+    objs = GetListOfObjects(FreeCAD, doc)
+
+    Color_Objects(Gui,objs[0],body_color)
+    Color_Objects(Gui,objs[1],pins_color)
+    Color_Objects(Gui,objs[2],mark_color)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+    col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+    material_substitutions={
+        col_body[:-1]:body_color_key,
+        col_pin[:-1]:pins_color_key,
+        col_mark[:-1]:mark_color_key
+    }
+    #expVRML.say(material_substitutions)
+    del objs
+    objs=GetListOfObjects(FreeCAD, doc)
+    if (color_pin_mark==True) and (place_pinMark==True):
+        CutObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[2].Name)
+    else:
+        #removing pinMark
+        App.getDocument(doc.Name).removeObject(objs[2].Name)
+    del objs
+    objs=GetListOfObjects(FreeCAD, doc)
+    FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+    doc.Label = CheckedModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = CheckedModelName
+    restore_Main_Tools()
+    #rotate if required
+    if (rotation!=0):
+        rot = rotation
+        z_RotateObject(doc, rot)
+    #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    #models_dir=script_dir+"/../_3Dmodels"
+    expVRML.say(models_dir)
+    out_dir=models_dir+destination_dir
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    #out_dir="./generated_qfp/"
+    # export STEP model
+    exportSTEP(doc, ModelName, out_dir)
+    global LIST_license
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,ModelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    saveFCdoc(App, Gui, doc, ModelName, out_dir)
+
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
+
+    if save_memory == True or check_Model==True:
+        closeCurrentDoc(CheckedModelName)
+
+    if check_Model==True:
+        step_path = out_dir + '/' + ModelName + ".step"
+        runGeometryCheck(App, Gui, step_path,
+            log, ModelName, save_memory=save_memory)
 
 if __name__ == "__main__" or __name__ == "main_generator":
     expVRML.say(expVRML.__file__)
@@ -252,8 +359,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
 # maui     run()
     color_pin_mark=True
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building CP_Tantalum_Case-B_EIA-3528-21')
-        model_to_build='CP_Tantalum_Case-B_EIA-3528-21'
+        FreeCAD.Console.PrintMessage('No variant name is given! building EIA-3528-21')
+        model_to_build='EIA-3528-21'
     else:
         model_to_build=sys.argv[2]
         if len(sys.argv)==4:
@@ -267,91 +374,17 @@ if __name__ == "__main__" or __name__ == "main_generator":
     else:
         variants = [model_to_build]
 
-    for variant in variants:
-        excluded_pins_x=() ##no pin excluded
-        excluded_pins_xmirror=() ##no pin excluded
-        place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
-
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-            continue
-        ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-        Newdoc = App.newDocument(CheckedModelName)
-        App.setActiveDocument(CheckedModelName)
-        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        body, pins, mark = make_tantalum(all_params[variant])
-
-        show(body)
-        show(pins)
-        show(mark)
-        
-        doc = FreeCAD.ActiveDocument
-        objs = GetListOfObjects(FreeCAD, doc)
-
-        Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
-        Color_Objects(Gui,objs[2],mark_color)
-
-        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_mark[:-1]:mark_color_key
-        }
-        expVRML.say(material_substitutions)
-        del objs
-        objs=GetListOfObjects(FreeCAD, doc)
-        if (color_pin_mark==True) and (place_pinMark==True):
-            CutObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[2].Name)
-        else:
-            #removing pinMark
-            App.getDocument(doc.Name).removeObject(objs[2].Name)
-        del objs
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label = CheckedModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label = CheckedModelName
-        restore_Main_Tools()
-        #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
-        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-        #models_dir=script_dir+"/../_3Dmodels"
-        expVRML.say(models_dir)
-        out_dir=models_dir+destination_dir
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
-        # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
-        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
-                           STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-
-        # scale and export Vrml model
-        scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
-        objs=GetListOfObjects(FreeCAD, doc)
-        expVRML.say("######################################################################")
-        expVRML.say(objs)
-        expVRML.say("######################################################################")
-        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-        # Save the doc in Native FC format
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        #display BBox
-        #FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        Gui.activateWorkbench("PartWorkbench")
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
+    with open(check_log_file, 'w') as log:
+        log.write('# Check report for Molex 3d model genration\n')
+        for variant in variants:
+            part_params = all_params[variant]
+            try:
+                generateOneModel(part_params, log)
+            except GeometryError as e:
+                e.print_errors(stop_on_first_error)
+                if stop_on_first_error:
+                    break
+            except FreeCADVersionError as e:
+                FreeCAD.Console.PrintError(e)
+                break
+    FreeCAD.Console.PrintMessage("\nDone\n")
