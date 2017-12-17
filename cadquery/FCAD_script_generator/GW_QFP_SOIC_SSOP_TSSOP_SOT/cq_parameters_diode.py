@@ -12,7 +12,7 @@
 from Params import *
 
 class SeriesParams():
-    footprints_dir_diodes="Diodes_SMD.pretty"
+    footprints_dir="Diodes_SMD.pretty"
     lib_name = "Diode_SMD"
 
     body_color_key = "black body"

@@ -25,7 +25,7 @@ link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
 
 .REQUIREMENTS
 * FreeCAD 0.15 (best for step single object result)
-* CadQuery 0.5.2 
+* CadQuery 0.5.2
 
 <<<
 
@@ -45,7 +45,7 @@ author site:  link:https://bitbucket.org/hyOzd/freecad-macros/[]
 
 ## requirements ## +
 link:https://github.com/jmwright/cadquery-freecad-module/archive/master.zip/[CadQuery module] version 0.52 +
-link:http://freecadweb.org/[FreeCAD] version 0.15 or later 
+link:http://freecadweb.org/[FreeCAD] version 0.15 or later
 
 **********************************************************************
 Running the scripts
@@ -54,20 +54,18 @@ Running the scripts
 to run the script just move to the scripts dir and do: +
 freecad ./main_generator.py modelName +
 examples in win: +
-+c:\freecad\bin\freecad main_generator.py SOIC-8_3.9x4.9mm_Pitch1.27mm+ +
-+c:\freecad\bin\freecad main_generator.py allSOIC+ +
-+c:\freecad\bin\freecad main_generator.py allSSOP+ +
-+c:\freecad\bin\freecad main_generator.py allTSSOP+ +
-+c:\freecad\bin\freecad main_generator.py allSOT+ +
-+c:\freecad\bin\freecad main_generator.py allQFP+ +
++c:\freecad\bin\freecad main_generator.py model_filter=SOIC-8_3.9x4.9mm_Pitch1.27mm+ +
++c:\freecad\bin\freecad main_generator.py series=soic+ +
++c:\freecad\bin\freecad main_generator.py series=soic disable_marker_color+ +
++c:\freecad\bin\freecad main_generator.py ?+ +
++c:\freecad\bin\freecad main_generator.py error_tolerant+ +
 
 in linux: +
-+freecad ./main_generator.py SOIC-8_3.9x4.9mm_Pitch1.27mm+ +
-+freecad ./main_generator.py allSOIC+ +
-+freecad ./main_generator.py allSSOP+ +
-+freecad ./main_generator.py allTSSOP+ +
-+freecad ./main_generator.py allSOT+ +
-+freecad ./main_generator.py allQFP+ +
++freecad main_generator.py model_filter=SOIC-8_3.9x4.9mm_Pitch1.27mm+ +
++freecad main_generator.py series=soic+ +
++freecad main_generator.py series=soic disable_marker_color+ +
++freecad main_generator.py ?+ +
++freecad main_generator.py error_tolerant+ +
 
 or simply run the 'create_model' script/batch +
 
@@ -76,9 +74,9 @@ modelName and parameters are described in: +
 1. cq_parameters.py file in their relative DIR
 all data in parameter files are collected from components data sheets +
 ##the script will generate STEP and VRML parametric models##
-ready to be used with kicad StepUp script 
+ready to be used with kicad StepUp script
 
-[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD. 
+[red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD.
 If you do, run the following command line from a terminal to fix this issue. +
 +sudo apt-get install python-pyside.qtnetwork+
 

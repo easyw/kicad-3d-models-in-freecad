@@ -57,7 +57,6 @@ check_Model = True
 stop_on_first_error = True
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
-footprints_dir=None
 color_pin_mark=True
 place_pinMark=True
 
@@ -382,6 +381,7 @@ def make_gw(params):
 
 def export_one_part(params, series_definition, log):
     ModelName = params.modelName
+    footprint_dir = series_definition.footprint_dir
     CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
 
     print('\n######################### {:s} ###########################\n'.format(ModelName))
@@ -568,6 +568,7 @@ class argparse():
     def argSwitchArg(self, name):
         if name == '?':
             self.print_usage()
+            exit()
         elif name == 'disable_check':
             global check_Model
             check_Model = False
@@ -582,8 +583,8 @@ class argparse():
             color_pin_mark = False
 
     def print_usage(self):
-        print("Generater script for phoenix contact 3d models.")
-        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print("\nGenerater script for gull wing type packages 3d models.")
+        print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
         print('\tmodel_filter=[filter pincount using linux file filter syntax]')
         print('\tlog=[log file path]')
@@ -592,7 +593,7 @@ class argparse():
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
         print('\terror_tolerant')
-        print('\tdisable_marker_color')
+        print('\tdisable_marker_color\n')
 
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
@@ -601,15 +602,13 @@ class argparse():
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
-
     args = argparse()
     args.parse_args(sys.argv)
     modelfilter = args.model_filter
 
     model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
 
-
+    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
     with open(check_log_file, 'w') as log:
         log.write('# Check report for gull wing packages 3d model genration\n')
         for typ in args.series:
