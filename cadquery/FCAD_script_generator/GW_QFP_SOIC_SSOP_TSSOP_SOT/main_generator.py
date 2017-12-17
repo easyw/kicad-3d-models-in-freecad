@@ -434,8 +434,6 @@ def export_one_part(params, series_definition, log):
     show(body, colors[0]+(0,))
     show(pins, colors[1]+(0,))
     show(mark, colors[2]+(0,))
-    if no_export:
-        return
 
     doc = FreeCAD.ActiveDocument
     objs = GetListOfObjects(FreeCAD, doc)
@@ -466,6 +464,9 @@ def export_one_part(params, series_definition, log):
     if (params.rotation!=0):
         rot= params.rotation
         z_RotateObject(doc, rot)
+
+    if no_export:
+        return
 
     out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, series_definition.lib_name)
 
