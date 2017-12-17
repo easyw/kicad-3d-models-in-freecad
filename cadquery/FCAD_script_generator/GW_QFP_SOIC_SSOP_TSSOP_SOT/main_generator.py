@@ -564,11 +564,15 @@ def exportSeries(module, log, model_filter_regobj):
 import cq_parameters_diode
 import cq_parameters_qfp
 import cq_parameters_qfp_maui
+import cq_parameters_soic
+import cq_parameters_soic_maui
 
 all_series = {
     'diode':cq_parameters_diode,
     'qfp':cq_parameters_qfp,
-    'qfp_maui':cq_parameters_qfp_maui
+    'qfp_maui':cq_parameters_qfp_maui,
+    'soic':cq_parameters_soic,
+    'soic_maui':cq_parameters_soic_maui
 }
 
 #########################################################################
