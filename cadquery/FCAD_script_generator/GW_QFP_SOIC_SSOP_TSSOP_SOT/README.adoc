@@ -59,6 +59,7 @@ examples in win: +
 +c:\freecad\bin\freecad main_generator.py series=soic disable_marker_color+ +
 +c:\freecad\bin\freecad main_generator.py ?+ +
 +c:\freecad\bin\freecad main_generator.py error_tolerant+ +
++c:\freecad\bin\freecad main_generator.py+ +
 
 in linux: +
 +freecad main_generator.py model_filter=SOIC-8_3.9x4.9mm_Pitch1.27mm+ +
@@ -66,6 +67,7 @@ in linux: +
 +freecad main_generator.py series=soic disable_marker_color+ +
 +freecad main_generator.py ?+ +
 +freecad main_generator.py error_tolerant+ +
++freecad main_generator.py+ +
 
 or simply run the 'create_model' script/batch +
 

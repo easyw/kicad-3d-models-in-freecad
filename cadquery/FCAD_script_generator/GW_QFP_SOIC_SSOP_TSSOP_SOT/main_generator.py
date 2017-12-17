@@ -59,6 +59,7 @@ check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 color_pin_mark=True
 place_pinMark=True
+no_export = False
 
 max_cc1 = 1
 
@@ -66,6 +67,8 @@ from math import tan, radians, sqrt
 from collections import namedtuple
 
 import sys, os
+import traceback
+
 import datetime
 from datetime import datetime
 sys.path.append("../_tools")
@@ -258,28 +261,56 @@ def make_gw(params):
         #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
         #show(case)
+        case = case.loft(ruled=True)
         if ef!=0:
-            case = case.loft(ruled=True).faces(">Z").fillet(ef)
-        else:
-            case = case.loft(ruled=True).faces(">Z")
+            try:
+                case = case.faces(">Z").fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case top face failed failed.\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
+
     else:
+        case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
+            workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
+            rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
+            loft(ruled=True)
         if ef!=0:
-            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-                loft(ruled=True).faces(">Z").fillet(ef)
-        else:
-            case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-                workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-                rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-                loft(ruled=True).faces(">Z")
+            try:
+                case = case.faces(">Z").fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case top face failed failed.\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
+
+
         # fillet the corners
         if ef!=0:
             BS = cq.selectors.BoxSelector
-            case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
-            case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
-            case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-            case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
+            try:
+                case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case fillet 1 failed\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
+            try:
+                case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case fillet 2 failed\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
+            try:
+                case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case fillet 3 failed\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
+            try:
+                case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
+            except Exception as exeption:
+                FreeCAD.Console.PrintError("Case fillet 4 failed\n")
+                FreeCAD.Console.PrintError('{:s}\n'.format(exeption))
+
     #fp_s = True
     if fp_r == 0:
             global place_pinMark
@@ -403,6 +434,8 @@ def export_one_part(params, series_definition, log):
     show(body, colors[0]+(0,))
     show(pins, colors[1]+(0,))
     show(mark, colors[2]+(0,))
+    if no_export:
+        return
 
     doc = FreeCAD.ActiveDocument
     objs = GetListOfObjects(FreeCAD, doc)
@@ -456,10 +489,12 @@ def export_one_part(params, series_definition, log):
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
     # Save the doc in Native FC format
-    if footprints_dir is not None and os.path.isdir(footprints_dir):
+    footprint_dir = series_definition.footprint_dir
+    if footprint_dir is not None and os.path.isdir(footprint_dir) \
+            and not save_memory and not check_Model:
         #expVRML.say (ModelName)
         #stop
-        sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+        sys.argv = ["fc", "dummy", footprint_dir+os.sep+ModelName, "savememory"]
         #setup = get_setup_file()  # << You need the parentheses
         expVRML.say(sys.argv[2])
         ksu_already_loaded=False
@@ -511,7 +546,7 @@ def exportSeries(module, log, model_filter_regobj):
     for variant in module.part_params:
         params = module.part_params[variant]
         try:
-            if model_filter_regobj.match(variant):
+            if model_filter_regobj.match(params.modelName):
                 export_one_part(params, series_definition, log)
         except GeometryError as e:
             e.print_errors(stop_on_first_error)
@@ -526,10 +561,14 @@ def exportSeries(module, log, model_filter_regobj):
 #########################  ADD MODEL GENERATORS #########################
 
 import cq_parameters_diode
+import cq_parameters_qfp
+import cq_parameters_qfp_maui
 
-all_series = [
-    cq_parameters_diode
-]
+all_series = {
+    'diode':cq_parameters_diode,
+    'qfp':cq_parameters_qfp,
+    'qfp_maui':cq_parameters_qfp_maui
+}
 
 #########################################################################
 
@@ -538,7 +577,7 @@ class argparse():
     def __init__(self):
         self.config = '../_tools/config/connector_config_KLCv3.yaml'
         self.model_filter = '*'
-        self.series = all_series
+        self.series = list(all_series.values())
 
     def parse_args(self, args):
         for arg in args:
@@ -559,11 +598,8 @@ class argparse():
             series_str = value.split(',')
             self.series = []
             for s in series_str:
-                #####################  ADD MODEL GENERATORS ###################
-                if 'diode' in s.lower():
-                    self.series.append(cq_parameters_diode)
-
-                ###############################################################
+                if s.lower() in all_series:
+                    self.series.append(all_series[s.lower()])
 
     def argSwitchArg(self, name):
         if name == '?':
@@ -581,6 +617,9 @@ class argparse():
         elif name == 'disable_marker_color':
             global color_pin_mark
             color_pin_mark = False
+        elif name == 'no_export':
+            global no_export
+            no_export = True
 
     def print_usage(self):
         print("\nGenerater script for gull wing type packages 3d models.")
@@ -612,7 +651,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for gull wing packages 3d model genration\n')
         for typ in args.series:
-            if exportSeries(typ, log, model_filter_regobj) != 0:
+            try:
+                if exportSeries(typ, log, model_filter_regobj) != 0:
+                    break
+            except Exception as exeption:
+                traceback.print_exc()
                 break
 
     FreeCAD.Console.PrintMessage('\n\nDone\n')
