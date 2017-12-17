@@ -613,6 +613,7 @@ def closeCurrentDoc(title):
             if sub.windowTitle().split(':')[0].strip() == title:
                 sub.close()
                 return
+        FreeCAD.Console.PrintError("No document called {:s}, nothing to close\n".format(title))
 
 
 ###################################################################

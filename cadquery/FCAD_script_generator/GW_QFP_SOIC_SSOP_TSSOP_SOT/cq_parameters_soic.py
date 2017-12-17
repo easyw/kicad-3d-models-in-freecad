@@ -10,45 +10,10 @@
 
 ## file of parametric definitions
 
-from collections import namedtuple
-
 destination_dir="/GullWings_packages"
 # destination_dir="./"
 
 max_cc1 = 1     # maximum size for 1st pin corner chamfer
-
-Params = namedtuple("Params", [
-    'the',  # body angle in degrees
-    'tb_s', # top part of body is that much smaller
-    'c',    # pin thickness, body center part height
-    'R1',   # pin upper corner, inner radius
-    'R2',   # pin lower corner, inner radius
-    'S',    # pin top flat part length (excluding corner arc)
-# automatic calculated    'L',    # pin bottom flat part length (including corner arc)
-    'fp_s',  # True for circular pinmark, False for square pinmark (useful for diodes)
-    'fp_r', # first pin indicator radius, set to 0.0 to remove first pin indicator
-    'fp_d', # first pin indicator distance from edge
-    'fp_z', # first pin indicator depth
-    'ef',   # fillet of edges
-    'cc1',  # chamfer of the 1st pin corner
-
-    'D1',   # body lenght
-    'E1',   # body width
-    'E',    # body overall width
-    'A1',   # body-board separation
-    'A2',   # body height
-
-    'b',    # pin width
-    'e',    # pin (center-to-center) distance
-
-    'npx',  # number of pins along X axis (width)
-    'npy',  # number of pins along y axis (length)
-    'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
-    'excluded_pins', #pins to exclude
-    'modelName', #modelName
-    'rotation', #rotation if required
-    'dest_dir_prefix' #destination dir prefix
-])
 
 all_params_soic = {
     'SOIC_8': Params( # 3.9x4.9, pitch 1.27 8pin 1.75mm height
@@ -107,7 +72,7 @@ all_params_soic = {
         excluded_pins = None, #no pin excluded
         modelName = 'soic_16_39x99_p127', #modelName
         rotation = 0,   # rotation if required
-        dest_dir_prefix = 'soic'        
+        dest_dir_prefix = 'soic'
         ),
     'SOIC_16_W': Params( # 7.5x10.3, pitch 1.27 16pin 1.75mm height
         the = 9.0,      # body angle in degrees
@@ -136,7 +101,7 @@ all_params_soic = {
         excluded_pins = None, #no pin excluded
         modelName = 'soic_16_75x103_p127', #modelName
         rotation = 0,   # rotation if required
-        dest_dir_prefix = 'soic'        
+        dest_dir_prefix = 'soic'
         ),
      'SOIC_20': Params( # 3.9x9.9, pitch 1.27 20pin 2.65mm height
         the = 9.0,      # body angle in degrees
@@ -165,7 +130,7 @@ all_params_soic = {
         excluded_pins = None, #no pin excluded
         modelName = 'soic_20_75x103_p127', #modelName
         rotation = 0,   # rotation if required
-        dest_dir_prefix = 'soic'        
+        dest_dir_prefix = 'soic'
         ),
 }
 

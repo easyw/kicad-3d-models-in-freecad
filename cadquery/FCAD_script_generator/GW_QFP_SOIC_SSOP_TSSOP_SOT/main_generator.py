@@ -52,10 +52,16 @@ ___ver___ = "1.3.9 14/02/2017"
 
 # thanks to Frank Severinsen Shack for including vrml materials
 
-import argparse
-global save_memory
-save_memory=False #reducing memory consuming for all generation params
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+stop_on_first_error = True
+check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
 footprints_dir=None
+color_pin_mark=True
+place_pinMark=True
+
+max_cc1 = 1
 
 from math import tan, radians, sqrt
 from collections import namedtuple
@@ -67,29 +73,11 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "black body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-pins_color_key = "metal grey pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-mark_color_key = "light brown label"
-mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
-
+import re, fnmatch
 
 # maui start
-import FreeCAD, Draft, FreeCADGui
 import ImportGui
-import FreeCADGui as Gui
 #from Gui.Command import *
-
-import logging
-logging.getLogger('builder').addHandler(logging.NullHandler())
-#logger = logging.getLogger('builder')
-#logging.info("Begin")
-
-outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
-scriptdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
-sys.path.append(scriptdir)
 
 #import PySide
 #from PySide import QtGui, QtCore
@@ -102,20 +90,10 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
-
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
-
 try:
     # Gui.SendMsgToActiveView("Run")
     from Gui.Command import *
@@ -123,11 +101,23 @@ try:
     import cadquery as cq
     from Helpers import show
     # CadQuery Gui
-except: # catch *all* exceptions
+except Exception as e: # catch *all* exceptions
+    print(e)
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+import add_license as Lic
+# Import cad_tools
+from cqToolsExceptions import *
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -137,47 +127,7 @@ try:
 except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
-import cq_parameters_soic  # modules parameters
-from cq_parameters_soic import *
-
-
-import cq_parameters_qfp  # modules parameters
-from cq_parameters_qfp import *
-
-footprints_dir_SSOP=None
-import cq_parameters_ssop  # modules parameters
-from cq_parameters_ssop import *
-
-import cq_parameters_tssop  # modules parameters
-from cq_parameters_tssop import *
-
-import cq_parameters_sot  # modules parameters
-from cq_parameters_sot import *
-
-footprints_dir_diodes=None
-import cq_parameters_diode  # modules parameters
-from cq_parameters_diode import *
-
-# all_params= all_params_soic.copy()
-# all_params.update(all_params_qfp)
-
-# all_params1= all_params_soic.copy()
-# all_params1.update(all_params_qfp)
-# all_params= all_params1.copy()
-# all_params.update(all_params_ssop)
-
-all_params= kicad_naming_params_soic.copy()
-all_params.update(kicad_naming_params_qfp)
-all_params.update(kicad_naming_params_ssop)
-all_params.update(all_params_tssop)
-all_params.update(kicad_naming_params_sot)  
-all_params.update(kicad_naming_params_diode)  
-
-
-# all_params = dict(all_params1.items() | all_params2.items())
-
 def make_gw(params):
-
     c  = params.c
     the  = params.the
     tb_s  = params.tb_s
@@ -202,11 +152,11 @@ def make_gw(params):
     npy = params.npy
     mN  = params.modelName
     rot = params.rotation
-    dest_dir_pref = params.dest_dir_prefix
+
     if params.excluded_pins:
         excluded_pins = params.excluded_pins
     else:
-        excluded_pins=() ##no pin excluded 
+        excluded_pins=() ##no pin excluded
 
     A = A1 + A2
     A2_t = (A2-c)/2 # body top part height
@@ -224,7 +174,7 @@ def make_gw(params):
 
     if params.epad:
         #if isinstance(params.epad, float):
-        if not isinstance(params.epad, tuple):                                              
+        if not isinstance(params.epad, tuple):
             sq_epad = False
             epad_r = params.epad
         else:
@@ -250,49 +200,11 @@ def make_gw(params):
                 else:
                     epad_offset_y = params.epad[4]
 
-    # calculated dimensions for body    
+    # calculated dimensions for body
     # checking pin lenght compared to overall width
     # d=(E-E1 -2*(S+L)-2*(R1))
     L=(E-E1-2*(S+R1))/2
-    FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
-
-    ## d=(E-E1 -2*(S+L)-2*(R1))
-    ## FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+';d='+str(d)+'\r\n')
-    ## #if (d > 0):
-    ## if (d > c/10):  #tolerance
-    ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\nincreasing pin lenght\r\n')
-    ## if (d < -c/10):  #tolerance
-    ##     L=L+d/2
-    ##     FreeCAD.Console.PrintMessage(str(E-E1-2*(S+L))+'\r\ntrimming pin lenght\r\n')
-
-
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A1)+';'+str(D1_b)+';'+str(E1_b)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(A2_b)+';'+str(D1)+';'+str(E1)+';'+str(c)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t1)+';'+str(E1_t1)+';'+str(A2_t)+'\r\n')
-    # FreeCAD.Console.PrintMessage('\r\n'+str(D1_t2)+';'+str(E1_t2)+';'+str(ef)+'\r\n')
-    # sleep
-    ## if ef!=0:
-    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-    ##          loft(ruled=True).faces(">Z").fillet(ef)
-    ## else:
-    ##     case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).rect(D1_b, E1_b). \
-    ##          workplane(offset=A2_b).rect(D1, E1).workplane(offset=c).rect(D1,E1). \
-    ##          rect(D1_t1,E1_t1).workplane(offset=A2_t).rect(D1_t2,E1_t2). \
-    ##          loft(ruled=True).faces(">Z")
-    ##
-    ## # fillet the corners
-    ## if ef!=0:
-    ##     BS = cq.selectors.BoxSelector    
-    ##     case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-    ##     case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
-
-    ## cc1 = 0.25 #0.45 chamfer of the 1st pin corner
-    ## cc = 0.25  # chamfer of the other corners
+    #FreeCAD.Console.PrintMessage('E='+str(E)+';E1='+str(E1)+';S='+str(S)+';L='+str(L)+'\r\n')
 
     # calculate chamfers
     totpinwidthx = (npx-1)*e+b # total width of all pins on the X side
@@ -326,33 +238,6 @@ def make_gw(params):
         ]
         #return wp.polyline(points)
         return wp.polyline(points).wire() #, forConstruction=True)
-     
-    def crect_old(wp, rw, rh, cv1, cv):
-        """
-        Creates a rectangle with chamfered corners.
-        wp: workplane object
-        rw: rectangle width
-        rh: rectangle height
-        cv1: chamfer value for 1st corner (lower left)
-        cv: chamfer value for other corners
-        """
-        
-        points = [
-            (-rw/2., -rh/2.+cv1),
-            (-rw/2., rh/2.-cv),
-            (-rw/2.+cv, rh/2.),
-            (rw/2.-cv, rh/2.),
-            (rw/2., rh/2.-cv),
-            (rw/2., -rh/2.+cv),
-            (rw/2.-cv, -rh/2.),
-            (-rw/2.+cv1, -rh/2.),
-            (-rw/2., -rh/2.+cv1)
-        ]
-        #print(points)
-        #vecs = [wp for p in points]
-        #w = Wire.makePolygon(vecs)
-        return wp.polyline(points).wire() #, forConstruction=True)
-        #return w
 
     if cc1!=0:
         case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).moveTo(-D1_b/2., -E1_b/2.+(cc1-(D1-D1_b)/4.))
@@ -395,7 +280,7 @@ def make_gw(params):
             case = case.edges(BS((D1_t2/2, E1_t2/2, 0), (D1/2+0.1, E1/2+0.1, A2))).fillet(ef)
             case = case.edges(BS((-D1_t2/2, E1_t2/2, 0), (-D1/2-0.1, E1/2+0.1, A2))).fillet(ef)
             case = case.edges(BS((-D1_t2/2, -E1_t2/2, 0), (-D1/2-0.1, -E1/2-0.1, A2))).fillet(ef)
-            case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)    
+            case = case.edges(BS((D1_t2/2, -E1_t2/2, 0), (D1/2+0.1, -E1/2-0.1, A2))).fillet(ef)
     #fp_s = True
     if fp_r == 0:
             global place_pinMark
@@ -403,11 +288,11 @@ def make_gw(params):
             fp_r = 0.1
     if fp_s == False:
         pinmark = cq.Workplane(cq.Plane.XY()).workplane(offset=A).box(fp_r, E1_t2-fp_d, fp_z*2) #.translate((E1/2,0,A1)).rotate((0,0,0), (0,0,1), 90)
-        #translate the object  
+        #translate the object
         pinmark=pinmark.translate((-D1_t2/2+fp_r/2.+fp_d/2,0,0)) #.rotate((0,0,0), (0,1,0), 0)
     else:
         # first pin indicator is created with a spherical pocket
-        
+
         sphere_r = (fp_r*fp_r/2 + fp_z*fp_z) / (2*fp_z)
         sphere_z = A + sphere_r * 2 - fp_z - sphere_r
         # Revolve a cylinder from a rectangle
@@ -415,21 +300,7 @@ def make_gw(params):
         ##cylinder =
         #pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(sphere_r/2, -fp_z, False).revolve()
         pinmark=cq.Workplane("XZ", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, A)).rect(fp_r/2, -fp_z, False).revolve()
-    
-    
 
-    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length, False).revolve(angle_degrees)
-    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5))
-    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5, -5),(-5, 5))
-    #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5),(-5,5), False)
-    
-    ## color_attr=(255,255,255,0)
-    ## show(pinmark, color_attr)
-    ##sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
-    ##         sphere(sphere_r)
-    # color_attr=(255,255,255,0)
-    # show(sphere, color_attr)
-    #case = case.cut(sphere)
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
 
@@ -465,7 +336,7 @@ def make_gw(params):
                 rotate((0,0,0), (0,0,1), 180)
             pins.append(pin)
         pincounter += 1
-    
+
     first_pos_y = (npy-1)*e/2
     for i in range(npy):
         if pincounter not in excluded_pins:
@@ -479,7 +350,7 @@ def make_gw(params):
             pin = bpin.translate((first_pos_x-i*e, 0, 0))
             pins.append(pin)
         pincounter += 1
-    
+
     for i in range(npy):
         if pincounter not in excluded_pins:
             pin = bpin.translate((first_pos_y-i*e, (D1-E1)/2, 0)).\
@@ -506,216 +377,243 @@ def make_gw(params):
 
     # extract pins from case
     case = case.cut(pins)
-    #show(case)
-    #show(pinmark)
-    #show(pins)
-    #stop
+
     return (case, pins, pinmark)
 
-#################################################
-import add_license as Lic
+def export_one_part(params, series_definition, log):
+    ModelName = params.modelName
+    CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
 
-# when run from command line
-if __name__ == "__main__" or __name__ == "main_generator":
-    expVRML.say(expVRML.__file__)
-    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    print('\n######################### {:s} ###########################\n'.format(ModelName))
 
-    full_path=os.path.realpath(__file__)
-    expVRML.say(full_path)
-    scriptdir=os.path.dirname(os.path.realpath(__file__))
-    expVRML.say(scriptdir)
-    sub_path = full_path.split(scriptdir)
-    expVRML.say(sub_path)
-    sub_dir_name =full_path.split(os.sep)[-2]
-    expVRML.say(sub_dir_name)
-    sub_path = full_path.split(sub_dir_name)[0]
-    expVRML.say(sub_path)
-    models_dir=sub_path+"_3Dmodels"
-    
-    color_pin_mark=True
-    if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building SOIC-8_3.9x4.9mm_Pitch1.27mm')
-        model_to_build='SOIC-8_3.9x4.9mm_Pitch1.27mm'
+    Newdoc = App.newDocument(CheckedModelName)
+    App.setActiveDocument(CheckedModelName)
+    App.ActiveDocument=App.getDocument(CheckedModelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
+
+    color_keys = [
+        series_definition.body_color_key,
+        series_definition.pins_color_key,
+        series_definition.mark_color_key
+    ]
+    colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
+
+    body, pins, mark = make_gw(params)
+
+    show(body, colors[0]+(0,))
+    show(pins, colors[1]+(0,))
+    show(mark, colors[2]+(0,))
+
+    doc = FreeCAD.ActiveDocument
+    objs = GetListOfObjects(FreeCAD, doc)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+    col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+    material_substitutions={
+        col_body[:-1]:series_definition.body_color_key,
+        col_pin[:-1]:series_definition.pins_color_key,
+        col_mark[:-1]:series_definition.mark_color_key
+    }
+
+    if (color_pin_mark==True) and (place_pinMark==True):
+        CutObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[2].Name)
     else:
-        model_to_build=sys.argv[2]
-        if len(sys.argv)==4:
-            FreeCAD.Console.PrintMessage(sys.argv[3]+'\r\n')
-            if (sys.argv[3].find('no-pinmark-color')!=-1):
-                color_pin_mark=False
-            else:
-                color_pin_mark=True
-    save_memory=False #reducing memory consuming for all generation params
-    if model_to_build == "all":
-        #expVRML.sayerr("'all' is not supported for this families\nuse 'allSOIC' or 'allSSOP' or 'allSOT' or 'allQFP' or 'allTSSOP' instead")
-        variants = all_params.keys()
-        save_memory=True
-    #elif model_to_build == "SOIC":
-    elif model_to_build == "allSOIC":
-        variants = kicad_naming_params_soic.keys()
-        save_memory=True
-    elif model_to_build == "allQFP":
-        variants = kicad_naming_params_qfp.keys()
-        save_memory=True
-    elif model_to_build == "allSSOP":
-        variants = kicad_naming_params_ssop.keys()
-        #variants = all_params_ssop.keys()
-        footprints_dir=footprints_dir_SSOP
-        save_memory=True
-    elif model_to_build == "allTSSOP":
-        variants = all_params_tssop.keys()
-        save_memory=True
-    elif model_to_build == "allSOT":
-        variants = kicad_naming_params_sot.keys() 
-        save_memory=True
-    elif model_to_build == "allDiodes":
-        variants = kicad_naming_params_diode.keys()  
-        footprints_dir=footprints_dir_diodes
-        save_memory=True
-    else:
-        variants = [model_to_build]
+        #removing pinMark
+        App.getDocument(doc.Name).removeObject(objs[2].Name)
 
-    for variant in variants:
-        place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
+    objs=GetListOfObjects(FreeCAD, doc)
+    FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+    doc.Label=CheckedModelName
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label=CheckedModelName
 
-        FreeCAD.Console.PrintMessage('\r\n'+variant)
-        if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping." % variant)
-            continue
-        ModelName = all_params[variant].modelName
-        CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-        Newdoc = App.newDocument(CheckedModelName)
-        App.setActiveDocument(CheckedModelName)
-        Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        body, pins, mark = make_gw(all_params[variant])
+    restore_Main_Tools()
+    #rotate if required
+    if (params.rotation!=0):
+        rot= params.rotation
+        z_RotateObject(doc, rot)
 
-        show(body)
-        show(pins)
-        show(mark)
-        
-        doc = FreeCAD.ActiveDocument
-        objs = GetListOfObjects(FreeCAD, doc)
+    out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, series_definition.lib_name)
 
-        Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
-        Color_Objects(Gui,objs[2],mark_color)
-
-        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_mark=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        material_substitutions={
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key,
-            col_mark[:-1]:mark_color_key
-        }
-        expVRML.say(material_substitutions)
-        del objs
-        objs=GetListOfObjects(FreeCAD, doc)
-        if (color_pin_mark==True) and (place_pinMark==True):
-            CutObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[2].Name)
-        else:
-            #removing pinMark
-            App.getDocument(doc.Name).removeObject(objs[2].Name)
-        del objs
-        objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-        doc.Label=CheckedModelName
-        objs=GetListOfObjects(FreeCAD, doc)
-        objs[0].Label=CheckedModelName
-        restore_Main_Tools()
-        #rotate if required
-        if (all_params[variant].rotation!=0):
-            rot= all_params[variant].rotation
-            z_RotateObject(doc, rot)
-        #out_dir=destination_dir+all_params[variant].dest_dir_prefix+'/'
-        script_dir=os.path.dirname(os.path.realpath(__file__))
-        ## models_dir=script_dir+"/../_3Dmodels"
-        expVRML.say(models_dir)
-        out_dir=models_dir+destination_dir+os.sep+all_params[variant].dest_dir_prefix
-        #out_dir=script_dir+os.sep+destination_dir
-        #out_dir=script_dir+os.sep+destination_dir+os.sep+all_params[variant].dest_dir_prefix
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        #out_dir="./generated_qfp/"
-        # export STEP model
-        exportSTEP(doc, ModelName, out_dir)
-        if LIST_license[0]=="":
-            LIST_license=Lic.LIST_int_license
-            LIST_license.append("")
-        Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
-                             STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-        # scale and export Vrml model
-        scale=1/2.54
-        #exportVRML(doc,ModelName,scale,out_dir)
-        objs=GetListOfObjects(FreeCAD, doc)
-        expVRML.say("######################################################################")
-        expVRML.say(objs)
-        expVRML.say("######################################################################")
-        export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-        export_file_name=out_dir+os.sep+ModelName+'.wrl'
-        colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-        expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-        # Save the doc in Native FC format
-        if footprints_dir is not None and os.path.isdir(footprints_dir):
-            #expVRML.say (ModelName)
-            #stop
-            sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
-            #setup = get_setup_file()  # << You need the parentheses
-            expVRML.say(sys.argv[2])
-            ksu_already_loaded=False
-            ksu_present=False
-            for i in QtGui.qApp.topLevelWidgets():
-                if i.objectName() == "kicadStepUp":
-                    ksu_already_loaded=True
-            ksu_tab = FreeCADGui.getMainWindow().findChild(QtGui.QDockWidget, "kicadStepUp") #"kicad StepUp 3D tools")
-            if ksu_tab:
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    #out_dir="./generated_qfp/"
+    # export STEP model
+    exportSTEP(doc, ModelName, out_dir)
+    global LIST_license
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+    Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
+                         STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,ModelName,scale,out_dir)
+    objs=GetListOfObjects(FreeCAD, doc)
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+    # Save the doc in Native FC format
+    if footprints_dir is not None and os.path.isdir(footprints_dir):
+        #expVRML.say (ModelName)
+        #stop
+        sys.argv = ["fc", "dummy", footprints_dir+os.sep+ModelName, "savememory"]
+        #setup = get_setup_file()  # << You need the parentheses
+        expVRML.say(sys.argv[2])
+        ksu_already_loaded=False
+        ksu_present=False
+        for i in QtGui.qApp.topLevelWidgets():
+            if i.objectName() == "kicadStepUp":
                 ksu_already_loaded=True
-            if ksu_already_loaded!=True:
-                try:
-                    import kicadStepUptools
-                    ksu_present=True
-                    ksu_already_loaded=True
-                    kicadStepUptools.KSUWidget.close()
-                    #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
-                    #kicadStepUptools.KSUWidget.destroy()
-                    #for i in QtGui.qApp.topLevelWidgets():
-                    #    if i.objectName() == "kicadStepUp":
-                    #        i.deleteLater()
-                    kicadStepUptools.KSUWidget.close()
-                except:
-                    ksu_present=False
-                    expVRML.say("ksu not present")
-            else:
-                kicadStepUptools.KSUWidget.close()
-                reload(kicadStepUptools)
+        ksu_tab = FreeCADGui.getMainWindow().findChild(QtGui.QDockWidget, "kicadStepUp") #"kicad StepUp 3D tools")
+        if ksu_tab:
+            ksu_already_loaded=True
+        if ksu_already_loaded!=True:
+            try:
+                import kicadStepUptools
+                ksu_present=True
+                ksu_already_loaded=True
                 kicadStepUptools.KSUWidget.close()
                 #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
                 #kicadStepUptools.KSUWidget.destroy()
-            
-        #FreeCADGui.insert(u"C:\Temp\FCAD_sg\QFN_packages\QFN-12-1EP_3x3mm_Pitch0_5mm.kicad_mod")
-        #FreeCADGui.insert(script_dir+os.sep+"ModelName.kicad_mod")
-        if save_memory == False:
-            Gui.activateWorkbench("PartWorkbench")
-            Gui.SendMsgToActiveView("ViewFit")
-            Gui.activeDocument().activeView().viewBottom()
-            #Gui.activeDocument().activeView().viewAxometric()
-        saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        if save_memory == True:
-            closeCurrentDoc(doc.Label)
-        #sys.argv = ["fc", "dummy", all]
+                #for i in QtGui.qApp.topLevelWidgets():
+                #    if i.objectName() == "kicadStepUp":
+                #        i.deleteLater()
+                kicadStepUptools.KSUWidget.close()
+            except:
+                ksu_present=False
+                expVRML.say("ksu not present")
+        else:
+            kicadStepUptools.KSUWidget.close()
+            reload(kicadStepUptools)
+            kicadStepUptools.KSUWidget.close()
+            #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
+            #kicadStepUptools.KSUWidget.destroy()
 
-        #saveFCdoc(App, Gui, doc, ModelName,out_dir)
-        ##display BBox
-        ##FreeCADGui.ActiveDocument.getObject("Part__Feature").BoundingBox = True
-        #
-        #if close_doc: #closing doc to avoid memory leak
-        #    expVRML.say("closing doc to save memory")
-        #    App.closeDocument(doc.Name)
-        #    App.setActiveDocument("")
-        #    App.ActiveDocument=None
-        #    Gui.ActiveDocument=None#else:
-        #    Gui.activateWorkbench("PartWorkbench")
-        #    Gui.SendMsgToActiveView("ViewFit")
-        #    Gui.activeDocument().activeView().viewAxometric()
-        
-        
-    #sys.exit()  #to create model and exit
+    saveFCdoc(App, Gui, doc, ModelName,out_dir)
+
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
+
+    if save_memory == True or check_Model==True:
+        closeCurrentDoc(CheckedModelName)
+
+    if check_Model==True:
+        runGeometryCheck(App, Gui, out_dir+'/'+ ModelName+".step",
+            log, ModelName, save_memory=save_memory)
+
+def exportSeries(module, log, model_filter_regobj):
+    series_definition = module.SeriesParams
+    for variant in module.part_params:
+        params = module.part_params[variant]
+        try:
+            if model_filter_regobj.match(variant):
+                export_one_part(params, series_definition, log)
+        except GeometryError as e:
+            e.print_errors(stop_on_first_error)
+            if stop_on_first_error:
+                return -1
+        except FreeCADVersionError as e:
+            FreeCAD.Console.PrintError(e)
+            return -1
+    return 0
+
+
+#########################  ADD MODEL GENERATORS #########################
+
+import cq_parameters_diode
+
+all_series = [
+    cq_parameters_diode
+]
+
+#########################################################################
+
+
+class argparse():
+    def __init__(self):
+        self.config = '../_tools/config/connector_config_KLCv3.yaml'
+        self.model_filter = '*'
+        self.series = all_series
+
+    def parse_args(self, args):
+        for arg in args:
+            if '=' in arg:
+                self.parseValueArg(*arg.split('='))
+            else:
+                self.argSwitchArg(arg)
+
+    def parseValueArg(self, name, value):
+        if name == 'model_filter':
+            self.model_filter = value
+        elif name == 'log':
+            global check_log_file
+            check_log_file = value
+        elif name == 'series':
+            #print("param series:")
+            #print(value)
+            series_str = value.split(',')
+            self.series = []
+            for s in series_str:
+                #####################  ADD MODEL GENERATORS ###################
+                if 'diode' in s.lower():
+                    self.series.append(cq_parameters_diode)
+
+                ###############################################################
+
+    def argSwitchArg(self, name):
+        if name == '?':
+            self.print_usage()
+        elif name == 'disable_check':
+            global check_Model
+            check_Model = False
+        elif name == 'disable_Memory_reduction':
+            global save_memory
+            save_memory = False
+        elif name == 'error_tolerant':
+            global stop_on_first_error
+            stop_on_first_error = False
+        elif name == 'disable_marker_color':
+            global color_pin_mark
+            color_pin_mark = False
+
+    def print_usage(self):
+        print("Generater script for phoenix contact 3d models.")
+        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print('optional arguments:')
+        print('\tmodel_filter=[filter pincount using linux file filter syntax]')
+        print('\tlog=[log file path]')
+        print('\tseries=[series name],[series name],...')
+        print('switches:')
+        print('\tdisable_check')
+        print('\tdisable_Memory_reduction')
+        print('\terror_tolerant')
+        print('\tdisable_marker_color')
+
+    def __str__(self):
+        return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
+            self.config, self.model_filter, str(self.series), self.with_plug)
+
+
+# when run from command line
+if __name__ == "__main__" or __name__ == "main_generator":
+    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+
+    args = argparse()
+    args.parse_args(sys.argv)
+    modelfilter = args.model_filter
+
+    model_filter_regobj=re.compile(fnmatch.translate(modelfilter))
+
+
+    with open(check_log_file, 'w') as log:
+        log.write('# Check report for gull wing packages 3d model genration\n')
+        for typ in args.series:
+            if exportSeries(typ, log, model_filter_regobj) != 0:
+                break
+
+    FreeCAD.Console.PrintMessage('\n\nDone\n')
