@@ -980,7 +980,7 @@ part_params = {
         epad = (4.5,4.5), # e Pad
         excluded_pins = None, #no pin excluded
         old_modelName = 'TQFP-64_1EP_10x10mm_Pitch0.5mm', #modelName
-        modelName = 'TQFP-64_1EP_10x10mm_P0.5mm', #modelName
+        modelName = 'TQFP-64-1EP_10x10mm_P0.5mm', #modelName
         rotation = -90, # rotation if required
         ),
     'HTQFP-64_1EP_10x10mm_Pitch0.5mm_ThermalPad': Params( # from http://www.ti.com/lit/ml/mtqf006a/mtqf006a.pdf
@@ -1009,7 +1009,7 @@ part_params = {
         epad = (7.5,7.5), #None, # e Pad
         excluded_pins = None, #no pin excluded
         old_modelName = 'HTQFP-64_1EP_10x10mm_Pitch0.5mm_ThermalPad', #modelName
-        modelName = 'HTQFP-64_1EP_10x10mm_P0.5mm_ThermalPad', #modelName
+        modelName = 'HTQFP-64-1EP_10x10mm_P0.5mm', #modelName
         rotation = -90, # rotation if required
         ),
     'TQFP-64_14x14mm_Pitch0.8mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00049AR.pdf
@@ -1183,7 +1183,7 @@ part_params = {
         epad = (7.5,7.5), # e Pad
         excluded_pins = None, #no pin excluded
         old_modelName = 'TQFP-100_1EP_14x14mm_Pitch0.5mm', #modelName
-        modelName = 'TQFP-100_1EP_14x14mm_P0.5mm', #modelName
+        modelName = 'TQFP-100-1EP_14x14mm_P0.5mm', #modelName
         rotation = -90, # rotation if required
         ),
     'TQFP-120_14x14mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ml/mpqf012/mpqf012.pdf
