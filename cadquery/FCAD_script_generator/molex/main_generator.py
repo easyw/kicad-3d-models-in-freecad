@@ -309,7 +309,7 @@ class argparse():
 
     def print_usage(self):
         print("Generater script for molex connector 3d models.")
-        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
         print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
         print('\tpins_filter=[filter pincount using linux file filter syntax]')
