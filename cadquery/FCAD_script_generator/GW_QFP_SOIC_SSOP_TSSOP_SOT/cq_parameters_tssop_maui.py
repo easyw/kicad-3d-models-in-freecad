@@ -10,15 +10,18 @@
 
 ## file of parametric definitions
 
-from collections import namedtuple
-import cq_parameters_soic  # modules parameters
-from cq_parameters_soic import *
+from Params import *
 
-destination_dir="/GullWings_packages"
-# destination_dir="./"
+class SeriesParams():
+    footprint_dir="Housings_SSOP.pretty"
+    lib_name = "SSOP"
+
+    body_color_key = "black body"
+    pins_color_key = "metal grey pins"
+    mark_color_key = "light brown label"
 
 
-all_params_tssop = {
+part_params = {
     'TSSOP_14': Params( # 5.0x4.4, pitch 0.65 14pin 1.2mm height
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
@@ -44,9 +47,9 @@ all_params_tssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'tssop_14_50x44_p065', #modelName
         modelName = 'tssop_14_50x44_p065', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = 'TSSOP'
         ),
     'TSOP2-50': Params( #
         the = 12.0,      # body angle in degrees
@@ -73,9 +76,8 @@ all_params_tssop = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'TSOP2-50', #modelName
         modelName = 'TSOP2-50', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = 'TSSOP'
         ),
 }
-
