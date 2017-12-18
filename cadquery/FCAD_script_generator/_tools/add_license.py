@@ -67,7 +67,7 @@ LIST_int_license = ["Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_in
 
 
 def say(*arg):
-    FreeCAD.Console.PrintMessage(" ".join(map(str,arg)) + "\r\n")
+    FreeCAD.Console.PrintMessage(" ".join(map(str,arg)) + "\n")
 
 def FNCT_modify_step(PMBL_stepfile,
                      DICT_positions,
@@ -142,7 +142,8 @@ def FNCT_modify_step(PMBL_stepfile,
 
 
 def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAuthor, STR_licEmail="", STR_licOrgSys="", STR_licOrg="",STR_licPreProc=""):
-    if os.path.isfile(FLDR_toStepFiles + os.sep + FNME_stepfile): # test if folder or file..
+    filepath = FLDR_toStepFiles + os.sep + FNME_stepfile
+    if os.path.isfile(filepath): # test if folder or file..
         fname, ext=os.path.splitext(FNME_stepfile)
         if LIST_license[0] == "":
             LIST_license=list(LIST_int_license)
@@ -150,9 +151,11 @@ def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAutho
         if ext == ".stp" or ext == ".step": # test if step file
             #say("Starting of licensing\n")
             try:
-                HDLR_stepfile = open(FLDR_toStepFiles + os.sep  + FNME_stepfile, 'r') # open
-            except:
-                say("broken_2")
+                HDLR_stepfile = open(filepath, 'r') # open
+            except Exception as exception:
+                FreeCAD.Console.PrintError("Add License: Can't open step file for read access\n")
+                FreeCAD.Console.PrintError("{:s}\n".format(exception))
+                return
 
             HDLR_stepfile.seek(0)
             PMBL_stepfile = HDLR_stepfile.readlines()
@@ -189,17 +192,22 @@ def addLicenseToStep(FLDR_toStepFiles, FNME_stepfile, LIST_license, STR_licAutho
 
             # overwrite step file
             try:
-                HDLR_stepfile_w = open(FLDR_toStepFiles + os.sep  + FNME_stepfile, 'w') # open
-            except:
-                say("broken_3")
-            else:
-                # overwrite with new preamble
-                for line in LIST_PMBL:
-                    HDLR_stepfile_w.write(line + "\n")
-                # add old data section
-                for line in PMBL_stepfile[(DICT_positions["A"]-1):]:
-                    HDLR_stepfile_w.write(line.strip() + "\n")
-                HDLR_stepfile_w.close()
-    say ("License addition successful")
+                HDLR_stepfile_w = open(filepath, 'w') # open
+            except Exception as exception:
+                FreeCAD.Console.PrintError("Add License: Can't open step file for write access\n")
+                FreeCAD.Console.PrintError("{:s}\n".format(exception))
+                return
 
+            # overwrite with new preamble
+            for line in LIST_PMBL:
+                HDLR_stepfile_w.write(line + "\n")
+            # add old data section
+            for line in PMBL_stepfile[(DICT_positions["A"]-1):]:
+                HDLR_stepfile_w.write(line.strip() + "\n")
+            HDLR_stepfile_w.close()
+            say ("License addition successful")
+        else:
+            FreeCAD.Console.PrintWarning("Add License: File has wrong file extension: {:s}".format(FNME_stepfile))
+    else:
+        FreeCAD.Console.PrintWarning("Add License: Path does not exist: {:s}".format(filepath))
 ###
