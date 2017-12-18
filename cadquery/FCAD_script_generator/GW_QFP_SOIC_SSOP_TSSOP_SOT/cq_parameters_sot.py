@@ -9,132 +9,22 @@
 # Dimensions are from Jedec MS-026D document.
 
 ## file of parametric definitions
-from collections import namedtuple
-import cq_parameters_soic  # modules parameters
-from cq_parameters_soic import *
 
-destination_dir="/GullWings_packages"
-# destination_dir="./"
+from Params import *
 
-all_params_sot = {
-    'SOT23_6': Params( # 1.8x3.1, pitch 0.95 6pin 1.45mm height
-        the = 8.0,      # body angle in degrees
-        tb_s = 0.05,    # top part of body is that much smaller
-        c = 0.15,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.05,       # pin top flat part length (excluding corner arc)
-#        L = 0.4,       # pin bottom flat part length (including corner arc)
-        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.25,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.03,     # first pin indicator depth
-        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.12, #0.45 chamfer of the 1st pin corner
-        D1 = 3.1,       # body length
-        E1 = 1.8,       # body width
-        E = 2.9,        # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,  # body-board separation
-        A2 = 1.35,  # body height
-        b = 0.40,  # pin width
-        e = 0.95,  # pin (center-to-center) distance
-        npx = 3,   # number of pins along X axis (width)
-        npy = 0,   # number of pins along y axis (length)
-        epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
-        modelName = 'sot23_6_18x29_p095', #modelName
-        rotation = 0, # rotation if required
-        dest_dir_prefix = 'SOT'
-        ),
-    'SOT23_3': Params( # 1.8x3.1, pitch 0.95 6pin 1.45mm height
-        the = 8.0,      # body angle in degrees
-        tb_s = 0.05,    # top part of body is that much smaller
-        c = 0.15,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.0,       # pin top flat part length (excluding corner arc)
-#        L = 0.4,       # pin bottom flat part length (including corner arc)
-        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.0,     # first pin indicator radius
-        fp_d = 0.08,     # first pin indicator distance from edge
-        fp_z = 0.03,     # first pin indicator depth
-        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.12, #0.45 chamfer of the 1st pin corner
-        D1 = 3.0,       # body length
-        E1 = 1.4,       # body width
-        E = 2.5,        # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,  # body-board separation
-        A2 = 1.1,  # body height
-        b = 0.40,  # pin width
-        e = 0.95,  # pin (center-to-center) distance
-        npx = 3,   # number of pins along X axis (width)
-        npy = 0,   # number of pins along y axis (length)
-        epad = None, # e Pad
-        excluded_pins = (2,4,6), #no pin excluded
-        modelName = 'sot23_3_25x30_p095', #modelName
-        rotation = 0, # rotation if required
-        dest_dir_prefix = 'SOT'
-        ),
-    'SOT23_5': Params( # 1.8x3.1, pitch 0.95 5pin 1.45mm height
-        the = 8.0,      # body angle in degrees
-        tb_s = 0.05,    # top part of body is that much smaller
-        c = 0.15,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.05,       # pin top flat part length (excluding corner arc)
-#        L = 0.4,       # pin bottom flat part length (including corner arc)
-        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.0,     # first pin indicator radius
-        fp_d = 0.1,     # first pin indicator distance from edge
-        fp_z = 0.03,     # first pin indicator depth
-        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.12, #0.45 chamfer of the 1st pin corner
-        D1 = 3.1,       # body length
-        E1 = 1.8,       # body width
-        E = 2.9,        # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,  # body-board separation
-        A2 = 1.35,  # body height
-        b = 0.40,  # pin width
-        e = 0.95,  # pin (center-to-center) distance
-        npx = 3,   # number of pins along X axis (width)
-        npy = 0,   # number of pins along y axis (length)
-        epad = None, # e Pad
-        excluded_pins = (5,), #no pin excluded
-        modelName = 'sot23_5_18x29_p095', #modelName
-        rotation = 0, # rotation if required
-        dest_dir_prefix = 'SOT'
-        ),
-    'SC70_3': Params( # 1.8x3.1, pitch 0.95 6pin 1.45mm height
-        the = 8.0,      # body angle in degrees
-        tb_s = 0.05,    # top part of body is that much smaller
-        c = 0.15,        # pin thickness, body center part height
-        R1 = 0.1,       # pin upper corner, inner radius
-        R2 = 0.1,       # pin lower corner, inner radius
-        S = 0.00,       # pin top flat part length (excluding corner arc)
-#        L = 0.4,       # pin bottom flat part length (including corner arc)
-        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.0,     # first pin indicator radius
-        fp_d = 0.08,     # first pin indicator distance from edge
-        fp_z = 0.03,     # first pin indicator depth
-        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
-        cc1 = 0.12, #0.45 chamfer of the 1st pin corner
-        D1 = 2.2,       # body length
-        E1 = 1.35,       # body width
-        E = 2.2,        # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,  # body-board separation
-        A2 = 1.1,  # body height
-        b = 0.35,  # pin width
-        e = 0.65,  # pin (center-to-center) distance
-        npx = 3,   # number of pins along X axis (width)
-        npy = 0,   # number of pins along y axis (length)
-        epad = None, # e Pad
-        excluded_pins = (2,4,6), #no pin excluded
-        modelName = 'sc70_3_22x22_p065', #modelName
-        rotation = 0, # rotation if required
-        dest_dir_prefix = 'SOT'
-        ),
-}
-kicad_naming_params_sot = {
+class SeriesParams():
+    # footprint_dir="TO_SOT_Packages_SMD.pretty"
+    # lib_name = "TO_SOT_Packages_SMD"
+
+    footprint_dir="Package_TO_SOT_SMD.pretty"
+    lib_name = "Package_TO_SOT_SMD"
+
+    body_color_key = "black body"
+    pins_color_key = "metal grey pins"
+    mark_color_key = "light brown label"
+
+
+part_params = {
 	'Analog_KS-4': Params( # from http://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/sc70ks/ks_4.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
@@ -160,9 +50,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (4,5,6,7,8,9,10,20,21,22,23,24,25,26,27,28,29), #no pin excluded
+        old_modelName = 'Analog_KS-4', #modelName
         modelName = 'Analog_KS-4', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SC-59': Params( # from http://www.infineon.com/dgdl/SC59-Package_Overview.pdf?fileId=5546d462580663ef0158069ca21703c1
         the = 8.0,      # body angle in degrees
@@ -189,9 +79,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'SC-59', #modelName
         modelName = 'SC-59', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SC-70-8': Params( # from http://cds.linear.com/docs/en/packaging/SOT_8_05-08-1639.pdf
         the = 8.0,      # body angle in degrees
@@ -218,9 +108,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SC-70-8', #modelName
         modelName = 'SC-70-8', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
 
     'SOT-23': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
@@ -248,9 +138,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'SOT-23', #modelName
         modelName = 'SOT-23', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
 	'SOT-23W': Params( 	# A1120ELHLX-T http://www.allegromicro.com/~/media/Files/Datasheets/A112x-Datasheet.ashx?la=en&hash=7BC461E058CC246E0BAB62433B2F1ECA104CA9D3
         the = 8.0,      # body angle in degrees
@@ -277,9 +167,9 @@ kicad_naming_params_sot = {
         npy = 0,   		# number of pins along y axis (length)
         epad = None, 	# e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'SOT-23W', #modelName
         modelName = 'SOT-23W', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
 	'SOT-23-5': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
         the = 8.0,      # body angle in degrees
@@ -306,9 +196,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (5,), #no pin excluded
+        old_modelName = 'SOT-23-5', #modelName
         modelName = 'SOT-23-5', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
 
     'SOT-23-6': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
@@ -336,9 +226,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SOT-23-6', #modelName
         modelName = 'SOT-23-6', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-23-8': Params( # http://www.ti.com/lit/ml/mpds099c/mpds099c.pdf
         the = 8.0,      # body angle in degrees
@@ -365,9 +255,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SOT-23-8', #modelName
         modelName = 'SOT-23-8', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-143': Params( # http://www.nxp.com/documents/outline_drawing/SOT143B.pdf
         the = 8.0,      # body angle in degrees
@@ -394,9 +284,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (3,4,5,8,9,10,11), #no pin excluded
+        old_modelName = 'SOT-143', #modelName
         modelName = 'SOT-143', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-143R': Params( # http://www.nxp.com/documents/outline_drawing/SOT143R.pdf
         the = 8.0,      # body angle in degrees
@@ -423,9 +313,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2,3,4,8,9,10,11), #no pin excluded
+        old_modelName = 'SOT-143R', #modelName
         modelName = 'SOT-143R', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-223': Params( # http://www.nxp.com/documents/outline_drawing/SOT223.pdf
         the = 8.0,      # body angle in degrees
@@ -452,9 +342,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2,3,5,6,8,9,13,14), #no pin excluded
+        old_modelName = 'SOT-223', #modelName
         modelName = 'SOT-223', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-323_SC-70': Params( # from http://www.ti.com/lit/ml/mpds114c/mpds114c.pdf
         the = 8.0,      # body angle in degrees
@@ -481,9 +371,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'SOT-323_SC-70', #modelName
         modelName = 'SOT-323_SC-70', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-343_SC-70-4': Params( # from http://www.ti.com/lit/ml/mpds114c/mpds114c.pdf
         the = 8.0,      # body angle in degrees
@@ -510,9 +400,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 5), #no pin excluded
+        old_modelName = 'SOT-343_SC-70-4', #modelName
         modelName = 'SOT-343_SC-70-4', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-353_SC-70-5': Params( # from http://www.ti.com/lit/ml/mpds114c/mpds114c.pdf
         the = 8.0,      # body angle in degrees
@@ -539,9 +429,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (5,), #no pin excluded
+        old_modelName = 'SOT-353_SC-70-5', #modelName
         modelName = 'SOT-353_SC-70-5', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-363_SC-70-6': Params( # from http://www.ti.com/lit/ml/mpds114c/mpds114c.pdf
         the = 8.0,      # body angle in degrees
@@ -568,9 +458,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SOT-363_SC-70-6', #modelName
         modelName = 'SOT-363_SC-70-6', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'TSOT-23': Params( # http://cds.linear.com/docs/en/packaging/SOT_6_05-08-1636.pdf
         the = 8.0,      # body angle in degrees
@@ -597,9 +487,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'TSOT-23', #modelName
         modelName = 'TSOT-23', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'TSOT-23-5': Params( # http://cds.linear.com/docs/en/packaging/SOT_6_05-08-1636.pdf
         the = 8.0,      # body angle in degrees
@@ -626,9 +516,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (5,), #no pin excluded
+        old_modelName = 'TSOT-23-5', #modelName
         modelName = 'TSOT-23-5', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'TSOT-23-6_MK06A': Params( # http://cds.linear.com/docs/en/packaging/SOT_6_05-08-1636.pdf
         the = 8.0,      # body angle in degrees
@@ -655,9 +545,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'TSOT-23-6_MK06A', #modelName
         modelName = 'TSOT-23-6_MK06A', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'TSOT-23-8': Params( # http://cds.linear.com/docs/en/packaging/SOT_8_05-08-1637.pdf
         the = 8.0,      # body angle in degrees
@@ -684,9 +574,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'TSOT-23-8', #modelName
         modelName = 'TSOT-23-8', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SC-82AA': Params( # from http://media.digikey.com/pdf/Data%20Sheets/Rohm%20PDFs/da227.pdf
         the = 8.0,      # body angle in degrees
@@ -713,9 +603,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (1,4,5,6,7,8,9,10,11,12,13,14,18,21,22,23,24,25,26,27,28,29,30,31,34), #no pin excluded
+        old_modelName = 'SC-82AA', #modelName
         modelName = 'SC-82AA', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SC-82AB': Params( # from http://www.infineon.com/dgdl/SOT343-Package_Overview.pdf?fileId=5546d462580663ef015806a5338d04ef
         the = 8.0,      # body angle in degrees
@@ -742,9 +632,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (4,5,6,7,8,9,10,11,12,20,21,22,23,24,25,26,27,28,29), #no pin excluded
+        old_modelName = 'SC-82AB', #modelName
         modelName = 'SC-82AB', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SuperSOT-3': Params( # from https://www.fairchildsemi.com/package-drawings/MA/MA03B.pdf
         the = 8.0,      # body angle in degrees
@@ -771,9 +661,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2, 4, 6), #no pin excluded
+        old_modelName = 'SuperSOT-3', #modelName
         modelName = 'SuperSOT-3', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SuperSOT-6': Params( # from http://www.mouser.com/ds/2/149/FMB5551-889214.pdf
         the = 8.0,      # body angle in degrees
@@ -800,9 +690,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SuperSOT-6', #modelName
         modelName = 'SuperSOT-6', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SuperSOT-8': Params( # from http://www.icbank.com/icbank_data/semi_package/ssot8_dim.pdf
         the = 8.0,      # body angle in degrees
@@ -829,9 +719,9 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SuperSOT-8', #modelName
         modelName = 'SuperSOT-8', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
     'SOT-223-8': Params( # from https://www.diodes.com/assets/Datasheets/ZXSBMR16PT8.pdf
         the = 8.0,      # body angle in degrees
@@ -858,8 +748,8 @@ kicad_naming_params_sot = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
+        old_modelName = 'SOT-223-8', #modelName
         modelName = 'SOT-223-8', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
 }

@@ -566,13 +566,17 @@ import cq_parameters_qfp
 import cq_parameters_qfp_maui
 import cq_parameters_soic
 import cq_parameters_soic_maui
+import cq_parameters_sot
+import cq_parameters_sot_maui
 
 all_series = {
     'diode':cq_parameters_diode,
     'qfp':cq_parameters_qfp,
     'qfp_maui':cq_parameters_qfp_maui,
     'soic':cq_parameters_soic,
-    'soic_maui':cq_parameters_soic_maui
+    'soic_maui':cq_parameters_soic_maui,
+    'sot':cq_parameters_sot,
+    'sot_maui':cq_parameters_sot_maui,
 }
 
 #########################################################################
