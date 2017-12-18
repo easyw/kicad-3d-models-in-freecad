@@ -90,7 +90,7 @@ def checkBOP(shape):
     try:
         shape.check(True)
         return True
-    except:
+    except Exception:
         return sys.exc_info()[1] #ValueError #sys.exc_info() #False
 ##
 
@@ -110,8 +110,9 @@ def getListOfNumbers(string):
                 b = int(b)
                 if a > 0 and b > a:
                     numbers = [i for i in range(a,b+1)]
-            except:
-                pass
+            except Exception as exp:
+                FreeCAD.Console.PrintWarning("Error in getListOfNumbers range case:")
+                FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
 
     elif ',' in string:
         #Now, split by comma
@@ -120,14 +121,16 @@ def getListOfNumbers(string):
         for s in ss:
             try:
                 numbers += [int(s)]
-            except:
-                pass
+            except Exception as exp:
+                FreeCAD.Console.PrintWarning("Error in getListOfNumbers list case:")
+                FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
 
     else:
         try:
             numbers = [int(string)]
-        except:
-            numbers = []
+        except Exception as exp:
+            FreeCAD.Console.PrintWarning("Error in getListOfNumbers single number case:")
+            FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
 
     return numbers
 
@@ -547,13 +550,15 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
     App.getDocument(doc.Name).save()
     try:
         os.remove(outdir+os.sep+modelName+'.FCStd1') #removing backup file
-    except:
-        pass
+    except Exception as exp:
+        FreeCAD.Console.PrintWarning("Error while trying to remove backup file in saveFCdoc:")
+        FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
     if saving == False:
         try:
             os.remove(outdir+os.sep+modelName+'.FCStd') #removing project file
-        except:
-            pass
+        except Exception as exp:
+            FreeCAD.Console.PrintWarning("Error while trying to remove file in saveFCdoc (with save == False):")
+            FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
     else:
         FreeCAD.Console.PrintMessage(outdir+os.sep+modelName+'.FCStd saved\n')
     return 0
