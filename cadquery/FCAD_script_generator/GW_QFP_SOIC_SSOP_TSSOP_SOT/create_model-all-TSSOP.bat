@@ -3,7 +3,6 @@ taskkill -im freecad.exe /f
 echo cadquery-freecad-module required
 @echo ON
 cd %~p0
-start "" "d:\FreeCAD_015\bin\freecad" main_generator.py allTSSOP
-:: start "" "d:\FreeCAD_015\bin\freecad" main_generator.py %1
+start "" "d:\FreeCAD_015\bin\freecad" main_generator.py series=tssop_maui
 
 ::pause

@@ -51,6 +51,8 @@ __Comment__ = '''make 3D models of phoenix contact types MSTB and MC.'''
 ___ver___ = "1.2 03/12/2017"
 
 import sys, os
+import traceback
+
 import datetime
 from datetime import datetime
 sys.path.append("../_tools")
@@ -314,6 +316,7 @@ class argparse():
     def argSwitchArg(self, name):
         if name == '?':
             self.print_usage()
+            exit()
         elif name == 'with_plug':
             self.with_plug = True
         elif name == 'disable_check':
@@ -328,11 +331,17 @@ class argparse():
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
-        print('usage: FreeCAD export_conn_phoenix.py [optional arguments]')
+        print('usage: FreeCAD main_generator.py [optional arguments]')
         print('optional arguments:')
         print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
         print('\tmodel_filter=[filter using linux file filter syntax]')
         print('\tseries=[series name],[series name],...')
+        print('switches:')
+        print('\twith_plug')
+        print('\tdisable_check')
+        print('\tdisable_Memory_reduction')
+        print('\terror_tolerant\n')
+
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
             self.config, self.model_filter, str(self.series), self.with_plug)
@@ -386,7 +395,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for Phoenix Contact 3d model genration\n')
         for typ in series:
-            if exportSeries(typ, log) != 0:
+            try:
+                if exportSeries(typ, log) != 0:
+                    break
+            except Exception as exeption:
+                traceback.print_exc()
                 break
 
     FreeCAD.Console.PrintMessage('\r\nDone\r\n')

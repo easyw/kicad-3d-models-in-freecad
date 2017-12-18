@@ -58,6 +58,8 @@ check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 
 import sys, os
+import traceback
+
 import datetime
 from datetime import datetime
 from math import sqrt
@@ -251,15 +253,15 @@ import conn_molex_SlimStack_55560
 import conn_molex_picoflex_90325
 import conn_molex_picoflex_90814
 
-all_series = [
-    conn_molex_picoblade_53261,
-    conn_molex_picoblade_53398,
-    conn_molex_kk_6410,
-    conn_molex_SlimStack_54722,
-    conn_molex_SlimStack_55560,
-    conn_molex_picoflex_90325,
-    conn_molex_picoflex_90814
-]
+all_series = {
+    '53261':conn_molex_picoblade_53261,
+    '53398':conn_molex_picoblade_53398,
+    '6410':conn_molex_kk_6410,
+    '54722':conn_molex_SlimStack_54722,
+    '55560':conn_molex_SlimStack_55560,
+    '90325':conn_molex_picoflex_90325,
+    '90814':conn_molex_picoflex_90814
+}
 
 #########################################################################
 
@@ -279,38 +281,22 @@ class argparse():
     def parseValueArg(self, name, value):
         if name == 'config':
             self.config = value
-        elif name == 'model_filter':
+        elif name == 'pins_filter':
             self.model_filter = value
         elif name == 'log':
             global check_log_file
             check_log_file = value
         elif name == 'series':
-            print("param series:")
-            print(value)
             series_str = value.split(',')
             self.series = []
             for s in series_str:
-                #####################  ADD MODEL GENERATORS ###################
-                if '53261' in s:
-                    self.series.append(conn_molex_picoblade_53261)
-                elif '53398' in s:
-                    self.series.append(conn_molex_picoblade_53398)
-                elif '6410' in s:
-                    self.series.append(conn_molex_kk_6410)
-                elif '54722' in s:
-                    self.series.append(conn_molex_SlimStack_54722)
-                elif '55560' in s:
-                    self.series.append(conn_molex_SlimStack_55560)
-                elif '90325' in s:
-                    self.series.append(conn_molex_picoflex_90325)
-                elif '90814' in s:
-                    self.series.append(conn_molex_picoflex_90814)
-
-                ###############################################################
+                if s.lower() in all_series:
+                    self.series.append(all_series[s.lower()])
 
     def argSwitchArg(self, name):
         if name == '?':
             self.print_usage()
+            exit()
         elif name == 'disable_check':
             global check_Model
             check_Model = False
@@ -322,16 +308,17 @@ class argparse():
             stop_on_first_error = False
 
     def print_usage(self):
-        print("Generater script for phoenix contact 3d models.")
-        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print("Generater script for molex connector 3d models.")
+        print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
         print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
-        print('\tmodel_filter=[filter pincount using linux file filter syntax]')
+        print('\tpins_filter=[filter pincount using linux file filter syntax]')
         print('\tlog=[log file path]')
         print('\tseries=[series name],[series name],...')
         print('switches:')
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
+        print('\terror_tolerant\n')
 
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
@@ -356,7 +343,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for Molex 3d model genration\n')
         for typ in args.series:
-            if exportSeries(typ, configuration, log, model_filter_regobj) != 0:
+            try:
+                if exportSeries(typ, configuration, log, model_filter_regobj) != 0:
+                    break
+            except Exception as exeption:
+                traceback.print_exc()
                 break
 
 

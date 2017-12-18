@@ -3,7 +3,7 @@ taskkill -im freecad.exe /f
 echo cadquery-freecad-module required
 @echo ON
 cd %~p0
-start "" "d:\FreeCAD_015\bin\freecad" main_generator.py allDiodes
+start "" "d:\FreeCAD_015\bin\freecad" main_generator.py series=diodes
 :: start "" "d:\FreeCAD_015\bin\freecad" main_generator.py %1
 
 ::pause

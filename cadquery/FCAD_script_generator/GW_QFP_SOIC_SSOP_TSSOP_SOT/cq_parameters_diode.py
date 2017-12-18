@@ -9,20 +9,21 @@
 # Dimensions are from Jedec MS-026D document.
 
 ## file of parametric definitions
-from collections import namedtuple
-import cq_parameters_soic  # modules parameters
-from cq_parameters_soic import *
+from Params import *
 
-destination_dir="/GullWings_packages"
-# destination_dir="./"
-footprints_dir_diodes="Diodes_SMD.pretty"
-##footprints_dir=None #to exclude importing of footprints
+class SeriesParams():
+    # footprint_dir="Diodes_SMD.pretty"
+    # lib_name = "Diodes_SMD"
 
-all_params_diode = {
+    footprint_dir="Diode_SMD.pretty"
+    lib_name = "Diode_SMD"
 
-}
-kicad_naming_params_diode = {
-	'D_SOD-123': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123.pdf
+    body_color_key = "black body"
+    pins_color_key = "metal grey pins"
+    mark_color_key = "light brown label"
+
+part_params = {
+    'D_SOD-123': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
         c = 0.20,        # pin thickness, body center part height
@@ -47,11 +48,11 @@ kicad_naming_params_diode = {
         npy = 1,   # number of pins along y axis (length)
         epad = None, # e all_params_sod
         excluded_pins = None, #no pin excluded
+        old_modelName = 'D_SOD-123', #modelName
         modelName = 'D_SOD-123', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
-        'D_SOD-323': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123.pdf
+    'D_SOD-323': Params( # from http://www.nxp.com/documents/outline_drawing/SOD123.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
         c = 0.15,        # pin thickness, body center part height
@@ -76,11 +77,11 @@ kicad_naming_params_diode = {
         npy = 1,   # number of pins along y axis (length)
         epad = None, # e all_params_sod
         excluded_pins = None, #no pin excluded
+        old_modelName = 'D_SOD-323', #modelName
         modelName = 'D_SOD-323', #modelName
         rotation = 0, # rotation if required
-        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
-        'D_SOT-23': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
+    'D_SOT-23': Params( # http://www.ti.com/lit/ml/mpds026k/mpds026k.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
         c = 0.15,        # pin thickness, body center part height
@@ -105,8 +106,8 @@ kicad_naming_params_diode = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = (2,4,6), #no pin excluded
+        old_modelName = 'D_SOT-23', #modelName
         modelName = 'D_SOT-23', #modelName
         rotation = -90, # rotation if required
-        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
 }

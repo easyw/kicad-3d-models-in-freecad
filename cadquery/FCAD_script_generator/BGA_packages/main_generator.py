@@ -572,4 +572,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             except FreeCADVersionError as e:
                 FreeCAD.Console.PrintError(e)
                 break
+            else:
+                traceback.print_exc()
+                raise
     FreeCAD.Console.PrintMessage("\nDone\n")

@@ -59,6 +59,8 @@ global_3dpath = '../_3Dmodels/'
 
 
 import sys, os
+import traceback
+
 import datetime
 from datetime import datetime
 from math import sqrt
@@ -254,11 +256,11 @@ import conn_jst_eh_models
 import conn_jst_ph_models
 import conn_jst_xh_models
 
-all_series = [
-    conn_jst_eh_models,
-    conn_jst_ph_models,
-    conn_jst_xh_models
-]
+all_series = {
+    'eh':conn_jst_eh_models,
+    'ph':conn_jst_ph_models,
+    'xh':conn_jst_xh_models
+}
 
 #########################################################################
 
@@ -278,7 +280,7 @@ class argparse():
     def parseValueArg(self, name, value):
         if name == 'config':
             self.config = value
-        elif name == 'model_filter':
+        elif name == 'pins_filter':
             self.model_filter = value
         elif name == 'log':
             global check_log_file
@@ -289,19 +291,13 @@ class argparse():
             series_str = value.split(',')
             self.series = []
             for s in series_str:
-                #####################  ADD MODEL GENERATORS ###################
-                if 'EH' in s:
-                    self.series.append(conn_jst_eh_models)
-                elif 'PH' in s:
-                    self.series.append(conn_jst_ph_models)
-                elif 'XH' in s:
-                    self.series.append(conn_jst_xh_models)
-
-                ###############################################################
+                if s.lower() in all_series:
+                    self.series.append(all_series[s.lower()])
 
     def argSwitchArg(self, name):
         if name == '?':
             self.print_usage()
+            exit()
         elif name == 'disable_check':
             global check_Model
             check_Model = False
@@ -314,15 +310,16 @@ class argparse():
 
     def print_usage(self):
         print("Generater script for phoenix contact 3d models.")
-        print('usage: FreeCAD export_conn_phoenix.py [optional arguments and switches]')
+        print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
         print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
-        print('\tmodel_filter=[filter pincount using linux file filter syntax]')
+        print('\tpins_filter=[filter pincount using linux file filter syntax]')
         print('\tlog=[log file path]')
         print('\tseries=[series name],[series name],...')
         print('switches:')
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
+        print('\terror_tolerant\n')
 
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
@@ -347,7 +344,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
     with open(check_log_file, 'w') as log:
         log.write('# Check report for Molex 3d model genration\n')
         for typ in args.series:
-            if exportSeries(typ, configuration, log, model_filter_regobj) != 0:
+            try:
+                if exportSeries(typ, configuration, log, model_filter_regobj) != 0:
+                    break
+            except Exception as exeption:
+                traceback.print_exc()
                 break
 
 
