@@ -246,6 +246,7 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 #########################  ADD MODEL GENERATORS #########################
 
 sys.path.append("cq_models")
+import conn_molex_502250
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
 import conn_molex_kk_6410
@@ -255,6 +256,7 @@ import conn_molex_picoflex_90325
 import conn_molex_picoflex_90814
 
 all_series = {
+    '502250':conn_molex_502250,
     '53261':conn_molex_picoblade_53261,
     '53398':conn_molex_picoblade_53398,
     '6410':conn_molex_kk_6410,
