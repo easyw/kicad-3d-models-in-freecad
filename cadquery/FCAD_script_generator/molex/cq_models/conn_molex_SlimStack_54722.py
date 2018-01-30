@@ -10,7 +10,7 @@
 
 ## This script can be run from within the cadquery module of freecad.
 ## To generate VRML/ STEP files for, use export_conn_jst_xh
-## script of the parrent directory.
+## script of the parent directory.
 
 #* This is a cadquery script for the generation of MCAD Models.             *
 #*                                                                          *
