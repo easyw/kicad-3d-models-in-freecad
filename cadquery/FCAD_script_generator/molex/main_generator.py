@@ -139,11 +139,12 @@ def export_one_part(module, pincount, configuration, log):
 
 
     orientation = configuration['orientation_options'][series_definition.orientation]
-    FileName = configuration['fp_name_format_string'].\
-        format(man=series_definition.manufacturer,
+    format_string = getattr(series_definition, 'fp_name_format_string',
+        configuration[getattr(series_definition, 'fp_name_format', 'fp_name_format_string')])
+    FileName = format_string.format(man=series_definition.manufacturer,
             series=series_definition.series,
             mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
-            pitch=series_definition.pitch, orientation=orientation)
+            pins=pincount, pitch=series_definition.pitch, orientation=orientation)
     FileName = FileName.replace('__', '_')
 
     lib_name = configuration['lib_name_format_string'].format(man=series_definition.manufacturer)
