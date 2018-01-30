@@ -13,7 +13,7 @@
 ##   https://github.com/jmwright/cadquery-freecad-module
 
 ## to run the script just do: freecad scriptName modelName
-## e.g. FreeCAD export_conn_jst_xh.py all
+## e.g. FreeCAD main_generator.py all
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -21,7 +21,7 @@
 #* These are FreeCAD & cadquery tools                                       *
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
-#* cadquery script for generating JST-XH models in STEP AP214               *
+#* cadquery script for generating Molex models in STEP AP214                *
 #*   Copyright (c) 2016                                                     *
 #* Rene Poeschl https://github.com/poeschlr                                 *
 #* All trademarks within this guide belong to their legitimate owners.      *
