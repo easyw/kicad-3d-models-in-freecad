@@ -13,7 +13,7 @@
 ##   https://github.com/jmwright/cadquery-freecad-module
 
 ## to run the script just do: freecad scriptName modelName
-## e.g. FreeCAD export_conn_jst_xh.py all
+## e.g. FreeCAD main_generator.py all
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -21,7 +21,7 @@
 #* These are FreeCAD & cadquery tools                                       *
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
-#* cadquery script for generating JST-XH models in STEP AP214               *
+#* cadquery script for generating Molex models in STEP AP214                *
 #*   Copyright (c) 2016                                                     *
 #* Rene Poeschl https://github.com/poeschlr                                 *
 #* All trademarks within this guide belong to their legitimate owners.      *
@@ -139,11 +139,12 @@ def export_one_part(module, pincount, configuration, log):
 
 
     orientation = configuration['orientation_options'][series_definition.orientation]
-    FileName = configuration['fp_name_format_string'].\
-        format(man=series_definition.manufacturer,
+    format_string = getattr(series_definition, 'fp_name_format_string',
+        configuration[getattr(series_definition, 'fp_name_format', 'fp_name_format_string')])
+    FileName = format_string.format(man=series_definition.manufacturer,
             series=series_definition.series,
             mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
-            pitch=series_definition.pitch, orientation=orientation)
+            pins=pincount, pitch=series_definition.pitch, orientation=orientation)
     FileName = FileName.replace('__', '_')
 
     lib_name = configuration['lib_name_format_string'].format(man=series_definition.manufacturer)
@@ -245,6 +246,7 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 #########################  ADD MODEL GENERATORS #########################
 
 sys.path.append("cq_models")
+import conn_molex_502250
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
 import conn_molex_kk_6410
@@ -254,6 +256,7 @@ import conn_molex_picoflex_90325
 import conn_molex_picoflex_90814
 
 all_series = {
+    '502250':conn_molex_502250,
     '53261':conn_molex_picoblade_53261,
     '53398':conn_molex_picoblade_53398,
     '6410':conn_molex_kk_6410,
