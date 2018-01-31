@@ -127,20 +127,22 @@ def generate_pins(num_pins):
 def generate_body(body_length):
     slot_length = body_length - 0.6*2
 
-    body_outline = cq.Workplane("XY").polyline([
-        (0, 0.1),
-        (body_length/2-0.745, 0.1),
-        (body_length/2-0.745, 0),
-        (body_length/2, 0),
-        (body_length/2, 0.45),
-        (body_length/2-0.28, 0.45),
-        (body_length/2-0.28, 0.815),
-        (body_length/2, 0.815),
-        (body_length/2, 3.53),
-        (body_length/2-0.30, 3.53),
-        (body_length/2-0.30, 3.28),
-        (0, 3.28)
-    ]).mirrorY()
+    body_outline = cq.Workplane("XY") \
+        .moveTo(0, 0.1) \
+        .polyline([
+            (body_length/2-0.745, 0.1),
+            (body_length/2-0.745, 0),
+            (body_length/2, 0),
+            (body_length/2, 0.45),
+            (body_length/2-0.28, 0.45),
+            (body_length/2-0.28, 0.815),
+            (body_length/2, 0.815),
+            (body_length/2, 3.53),
+            (body_length/2-0.30, 3.53),
+            (body_length/2-0.30, 3.28),
+            (0, 3.28)
+        ]) \
+        .mirrorY()
 
     return body_outline.extrude(series_params.body_height) \
         .cut(cq.Workplane("XY", origin=(0, 0, series_params.body_height))
@@ -156,15 +158,21 @@ def generate_body(body_length):
 
 def generate_latch(body_length):
     bar_length = body_length - 1.58
-
-    return cq.Workplane("YZ").polyline([
-            (1.41, 0.89), (0, 0.89), (0, 0.4), (1.4-0.65, 0.4),
-            (0.75, 0.15), (1.01, 0.15), (1.41, 0.585), (1.41, 0.89)]) \
+    bar = cq.Workplane("YZ").moveTo(1.41, 0.89).polyline([
+            (0, 0.89), (0, 0.4), (1.4-0.65, 0.4), (0.75, 0.15),
+            (1.01, 0.15), (1.41, 0.585)]) \
         .close() \
         .extrude(bar_length) \
         .translate((-bar_length/2, series_params.body_width -
-            series_params.body_y_offset - 0.75, 0)) \
-        .rotate((0, 0, 0), (0, 0, 1), -90)
+            series_params.body_y_offset - 0.75, 0))
+
+    pin_length = body_length - 0.1696
+    pin = cq.Workplane("YZ").moveTo(0, 0.4).circle(0.15) \
+        .extrude(pin_length) \
+        .translate((-pin_length/2, series_params.body_width -
+            series_params.body_y_offset - 0.75, 0))
+
+    return bar.union(pin).rotate((0, 0, 0), (0, 0, 1), -90)
 
 
 def generate_part(num_pins):
