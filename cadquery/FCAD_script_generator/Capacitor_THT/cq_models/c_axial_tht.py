@@ -78,6 +78,8 @@ class series_params():
     name_prefix = "C"
     orientation = "H"
 
+    pin_1_on_origin = True
+
     body_color_key = "yellow body"
     pins_color_key = "metal grey pins"
 
@@ -123,8 +125,14 @@ def generate_part(params):
     body = cq.Workplane("YZ").workplane(offset=-L/2).center(0,D/2+bs).circle(D/2).extrude(L)
     body = body.cut(cq.Workplane("YZ").workplane(offset=-L/2).center(0,D/2+bs).circle(D/2-D*0.05).extrude(L))
     body = body.union(cq.Workplane("YZ").workplane(offset=-L/2+D*0.05).center(0,D/2+bs).circle(D/2-D*0.05).extrude(L-D*0.1))
-    #show(body)
-    #show(leads)
+
+    if series_params.pin_1_on_origin:
+        body = body.translate((F/2,0,0))
+        leads = leads.translate((F/2,0,0))
+
+    body = body.rotate((0,0,0),(0,0,1),rot)
+    leads = leads.rotate((0,0,0),(0,0,1),rot)
+
     return (body, leads) #body, pins
 
 # when run from command line
