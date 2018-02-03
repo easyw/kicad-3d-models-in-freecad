@@ -3,4 +3,4 @@ taskkill -im freecad.exe /f
 echo cadquery-freecad-module required
 @echo ON
 cd %~p0
-start "" "C:\Program Files\FreeCAD 0.15\bin\freecad" export_conn_molex.py
+start "" "C:\Program Files\FreeCAD 0.15\bin\freecad" main_generator.py

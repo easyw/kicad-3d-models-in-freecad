@@ -52,7 +52,7 @@ Running the scripts
 -------------------
 
 to run the script just move to the scripts dir and do: +
-freecad ./main_generator.py modelName +
+freecad ./main_generator.py [optional paramemters] +
 examples: +
 +[freecad bin] main_generator.py ?+ +
 +[freecad bin] main_generator.py series=6410+ +
@@ -64,13 +64,6 @@ examples: +
 +for linux: freecad, freecad-daily or FreeCAD+ +
 
 or simply run the 'create_model' script/batch +
-
-
-modelName and parameters are described in: +
-1. cq_parameters.py file in their relative DIR
-all data in parameter files are collected from components data sheets +
-##the script will generate STEP and VRML parametric models##
-ready to be used with kicad StepUp script
 
 [red]*Note:* You may get a 'No module named QtNetwork' error on Ubuntu based systems when you select the module in FreeCAD.
 If you do, run the following command line from a terminal to fix this issue. +

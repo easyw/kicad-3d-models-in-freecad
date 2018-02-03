@@ -1,0 +1,12 @@
+axial_fp_name: '{prefix:s}_Axial_L{length:.1f}mm_D{diameter:.1f}mm_P{pitch:.2f}mm_{orientation:s}'
+
+orientation_options:
+    H: 'Horizontal'
+    V: 'Vertical'
+prefix:
+    C: 'C'
+    CP: 'CP'
+
+
+#lib_name_format_string: 'Conn_{man:s}_{series:s}'
+lib_name_format_string: 'Capacitor{suffix:s}'
