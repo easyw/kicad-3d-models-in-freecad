@@ -633,6 +633,7 @@ def runGeometryCheck(App, Gui, step_path, log,
             FreeCAD.Console.PrintError('Step import seems to fail. No objects to check\n')
         for o in docu.Objects:
             if hasattr(o,'Shape'):
+                o.Shape.fixTolerance(1e-4)
                 chks=checkBOP(o.Shape)
                 #print 'chks ',chks
                 if chks != True:

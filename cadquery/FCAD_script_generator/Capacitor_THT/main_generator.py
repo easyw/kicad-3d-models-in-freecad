@@ -56,6 +56,7 @@ check_Model = True
 stop_on_first_error = True
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
+stop_after_coloring = False
 
 lib_suffix = "_THT"
 
@@ -174,6 +175,9 @@ def export_one_part(module, params, configuration, log):
 
     restore_Main_Tools()
 
+    if stop_after_coloring:
+        return
+
     out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, lib_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
@@ -239,9 +243,11 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 
 sys.path.append("cq_models")
 import c_axial_tht
+import cp_axial_tht
 
 all_series = {
-    'axial_tht':c_axial_tht
+    'axial_tht':c_axial_tht,
+    'pol_axial_tht':cp_axial_tht
 }
 
 #########################################################################
@@ -287,6 +293,9 @@ class argparse():
         elif name == 'error_tolerant':
             global stop_on_first_error
             stop_on_first_error = False
+        elif name == "stop_after_coloring":
+            global stop_after_coloring
+            stop_after_coloring = True
 
     def print_usage(self):
         print("Generater script for capacitor 3d models.")
@@ -300,6 +309,7 @@ class argparse():
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
         print('\terror_tolerant\n')
+        print('\tstop_after_coloring\n')
 
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
