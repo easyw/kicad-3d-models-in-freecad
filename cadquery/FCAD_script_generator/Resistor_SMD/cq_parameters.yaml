@@ -167,3 +167,203 @@ R_4020_10251Metric:
   edge_fillet: 'auto'
   rotation: 0
   source: 'http://www.willow.co.uk/CRW.pdf'
+
+R_Stackpole_CSS0603_5-15m:
+  length: 1.6
+  width: 0.8
+  height: 0.3
+  pin_band: 0.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS0805_5-15m:
+  length: 2.03
+  width: 1.27
+  height: 0.3
+  pin_band: 0.35
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS1206_1-50m:
+  length: 3.2
+  width: 1.6
+  height: 0.65
+  pin_band: 0.51
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2010_1-3m:
+  length: 5.08
+  width: 2.54
+  height: 0.79
+  pin_band: 1.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2010_3.1-100m:
+  length: 5.08
+  width: 2.54
+  height: 0.65
+  pin_band: 0.79
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2512_0.5-4m:
+  length: 6.25
+  width: 3.3
+  height: 0.79
+  pin_band: 1.88
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2512_4.1-75m:
+  length: 6.25
+  width: 3.3
+  height: 0.65
+  pin_band: 1.12
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSSH2512_0.5m:
+  length: 6.25
+  width: 3.3
+  height: 0.79
+  pin_band: 1.88
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSSH2512_0.6-2.9m_4.1-10m:
+  length: 6.25
+  width: 3.3
+  height: 0.79
+  pin_band: 1.12
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSSH2512_3-4m:
+  length: 6.25
+  width: 3.3
+  height: 0.79
+  pin_band: 1.68
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_0.25-0.5m:
+  length: 6.81
+  width: 6.45
+  height: 0.99
+  pin_band: 2.16
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_1m:
+  length: 6.81
+  width: 6.45
+  height: 1.09
+  pin_band: 2.16
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_1.5m:
+  length: 6.81
+  width: 6.45
+  height: 0.99
+  pin_band: 2.16
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_2m:
+  length: 6.81
+  width: 6.45
+  height: 0.89
+  pin_band: 1.8
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_2.5m:
+  length: 6.81
+  width: 6.45
+  height: 0.89
+  pin_band: 1.65
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2725_3m:
+  length: 6.81
+  width: 6.45
+  height: 0.89
+  pin_band: 1.3
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS2728_4-100m:
+  length: 6.71
+  width: 7.19
+  height: 0.99
+  pin_band: 1.14
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSSH2728_4-100m:
+  length: 6.71
+  width: 7.19
+  height: 0.99
+  pin_band: 1.14
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS4527_0.5-5m:
+  length: 11.43
+  width: 6.85
+  height: 1.5
+  pin_band: 0.97
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
+
+R_Stackpole_CSS4527_5.1-120m:
+  length: 11.43
+  width: 6.85
+  height: 1.5
+  pin_band: 0.97
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'https://www.seielect.com/catalog/SEI-CSS_cssh.PDF'
