@@ -28,7 +28,7 @@ Params = namedtuple("Params", [
 ])
 
 all_params_radial_smd_cap = {# Aluminum SMD capacitors
-        # Dimensions per http://industrial.panasonic.com/lecs/www-data/pdf/ABA0000/ABA0000PE369.pdf
+        # Dimensions per http://industrial.panasonic.com/lecs/www-data/pdf/ABA0000/ABA0000PE369.pdf 
     "G_D100_L100" : Params( # note L model height
         L         =10.2,    # overall height
         D         =10.,     # diameter

@@ -45,13 +45,11 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make chip capacitors 3D models"
-__author__ = "maurice & Frank/Shack"
-__Comment__ = 'make chip capacitors 3D models exported to STEP and VRML for Kicad StepUP script'
+__title__ = "make chip LED's 3D models"
+__author__ = "Frank & Maurice"
+__Comment__ = 'make chip LEDs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.2 09/02/2017"
-
-# thanks to Frank Severinsen Shack for including vrml materials
+___ver___ = "2.0.0 29/01/2018"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -67,10 +65,14 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "brown body"
+body_color_key = "white body"  #"light brown body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-pins_color_key = "metal grey pins"
+pins_color_key = "gold pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+top_color_key = "led white"
+top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+pinmark_color_key = "green body"
+pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
@@ -153,36 +155,101 @@ except: # catch *all* exceptions
     print "CQ 030 doesn't open example file"
 
 def make_chip(model, all_params):
-    # dimensions for chip capacitors
+    # dimensions for LED's
+    package_found = True
+
+    package_type = all_params[model]['package_type']
     length = all_params[model]['length'] # package length
     width = all_params[model]['width'] # package width
     height = all_params[model]['height'] # package height
-
     pin_band = all_params[model]['pin_band'] # pin band
     pin_thickness = all_params[model]['pin_thickness'] # pin thickness
     if pin_thickness == 'auto':
         pin_thickness = pin_band/10.0
-
+    base_height = all_params[model]['base_height'] # pin thickness
     edge_fillet = all_params[model]['edge_fillet'] # fillet of edges
+    place_pinmark = all_params[model]['pinmark']
+    pinmark = 0
     if edge_fillet == 'auto':
         edge_fillet = pin_thickness
 
-    # Create a 3D box based on the dimension variables above and fillet it
-    case = cq.Workplane("XY").workplane(offset=pin_thickness).\
-    box(length-2*pin_band, width-2*pin_thickness, height-2*pin_thickness,centered=(True, True, False)). \
-    edges("|X").fillet(edge_fillet)
-
-    # Create a 3D box based on the dimension variables above and fillet it
-    pin1 = cq.Workplane("XY").box(pin_band, width, height)
-    pin1.edges("|X").fillet(edge_fillet)
-    pin1=pin1.translate((-length/2+pin_band/2,0,height/2))
-    pin2 = cq.Workplane("XY").box(pin_band, width, height)
-    pin2.edges("|X").fillet(edge_fillet)
-    pin2=pin2.translate((length/2-pin_band/2,0,height/2))
-    pins = pin1.union(pin2)
-    #body_copy.ShapeColor=result.ShapeColor
-    case = case.cut(pins)
-    return (case, pins)
+    if package_type == 'chip_lga':
+        pin_distance_edge = all_params[model]['pin_distance_edge']
+        if pin_thickness == 'auto':
+            pin_thickness = 0.01
+        # creating base
+        base = cq.Workplane("XY").workplane(offset=pin_thickness).\
+        box(length, width, base_height,centered=(True, True, False))
+        #creating top
+        top = cq.Workplane("XZ").workplane(offset=-width/2.).\
+        moveTo(-(length/2.),base_height+pin_thickness).lineTo((-(length/2))*0.9, height).\
+        lineTo((length/2.)*0.9, height).lineTo(length/2.,base_height+pin_thickness).close().extrude(width)
+        #creating pins
+        pin_center = length/2.-pin_distance_edge-pin_band/2.
+        pins = cq.Workplane("XY").moveTo(-pin_center, 0).\
+        box(pin_band, width-2*pin_distance_edge, pin_thickness,centered=(True, True, False)).\
+        moveTo(pin_center, 0).\
+        box(pin_band, width-2*pin_distance_edge, pin_thickness,centered=(True, True, False))
+        if place_pinmark == True:
+            pinmark_side = (length-pin_distance_edge*2.-pin_band*2.)*0.8
+            pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
+            pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
+            lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
+    elif package_type == 'chip_convex':
+        # creating base
+        base = cq.Workplane("XY").workplane(offset=pin_thickness).\
+        box(length-2*pin_thickness, width, base_height-2*pin_thickness,centered=(True, True, False))
+        # creating top
+        top = cq.Workplane("XZ").workplane(offset=-width/2).moveTo(-(length/2-pin_band),base_height-pin_thickness).\
+        lineTo((-(length/2-pin_band))*0.9, height).lineTo((length/2-pin_band)*0.9, height).\
+        lineTo(length/2-pin_band,base_height-pin_thickness).close().extrude(width)
+        # creating pins
+        pins = cq.Workplane("XY").moveTo((length-pin_band)/2.,0).\
+        box(pin_band, width, base_height,centered=(True, True, False)).moveTo(-(length-pin_band)/2.,0).\
+        box(pin_band, width, base_height,centered=(True, True, False)).edges("|Y").fillet(edge_fillet)
+        pins = pins.workplane(offset=base_height).moveTo(0, width/2).rect(length-pin_band/2, width/4, centered=True).cutThruAll().\
+        moveTo(0, -width/2).rect(length-pin_band/2, width/4, centered=True).cutThruAll()
+        pins = pins.cut(base)
+        # creating pinmark
+        if place_pinmark == True:
+            pinmark_side = width*0.8
+            pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
+            pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
+            lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
+   
+    elif package_type == 'chip_concave':
+        base = cq.Workplane("XY").workplane(offset=pin_thickness).\
+        box(length-2*pin_thickness, width, base_height-2*pin_thickness,centered=(True, True, False))
+        base = base.workplane(offset=base_height).moveTo(-length/2, -width/4-0.1).\
+        threePointArc((-length/2+pin_band/2+0.1, 0),(-length/2, width/4+0.1),forConstruction=False).close().\
+        moveTo(length/2, -width/4-0.1).\
+        threePointArc((length/2-pin_band/2-0.1, 0),(length/2, width/4+0.1),forConstruction=False).close().cutThruAll()
+        # creating top
+        top = cq.Workplane("XZ").workplane(offset=-width/2).moveTo(-(length/2-pin_band),base_height-pin_thickness).\
+        lineTo((-(length/2-pin_band))*0.9, height).lineTo((length/2-pin_band)*0.9, height).\
+        lineTo(length/2-pin_band,base_height-pin_thickness).close().extrude(width)
+        # creating pins
+        pins = cq.Workplane("XY").moveTo((length-pin_band)/2.,0).\
+        box(pin_band, width, base_height,centered=(True, True, False)).moveTo(-(length-pin_band)/2.,0).\
+        box(pin_band, width, base_height,centered=(True, True, False)).edges("|Y").fillet(edge_fillet)
+        pins = pins.workplane(offset=base_height).moveTo(-length/2, -width/4).\
+        threePointArc((-length/2+pin_band/2, 0),(-length/2, width/4),forConstruction=False).close().\
+        moveTo(length/2, -width/4).\
+        threePointArc((length/2-pin_band/2, 0),(length/2, width/4),forConstruction=False).close().cutThruAll()
+        pins = pins.cut(base)
+        # creating pinmark
+        if place_pinmark == True:
+            pinmark_side = width*0.8
+            pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
+            pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
+            lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
+    else:
+        package_found = False
+        base = 0
+        top = 0
+        pins = 0
+        pinmark = 0
+    return (base, top, pins, pinmark, package_found)
     
 
 # The dimensions of the box. These can be modified rather than changing the
@@ -232,42 +299,58 @@ if __name__ == "__main__" or __name__ == "main_generator":
         save_memory=True
     else:
         models = [model_to_build]
-        save_memory=False
 
     for model in models:
         if not model in all_params.keys():
             print("Parameters for %s doesn't exist in 'all_params', skipping." % model)
             continue
-
+        print("building %s" % model)
         ModelName = model
         CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
         Newdoc = App.newDocument(CheckedModelName)
         App.setActiveDocument(CheckedModelName)
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-        case, pins = make_chip(model, all_params)
+        base, top, pins, pinmark, package_found = make_chip(model, all_params)
+        if package_found == False:
+            print("package_type is not recognized")
+            continue
 
-        show(case)
+        top_color_key = all_params[model]['color']
+        top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+
+        show(base)
+        show(top)
         show(pins)
+        show(pinmark)
    
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
         
         Color_Objects(Gui,objs[0],body_color)
-        Color_Objects(Gui,objs[1],pins_color)
+        Color_Objects(Gui,objs[1],top_color)
+        Color_Objects(Gui,objs[2],pins_color)
+        Color_Objects(Gui,objs[3],pinmark_color)
 
         col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_top=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+        col_pins=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        col_pinmark=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
 
         material_substitutions={
             col_body[:-1]:body_color_key,
-            col_pin[:-1]:pins_color_key
+            col_top[:-1]:top_color_key,
+            col_pins[:-1]:pins_color_key,
+            col_pinmark[:-1]:pinmark_color_key
         }
 
         expVRML.say(material_substitutions)
 
         del objs
         objs=GetListOfObjects(FreeCAD, doc)
-        FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+        while len(objs) > 1:
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+            del objs
+            objs = GetListOfObjects(FreeCAD, doc)
         doc.Label = CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label = CheckedModelName
@@ -313,7 +396,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         saveFCdoc(App, Gui, doc, ModelName,out_dir, False)
 
 
-        check_Model=True
+        check_Model=False
         if save_memory == True or check_Model==True:
             closeCurrentDoc(CheckedModelName)
 
