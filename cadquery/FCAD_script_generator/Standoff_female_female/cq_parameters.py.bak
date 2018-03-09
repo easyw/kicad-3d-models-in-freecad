@@ -33,13 +33,4 @@ kicad_naming_params_standoff = {
         rotation = -90, #rotation if required
         dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
-    'Standoff_Height_20.0mm_HEX': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
-        OD = 4.0, # Outer Diameter, Flat side to flatside for HEX
-        ID = 2.0, # Inner Diameter
-        H = 20.0, # Height of standoff
-        shape = 'Hex', # Shape can be 'Round' or 'Hex'
-        modelName = 'Standoff_Height_20.0mm_HEX', # Modelname
-        rotation = -90, #rotation if required
-        dest_dir_prefix = '../Spacers/', # Destination
-    ),
 }
