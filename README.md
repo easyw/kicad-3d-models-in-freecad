@@ -14,8 +14,8 @@ The repo will have models starting from a FreeCAD project modeled in mm with a s
 
 
 # REQUIREMENTS
-- [x] FreeCAD 0.15 (best for step single object result)
-- [x] CadQuery 0.5.2 
+- [x] FreeCAD 0.17
+- [x] CadQuery 1.0.0 
 
 If you would like to share your models, I'll be happy to add these to the 3D repo!!! :)
 
