@@ -48,7 +48,7 @@ __title__ = "make BGA ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make BGA ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.5 25/Feb/2017"
+___ver___ = "1.0.6 11/March/2018"
 global save_memory
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
@@ -103,9 +103,21 @@ STR_licOrg = "FreeCAD"
 LIST_license = ["",]
 #################################################################################################
 
+# Import cad_tools
+from cqToolsExceptions import *
+import cq_cad_tools
+# Reload tools
+reload(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
+
+
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
+    # cq Gui            
+    #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
@@ -116,16 +128,6 @@ except Exception as e: # catch *all* exceptions
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
-
-# Import cad_tools
-from cqToolsExceptions import *
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
