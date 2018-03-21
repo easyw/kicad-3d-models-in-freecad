@@ -78,8 +78,6 @@ mark_color = shaderColors.named_colors[mark_color_key].getDiffuseFloat()
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
-from Gui.Command import *
-
 
 outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))

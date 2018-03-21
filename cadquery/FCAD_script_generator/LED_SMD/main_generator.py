@@ -260,7 +260,7 @@ import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
-    destination_dir = '/Capacitor_SMD.3dshapes'
+    destination_dir = '/LED_SMD.3dshapes'
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
