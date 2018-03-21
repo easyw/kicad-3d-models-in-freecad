@@ -220,6 +220,17 @@ kicad_naming_params_radial_smd_cap = {# Aluminum SMD capacitors
         rotation  = 0, # rotation if required
         dest_dir_prefix = 'cap_El_smd'
     ),
+    "CP_Elec_6.3x52" : Params( # note L model height
+        L         =5.2,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        modelName = 'CP_Elec_6.3x5.2', #modelName
+        rotation  = 0, # rotation if required
+        dest_dir_prefix = 'cap_El_smd'
+    ),
     "CP_Elec_6.3x53" : Params( # note L model height
         L         =5.3,    # overall height
         D         =6.3,     # diameter
