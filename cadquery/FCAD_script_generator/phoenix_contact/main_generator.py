@@ -117,7 +117,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import GetListOfObjects, restore_Main_Tools,\
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors,\
- closeCurrentDoc, runGeometryCheck
+ runGeometryCheck
 
 try:
     close_CQ_Example(App, Gui)
@@ -284,8 +284,8 @@ def export_one_part(modul, variant, configuration, log, with_plug=False):
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, FileName, out_dir)
     if save_memory == True or check_Model==True:
-        closeCurrentDoc(ModelName)
-
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
 
     if check_Model==True:
         runGeometryCheck(App, Gui, step_path,

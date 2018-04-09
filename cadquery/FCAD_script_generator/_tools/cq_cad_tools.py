@@ -598,31 +598,7 @@ def checkRequirements(cq):
     return 0
 
 ###################################################################
-# closeCurrentDoc()  maui/Jmwright
-#   Function to close the active window
-#
-###################################################################
-
-def closeCurrentDoc(title):
-    mw = FreeCADGui.getMainWindow()
-    mdi = mw.findChild(QtGui.QMdiArea)
-    mdiWin = mdi.currentSubWindow()
-    #print mdiWin.windowTitle()
-
-    # We have a 3D view selected so we need to find the corresponding script window
-    if mdiWin == 0 or ".FCMacro" not in mdiWin.windowTitle():
-        subList = mdi.subWindowList()
-
-        for sub in subList:
-            #print sub.windowTitle().split(':')[0].strip()
-            if sub.windowTitle().split(':')[0].strip() == title:
-                sub.close()
-                return
-        FreeCAD.Console.PrintError("No document called {:s}, nothing to close\n".format(title))
-
-
-###################################################################
-# closeCurrentDoc()  maui/poeschlr
+# runGeometryCheck()  maui/poeschlr
 #   Do the geometry check.
 #
 ###################################################################
@@ -684,7 +660,7 @@ def runGeometryCheck(App, Gui, step_path, log,
     if save_memory == True:
         saveFCdoc(App, Gui, docu, 'temp', './', False)
         docu = FreeCAD.ActiveDocument
-        closeCurrentDoc(docu.Label)
+        FreeCAD.closeDocument(docu.Name)
 
     if geometry_error_container.error_encountered:
         raise geometry_error_container

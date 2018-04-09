@@ -111,7 +111,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
+ CutObjs_wColors, checkRequirements
 
 
 
@@ -422,4 +422,5 @@ if __name__ == "__main__" or __name__ == "main_generator":
         # Save the doc in Native FC format
         saveFCdoc(App, Gui, doc, ModelName,out_dir)
         if save_memory == True:
-            closeCurrentDoc(CheckedModelName)
+            doc=FreeCAD.ActiveDocument
+            FreeCAD.closeDocument(doc.Name)
