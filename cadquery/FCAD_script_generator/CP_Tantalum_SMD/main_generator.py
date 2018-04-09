@@ -126,7 +126,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, runGeometryCheck, closeCurrentDoc
+ CutObjs_wColors, checkRequirements, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -334,7 +334,8 @@ def generateOneModel(part_params, log):
         FreeCADGui.activeDocument().activeView().viewAxometric()
 
     if save_memory == True or check_Model==True:
-        closeCurrentDoc(CheckedModelName)
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
 
     if check_Model==True:
         step_path = out_dir + '/' + ModelName + ".step"

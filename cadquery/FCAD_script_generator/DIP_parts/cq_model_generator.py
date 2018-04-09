@@ -78,7 +78,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, Color_Objects, \
- checkRequirements, closeCurrentDoc
+ checkRequirements
 
 import add_license
 
@@ -361,7 +361,8 @@ class ModelGenerator:
             Gui.SendMsgToActiveView("ViewFit")
             Gui.activeDocument().activeView().viewAxometric()
         else:
-            closeCurrentDoc(CheckedmodelName)
+            doc=FreeCAD.ActiveDocument
+            FreeCAD.closeDocument(doc.Name)
 
     def makeModels(self, options, series, family, params, kicadStepUptools=None, verbose=False):
         r"""Instantiates model creator classes and calls :func:`makeModel` repeatedly to create model files

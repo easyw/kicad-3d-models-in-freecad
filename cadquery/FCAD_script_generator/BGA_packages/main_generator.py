@@ -111,7 +111,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
+ CutObjs_wColors, checkRequirements, runGeometryCheck
 
 
 try:
@@ -515,8 +515,9 @@ def generateOneModel(params, log):
     saveFCdoc(App, Gui, doc, ModelName,out_dir)
 
     if save_memory == True or check_Model==True:
-        print("closing: {}".format(doc.Label))
-        closeCurrentDoc(doc.Label)
+        doc=FreeCAD.ActiveDocument
+        print("closing: {}".format(doc.Name))
+        FreeCAD.closeDocument(doc.Name)
 
     if check_Model==True:
         step_path = out_dir + '/' + ModelName + ".step"

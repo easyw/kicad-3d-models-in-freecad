@@ -110,7 +110,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
+ CutObjs_wColors, checkRequirements
 
 
 # from export_x3d import exportX3D, Mesh
@@ -460,7 +460,9 @@ def MakePart(params, name, n=1):
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, name,out_dir)
     if save_memory == True:
-        closeCurrentDoc(docname)
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
+
     return 0
     
 #import step_license as L

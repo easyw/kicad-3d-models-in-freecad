@@ -107,7 +107,9 @@ import cq_cad_tools
 reload(cq_cad_tools)
 
 # Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, CutObjs_wColors, checkRequirements, multiFuseObjs_wColors, closeCurrentDoc, runGeometryCheck
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+CutObjs_wColors, checkRequirements, multiFuseObjs_wColors, runGeometryCheck
 
 
 try:
@@ -354,8 +356,9 @@ def MakeHeader(n, isAngled, log, highDetail=False):
         FreeCADGui.activeDocument().activeView().viewAxometric()
 
     if save_memory == True or check_Model==True:
-        print("closing: {}".format(doc.Label))
-        closeCurrentDoc(doc.Label)
+        doc=FreeCAD.ActiveDocument
+        print("closing: {}".format(doc.Name))
+        FreeCAD.closeDocument(doc.Name)
 
     if check_Model==True:
         runGeometryCheck(App, Gui, step_path,

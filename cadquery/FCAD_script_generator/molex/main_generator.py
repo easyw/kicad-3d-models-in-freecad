@@ -109,7 +109,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
- closeCurrentDoc, runGeometryCheck
+ runGeometryCheck
 
 # Gui.SendMsgToActiveView("Run")
 #Gui.activateWorkbench("CadQueryWorkbench")
@@ -223,7 +223,8 @@ def export_one_part(module, pincount, configuration, log):
         FreeCADGui.activeDocument().activeView().viewAxometric()
 
     if save_memory == True or check_Model==True:
-        closeCurrentDoc(ModelName)
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
 
     if check_Model==True:
         runGeometryCheck(App, Gui, step_path,

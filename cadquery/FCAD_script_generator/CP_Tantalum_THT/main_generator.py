@@ -57,7 +57,7 @@ from math import tan, radians, sqrt, sin, degrees
 from collections import namedtuple
 
 global save_memory
-save_memory = False #reducing memory consuming for all generation params, closeCurrentDoc
+save_memory = False #reducing memory consuming for all generation params
 check_Model = True
 stop_on_first_error = True
 check_log_file = 'check-log.md'
@@ -141,7 +141,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc, runGeometryCheck
+ CutObjs_wColors, checkRequirements, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -294,7 +294,8 @@ def generateOneModel(params, log):
     # Save the doc in Native FC format
     saveFCdoc(App, Gui, doc, ModelName,out_dir)
     if save_memory == True:
-        closeCurrentDoc(CheckedModelName)
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
 
 
 # when run from command line

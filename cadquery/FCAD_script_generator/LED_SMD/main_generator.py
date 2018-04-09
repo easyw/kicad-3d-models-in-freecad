@@ -115,7 +115,7 @@ reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements, closeCurrentDoc
+ CutObjs_wColors, checkRequirements
 
 # Sphinx workaround #1
 try:
@@ -398,7 +398,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
         check_Model=False
         if save_memory == True or check_Model==True:
-            closeCurrentDoc(CheckedModelName)
+            doc=FreeCAD.ActiveDocument
+            FreeCAD.closeDocument(doc.Name)
 
         step_path=os.path.join(out_dir,ModelName+u'.step')
         if check_Model==True:
@@ -430,4 +431,5 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
             # Save the doc in Native FC format
             saveFCdoc(App, Gui, docu, ModelName,out_dir, False)
-            closeCurrentDoc(docu.Label)
+            doc=FreeCAD.ActiveDocument
+            FreeCAD.closeDocument(doc.Name)
