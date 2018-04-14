@@ -282,9 +282,9 @@ variants:
       keywords: ''
       datasheet: http://www.infineon.com/dgdl/Infineon-IPT111N20NFD-DS-v02_01-EN.pdf?fileId=5546d462533600a401537a8b4b786fc2
 ---
-# NXP SOT-669 SMD packages
+# NXP LFPAK56 SMD packages
 base:
-    series: SOT-669
+    series: LFPAK56
     description: 'NXP SOT-669 LFPAK56 Power-SO8 SMD package'
     keywords: 'NXP'
     footprint:
