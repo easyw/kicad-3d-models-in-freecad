@@ -345,6 +345,28 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-400_20x20_17.0x17.0mm_Pitch0.8mm': Params( # from https://www.xilinx.com/support/documentation/user_guides/ug865-Zynq-7000-Pkg-Pinout.pdf
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 17.0,       # body overall length
+        E = 17.0,       # body overall width
+        D1 = 15.2,       # top body overall length
+        E1 = 15.2,       # top body overall width
+        A1 = 0.40,  # body-board separation
+        A  = 1.47,  # body  overall height
+        b = 0.5,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 20,  # number of pins along X axis (width)
+        npy = 20,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #"internals", #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-400_20x20_17.0x17.0mm_Pitch0.8mm', #old_modelName
+        modelName = 'BGA-400_17.0x17.0mm_Layout20x20_P0.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'BGA-400_20x20_21.0x21.0mm_Pitch1.0mm': Params( # from https://www.xilinx.com/support/documentation/package_specs/fg400.pdf
         fp_r = 0.5,     # first pin indicator radius
         fp_d = 0.12,     # first pin indicator distance from edge
