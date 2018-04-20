@@ -54,6 +54,7 @@ ___ver___ = "1.2 03/12/2017"
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 stop_on_first_error = True
+close_erronous = False
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 stop_after_coloring = False
@@ -219,6 +220,7 @@ def export_one_part(module, params, configuration, log):
 
     if save_memory == True or check_Model==True:
         docu = FreeCAD.ActiveDocument
+        FreeCAD.Console.PrintMessage('close document {}\r\n'.format(docu.Name))
         FreeCAD.closeDocument(docu.Name)
 
     if check_Model==True:
@@ -235,6 +237,10 @@ def exportSeries(module, configuration, log, model_filter_regobj):
             e.print_errors(stop_on_first_error)
             if stop_on_first_error:
                 return -1
+            if close_erronous:
+                docu = FreeCAD.ActiveDocument
+                FreeCAD.Console.PrintMessage('close document {}\r\n'.format(docu.Name))
+                FreeCAD.closeDocument(docu.Name)
         except FreeCADVersionError as e:
             FreeCAD.Console.PrintError(e)
             return -1
@@ -294,6 +300,9 @@ class argparse():
         elif name == 'error_tolerant':
             global stop_on_first_error
             stop_on_first_error = False
+        elif name == 'close_erronous'
+            global close_erronous
+            close_erronous = True
         elif name == "stop_after_coloring":
             global stop_after_coloring
             stop_after_coloring = True
@@ -310,6 +319,7 @@ class argparse():
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
         print('\terror_tolerant\n')
+        print('\tclose_erronous\n')
         print('\tstop_after_coloring\n')
 
     def __str__(self):
