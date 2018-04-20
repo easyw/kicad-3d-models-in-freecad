@@ -59,6 +59,8 @@ check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 stop_after_coloring = False
 
+mesh_deviation = 0.03
+
 lib_suffix = "_THT"
 
 import sys, os
@@ -193,7 +195,7 @@ def export_one_part(module, params, configuration, log):
                 face_colors=None))
 
     scale=1/2.54
-    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale, mesh_deviation)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
     fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
@@ -286,6 +288,9 @@ class argparse():
             for s in series_str:
                 if s.lower() in all_series:
                     self.series.append(all_series[s.lower()])
+        elif name == 'mesh_deviation':
+            global mesh_deviation
+            mesh_deviation = float(value)
 
     def argSwitchArg(self, name):
         if name == '?':
@@ -300,7 +305,7 @@ class argparse():
         elif name == 'error_tolerant':
             global stop_on_first_error
             stop_on_first_error = False
-        elif name == 'close_erronous'
+        elif name == 'close_erronous':
             global close_erronous
             close_erronous = True
         elif name == "stop_after_coloring":

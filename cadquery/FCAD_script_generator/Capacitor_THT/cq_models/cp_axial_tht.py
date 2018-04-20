@@ -183,7 +183,7 @@ def generate_part(params):
                .hLineTo(0)\
                .close()
 
-    body = bodyp().revolve(360, (0,0,0), (0,1,0))
+    body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
     bar = bodyp(0.01).revolve(ciba, (0,0,0), (0,1,0))
 
     #show(body)
