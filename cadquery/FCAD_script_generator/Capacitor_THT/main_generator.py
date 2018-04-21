@@ -155,7 +155,10 @@ def export_one_part(module, params, configuration, log):
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
 
-    color_keys = series_definition.color_keys
+    if hasattr(params, 'color_keys'):
+        color_keys = params.color_keys
+    else:
+        color_keys = series_definition.color_keys
     obj_suffixes = series_definition.obj_suffixes
     colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
@@ -253,10 +256,12 @@ def exportSeries(module, configuration, log, model_filter_regobj):
 sys.path.append("cq_models")
 import c_axial_tht
 import cp_axial_tht
+import c_rect_tht
 
 all_series = {
     'axial_tht':c_axial_tht,
-    'pol_axial_tht':cp_axial_tht
+    'pol_axial_tht':cp_axial_tht,
+    'rect_tht':c_rect_tht,
 }
 
 #########################################################################
