@@ -1,0 +1,18 @@
+axial_fp_name: '{prefix:s}_Axial_L{length:.1f}mm_D{diameter:.1f}mm_P{pitch:.2f}mm_{orientation:s}'
+
+# Example: C_Rect_L10.0mm_W2.5mm_P7.50mm_MKS4
+rect_fp_name: '{prefix:s}_Rect_L{length:.1f}mm_W{width:.1f}mm_P{pitch:.2f}mm{suffix:s}'
+
+
+# Example: C_Disc_D12.0mm_W4.4mm_P7.75mm
+disc_fp_name: '{prefix:s}_Disc_D{diameter:.1f}mm_W{width:.1f}mm_P{pitch:.2f}mm{suffix:s}'
+orientation_options:
+    H: 'Horizontal'
+    V: 'Vertical'
+prefix:
+    C: 'C'
+    CP: 'CP'
+
+
+#lib_name_format_string: 'Conn_{man:s}_{series:s}'
+lib_name_format_string: 'Capacitor{suffix:s}'

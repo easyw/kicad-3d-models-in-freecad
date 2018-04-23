@@ -22,12 +22,10 @@ Params = namedtuple("Params", [
     'F' ,  # lead separation (center to center)
     'll',  # lead length
     'bs',  # board separation
-    'modelName', # modelName
     'rotation',  # rotation if required
-    'dest_dir_prefix' #destination dir prefix
 ])
 
-all_params_c_axial_th_cap = {# 
+all_params_c_axial_th_cap = {#
 }
 
 kicad_naming_params_c_axial_th_cap = {
@@ -38,9 +36,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L3.8mm_D2.6mm_P7.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L3.8mm_D2.6mm_P10.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -50,9 +46,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L3.8mm_D2.6mm_P10.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L3.8mm_D2.6mm_P12.50mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -62,9 +56,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 12.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L3.8mm_D2.6mm_P12.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L3.8mm_D2.6mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -74,9 +66,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L3.8mm_D2.6mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L5.1mm_D3.1mm_P7.50mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -86,9 +76,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L5.1mm_D3.1mm_P7.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L5.1mm_D3.1mm_P10.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -98,9 +86,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L5.1mm_D3.1mm_P10.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L5.1mm_D3.1mm_P12.50mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -110,9 +96,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 12.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L5.1mm_D3.1mm_P12.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L5.1mm_D3.1mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -122,9 +106,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L5.1mm_D3.1mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D6.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -134,9 +116,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D6.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D6.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -146,9 +126,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D6.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D7.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -158,9 +136,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D7.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D7.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -170,9 +146,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D7.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D8.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -182,9 +156,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D8.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D8.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -194,9 +166,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D8.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D9.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -206,9 +176,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D9.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D9.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -218,9 +186,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D9.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D10.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -230,9 +196,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D10.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D10.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -242,9 +206,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D10.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L17.0mm_D6.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -254,9 +216,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L17.0mm_D6.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L17.0mm_D6.5mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -266,9 +226,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L17.0mm_D6.5mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L17.0mm_D7.0mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -278,9 +236,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L17.0mm_D7.0mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L17.0mm_D7.0mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -290,9 +246,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L17.0mm_D7.0mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L19.0mm_D7.5mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -302,9 +256,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L19.0mm_D7.5mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L19.0mm_D8.0mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -314,9 +266,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L19.0mm_D8.0mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L19.0mm_D9.0mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -326,9 +276,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L19.0mm_D9.0mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L19.0mm_D9.5mm_P25.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -338,9 +286,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 25.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L19.0mm_D9.5mm_P25.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L22.0mm_D9.5mm_P27.50mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -350,9 +296,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 27.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L22.0mm_D9.5mm_P27.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L22.0mm_D10.5mm_P27.50mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -362,9 +306,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 27.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L22.0mm_D10.5mm_P27.50mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D6.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -374,9 +316,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D6.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D6.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -386,9 +326,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D6.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D7.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -398,9 +336,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D7.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D7.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -410,9 +346,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D7.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D8.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -422,9 +356,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D8.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D8.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -434,9 +366,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D8.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D9.5mm_P15.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -446,9 +376,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 15.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D9.5mm_P15.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Axial_L12.0mm_D9.5mm_P20.00mm_Horizontal" : Params(# from Jan Kriege's 3d models
@@ -458,9 +386,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 20.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.0, # Board Seperation
-        modelName = 'C_Axial_L12.0mm_D9.5mm_P20.00mm_Horizontal', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
-}   
+}

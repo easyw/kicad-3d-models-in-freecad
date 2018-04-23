@@ -13,7 +13,7 @@
 ##   https://github.com/jmwright/cadquery-freecad-module
 
 ## to run the script just do: freecad scriptName modelName
-## e.g. FreeCAD export_conn_jst_xh.py all
+## e.g. FreeCAD main_generator.py all
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -21,7 +21,7 @@
 #* These are FreeCAD & cadquery tools                                       *
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
-#* cadquery script for generating JST-XH models in STEP AP214               *
+#* cadquery script for generating Molex models in STEP AP214                *
 #*   Copyright (c) 2016                                                     *
 #* Rene Poeschl https://github.com/poeschlr                                 *
 #* All trademarks within this guide belong to their legitimate owners.      *
@@ -44,7 +44,7 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "main generator for molex connector models"
+__title__ = "main generator for capacitor tht model generators"
 __author__ = "scripts: maurice and hyOzd; models: see cq_model files"
 __Comment__ = '''This generator loads cadquery model scripts and generates step/wrl files for the official kicad library.'''
 
@@ -54,9 +54,14 @@ ___ver___ = "1.2 03/12/2017"
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 stop_on_first_error = True
+close_erronous = False
 check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
+stop_after_coloring = False
 
+mesh_deviation = 0.03
+
+lib_suffix = "_THT"
 
 import sys, os
 import traceback
@@ -80,6 +85,8 @@ check_log_file = 'check-log.md'
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
+
+#import FreeCADGui as Gui
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -123,11 +130,8 @@ except:
 import ImportGui
 
 
-def export_one_part(module, variant, pincount, configuration, log):
-    print('\n##########################################################')
+def export_one_part(module, params, configuration, log):
     series_definition = module.series_params
-    variant_params = series_definition.variant_params[variant]
-    params = variant_params['param_generator'](pincount)
 
     if module.LICENCE_Info.LIST_license[0]=="":
         LIST_license=L.LIST_int_license
@@ -136,22 +140,12 @@ def export_one_part(module, variant, pincount, configuration, log):
         LIST_license=module.LICENCE_Info.LIST_license
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
-    pins_per_row = pincount/series_definition.number_of_rows
-    mpn = variant_params['mpn_format_string'].format(pincount=pincount, pins_per_row=pins_per_row)
+
+    lib_name = configuration['lib_name_format_string'].format(suffix=lib_suffix)
 
 
-    orientation = configuration['orientation_options'][variant_params['orientation']]
-    FileName = configuration['fp_name_format_string'].\
-        format(man=series_definition.manufacturer,
-            series=series_definition.series,
-            mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
-            pitch=series_definition.pitch, orientation=orientation)
-    FileName = FileName.replace('__', '_')
-
-    lib_name = configuration['lib_name_format_string'].format(man=series_definition.manufacturer)
-    fc_mpn = mpn.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-
-    ModelName = '{:s}_{:s}'.format(series_definition.manufacturer, fc_mpn) # For some reason the Model name can not start with a number.
+    FileName = module.getName(params, configuration)
+    ModelName = FileName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
 
     FreeCAD.Console.PrintMessage('\r\n'+FileName+'\r\n')
     #FileName = modul.all_params[variant].file_name
@@ -161,7 +155,10 @@ def export_one_part(module, variant, pincount, configuration, log):
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
 
-    color_keys = series_definition.color_keys
+    if hasattr(params, 'color_keys'):
+        color_keys = params.color_keys
+    else:
+        color_keys = series_definition.color_keys
     obj_suffixes = series_definition.obj_suffixes
     colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
@@ -184,6 +181,9 @@ def export_one_part(module, variant, pincount, configuration, log):
 
     restore_Main_Tools()
 
+    if stop_after_coloring:
+        return
+
     out_dir='{:s}{:s}.3dshapes'.format(global_3dpath, lib_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
@@ -198,7 +198,7 @@ def export_one_part(module, variant, pincount, configuration, log):
                 face_colors=None))
 
     scale=1/2.54
-    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale, mesh_deviation)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
 
     fusion = multiFuseObjs_wColors(FreeCAD, FreeCADGui,
@@ -224,50 +224,53 @@ def export_one_part(module, variant, pincount, configuration, log):
         FreeCADGui.activeDocument().activeView().viewAxometric()
 
     if save_memory == True or check_Model==True:
-        doc=FreeCAD.ActiveDocument
-        FreeCAD.closeDocument(doc.Name)
+        docu = FreeCAD.ActiveDocument
+        FreeCAD.Console.PrintMessage('close document {}\r\n'.format(docu.Name))
+        FreeCAD.closeDocument(docu.Name)
 
     if check_Model==True:
         runGeometryCheck(App, Gui, step_path,
             log, ModelName, save_memory=save_memory)
 
 def exportSeries(module, configuration, log, model_filter_regobj):
-    series_definition = module.series_params
-    for variant in series_definition.variant_params:
-        #print(variant)
-        pinrange = series_definition.variant_params[variant]['pinrange']
-        for pins in pinrange:
-            try:
-                if model_filter_regobj.match(str(pins)):
-                    export_one_part(module, variant, pins, configuration, log)
-            except GeometryError as e:
-                e.print_errors(stop_on_first_error)
-                if stop_on_first_error:
-                    return -1
-            except FreeCADVersionError as e:
-                FreeCAD.Console.PrintError(e)
+    for model_id in module.all_params:
+        try:
+            if model_filter_regobj.match(str(model_id)):
+                params = module.all_params[model_id]
+                export_one_part(module, params, configuration, log)
+        except GeometryError as e:
+            e.print_errors(stop_on_first_error)
+            if stop_on_first_error:
                 return -1
+            if close_erronous:
+                docu = FreeCAD.ActiveDocument
+                FreeCAD.Console.PrintMessage('close document {}\r\n'.format(docu.Name))
+                FreeCAD.closeDocument(docu.Name)
+        except FreeCADVersionError as e:
+            FreeCAD.Console.PrintError(e)
+            return -1
     return 0
-
 
 #########################  ADD MODEL GENERATORS #########################
 
 sys.path.append("cq_models")
-import conn_jst_eh_models
-import conn_jst_ph_models
-import conn_jst_xh_models
+import c_axial_tht
+import cp_axial_tht
+import c_rect_tht
+import c_disc_tht
 
 all_series = {
-    'eh':conn_jst_eh_models,
-    'ph':conn_jst_ph_models,
-    'xh':conn_jst_xh_models
+    'axial_tht':c_axial_tht,
+    'pol_axial_tht':cp_axial_tht,
+    'rect_tht':c_rect_tht,
+    'disc_tht':c_disc_tht,
 }
 
 #########################################################################
 
 class argparse():
     def __init__(self):
-        self.config = '../_tools/config/connector_config_KLCv3.yaml'
+        self.config = '../_tools/config/capacitor_config_KLCv3.yaml'
         self.model_filter = '*'
         self.series = all_series.values()
 
@@ -281,19 +284,20 @@ class argparse():
     def parseValueArg(self, name, value):
         if name == 'config':
             self.config = value
-        elif name == 'pins_filter':
+        elif name == 'filter':
             self.model_filter = value
         elif name == 'log':
             global check_log_file
             check_log_file = value
         elif name == 'series':
-            #print("param series:")
-            #print(value)
             series_str = value.split(',')
             self.series = []
             for s in series_str:
                 if s.lower() in all_series:
                     self.series.append(all_series[s.lower()])
+        elif name == 'mesh_deviation':
+            global mesh_deviation
+            mesh_deviation = float(value)
 
     def argSwitchArg(self, name):
         if name == '?':
@@ -308,19 +312,27 @@ class argparse():
         elif name == 'error_tolerant':
             global stop_on_first_error
             stop_on_first_error = False
+        elif name == 'close_erronous':
+            global close_erronous
+            close_erronous = True
+        elif name == "stop_after_coloring":
+            global stop_after_coloring
+            stop_after_coloring = True
 
     def print_usage(self):
-        print("Generater script for phoenix contact 3d models.")
+        print("Generater script for capacitor 3d models.")
         print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
-        print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
-        print('\tpins_filter=[filter pincount using linux file filter syntax]')
+        print('\tconfig=[config file]: default:capacitor_config_KLCv3.0.yaml')
+        print('\tfilter=[filter models by model name using linux filename syntax]')
         print('\tlog=[log file path]')
         print('\tseries=[series name],[series name],...')
         print('switches:')
         print('\tdisable_check')
         print('\tdisable_Memory_reduction')
         print('\terror_tolerant\n')
+        print('\tclose_erronous\n')
+        print('\tstop_after_coloring\n')
 
     def __str__(self):
         return 'config:{:s}, filter:{:s}, series:{:s}, with_plug:{:d}'.format(
@@ -353,5 +365,4 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 break
 
 
-
-    FreeCAD.Console.PrintMessage('\n\nDone\n')
+    FreeCAD.Console.PrintMessage('\r\Done\r\n')

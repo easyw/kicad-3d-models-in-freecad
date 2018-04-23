@@ -159,8 +159,8 @@ Mesh = namedtuple('Mesh', ['points', 'faces', 'color', 'transp'])
 #object name: I get an error for freecad_object.Transparency so i use App.getObject('name')
 exportObject = namedtuple('exportObject', ['freecad_object', 'shape_color', 'face_colors'])
 
-def shapeToMesh(shape, color, transp, scale=None):
-    mesh_deviation=0.03 #the smaller the best quality, 1 coarse; 0.03 good compromise :)
+def shapeToMesh(shape, color, transp, scale=None, mesh_deviation=0.03):
+    #mesh_deviation=0.03 #the smaller the best quality, 1 coarse; 0.03 good compromise :)
     mesh_data = shape.tessellate(mesh_deviation)
     points = mesh_data[0]
     if scale != None:
@@ -231,7 +231,7 @@ def comboBox_Changed(text_combo):
         ui.plainTextEdit_2.viewport().setPalette(pal)
 
 ###
-def getColoredMesh(Gui, export_objects , scale=None):
+def getColoredMesh(Gui, export_objects , scale=None, mesh_deviation=0.03):
     """ Exports given ComponentModel object using FreeCAD.
 
     `componentObjs` : a ComponentObjs list
@@ -258,9 +258,9 @@ def getColoredMesh(Gui, export_objects , scale=None):
         for face_index in range(len(shape1.Faces)):
             singleFace=shape1.Faces[face_index]
             if applyDiffuse:
-                meshes.append(shapeToMesh(singleFace, exp_obj.face_colors[face_index], transparency, scale))
+                meshes.append(shapeToMesh(singleFace, exp_obj.face_colors[face_index], transparency, scale, mesh_deviation))
             else:
-                meshes.append(shapeToMesh(singleFace, color, transparency, scale))
+                meshes.append(shapeToMesh(singleFace, color, transparency, scale, mesh_deviation))
     return meshes
 ###
 def getNamedColors(color_list):

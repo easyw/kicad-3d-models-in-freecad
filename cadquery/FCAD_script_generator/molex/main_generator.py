@@ -273,7 +273,7 @@ class argparse():
     def __init__(self):
         self.config = '../_tools/config/connector_config_KLCv3.yaml'
         self.model_filter = '*'
-        self.series = all_series
+        self.series = all_series.values()
 
     def parse_args(self, args):
         for arg in args:
@@ -315,7 +315,7 @@ class argparse():
         print("Generater script for molex connector 3d models.")
         print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
-        print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
+        print('\tconfig=[config file]: default:connector_config_KLCv3.0.yaml')
         print('\tpins_filter=[filter pincount using linux file filter syntax]')
         print('\tlog=[log file path]')
         print('\tseries=[series name],[series name],...')

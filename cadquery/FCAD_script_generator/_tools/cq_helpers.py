@@ -17,10 +17,14 @@ def get_third_arc_point2(starting_point, end_point):
 def add_p_to_chain(chain, rel_point):
     chain.append(v_add(chain[len(chain)-1], rel_point))
 
-def mirror(chain):
+def mirror(chain, direction="x"):
     result = []
     for point in chain:
-        result.append((point[0]*-1,point[1]))
+        if direction=="x":
+            result.append((point[0]*-1,point[1]))
+        else:
+            result.append((point[0],point[1]*-1))
+
     return result
 
 def poline(points, plane):

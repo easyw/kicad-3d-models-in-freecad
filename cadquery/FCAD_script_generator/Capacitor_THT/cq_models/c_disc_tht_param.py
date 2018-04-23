@@ -22,15 +22,14 @@ Params = namedtuple("Params", [
     'F' ,  # lead separation (center to center)
     'll',  # lead length
     'bs',  # board separation
-    'modelName', # modelName
-    'rotation',  # rotation if required
-    'dest_dir_prefix' #destination dir prefix
+    'suffix', # modelName
+    'rotation',  # rotation if require
 ])
 
-all_params_c_axial_th_cap = {# 
+all_params_c_disc_th_cap = {#
 }
 
-kicad_naming_params_c_axial_th_cap = {
+kicad_naming_params_c_disc_th_cap = {
     "C_Disc_D12.0mm_W4.4mm_P7.75mm" : Params(# from Jan Kriege's 3d models
         L = 12.00, # Body Length
         W = 4.40, # Body Width
@@ -38,9 +37,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.75, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D12.0mm_W4.4mm_P7.75mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D3.0mm_W2.0mm_P2.50mm" : Params(# from Jan Kriege's 3d models
@@ -50,9 +48,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 2.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D3.0mm_W2.0mm_P2.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D6.0mm_W4.4mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -62,9 +59,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D6.0mm_W4.4mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.5mm_W4.4mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -74,9 +70,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.5mm_W4.4mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D5.0mm_W2.5mm_P2.50mm" : Params(# from Jan Kriege's 3d models
@@ -86,9 +81,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 2.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D5.0mm_W2.5mm_P2.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D5.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -98,9 +92,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D5.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D6.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -110,9 +103,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D6.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -122,9 +114,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D8.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -134,9 +125,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D8.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D9.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -146,9 +136,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D9.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D10.0mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -158,9 +147,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D10.0mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D3.0mm_W1.6mm_P2.50mm" : Params(# from Jan Kriege's 3d models
@@ -170,9 +158,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 2.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D3.0mm_W1.6mm_P2.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D3.4mm_W2.1mm_P2.50mm" : Params(# from Jan Kriege's 3d models
@@ -182,9 +169,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 2.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D3.4mm_W2.1mm_P2.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D3.8mm_W2.6mm_P2.50mm" : Params(# from Jan Kriege's 3d models
@@ -194,9 +180,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 2.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D3.8mm_W2.6mm_P2.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D4.3mm_W1.9mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -206,9 +191,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D4.3mm_W1.9mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D4.7mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -218,9 +202,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D4.7mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D5.1mm_W3.2mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -230,9 +213,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D5.1mm_W3.2mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.5mm_W2.5mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -242,9 +224,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.5mm_W2.5mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.5mm_W5.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -254,9 +235,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.5mm_W5.0mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.5mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -266,9 +246,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.5mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D7.5mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -278,9 +257,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D7.5mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D8.0mm_W5.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -290,9 +268,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D8.0mm_W5.0mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D8.0mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -302,9 +279,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D8.0mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D8.0mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -314,9 +290,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D8.0mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D9.0mm_W5.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -326,9 +301,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D9.0mm_W5.0mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D9.0mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -338,9 +312,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D9.0mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D9.0mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -350,9 +323,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D9.0mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D10.5mm_W5.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -362,9 +334,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D10.5mm_W5.0mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D10.5mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -374,9 +345,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D10.5mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D10.5mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -386,9 +356,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D10.5mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D11.0mm_W5.0mm_P5.00mm" : Params(# from Jan Kriege's 3d models
@@ -398,9 +367,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 5.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D11.0mm_W5.0mm_P5.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D11.0mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -410,9 +378,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D11.0mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D11.0mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -422,9 +389,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D11.0mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D12.5mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -434,9 +400,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D12.5mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D12.5mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -446,9 +411,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D12.5mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D14.5mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -458,9 +422,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D14.5mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D14.5mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -470,9 +433,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D14.5mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D16.0mm_W5.0mm_P7.50mm" : Params(# from Jan Kriege's 3d models
@@ -482,9 +444,8 @@ kicad_naming_params_c_axial_th_cap = {
         F = 7.50, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D16.0mm_W5.0mm_P7.50mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
 
     "C_Disc_D16.0mm_W5.0mm_P10.00mm" : Params(# from Jan Kriege's 3d models
@@ -494,8 +455,7 @@ kicad_naming_params_c_axial_th_cap = {
         F = 10.00, # Lead Seperation
         ll = 2.0, # Lead Length
         bs = 0.1, # Board Seperation
-        modelName = 'C_Disc_D16.0mm_W5.0mm_P10.00mm', # Modelname
+        suffix = '', # Modelname
         rotation = 0, # Rotation
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
     ),
-}   
+}
