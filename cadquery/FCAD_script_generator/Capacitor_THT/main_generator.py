@@ -257,11 +257,13 @@ sys.path.append("cq_models")
 import c_axial_tht
 import cp_axial_tht
 import c_rect_tht
+import c_disc_tht
 
 all_series = {
     'axial_tht':c_axial_tht,
     'pol_axial_tht':cp_axial_tht,
     'rect_tht':c_rect_tht,
+    'disc_tht':c_disc_tht,
 }
 
 #########################################################################

@@ -45,12 +45,10 @@
 #****************************************************************************
 
 __title__ = "make Radial Caps 3D models"
-__author__ = "maurice and hyOzd"
-__Comment__ = 'make Rect Caps 3D models exported to STEP and VRML for Kicad StepUP script'
+__author__ = "maurice and hyOzd and Frank"
+__Comment__ = 'make C axial Caps 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.3.2 10/02/2017"
-
-# thanks to Frank Severinsen Shack for including vrml materials
 
 class LICENCE_Info():
     ############################################################################
@@ -71,19 +69,23 @@ import FreeCAD
 
 # maui import cadquery as cq
 # maui from Helpers import show
-from math import tan, radians, sqrt
+from math import tan, radians, sqrt, sin
 
-from c_rect_tht_param import *
+from c_disc_tht_param import *
 
 class series_params():
-    fp_name_format = "rect_fp_name"
+    fp_name_format = "disc_fp_name"
     name_prefix = "C"
-    orientation = "H"
 
     pin_1_on_origin = True
 
-    # colors are found in the params file
+    body_color_key = "orange body"
+    pins_color_key = "metal grey pins"
 
+    color_keys = [
+        body_color_key,
+        pins_color_key,
+    ]
     obj_suffixes = [
         '__pins',
         '__body'
@@ -95,63 +97,52 @@ def getName(params, configuration):
     suffix = params.suffix
 
 
-    return format_fn.format(length=params.L, width=params.W, pitch=params.F,
+    return format_fn.format(width=params.W, diameter=params.L, pitch=params.F,
             prefix=prefix, suffix=suffix)
 
-#all_params = all_params_rect_th_cap
-all_params = kicad_naming_params_rect_th_cap
+#all_params = all_params_c_disc_th_cap
+all_params = kicad_naming_params_c_disc_th_cap
 
 def generate_part(params):
-    series = params.series # Series
-    H = params.H    # body height
     L = params.L    # body length
     W = params.W    # body width
     d = params.d     # lead diameter
     F = params.F     # lead separation (center to center)
     ll = params.ll   # lead length
     bs = params.bs   # board separation
-    ef = W/10       # top and bottom edges fillet
-    pt = 0.02 # pin thickness (only for MKT)
-    pb = F/20
     rot = params.rotation
-    if series == 'MKS':
-        body = cq.Workplane("XY").box(L, W, H)
-        body = body.translate((0,0,H/2)).rotate((0,0,0), (0,0,1), 0). \
-            edges("|Z").fillet(ef).edges(">Z").fillet(ef)
-        # draw the leads
-        leads = cq.Workplane("XY").workplane(offset=bs).\
-            center(-F/2,0).circle(d/2).extrude(-(ll)).\
-            center(F,0).circle(d/2).extrude(-(ll)).translate((0,0,0.1)) #need overlap for fusion
 
-    elif series == 'MKT':
-        body = cq.Workplane("XY").box(F-2*pb, W-2*pt, H-2*pt)
-        #translate the object
-        body=body.translate((0,0,H/2)).rotate((0,0,0), (0,0,1), 0)
 
-        pin1 = cq.Workplane("XY").box(pb, W, H)
-        pin1=pin1.translate((-F/2+pb/2,0,H/2)).rotate((0,0,0), (0,0,1), 0)
-        pin2 = cq.Workplane("XY").box(pb, W, H)
-        pin2=pin2.translate((F/2-pb/2,0,H/2)).rotate((0,0,0), (0,0,1), 0)
-        pins = pin1.union(pin2)
+    bend_offset_y = (sin(radians(60.0))*d)/sin(radians(90.0))
+    bend_offset_z = (sin(radians(30.0))*d)/sin(radians(90.0))
+    # draw the leads
+    lead1 = cq.Workplane("XY").workplane(offset=-ll).center(-F/2,0).circle(d/2).extrude(ll+L/4-d+bs)
+    lead1 = lead1.union(cq.Workplane("XY").workplane(offset=L/4-d+bs).center(-F/2,0).circle(d/2).center(-F/2+d/2,0).revolve(30,(-F/2+d/2+d,d)).transformed((-30,0,0),(-(-F/2+d/2),d-bend_offset_y,bend_offset_z)).circle(d/2).extrude(L/2))
+    lead1 = lead1.rotate((-F/2,0,0), (0,0,1), -90)
+    lead2 = lead1.rotate((-F/2,0,0), (0,0,1), 180).translate((F,0,0))
+    leads = lead1.union(lead2)
 
-        leads=cq.Workplane("XY").workplane(offset=H-0.6).\
-            center(-F/2,0).circle(d/2).extrude(-(ll+H-0.6)).\
-            center(F,0).circle(d/2).extrude(-(ll+H-0.6)).translate((0,0,0.1)) #need overlap for fusion
-        leads=leads.union(pins)
+    h = W/2
+    c = L
+    #calculate point
+    R = (h/2) + ((c*c)/(8*h))
+    print(R)
+    point2 = (sqrt((R * R) - (L/4 * L/4))) - (R-h)
 
+    #draw the body0
+    body = cq.Workplane("XY").workplane(offset=L/2+bs).moveTo(0, W/2).threePointArc((-L/4, point2),(-L/2, 0),forConstruction=False).threePointArc((-L/4, -point2),(0, -W/2),forConstruction=False).close().revolve()
+    leads = leads.cut(body)
+    #show(leads)
 
     if series_params.pin_1_on_origin:
         body = body.translate((F/2,0,0))
         leads = leads.translate((F/2,0,0))
-    
-    #show(body)
-    #show(leads)
-    #stop
+
     return (body, leads) #body, pins
 
 if "module" in __name__:
 
-    variant = "C_Rect_L13.0mm_W3.0mm_P10.00mm_FKS3_FKP3_MKS4"
+    variant = "C_Disc_D12.0mm_W4.4mm_P7.75mm"
     body, pins= generate_part(all_params[variant]) #body, base, mark, pins, top
 
 
