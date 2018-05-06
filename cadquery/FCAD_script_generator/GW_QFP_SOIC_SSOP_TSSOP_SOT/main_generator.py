@@ -98,7 +98,7 @@ LIST_license = ["",]
 #################################################################################################
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
+    #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
