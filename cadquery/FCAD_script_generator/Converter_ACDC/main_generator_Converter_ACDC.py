@@ -358,7 +358,7 @@ all_params = {
 	)	),
 
 	"Converter_ACDC_MeanWell_IRM-20-xx_THT"	: 
-	make_params_black_body('Converter_ACDC_MeanWell_IRM-20-xx_THT',		1,	52.4,		27.20,	 24.0,		 1.04,		3.5,		(-02.85,  -3.50),	((00.00, 00.00), (00.00, 20.80), (45.00, 20.80), (45.00, 12.80))	),
+	make_params_black_body('Converter_ACDC_MeanWell_IRM-20-xx_THT',		1,	52.4,		27.20,	 24.0,		 1.04,		3.5,		(-03.40,  -3.20),	((00.00, 00.00), (00.00, 20.80), (45.00, 20.80), (45.00, 12.80))	),
 	
 	"Converter_ACDC_Vigortronix_VTX-214-010-xxx_THT"		: 
 	make_params_orange_body('Converter_ACDC_Vigortronix_VTX-214-010-xxx_THT',	36.00,		 56.00,	 25.50,		 1.00,		3.0,		(-12.00, -04.00),	((00.00, 00.00), (12.00, 00.00), (00.00, 48.00), (05.00,   48.00) )	),
