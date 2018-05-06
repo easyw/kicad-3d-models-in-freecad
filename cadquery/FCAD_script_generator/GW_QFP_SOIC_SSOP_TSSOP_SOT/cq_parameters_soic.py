@@ -169,6 +169,35 @@ part_params = {
         modelName = 'SOIC-14_3.9x8.7mm_P1.27mm', #modelName
         rotation = -90,   # rotation if required
         ),
+    'SOIC-14W_7.5x9.0mm_P1.27mm': Params( # from http://www.ti.com/lit/ml/mpds386/mpds386.pdf
+         the = 9.0,      # body angle in degrees
+         tb_s = 0.15,    # top part of body is that much smaller
+         c = 0.28,       # pin thickness, body center part height
+         R1 = 0.1,       # pin upper corner, inner radius
+         R2 = 0.1,       # pin lower corner, inner radius
+         S = 0.30,       # pin top flat part length (excluding corner arc)
+#        L = 1,         # pin bottom flat part length (including corner arc)
+         fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+         fp_r = 1.0,     # first pin indicator radius
+         fp_d = 0.1,    # first pin indicator distance from edge
+         fp_z = 0.05,    # first pin indicator depth
+         ef = 0.0,       # fillet of edges  Note: bigger bytes model with fillet
+         cc1 = 0.43,     # chamfer of the 1st pin corner
+         D1 = 9.0,         # body length
+         E1 = 7.5,       # body width
+         E = 10.3,       # body overall width
+         A1 = 0.2,       # body-board separation
+         A2 = 2.5,       # body height
+         b = 0.41,       # pin width
+        e = 1.27,       # pin (center-to-center) distance
+        npx = 7,        # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = None,    # e Pad
+        excluded_pins = None, #no pin excluded
+        old_modelName = 'SOIC-14W_7.5x9.0mm_P1.27mm', #modelName
+        modelName = 'SOIC-14W_7.5x9.0mm_P1.27mm', #modelName
+        rotation = -90,   # rotation if required
+        ),
     'SOIC-16_3.9x9.9mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds178g/mpds178g.pdf
         the = 9.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
