@@ -426,6 +426,10 @@ all_params = {
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
 	)	),
 
+	"Converter_DCDC_TRACO_TEN20-xxxx-N4_THT"		: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN20-xxxx-N4_THT',		0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.16, -15.24),	(
+	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32), (12.70, 00.00),
+	)	),
+	
 	"Converter_DCDC_TRACO_TEN20-xxxx_Single_THT"	: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN20-xxxx_Single_THT',	0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.16, -15.24),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32), (12.70, 00.00),
 	)	),
@@ -527,7 +531,7 @@ def make_case_top(params):
 			mvX = (0 - (L1 / 2.0)) + ((L - L1) / 2.0)
 			mvY = (0 - (W1 / 2.0)) - ((W - W1) / 2.0)
 			casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, W1, False).extrude(0.2)
-		elif (pintype == CASE_THT_TYPE):
+		elif (pintype == CASE_THT_TYPE or pintype == CASE_THT_N_TYPE ):
 			p = pin[0]
 			mvX = (p[0] + pin1corner[0]) + ((L - L1) / 2.0)
 			mvY = (p[1] - pin1corner[1]) - ((W - W1) / 2.0)
@@ -604,16 +608,17 @@ def make_pins_tht_n(params):
 	p = pin[0]
 	pins=cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 2.0))
 	pins = pins.faces("<Z").fillet(pinpadsize / 5.0)
-
-	pint=cq.Workplane("XZ").workplane(offset= 0 -p[1]).moveTo(p[0], 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
-	pins = pins.union(pint)
+	pind= cq.Workplane("XZ").workplane(offset= 0 -p[1] + (pinpadsize / 2.0)).moveTo(p[0], A1 + 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
+	pind = pind.faces("<Y").fillet(pinpadsize / 2.0)
+	pins = pins.union(pind)
 
 	for i in range(1, len(pin)):
 		p = pin[i]
-		pint=cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 2.0))
+		pint= cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 2.0))
 		pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
-		pins = pins.union(pint)
-		pint=cq.Workplane("XZ").workplane(offset= 0 -p[1]).moveTo(p[0], 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
+		pind= cq.Workplane("XZ").workplane(offset= 0 -p[1] + (pinpadsize / 2.0)).moveTo(p[0], A1 + 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
+		pind = pind.faces("<Y").fillet(pinpadsize / 2.0)
+		pint = pint.union(pind)
 		pins = pins.union(pint)
  
 
