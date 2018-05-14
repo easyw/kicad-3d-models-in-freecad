@@ -271,9 +271,9 @@ kicad_naming_params_sot = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
-	'SOT-553': Params( # from http://www.goodark.com/en/products/outline/s5779.html
+    'SOT-553': Params( # from http://www.goodark.com/en/products/outline/s5779.html
         the = 3.0,      # body angle in degrees
-        c = 0.11	,        # pin thickness, body center part height
+        c = 0.11    ,        # pin thickness, body center part height
 #        L = 0.4,       # pin bottom flat part length (including corner arc)
         fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
         fp_r = 0.0,     # first pin indicator radius
@@ -291,8 +291,33 @@ kicad_naming_params_sot = {
         npx = 3,   # number of pins along X axis (width)
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
-        excluded_pins = (5,), #no pin excluded
+        excluded_pins = (5,), #pin 5 excluded
         modelName = 'SOT-553', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
+        ),
+    'SOT-563': Params( # from http://www.goodark.com/en/products/outline/s5779.html
+        the = 3.0,      # body angle in degrees
+        c = 0.11    ,        # pin thickness, body center part height
+#        L = 0.4,       # pin bottom flat part length (including corner arc)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.0,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.03,     # first pin indicator depth
+        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
+        D1 = 1.6,       # body length
+        E1 = 1.2,       # body width
+        E = 1.6,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.03,  # body-board separation
+        A2 = 0.6,  # body height
+        b = 0.22,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        npx = 3,   # number of pins along X axis (width)
+        npy = 0,   # number of pins along y axis (length)
+        epad = None, # e Pad
+        excluded_pins = (), #no pin excluded
+        modelName = 'SOT-563', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../TO_SOT_Packages_SMD.3dshapes/'
         ),
