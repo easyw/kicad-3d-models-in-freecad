@@ -2059,6 +2059,32 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
+    'QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm': Params( #
+        c = 0.2,        	# pin thickness, body center part height
+#        K=0.2,          	# Fillet radius for pin edges
+        L = 0.4,        	# pin top flat part length (including fillet radius)
+        fp_s = True,     	# True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     	# first pin indicator radius
+        fp_d = 0.1,     	# first pin indicator distance from edge
+        fp_z = 0.01,     	# first pin indicator depth
+        ef = 0.0, # 0.05,   # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      	#0.45 chamfer of the epad 1st pin corner
+        D = 5.0,       		# body overall length
+        E = 5.0,       		# body overall width
+        A1 = 0.025,  		# body-board separation  maui to check
+        A2 = 0.75,  		# body height
+        b = 0.25,  			# pin width
+        e = 0.5,  			# pin (center-to-center) distance
+        m = 0.0,  			# margin between pins and body  
+        ps = 'rounded',   	# rounded pads
+        npx = 8,  			# number of pins along X axis (width)
+        npy = 8, 			# number of pins along y axis (length)
+        epad = (3.60,3.60),		# e Pad #epad = None, # e Pad
+        excluded_pins = None, 	#no pin excluded
+        modelName = 'QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm', #modelName
+        rotation = -90, 	# rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
     'QFN-32-1EP_7x7mm_Pitch0.65mm': Params( # from http://www.onsemi.com/pub/Collateral/485ED.PDF
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
@@ -2319,6 +2345,58 @@ kicad_naming_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'QFN-44-1EP_8x8mm_Pitch0.65mm', #modelName
         rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
+    'QFN-48-1EP_5x5mm_P0.35mm_EP3.70x3.70mm': Params( # from https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
+        c = 0.2,        	# pin thickness, body center part height
+#        K=0.2,          	# Fillet radius for pin edges
+        L = 0.4,        	# pin top flat part length (including fillet radius)
+        fp_s = True,     	# True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     	# first pin indicator radius
+        fp_d = 0.2,     	# first pin indicator distance from edge
+        fp_z = 0.01,     	# first pin indicator depth
+        ef = 0.0, # 0.05,   # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      	#0.45 chamfer of the epad 1st pin corner
+        D = 5.0,       		# body overall length
+        E = 5.0,       		# body overall width
+        A1 = 0.025,  		# body-board separation  maui to check
+        A2 = 0.60,  		# body height
+        b = 0.12,  			# pin width
+        e = 0.35,  			# pin (center-to-center) distance
+        m = 0.0,  			# margin between pins and body  
+        ps = 'rounded',   	# rounded pads
+        npx = 12,  			# number of pins along X axis (width)
+        npy = 12,  			# number of pins along y axis (length)
+        epad = (3.70, 3.70),	# e Pad #epad = None, # e Pad
+        excluded_pins = None, 	#no pin excluded
+        modelName = 'QFN-48-1EP_5x5mm_P0.35mm_EP3.70x3.70mm', #modelName
+        rotation = -90, 	# rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
+    'QFN-48-1EP_6x6mm_P0.4mm_EP4.30x4.30mm': Params( # from https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
+        c = 0.2,        	# pin thickness, body center part height
+#        K=0.2,          	# Fillet radius for pin edges
+        L = 0.4,        	# pin top flat part length (including fillet radius)
+        fp_s = True,     	# True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     	# first pin indicator radius
+        fp_d = 0.2,     	# first pin indicator distance from edge
+        fp_z = 0.01,     	# first pin indicator depth
+        ef = 0.0, # 0.05,   # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      	#0.45 chamfer of the epad 1st pin corner
+        D = 6.0,       		# body overall length
+        E = 6.0,       		# body overall width
+        A1 = 0.025,  		# body-board separation  maui to check
+        A2 = 0.85,  		# body height
+        b = 0.20,  			# pin width
+        e = 0.4,  			# pin (center-to-center) distance
+        m = 0.0,  			# margin between pins and body  
+        ps = 'rounded',   	# rounded pads
+        npx = 12,  			# number of pins along X axis (width)
+        npy = 12,  			# number of pins along y axis (length)
+        epad = (4.30, 4.30),	# e Pad #epad = None, # e Pad
+        excluded_pins = None, 	#no pin excluded
+        modelName = 'QFN-48-1EP_6x6mm_P0.4mm_EP4.30x4.30mm', #modelName
+        rotation = -90, 	# rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
     'QFN-48-1EP_7x7mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/QFN_48_05-08-1704.pdf
