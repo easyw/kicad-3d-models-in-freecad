@@ -139,27 +139,31 @@ class series_params():
             'orientation': 'V',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_straight,
-            'pinrange': chain(range(2,17), [20])
+            'pinrange': chain(range(2,17), [20]),
+            'mount_pin': ''
         },
         # 'top_entry_boss':{
         #     'mpn_format_string': 'B{pincount:02}B-XH-AM',
         #     'orientation': 'V',
         #     'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
         #     'param_generator': make_params_straight_boss,
-        #     'pinrange': range(1,13)
+        #     'pinrange': range(1,13),
+        #     'mount_pin': ''
         # },
         'side_entry':{
             'mpn_format_string': 'S{pincount:02}B-XH-A',
             'orientation': 'H',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_angled,
-            'pinrange': range(2, 17)
+            'pinrange': range(2, 17),
+            'mount_pin': ''
         },
         'side_entry_short':{
             'mpn_format_string': 'S{pincount:02}B-XH-A-1',
             'orientation': 'H',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_angled_short,
-            'pinrange': range(2, 16)
+            'pinrange': range(2, 16),
+            'mount_pin': ''
         }
     }

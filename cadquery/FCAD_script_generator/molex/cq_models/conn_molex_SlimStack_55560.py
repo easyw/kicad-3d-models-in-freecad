@@ -102,6 +102,7 @@ class series_params():
     number_of_rows = 2
     datasheet = 'http://www.molex.com/pdm_docs/sd/555600207_sd.pdf'
     mpn_format_string = "55560-0{pincount:02}1"
+    mount_pin = ''
 
     body_color_key = "dark grey body"
     pins_color_key = "gold pins"

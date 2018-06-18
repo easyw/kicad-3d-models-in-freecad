@@ -159,6 +159,7 @@ class series_params():
     number_of_rows = 1
     datasheet = 'http://www.molex.com/pdm_docs/sd/533980271_sd.pdf'
     pinrange = range(2,16)
+    mount_pin = '-1MP'
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"

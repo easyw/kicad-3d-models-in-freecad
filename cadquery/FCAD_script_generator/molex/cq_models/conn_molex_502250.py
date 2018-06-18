@@ -72,6 +72,7 @@ class series_params():
     pinrange = [17, 21, 23, 27, 33, 35, 39, 41, 51]
     number_of_rows = 2
     fp_name_format_string = '{man:s}_{mpn:s}_{num_rows:d}Rows-{pins:02d}Pins_P{pitch:.2f}mm_{orientation:s}'
+    mount_pin = ''
 
     pins_color_key = "metal grey pins"
     body_color_key = "white body"
