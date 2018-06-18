@@ -75,7 +75,8 @@ class series_params():
     orientation = 'V'
     datasheet = 'http://www.molex.com/pdm_docs/sd/022272021_sd.pdf'
     pinrange = range(2, 17)
-    
+    mount_pin = ''
+
     number_of_rows = 2
 
     body_color_key = "white body"

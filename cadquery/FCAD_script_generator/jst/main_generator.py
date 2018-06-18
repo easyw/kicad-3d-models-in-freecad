@@ -145,7 +145,8 @@ def export_one_part(module, variant, pincount, configuration, log):
         format(man=series_definition.manufacturer,
             series=series_definition.series,
             mpn=mpn, num_rows=series_definition.number_of_rows, pins_per_row=pins_per_row,
-            pitch=series_definition.pitch, orientation=orientation)
+            pitch=series_definition.pitch, orientation=orientation,
+            mount_pin=variant_params['mount_pin'])
     FileName = FileName.replace('__', '_')
 
     lib_name = configuration['lib_name_format_string'].format(man=series_definition.manufacturer)

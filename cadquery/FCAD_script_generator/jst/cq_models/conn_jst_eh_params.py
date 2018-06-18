@@ -136,13 +136,15 @@ class series_params():
             'orientation': 'V',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eEH.pdf',
             'param_generator': make_params_straight,
-            'pinrange': range(2, 17)
+            'pinrange': range(2, 17),
+            'mount_pin': ''
         },
         'side_entry':{
             'mpn_format_string': 'S{pincount:02}B-EH',
             'orientation': 'H',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eEH.pdf',
             'param_generator': make_params_angled,
-            'pinrange': range(2, 17)
+            'pinrange': range(2, 17),
+            'mount_pin': ''
         }
     }

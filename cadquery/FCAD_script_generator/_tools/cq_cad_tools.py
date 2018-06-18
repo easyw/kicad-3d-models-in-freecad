@@ -607,7 +607,10 @@ def runGeometryCheck(App, Gui, step_path, log,
 
     FC_majorV=int(FreeCAD.Version()[0])
     FC_minorV=int(FreeCAD.Version()[1])
-    FC_subV=int(FreeCAD.Version()[2].split(" ")[0])
+    try:
+        FC_subV=int(FreeCAD.Version()[2].split(" ")[0])
+    except Exception:
+        FC_subV = 0
 
     if FC_majorV == 0 and FC_minorV == 16 and FC_subV < 6712:
         raise FreeCADVersionError('0.16-6712', 'old 0.16 releases have a bug in the step exporter.')

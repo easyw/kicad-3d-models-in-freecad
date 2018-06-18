@@ -90,6 +90,7 @@ class series_params():
     number_of_rows = 2
     datasheet = 'http://www.molex.com/pdm_docs/sd/547220804_sd.pdf'
     mpn_format_string = "54722-0{pincount:02}4"
+    mount_pin = ''
 
 
     #pins_per_row per row
