@@ -72,6 +72,7 @@ import traceback
 import datetime
 from datetime import datetime
 sys.path.append("../_tools")
+sys.path.append("./")
 import exportPartToVRML as expVRML
 import shaderColors
 
