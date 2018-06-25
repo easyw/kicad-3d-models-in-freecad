@@ -93,6 +93,15 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
 }
 
 kicad_naming_params_radial_smd_cap = {# Aluminum SMD capacitors
+    "CP_Elec_3x5.3" : Params( # note L model height
+        L         =5.3,    # overall height
+        D         =3.,     # diameter
+        A         =3.3,    # base width (x&y)
+        H         =3.8,     # max width (x) with pins
+        P         =0.8,     # distance between pins
+        W         =0.45,     # pin width
+        rotation  = 180, # rotation if required
+    ),
     "CP_Elec_3x5.4" : Params( # note L model height
         L         =5.4,    # overall height
         D         =3.,     # diameter
