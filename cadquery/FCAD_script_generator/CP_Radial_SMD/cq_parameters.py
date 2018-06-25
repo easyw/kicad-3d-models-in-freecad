@@ -22,9 +22,7 @@ Params = namedtuple("Params", [
     'H',   # max width (x) with pins
     'P',   # distance between pins
     'W',   # pin width
-    'modelName', # modelName
     'rotation',  # rotation if required
-    'dest_dir_prefix' #destination dir prefix
 ])
 
 all_params_radial_smd_cap = {# Aluminum SMD capacitors
@@ -36,9 +34,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =12.,     # max width (x) with pins
         P         =4.6,     # distance between pins
         W         =0.9,     # pin width
-        modelName = 'c_el_G_D100_L100', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "F_D80_L100" : Params( # note L model height
         L         =10.2,    # overall height
@@ -47,9 +43,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =10.,     # max width (x) with pins
         P         =3.1,     # distance between pins
         W         =0.9,     # pin width
-        modelName = 'c_el_F_D80_L100', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "E_D80_L62" : Params( # note L model height
         L         =6.2,    # overall height
@@ -58,9 +52,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'c_el_E_D80_L62', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "D8_D63_L77" : Params( # note L model height
         L         =7.7,    # overall height
@@ -69,9 +61,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'c_el_D8_D63_L77', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "D_D63_L54" : Params( # note L model height
         L         =5.4,    # overall height
@@ -80,9 +70,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'c_el_D_D63_L54', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "C_D50_L54" : Params( # note L model height
         L         =5.4,    # overall height
@@ -91,9 +79,7 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =6.5,     # max width (x) with pins
         P         =1.5,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'c_el_C_D50_L54', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
     "B_D40_L54" : Params( # note L model height
         L         =5.4,    # overall height
@@ -102,211 +88,345 @@ all_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =5.5,     # max width (x) with pins
         P         =1.0,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'c_el_B_D40_L54', #modelName
         rotation  = -90, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
     ),
 }
 
 kicad_naming_params_radial_smd_cap = {# Aluminum SMD capacitors
-    "CP_Elec_3x53" : Params( # note L model height
+    "CP_Elec_3x5.3" : Params( # note L model height
         L         =5.3,    # overall height
         D         =3.,     # diameter
         A         =3.3,    # base width (x&y)
         H         =3.8,     # max width (x) with pins
         P         =0.8,     # distance between pins
         W         =0.45,     # pin width
-        modelName = 'CP_Elec_3x5.3', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_4x45" : Params( # note L model height
+    "CP_Elec_3x5.4" : Params( # note L model height
+        L         =5.4,    # overall height
+        D         =3.,     # diameter
+        A         =3.3,    # base width (x&y)
+        H         =3.8,     # max width (x) with pins
+        P         =0.8,     # distance between pins
+        W         =0.45,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_4x3" : Params( # note L model height
+        L         =3.0,    # overall height
+        D         =4.0,     # diameter
+        A         =4.3,    # base width (x&y)
+        H         =5.5,     # max width (x) with pins
+        P         =1.0,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_4x3.9" : Params( # note L model height
+        L         =3.9,    # overall height
+        D         =4.0,     # diameter
+        A         =4.3,    # base width (x&y)
+        H         =5.5,     # max width (x) with pins
+        P         =1.0,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_4x4.5" : Params( # note L model height
         L         =4.5,    # overall height
         D         =4.0,     # diameter
         A         =4.3,    # base width (x&y)
         H         =5.5,     # max width (x) with pins
         P         =1.0,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_4x4.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_4x53" : Params( # note L model height
+    "CP_Elec_4x5.3" : Params( # note L model height
         L         =5.3,    # overall height
         D         =4.0,     # diameter
         A         =4.3,    # base width (x&y)
         H         =5.5,     # max width (x) with pins
         P         =1.0,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_4x5.3', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_4x57" : Params( # note L model height
+    "CP_Elec_4x5.4" : Params( # note L model height
+        L         =5.4,    # overall height
+        D         =4.0,     # diameter
+        A         =4.3,    # base width (x&y)
+        H         =5.5,     # max width (x) with pins
+        P         =1.0,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_4x5.7" : Params( # note L model height
         L         =5.7,    # overall height
         D         =4.0,     # diameter
         A         =4.3,    # base width (x&y)
         H         =5.5,     # max width (x) with pins
         P         =1.0,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_4x5.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_4x58" : Params( # note L model height
+    "CP_Elec_4x5.8" : Params( # note L model height
         L         =5.8,    # overall height
         D         =4.0,     # diameter
         A         =4.3,    # base width (x&y)
         H         =5.5,     # max width (x) with pins
         P         =1.0,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_4x5.8', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_5x45" : Params( # note L model height
+    "CP_Elec_5x3" : Params( # note L model height
+        L         =3.0,    # overall height
+        D         =5.0,     # diameter
+        A         =5.3,    # base width (x&y)
+        H         =6.5,     # max width (x) with pins
+        P         =1.5,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_5x3.9" : Params( # note L model height
+        L         =3.9,    # overall height
+        D         =5.0,     # diameter
+        A         =5.3,    # base width (x&y)
+        H         =6.5,     # max width (x) with pins
+        P         =1.5,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_5x4.4" : Params( # note L model height
+        L         =4.4,    # overall height
+        D         =5.0,     # diameter
+        A         =5.3,    # base width (x&y)
+        H         =6.5,     # max width (x) with pins
+        P         =1.5,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_5x4.5" : Params( # note L model height
         L         =4.5,    # overall height
         D         =5.0,     # diameter
         A         =5.3,    # base width (x&y)
         H         =6.5,     # max width (x) with pins
         P         =1.5,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_5x4.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_5x53" : Params( # note L model height
+    "CP_Elec_5x5.3" : Params( # note L model height
         L         =5.3,    # overall height
         D         =5.0,     # diameter
         A         =5.3,    # base width (x&y)
         H         =6.5,     # max width (x) with pins
         P         =1.5,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_5x5.3', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_5x57" : Params( # note L model height
+    "CP_Elec_5x5.4" : Params( # note L model height
+        L         =5.4,    # overall height
+        D         =5.0,     # diameter
+        A         =5.3,    # base width (x&y)
+        H         =6.5,     # max width (x) with pins
+        P         =1.5,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_5x5.7" : Params( # note L model height
         L         =5.7,    # overall height
         D         =5.0,     # diameter
         A         =5.3,    # base width (x&y)
         H         =6.5,     # max width (x) with pins
         P         =1.5,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_5x5.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_5x58" : Params( # note L model height
+
+    "CP_Elec_5x5.8" : Params( # note L model height
         L         =5.8,    # overall height
         D         =5.0,     # diameter
         A         =5.3,    # base width (x&y)
         H         =6.5,     # max width (x) with pins
         P         =1.5,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_5x5.8', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_5x5.9" : Params( # note L model height
+        L         =5.9,    # overall height
+        D         =5.0,     # diameter
+        A         =5.3,    # base width (x&y)
+        H         =6.5,     # max width (x) with pins
+        P         =1.5,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
     ),
     
-    "CP_Elec_63x45" : Params( # note L model height
+    "CP_Elec_6.3x3" : Params( # note L model height
+        L         =3.0,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_6.3x3.9" : Params( # note L model height
+        L         =3.9,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_6.3x4.5" : Params( # note L model height
         L         =4.5,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x4.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_6.3x52" : Params( # note L model height
+
+    "CP_Elec_6.3x4.9" : Params( # note L model height
+        L         =4.9,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_6.3x5.2" : Params( # note L model height
         L         =5.2,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x5.2', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_6.3x53" : Params( # note L model height
+
+    "CP_Elec_6.3x5.3" : Params( # note L model height
         L         =5.3,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x5.3', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_63x57" : Params( # note L model height
+
+    "CP_Elec_6.3x5.4" : Params( # note L model height
+        L         =5.4,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_6.3x5.4_Nichicon" : Params( # note L model height
+        L         =5.4,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+
+    "CP_Elec_6.3x5.7" : Params( # note L model height
         L         =5.7,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x5.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_63x58" : Params( # note L model height
+    "CP_Elec_6.3x5.8" : Params( # note L model height
         L         =5.8,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x5.8', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_63x77" : Params( # note L model height
+    "CP_Elec_6.3x5.9" : Params( # note L model height
+        L         =5.9,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_6.3x7.7" : Params( # note L model height
         L         =7.7,    # overall height
         D         =6.3,     # diameter
         A         =6.6,    # base width (x&y)
         H         =7.8,     # max width (x) with pins
         P         =1.8,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_6.3x7.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_8x54" : Params( # note L model height
+    "CP_Elec_6.3x9.9" : Params( # note L model height
+        L         =9.9,    # overall height
+        D         =6.3,     # diameter
+        A         =6.6,    # base width (x&y)
+        H         =7.8,     # max width (x) with pins
+        P         =1.8,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_8x5.4" : Params( # note L model height
         L         =5.4,    # overall height
         D         =8.,     # diameter
         A         =8.3,    # base width (x&y)
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_8x5.4', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_8x65" : Params( # note L model height
+    "CP_Elec_8x6.2" : Params( # note L model height
+        L         =6.2,    # overall height
+        D         =8.,     # diameter
+        A         =8.3,    # base width (x&y)
+        H         =9.5,     # max width (x) with pins
+        P         =2.2,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_8x6.5" : Params( # note L model height
         L         =6.5,    # overall height
         D         =8.,     # diameter
         A         =8.3,    # base width (x&y)
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_8x6.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_8x67" : Params( # note L model height
+    "CP_Elec_8x6.7" : Params( # note L model height
         L         =6.7,    # overall height
         D         =8.,     # diameter
         A         =8.3,    # base width (x&y)
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_8x6.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_8x6.9" : Params( # note L model height
+        L         =6.9,    # overall height
+        D         =8.,     # diameter
+        A         =8.3,    # base width (x&y)
+        H         =9.5,     # max width (x) with pins
+        P         =2.2,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
     ),
     "CP_Elec_8x10" : Params( # note L model height
         L         =10,    # overall height
@@ -315,31 +435,43 @@ kicad_naming_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_8x10', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_8x105" : Params( # note L model height
+    "CP_Elec_8x10.5" : Params( # note L model height
         L         =10.5,    # overall height
         D         =8.,     # diameter
         A         =8.3,    # base width (x&y)
         H         =9.5,     # max width (x) with pins
         P         =2.2,     # distance between pins
         W         =0.65,     # pin width
-        modelName = 'CP_Elec_8x10.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_10x77" : Params( # note L model height
+    "CP_Elec_8x11.9" : Params( # note L model height
+        L         =11.9,    # overall height
+        D         =8.,     # diameter
+        A         =8.3,    # base width (x&y)
+        H         =9.5,     # max width (x) with pins
+        P         =2.2,     # distance between pins
+        W         =0.65,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_10x7.7" : Params( # note L model height
         L         =7.7,    # overall height
         D         =10.,     # diameter
         A         =10.3,    # base width (x&y)
         H         =12.,     # max width (x) with pins
         P         =4.6,     # distance between pins
         W         =0.9,     # pin width
-        modelName = 'CP_Elec_10x7.7', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_10x7.9" : Params( # note L model height
+        L         =7.9,    # overall height
+        D         =10.,     # diameter
+        A         =10.3,    # base width (x&y)
+        H         =12.,     # max width (x) with pins
+        P         =4.6,     # distance between pins
+        W         =0.9,     # pin width
+        rotation  = 180, # rotation if required
     ),
     "CP_Elec_10x10" : Params( # note L model height
         L         =10,    # overall height
@@ -348,19 +480,78 @@ kicad_naming_params_radial_smd_cap = {# Aluminum SMD capacitors
         H         =12.,     # max width (x) with pins
         P         =4.6,     # distance between pins
         W         =0.9,     # pin width
-        modelName = 'CP_Elec_10x10', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
     ),
-    "CP_Elec_10x105" : Params( # note L model height
+    "CP_Elec_10x10.5" : Params( # note L model height
         L         =10.5,    # overall height
         D         =10.,     # diameter
         A         =10.3,    # base width (x&y)
         H         =12.,     # max width (x) with pins
         P         =4.6,     # distance between pins
         W         =0.9,     # pin width
-        modelName = 'CP_Elec_10x10.5', #modelName
-        rotation  = 0, # rotation if required
-        dest_dir_prefix = 'cap_El_smd'
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_10x12.5" : Params( # note L model height
+        L         =12.5,    # overall height
+        D         =10.,     # diameter
+        A         =10.3,    # base width (x&y)
+        H         =12.,     # max width (x) with pins
+        P         =4.6,     # distance between pins
+        W         =0.9,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_10x12.6" : Params( # note L model height
+        L         =12.6,    # overall height
+        D         =10.,     # diameter
+        A         =10.3,    # base width (x&y)
+        H         =12.,     # max width (x) with pins
+        P         =4.6,     # distance between pins
+        W         =0.9,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_10x14.3" : Params( # note L model height
+        L         =14.3,    # overall height
+        D         =10.,     # diameter
+        A         =10.3,    # base width (x&y)
+        H         =12.,     # max width (x) with pins
+        P         =4.6,     # distance between pins
+        W         =0.9,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_16x17.5" : Params( # note L model height
+        L         =17.5,    # overall height
+        D         =16.,     # diameter
+        A         =16.6,    # base width (x&y)
+        H         =18.6,     # max width (x) with pins
+        P         =6.5,     # distance between pins
+        W         =1.3,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_16x22" : Params( # note L model height
+        L         =22.0,    # overall height
+        D         =16.,     # diameter
+        A         =16.6,    # base width (x&y)
+        H         =18.6,     # max width (x) with pins
+        P         =6.5,     # distance between pins
+        W         =1.3,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_18x17.5" : Params( # note L model height
+        L         =17.5,    # overall height
+        D         =18.,     # diameter
+        A         =19.,    # base width (x&y)
+        H         =21.,     # max width (x) with pins
+        P         =6.5,     # distance between pins
+        W         =1.3,     # pin width
+        rotation  = 180, # rotation if required
+    ),
+    "CP_Elec_18x22" : Params( # note L model height
+        L         =22,    # overall height
+        D         =18.,     # diameter
+        A         =19.,    # base width (x&y)
+        H         =21.,     # max width (x) with pins
+        P         =6.5,     # distance between pins
+        W         =1.3,     # pin width
+        rotation  = 180, # rotation if required
     ),
 }
