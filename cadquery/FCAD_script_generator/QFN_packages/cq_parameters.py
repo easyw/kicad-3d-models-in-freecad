@@ -2555,6 +2555,32 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
+    'QFN-68-1EP_8x8mm_P0.4mm_EP5.2x5.2mm': Params( # from https://www.mouser.com/ds/2/523/Microsemi_VSC8541-01_Datasheet_10496_V40-1148034.pdf
+        c = 0.2,        # pin thickness, body center part height
+    #    K=0.2,          # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.3,      # chamfer of the epad 1st pin corner
+        D = 8.0,       # body overall length
+        E = 8.0,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.85,  # body height
+        b = 0.2,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'rounded',   # rounded pads
+        npx = 17,  # number of pins along X axis (width)
+        npy = 17,  # number of pins along y axis (length)
+        epad = (5.2,5.2), # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'QFN-68-1EP_8x8mm_P0.4mm_EP5.2x5.2mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
     'UQFN-10_1.4x1.8mm_Pitch0.4mm': Params( # from http://www.onsemi.com/pub/Collateral/523AQ.PDF
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
