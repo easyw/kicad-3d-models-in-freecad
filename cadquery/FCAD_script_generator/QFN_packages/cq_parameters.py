@@ -2997,6 +2997,32 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_SON.3dshapes/'
         ),
+    'WSON-12-1EP_1.35x2.5mm_P0.4mm_EP0.4x2mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd6f003.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.25,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.25,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 2.5,       # body overall length
+        E = 1.35,       # body overall width
+        A1 = 0.02,  # body-board separation  maui to check
+        A2 = 0.75,  # body height
+        b = 0.2,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body  
+        ps = 'square',   # rounded pads
+        npx = 6,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = (2.0, 0.4), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'WSON-12-1EP_1.35x2.5mm_P0.4mm_EP0.4x2mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_SON.3dshapes/'
+        ),
     'WSON-16_3.3x1.35_Pitch0.4mm': Params( # from http://www.chip.tomsk.ru/chip/chipdoc.nsf/Package/C67E729A4D6C883A4725793E004C8739!OpenDocument
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
