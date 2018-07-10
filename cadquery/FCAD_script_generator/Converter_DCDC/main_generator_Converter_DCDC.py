@@ -382,15 +382,14 @@ all_params = {
 	)	),
 	
 	"Converter_DCDC_RECOM_R-78B-2.0_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78B-2.0_THT',			0,	11.50,		  8.50,	 17.50,		 0.64,		4.1,		(-03.21, -02.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
-	"Converter_DCDC_RECOM_R-78E-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78E-0.5_THT',			0,	11.60,		  8.50,	 10.40,		 0.50,		4.1,		(-03.21, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
-	"Converter_DCDC_RECOM_R-78HBxx-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78HBxx-0.5_THT',		0,	11.50,		  8.50,	 17.50,		 0.50,		4.1,		(-03.21, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
+	"Converter_DCDC_RECOM_R-78E-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78E-0.5_THT',			0,	11.60,		  8.50,	 10.40,		 0.50,		4.1,		(-03.31, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
 	"Converter_DCDC_RECOM_R-78HB-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78HB-0.5_THT',			0,	11.50,		  8.50,	 17.50,		 0.70,		4.1,		(-03.21, -02.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
-	"Converter_DCDC_RECOM_R-78S-0.1_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78S-0.1_THT',			0,	11.60,		 08.50,	 10.40,		 0.70,		4.1,		(-02.00, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00) )	),
+	"Converter_DCDC_RECOM_R-78S-0.1_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78S-0.1_THT',			0,	11.60,		  8.50,	 10.40,		 0.70,		4.1,		(-02.00, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00) )	),
 	"Converter_DCDC_RECOM_R-78HB-0.5L_THT"		: make_params('Converter_DCDC_RECOM_R-78HB-0.5L_THT',						11.50,		 17.50,	 08.50,		 0.70,		4.1,	CASE_THT_N_TYPE,	000.0,		(-03.21, -19.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
-	"Converter_DCDC_RECOM_R5xxxDA_THT"			: make_params('Converter_DCDC_RECOM_R5xxxDA_THT',							32.20,		 15.00,	 09.10,		 0.70,		4.1,	CASE_THT_N_TYPE,	000.0,		(-02.13, -15.50),	(
+	"Converter_DCDC_RECOM_R5xxxDA_THT"			: make_params('Converter_DCDC_RECOM_R5xxxDA_THT',							32.20,		 15.00,	 09.10,		 0.70,		4.1,	CASE_THT_N_TYPE,	000.0,		(-02.10, -17.00),	(
 	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00), (15.24, 00.00), (17.78, 00.00), (20.32, 00.00), (22.86, 00.00), (25.40, 00.00), (27.94, 00.00)
 	)	),
-	"Converter_DCDC_RECOM_R5xxxPA_THT"			: make_params_black_body('Converter_DCDC_RECOM_R5xxxPA_THT',			0,	32.20,		 09.10,	 15.00,		 0.70,		4.0,		(-02.13, -00.70),	(
+	"Converter_DCDC_RECOM_R5xxxPA_THT"			: make_params_black_body('Converter_DCDC_RECOM_R5xxxPA_THT',			0,	32.20,		 09.10,	 15.00,		 0.70,		4.0,		(-02.10, -00.80),	(
 	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00), (15.24, 00.00), (17.78, 00.00), (20.32, 00.00), (22.86, 00.00), (25.40, 00.00), (27.94, 00.00) )	),
 	
 	"Converter_DCDC_TRACO_TMR-1SM_SMD"			: make_params('Converter_DCDC_TRACO_TMR-1SM_SMD',					13.70,		18.90,	  8.45,		1.20,		0.2,	CASE_SMD_TYPE,	000.0,		( 00.00,  00.00),	(
