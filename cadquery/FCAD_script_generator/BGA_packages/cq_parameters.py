@@ -602,4 +602,24 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'FBGA-78_7.5x11mm_Layout2x3x13_P0.8mm': Params( # from https://www.skhynix.com/product/filedata/fileDownload.do?seq=7687
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 11.0,       # body overall length
+        E = 7.5,       # body overall width
+        A1 = 0.34,  # body-board separation
+        A = 1.1,  # body  overall height
+        b = 0.45,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 13,  # number of pins along X axis (width)
+        npy = 9,  # number of pins along y axis (length)
+        excluded_pins = ("none", 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78), #pins to exclude -> None or "internals"
+        old_modelName = 'FBGA-78_2x3x13_7.5x11.0mm_Pitch0.8mm', #old_modelName
+        modelName = 'FBGA-78_7.5x11mm_Layout2x3x13_P0.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
 }
