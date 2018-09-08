@@ -401,4 +401,33 @@ part_params = {
         modelName = 'SOIJ-8_5.3x5.3mm_P1.27mm', #modelName
         rotation = -90,   # rotation if required
         ),
+    'ST_MultiPowerSO-30': Params( # from https://www.st.com/resource/en/datasheet/vnh5019a-e.pdf
+        the = 9.0,      # body angle in degrees
+        tb_s = 0.15,    # top part of body is that much smaller
+        c    = 0.275,   # pin thickness, body center part height
+        R1 = 0.1,       # pin upper corner, inner radius
+        R2 = 0.1,       # pin lower corner, inner radius
+        S = 0.25,       # pin top flat part length (excluding corner arc)
+#        L = 0.79,      # pin bottom flat part length (including corner arc)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.6,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,     #0.45 chamfer of the 1st pin corner
+        D1 = 17.2,      # body length
+        E1 = 16.0 ,     # body width
+        E =  19.0,      # body overall width
+        A1 = 0.15,      # body-board separation
+        A2 = 2.05,      # body height
+        b =  0.5 ,      # pin width
+        e =  1.00,
+        npx = 15,       # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = None,    # e Pad
+        excluded_pins = None, #no pin excluded
+        old_modelName = 'ST_MultiPowerSO-30', #modelName
+        modelName = 'ST_MultiPowerSO-30', #modelName
+        rotation = -90,   # rotation if required
+        ),
 }
