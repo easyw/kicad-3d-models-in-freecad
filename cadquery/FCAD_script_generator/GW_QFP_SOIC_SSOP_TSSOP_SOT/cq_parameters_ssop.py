@@ -1665,7 +1665,7 @@ part_params = {
         cc1 = 0.25, #0.45 chamfer of the 1st pin corner
         D1 = 3.0,       # body length
         E1 = 3.0,       # body width
-        E = 4.6,        # body overall width  E=E1+2*(S+L+c)
+        E = 4.9,        # body overall width  E=E1+2*(S+L+c)
         A1 = 0.1,  # body-board separation
         A2 = 1.1,  # body height
         b = 0.22,  # pin width
