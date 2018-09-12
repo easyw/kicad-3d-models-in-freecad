@@ -641,7 +641,7 @@ kicad_naming_params_qfn = {
         modelName = 'ucBGA-49_3x3mm_Layout7x7_P0.4mm',
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
-        ),    
+        ),
     'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm': Params( #https://www.latticesemi.com/view_document?document_id=213
         fp_r = 0.4,     # first pin indicator radius
         fp_d = 0.08,     # first pin indicator distance from edge
