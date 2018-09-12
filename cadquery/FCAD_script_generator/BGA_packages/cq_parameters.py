@@ -642,24 +642,4 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),    
-    'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm': Params( #https://www.latticesemi.com/view_document?document_id=213
-        fp_r = 0.4,     # first pin indicator radius
-        fp_d = 0.08,     # first pin indicator distance from edge
-        fp_z = 0.01,     # first pin indicator depth
-        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        D = 2.5,       # body overall length
-        E = 2.5,       # body overall width
-        A1 = 0.2,  # body-board separation
-        A = 1.0,  # body  overall height
-        b = 0.25,  # ball pin width diameter with a small extra to obtain a union of balls and case
-        e = 0.4,  # pin (center-to-center) distance
-        sp = 0.0, #seating plane (pcb penetration)
-        npx = 6,  # number of pins along X axis (width)
-        npy = 6,  # number of pins along y axis (length)
-        excluded_pins = (None), #pins to exclude -> None or "internals"
-        old_modelName = 'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm', #old_modelName
-        modelName = 'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm',
-        rotation = -90, # rotation if required
-        dest_dir_prefix = '',
-        ),
 }
