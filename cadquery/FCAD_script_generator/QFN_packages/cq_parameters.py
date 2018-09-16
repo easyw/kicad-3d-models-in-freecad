@@ -3414,6 +3414,33 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
+    'VSON-10-1EP_3x3mm_P0.5mm_EP1.2x2mm': Params( # 3x3mm, 10-pin VSON package, 1.0mm height
+        # reference: http://rohmfs.rohm.com/en/techdata_basic/ic/package/vson010v3030_1-e.pdf
+        c = 0.2,        # pin thickness, body center part height
+        # K = 0.2,        # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.25,     # chamfer of the epad 1st pin corner
+        D = 3.0,        # body overall length
+        E = 3.0,        # body overall width
+        A1 = 0.02,      # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.25,       # pin width
+        e = 0.5,        # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'rounded', # pad shape
+        npx = 5,        # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = (2.0,1.2), # e Pad
+        excluded_pins = None, # no pin excluded
+        modelName = 'VSON-10-1EP_3x3mm_P0.5mm_EP1.2x2mm', # modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+    ),
     'WSON6_1.5x1.5mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tps717.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
