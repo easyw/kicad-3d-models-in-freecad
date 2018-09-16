@@ -106,8 +106,12 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
  CutObjs_wColors, checkRequirements
 
 try:
-    # Gui.SendMsgToActiveView("Run")
     from Gui.Command import *
+except:
+    print('cannot import Gui.Command')
+
+try:
+    # Gui.SendMsgToActiveView("Run")
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
