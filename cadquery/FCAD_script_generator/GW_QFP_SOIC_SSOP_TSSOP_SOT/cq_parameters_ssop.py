@@ -663,6 +663,64 @@ part_params = {
         modelName = 'SSOP-8_2.95x2.8mm_P0.65mm',
         rotation = -90,       # rotation if required
         ),
+    'SSOP-8_3.9x5.05mm_P1.27mm': Params( # from http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RS16-DS501-00014-6v0-E.pdf
+        the = 12.0,           # body angle in degrees
+        tb_s = 0.1,           # top part of body is that much smaller
+        c = 0.15,             # pin thickness, body center part height
+        R1 = 0.1,             # pin upper corner, inner radius
+        R2 = 0.1,             # pin lower corner, inner radius
+        S = 0.18,             # pin top flat part length (excluding corner arc)
+#        L = 0.64,            # pin bottom flat part length (including corner arc)
+        fp_s = True,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.2,           # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 5.05,            # body length
+        E1 = 3.90,            # body width
+        E = 6.0,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.01,            # body-board separation
+        A2 = 1.55,            # body height
+        b = 0.44,             # pin width
+        e = 1.27,             # pin (center-to-center) distance
+        npx = 4,              # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = None,          # ePad
+        excluded_pins = None, # no pin excluded
+        old_modelName = 'SSOP-8_3.9x5.05mm_P1.27mm',
+        modelName = 'SSOP-8_3.9x5.05mm_P1.27mm',
+        rotation = -90,       # rotation if required
+        ),
+    'SSOP-8_5.30x5.24mm_P1.27mm': Params( # from http://www.fujitsu.com/ca/en/Images/MB85RS2MT-DS501-00023-1v0-E.pdf
+        the = 12.0,           # body angle in degrees
+        tb_s = 0.1,           # top part of body is that much smaller
+        c = 0.15,             # pin thickness, body center part height
+        R1 = 0.1,             # pin upper corner, inner radius
+        R2 = 0.1,             # pin lower corner, inner radius
+        S = 0.18,             # pin top flat part length (excluding corner arc)
+#        L = 0.64,            # pin bottom flat part length (including corner arc)
+        fp_s = True,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.2,           # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 5.30,            # body length
+        E1 = 5.24,            # body width
+        E =  7.80,            # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.01,            # body-board separation
+        A2 = 2.10,            # body height
+        b = 0.43,             # pin width
+        e = 1.27,             # pin (center-to-center) distance
+        npx = 4,              # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = None,          # ePad
+        excluded_pins = None, # no pin excluded
+        old_modelName = 'SSOP-8_5.30x5.24mm_P1.27mm',
+        modelName = 'SSOP-8_5.30x5.24mm_P1.27mm',
+        rotation = -90,       # rotation if required
+        ),
     'SSOP-8_3.95x5.21x3.27mm_Pitch1.27mm': Params( # from http://www.ti.com/lit/ml/mpds049b/mpds049b.pdf
         the = 12.0,           # body angle in degrees
         tb_s = 0.1,          # top part of body is that much smaller
