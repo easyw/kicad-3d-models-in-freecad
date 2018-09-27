@@ -374,7 +374,10 @@ all_params = {
 	"Converter_ACDC_TRACO_TMLM-05_THT"		: make_params_black_body_red_top('Converter_ACDC_TRACO_TMLM-05_THT',		0, 	50.08,		25.40,	 15.16,		 1.04,		8.0,		(-02.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16))	),
 	"Converter_ACDC_TRACO_TMLM-10-20_THT"	: make_params_black_body_red_top('Converter_ACDC_TRACO_TMLM-10-20_THT',		0,	52.40,		27.20,	 23.50,		 1.00,		8.0,		(-02.54, -12.26),	((00.00, 00.00), (00.00, 10.16), (45.72, 10.16), (45.72,  -10.16) )	),
 
-}
+	"Converter_ACDC_RECOM_RAC04-xxSGx_THT"  : 
+	make_params_black_body('Converter_ACDC_RECOM_RAC04-xxSGx_THT', 									1,  24.00,      37.00,   15.0,      0.6,       3.5,         (-03.11,  -3.26),	((00.00, 00.00), (0, 05.08), (0, 30.48), (17.78, 30.48), (17.78, 25.40))	),
+
+	}
 
 
 def make_case(params):
