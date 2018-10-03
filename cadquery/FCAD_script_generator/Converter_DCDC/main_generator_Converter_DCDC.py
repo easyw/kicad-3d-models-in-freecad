@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 #
 # This is derived from a cadquery script for generating PDIP models in X3D format
@@ -45,9 +45,9 @@
 #*																		  *
 #****************************************************************************
 
-__title__ = "make DIP switch 3D models"
+__title__ = "make DC to DC converter 3D models"
 __author__ = "Stefan, based on DIP script"
-__Comment__ = 'make DIP switch 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make DC to DC converter 3D models exported to STEP and VRML for Kicad StepUP script'
 
 ___ver___ = "1.3.3 14/08/2015"
 
@@ -84,7 +84,7 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 
 #################################################################################################
@@ -187,7 +187,7 @@ def make_params(modelName, L, W, H, pinpadsize, pinpadh, pintype, rotation, pin1
 		pin = pin,						# pin/pad cordinates
 		A1 = 0.1,						# package board seperation
 		roundbelly = 1,					# If belly of caseing should be round (or flat)
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 0,					# If top should be visible or not
 		body_color_key = "black body",
 		body_top_color_key = "black body",
@@ -208,7 +208,7 @@ def make_params_black_body(modelName, roundbelly, L, W, H, pinpadsize, pinpadh, 
 		pin = pin,						# pin/pad cordinates
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 0,					# If top should be visible or not
 		body_color_key = "black body",
 		body_top_color_key = "black body",
@@ -229,7 +229,7 @@ def make_params_grey_body(modelName, roundbelly, L, W, H, pinpadsize, pinpadh, p
 		pin = pin,						# pin/pad cordinates
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 0,					# If top should be visible or not
 		body_color_key = "black body",
 		body_top_color_key = "red body",
@@ -250,8 +250,8 @@ def make_params_orange_body(modelName, L, W, H, pinpadsize, pinpadh, pin1corner,
 		pintype = CASE_THT_TYPE,		# Casing type
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		roundbelly = 1,				# If belly of caseing should be round (or flat)
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		roundbelly = 1,				    # If belly of caseing should be round (or flat)
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 0,					# If top should be visible or not
 		body_color_key = "orange body",
 		body_top_color_key = "black body",
@@ -273,7 +273,7 @@ def make_params_silver_body_red_top(modelName, roundbelly, L, W, H, pinpadsize, 
 		pintype = CASE_THT_TYPE,		# Casing type
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 1,					# If top should be visible or not
 		body_color_key = "metal grey pins",
 		body_top_color_key = "red body",
@@ -290,12 +290,12 @@ def make_params_red_body(modelName, roundbelly, L, W, H, pinpadsize, pinpadh, pi
 		H = H,				  			# package height
 		pinpadsize = pinpadsize,		# pin diameter or pad size
 		pinpadh = pinpadh,				# pin length, pad height
-		pintype = CASE_THT_TYPE,			# Casing type
+		pintype = CASE_THT_TYPE,		# Casing type
 		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
 		pin = pin,						# pin/pad cordinates
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 0,					# If top should be visible or not
 		body_color_key = "red body",
 		body_top_color_key = "red body",
@@ -312,19 +312,19 @@ def make_params_black_body_red_top(modelName, roundbelly, L, W, H, pinpadsize, p
 		H = H,				  			# package height
 		pinpadsize = pinpadsize,		# pin diameter or pad size
 		pinpadh = pinpadh,				# pin length, pad height
-		pintype = CASE_THT_TYPE,			# Casing type
+		pintype = CASE_THT_TYPE,		# Casing type
 		pin1corner = pin1corner,		# Left upp corner relationsship to pin 1
 		pin = pin,						# pin/pad cordinates
 		rotation = 0,					# rotation if required
 		A1 = 0.1,						# package board seperation
-		corner = CORNER_NONE_TYPE,		# Chamfer or corner	
+		corner = CORNER_NONE_TYPE,		# Chamfer or corner
 		show_top = 1,					# If top should be visible or not
 		body_color_key = "black body",
 		body_top_color_key = "red body",
 		pin_color_key = "metal grey pins"
 	)
-	
-	
+
+
 
 all_params = {
 
@@ -346,7 +346,7 @@ all_params = {
 	(00.00, 00.00), (00.00, 15.24), ( 00.00, 22.86),
 	(45.72, 05.08), (45.72, 15.24), ( 45.72, 25.40), ( 45.72, 35.56),
 	)	),
-	
+
 	"Converter_DCDC_Bothhand_CFUSxxxx_THT"		: make_params_grey_body('Converter_DCDC_Bothhand_CFUSxxxx_THT',			0,	16.80,		 32.60,	 10.20,		 0.50,		3.5,		(-00.78, -02.65),	(
 	(00.00, 00.00), (00.00, 22.86), (00.00, 25.40), (00.00, 27.94),
 	(15.24, 27.94), (15.24, 25.40), (15.24, 22.86), (15.24, 00.00),
@@ -369,18 +369,18 @@ all_params = {
 	(00.00, 00.00), (00.00, 02.54), ( 00.00, 05.08), ( 00.00, 07.62), ( 00.00, 10.16),
 	(00.00, 35.56), (00.00, 38.10), ( 00.00, 40.64), ( 00.00, 43.18), ( 00.00, 45.72), ( 00.00, 48.26),
 	)	),
-	
+
 	"Converter_DCDC_muRata_CRE1xxxxxx3C_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxx3C_THT',		0,	 6.10,		 11.53,	  7.62,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
 	"Converter_DCDC_muRata_CRE1xxxxxxDC_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxxDC_THT',		0,	 9.90,		 11.60,	  6.90,		 0.50,		4.1,		(-01.30, -02.10),	((00.00, 00.00), (00.00, 07.62), (07.62, 07.62), (07.62,   02.54) )	),
 	"Converter_DCDC_muRata_CRE1xxxxxxSC_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxxSC_THT',		0,	 6.10,		 11.53,	 10.00,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
 	"Converter_DCDC_muRata_NMAxxxxDC_THT"		: make_params_black_body('Converter_DCDC_muRata_NMAxxxxDC_THT',			0,	 9.80,		 19.50,	  6.80,		 0.50,		4.1,		(-01.22, -02.23),	((00.00, 00.00), (00.00, 15.24), (07.62, 15.24), (07.62,   12.70), (07.62,   07.62), (07.62,   00.00) )	),
 	"Converter_DCDC_muRata_NMAxxxxSC_THT"		: make_params_black_body('Converter_DCDC_muRata_NMAxxxxSC_THT',			0,	 6.00,		 19.50,	 10.00,		 0.50,		4.1,		(-04.77, -02.03),	((00.00, 00.00), (00.00, 02.54), (00.00, 07.62), (00.00,   10.16), (00.00,   12.70) )	),
-	
+
 	"Converter_DCDC_muRata_NXE2SxxxxMC_THT"			: make_params('Converter_DCDC_muRata_NXE2SxxxxMC_THT',							10.41,		12.70,	  4.41,		 0.61,		0.2,	CASE_SMD_TYPE,		000.0,		( 00.00,  00.00),	(
-	( -4.700,  -3.81), ( -4.700,  -1.27), ( -4.700, 03.81), 
+	( -4.700,  -3.81), ( -4.700,  -1.27), ( -4.700, 03.81),
 	(  4.700,  03.81), (  4.700,  -3.81)
 	)	),
-	
+
 	"Converter_DCDC_RECOM_R-78B-2.0_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78B-2.0_THT',			0,	11.50,		  8.50,	 17.50,		 0.64,		4.1,		(-03.21, -02.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
 	"Converter_DCDC_RECOM_R-78E-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78E-0.5_THT',			0,	11.60,		  8.50,	 10.40,		 0.50,		4.1,		(-03.31, -06.50),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
 	"Converter_DCDC_RECOM_R-78HB-0.5_THT"		: make_params_black_body('Converter_DCDC_RECOM_R-78HB-0.5_THT',			0,	11.50,		  8.50,	 17.50,		 0.70,		4.1,		(-03.21, -02.00),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00) )	),
@@ -391,7 +391,7 @@ all_params = {
 	)	),
 	"Converter_DCDC_RECOM_R5xxxPA_THT"			: make_params_black_body('Converter_DCDC_RECOM_R5xxxPA_THT',			0,	32.20,		 09.10,	 15.00,		 0.70,		4.0,		(-02.10, -00.80),	(
 	(00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (07.62, 00.00), (10.16, 00.00), (12.70, 00.00), (15.24, 00.00), (17.78, 00.00), (20.32, 00.00), (22.86, 00.00), (25.40, 00.00), (27.94, 00.00) )	),
-	
+
 	"Converter_DCDC_TRACO_TMR-1SM_SMD"			: make_params('Converter_DCDC_TRACO_TMR-1SM_SMD',					13.70,		18.90,	  8.45,		1.20,		0.2,	CASE_SMD_TYPE,	000.0,		( 00.00,  00.00),	(
 	( -8.075,  -7.62), (-8.075,  -5.08), (-8.075,   5.08), 	(-8.075,   7.62),
 	(  8.075,  -7.62), ( 8.075,   5.08), 					( 8.075,   7.62),
@@ -416,7 +416,7 @@ all_params = {
 	"Converter_DCDC_TRACO_TEN10-xxxx_Single_THT"	: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN10-xxxx_Single_THT',	0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,		(-10.12, -15.20),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32),
 	)	),
-	
+
 	"Converter_DCDC_TRACO_TEN10-xxxx_Dual_THT"		: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN10-xxxx_Dual_THT',	0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.12, -15.20),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32),
 	)	),
@@ -428,7 +428,7 @@ all_params = {
 	"Converter_DCDC_TRACO_TEN20-xxxx-N4_THT"		: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN20-xxxx-N4_THT',		0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.16, -15.24),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32), (12.70, 00.00),
 	)	),
-	
+
 	"Converter_DCDC_TRACO_TEN20-xxxx_Single_THT"	: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN20-xxxx_Single_THT',	0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.16, -15.24),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (12.70, 20.32), (12.70, 00.00),
 	)	),
@@ -436,6 +436,10 @@ all_params = {
 	"Converter_DCDC_TRACO_TEN20-xxxx_Dual_THT"		: make_params_silver_body_red_top('Converter_DCDC_TRACO_TEN20-xxxx_Dual_THT',	0,	25.40,		 50.80,	 10.20,	 	1.00,	6.0,	(-10.16, -15.24),	(
 	(00.00, 00.00), (05.08, 00.00), (-7.62, 20.32), (02.54, 20.32), (12.70, 20.32), (12.70, 00.00),
 	)	),
+
+	"Converter_DCDC_XP_POWER_JTExxxxDxx_THT"		: make_params_black_body('Converter_DCDC_XP_POWER_JTExxxxDxx_THT', 0, 20.32, 31.75, 10.4, 0.5, 3.05, (-2.54, -4.445), (
+	(0.0, 0.0), (0.0, 17.78), (0.0, 22.86), (15.24, 22.86), (15.24, 17.78), (15.24, 0.0), (0.0, 2.54), (15.24, 2.54),
+	) ),
 }
 
 
@@ -450,11 +454,11 @@ def make_case(params):
 	pin = params.pin				# pin/pad cordinates
 	roundbelly = params.roundbelly	# If belly of caseing should be round (or flat)
 	pintype = params.pintype		# pin type , like SMD or THT
-	
+
 	FreeCAD.Console.PrintMessage('make_case\r\n')
 
 	ff = W / 20.0;
-	
+
 	if ff > 1.0:
 		ff = 1.0
 
@@ -462,8 +466,8 @@ def make_case(params):
 	mvY = 0
 	# Dummy
 	case=cq.Workplane("XY").workplane(offset=A1).moveTo(0, 0).rect(1, 1, False).extrude(H)
-	
-	
+
+
 	if (pintype == CASE_SMD_TYPE):
 		mvX = 0 - (L / 2.0)
 		mvY = 0 - (W / 2.0)
@@ -473,18 +477,18 @@ def make_case(params):
 		mvX = p[0] + pin1corner[0]
 		mvY = p[1] - pin1corner[1]
 		case=cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, -W, False).extrude(H)
-	
+
 	case = case.faces("<X").edges("<Y").fillet(ff)
 	case = case.faces("<X").edges(">Y").fillet(ff)
 	case = case.faces(">X").edges("<Y").fillet(ff)
 	case = case.faces(">X").edges(">Y").fillet(ff)
 	case = case.faces(">Y").edges(">Z").fillet(ff / 2.0)
-	
+
 	if roundbelly == 1:
 		# Belly is rounded
 		case = case.faces(">Y").edges("<Z").fillet(ff / 2.0)
-		
-	
+
+
 
 
 	if (rotation != 0):
@@ -511,18 +515,18 @@ def make_case_top(params):
 	mvY = 0
 	# Dummy
 	casetop=cq.Workplane("XY").workplane(offset=A1 + H).moveTo(0, 0).rect(1, 1, False).extrude(0.8)
-	
+
 
 	ff = W / 20.0;
 	if ff > 1.0:
 		ff = 1.0
-	
+
 	Ldt = ff
 	Wdt = ff
-	
+
 	L1 = L - (2.0 * Ldt)
 	W1 = W - (2.0 * Wdt)
-	
+
 	if show_top == 1:
 		tty = A1 + H - 0.1
 
@@ -551,7 +555,7 @@ def make_case_top(params):
 			mvX = (p[0] + pin1corner[0]) + (L / 2.0)
 			mvY = (p[1] - pin1corner[1]) - (W / 2.0)
 			casetop=cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(mvX, mvY).rect(0.1, 0.1, False).extrude(0.1)
-			
+
 
 	if (rotation != 0):
 		casetop = casetop.rotate((0,0,0), (0,0,1), rotation)
@@ -582,7 +586,7 @@ def make_pins_tht(params):
 		pint=cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 0.1))
 		pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
 		pins = pins.union(pint)
- 
+
 
 	if (rotation != 0):
 		pins = pins.rotate((0,0,0), (0,0,1), rotation)
@@ -619,7 +623,7 @@ def make_pins_tht_n(params):
 		pind = pind.faces("<Y").fillet(pinpadsize / 2.0)
 		pint = pint.union(pind)
 		pins = pins.union(pint)
- 
+
 
 	if (rotation != 0):
 		pins = pins.rotate((0,0,0), (0,0,1), rotation)
@@ -669,7 +673,7 @@ def make_pins_smd(params):
 				xD = pinpadsize
 				yD = pinpadsize
 				pint=cq.Workplane("ZY").workplane(offset=(L / 2.0) - (pinpadh / 2.0)).moveTo(myZ1, myY1).rect(xD, yD).extrude(pinpadh)
-			
+
 		#
 		elif p[0] >= 0 and (p[1] > (0 - (W / 2.0)) and p[1] < ((W / 2.0))):
 			# Right side
@@ -729,10 +733,10 @@ def make_pins_smd(params):
 
 
 def make_3D_model(models_dir, variant):
-				
+
 	LIST_license = ["",]
 	modelName = all_params[variant].modelName
-		
+
 	CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
 	Newdoc = App.newDocument(CheckedmodelName)
 	App.setActiveDocument(CheckedmodelName)
@@ -740,10 +744,10 @@ def make_3D_model(models_dir, variant):
 
 	case = make_case(all_params[variant])
 	casetop = make_case_top(all_params[variant])
-	
+
 	if (all_params[variant].pintype == CASE_THT_TYPE):
 		pins = make_pins_tht(all_params[variant])
-	
+
 	if (all_params[variant].pintype == CASE_THT_N_TYPE):
 		pins = make_pins_tht_n(all_params[variant])
 
@@ -761,8 +765,8 @@ def make_3D_model(models_dir, variant):
 	body_color_key = all_params[variant].body_color_key
 	body_top_color_key = all_params[variant].body_top_color_key
 	pin_color_key = all_params[variant].pin_color_key
-	
-	
+
+
 	body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 	body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
 	pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
@@ -829,7 +833,7 @@ def make_3D_model(models_dir, variant):
 	Gui.activeDocument().activeView().viewAxometric()
 	#FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
 
-	
+
 def run():
 	## # get variant names from command line
 
@@ -860,7 +864,7 @@ if __name__ == "__main__" or __name__ == "main_generator_Converter_DCDC":
 		model_to_build='ACDC-Converter_Hahn-HS-400XX'
 	else:
 		model_to_build=sys.argv[2]
-	
+
 	if model_to_build == "all":
 		variants = all_params.keys()
 	else:
