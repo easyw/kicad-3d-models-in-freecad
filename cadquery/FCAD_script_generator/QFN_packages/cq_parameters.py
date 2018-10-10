@@ -3362,6 +3362,32 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
+    'Texas_WSON-6_DQK': Params( # from http://www.ti.com/lit/ds/symlink/csd16301q2.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.4,   		# pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.05,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,     # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,       	# body overall length
+        E =  2.0,      	# body overall width
+        A1 = 0.02,  	# body-board separation  maui to check
+        A2 = 0.8,  		# body height
+        b = 0.30,  		# pin width
+        e = 0.65,  		# pin (center-to-center) distance
+        m = 0.0,  		# margin between pins and body  
+        ps = 'square', 	# rounded pads
+        npx = 3,  		# number of pins along X axis (width)
+        npy = 0,  		# number of pins along y axis (length)
+        epad = None, 	# e Pad #epad = None, # e Pad
+        excluded_pins = None, #
+        modelName = 'Texas_WSON-6_DQK', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_SON.3dshapes/'
+        ),
     'USON-20_2x4mm_Pitch0.4mm': Params( # from http://www.ti.com/lit/ds/symlink/txb0108.pdf
         c = 0.1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
