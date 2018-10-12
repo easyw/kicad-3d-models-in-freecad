@@ -7,7 +7,7 @@
 # author hyOzd
 #
 # Dimensions are from Jedec MS-026D document.
-
+ 
 ## file of parametric definitions
 
 from collections import namedtuple
@@ -44,6 +44,222 @@ Params = namedtuple("Params", [
 ])
     
 all_params_qfn = {
+    'AMS_LGA-10-1EP_2.7x4mm_P0.6mm': Params(
+        #example - http://ams.com/documents/20143/36005/CCS811_DS000459_6-00.pdf/c7091525-c7e5-37ac-eedb-b6c6828b0dcf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.3,        # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,        # body overall length
+        E = 2.7,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.1,       # body height
+        b = 0.3,        # pin width
+        e = 0.6,        # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 5,        # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = (2.4, 1.2), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'AMS_LGA-10-1EP_2.7x4mm_P0.6mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-12_2x2mm_P0.5mm': Params(
+        #example - 
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.25,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,        # body overall length
+        E = 2.0,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.25,       # pin width
+        e = 0.5,        # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 2,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-12_2x2mm_P0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-16_3x3mm_P0.5mm': Params(
+        #example - http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00250937.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.35,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,        # body overall length
+        E = 3.0,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.25,       # pin width
+        e = 0.5,        # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 4,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-16_3x3mm_P0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-16_3x3mm_P0.5mm_LayoutBorder3x5y': Params(
+        #example - http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00250937.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.35,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,        # body overall length
+        E = 3.0,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.25,       # pin width
+        e = 0.5,        # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 5,        # number of pins along X axis (width)
+        npy = 3,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-16_3x3mm_P0.5mm_LayoutBorder3x5y', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-16_4x4mm_P0.65mm_LayoutBorder4x4y': Params(
+        #example - http://www.st.com/resource/en/datasheet/l3gd20.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.40,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,        # body overall length
+        E = 4.0,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.30,       # pin width
+        e = 0.65,        # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 4,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-16_4x4mm_P0.65mm_LayoutBorder4x4y', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-24L_3x3.5mm_P0.43mm': Params(
+        #example - http://www.st.com/resource/en/datasheet/l3gd20.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.35,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,        # body overall length
+        E = 3.5,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.23,       # pin width
+        e = 0.43,       # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 8,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-24L_3x3.5mm_P0.43mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'LGA-28_5.2x3.8mm_P0.5mm': Params(
+        #example - http://www.st.com/resource/en/datasheet/l3gd20.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.475,      # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.8,        # body overall length
+        E = 5.2,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 1.0,       # body height
+        b = 0.25,       # pin width
+        e = 0.50,       # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 10,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'LGA-28_5.2x3.8mm_P0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
+    'ST_HLGA-10_2.5x2.5mm_P0.6mm_LayoutBorder3x2y': Params(
+        #example - https://www.st.com/resource/en/datasheet/lps25hb.pdf#page=46
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.45,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,    # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 2.5,        # body overall length
+        E = 2.5,        # body overall width
+        A1 = 0.025,     # body-board separation  maui to check
+        A2 = 0.8,       # body height
+        b = 0.30,       # pin width
+        e = 0.6,        # pin (center-to-center) distance
+        m = 0.1,        # margin between pins and body  
+        ps = 'square',  # rounded pads
+        npx = 4,        # number of pins along X axis (width)
+        npy = 2,        # number of pins along y axis (length)
+        epad = None,    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'ST_HLGA-10_2.5x2.5mm_P0.6mm_LayoutBorder3x2y', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_LGA.3dshapes/'
+    ),
     'LGA1633': Params( #3x3mm, 16-pin LGA package, 1.0mm height
         #example - http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00250937.pdf
         c = 0.2,        # pin thickness, body center part height
