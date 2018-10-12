@@ -3362,7 +3362,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'Texas_WSON-6_DQK': Params( # from http://www.ti.com/lit/ds/symlink/csd16301q2.pdf
+    'Texas_DQK': Params( # from http://www.ti.com/lit/ds/symlink/csd16301q2.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,         # Fillet radius for pin edges
         L = 0.4,   		# pin top flat part length (including fillet radius)
@@ -3384,7 +3384,7 @@ kicad_naming_params_qfn = {
         npy = 0,  		# number of pins along y axis (length)
         epad = None, 	# e Pad #epad = None, # e Pad
         excluded_pins = None, #
-        modelName = 'Texas_WSON-6_DQK', #modelName
+        modelName = 'Texas_DQK', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_SON.3dshapes/'
         ),
