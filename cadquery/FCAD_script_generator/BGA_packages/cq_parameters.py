@@ -419,6 +419,26 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-624_25x25_21.0x21.0mm_Pitch0.8mm': Params( # from https://www.nxp.com/docs/en/package-information/SOT1529-1.pdf
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 21.0,       # body overall length
+        E = 21.0,       # body overall width
+        A1 = 0.40,  # body-board separation
+        A  = 1.6,  # body  overall height
+        b = 0.5,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 25,  # number of pins along X axis (width)
+        npy = 25,  # number of pins along y axis (length)
+        excluded_pins = ("internals",1), #"internals", #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-624_25x25_21.0x21.0mm_Pitch0.8mm', #old_modelName
+        modelName = 'BGA-624_21.0x21.0mm_Layout25x25_P0.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'BGA-625_25x25_21.0x21.0mm_Pitch0.8mm': Params( # from http://www.analog.com/media/en/technical-documentation/data-sheets/ADSP-TS101S.pdf
         fp_r = 0.8,     # first pin indicator radius
         fp_d = 0.14,     # first pin indicator distance from edge
