@@ -370,6 +370,8 @@ all_params = {
 	(00.00, 35.56), (00.00, 38.10), ( 00.00, 40.64), ( 00.00, 43.18), ( 00.00, 45.72), ( 00.00, 48.26),
 	)	),
 
+    
+	"Converter_DCDC_Murata_NCS1SxxxxSC_THT"	: make_params_black_body('Converter_DCDC_Murata_NCS1SxxxxSC_THT',		    0,	 21.87,		   8.2,	 11.30,		 0.50,		4.1,		(-02.27, -03.195),	((00.00, 00.00), (02.54, 00.00), (05.08, 00.00), (12.70,   00.00), (15.24,   00.00) )	),
 	"Converter_DCDC_muRata_CRE1xxxxxx3C_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxx3C_THT',		0,	 6.10,		 11.53,	  7.62,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
 	"Converter_DCDC_muRata_CRE1xxxxxxDC_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxxDC_THT',		0,	 9.90,		 11.60,	  6.90,		 0.50,		4.1,		(-01.30, -02.10),	((00.00, 00.00), (00.00, 07.62), (07.62, 07.62), (07.62,   02.54) )	),
 	"Converter_DCDC_muRata_CRE1xxxxxxSC_THT"	: make_params_black_body('Converter_DCDC_muRata_CRE1xxxxxxSC_THT',		0,	 6.10,		 11.53,	 10.00,		 0.50,		4.1,		(-01.25, -02.07),	((00.00, 00.00), (00.00, 02.54), (00.00, 05.08), (00.00,   07.62) )	),
