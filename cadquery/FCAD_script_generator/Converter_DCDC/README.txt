@@ -1,0 +1,1 @@
+...../bin/FreeCAD.exe main_generator_Converter_DCDC.py <model name>
