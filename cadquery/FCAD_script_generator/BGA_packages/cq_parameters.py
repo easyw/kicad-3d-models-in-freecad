@@ -239,6 +239,26 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-100_6.0x6.0mm_Layout11x11_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD': Params( # from https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/packaging/04r00345-01.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 6.0,       # body overall length
+        E = 6.0,       # body overall width
+        A1 = 0.20,  # body-board separation
+        A = 1.05,  # body  overall height
+        b = 0.3,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 11,  # number of pins along X axis (width)
+        npy = 11,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-100_6.0x6.0mm_Layout11x11_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD', #old_modelName
+        modelName = 'BGA-100_6.0x6.0mm_Layout11x11_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'BGA-100_10x10_9.0x9.0mm_Pitch0.8mm': Params( # from http://www.mouser.com/ds/2/198/43-46TR16640B-81280BL-706483.pdf
         fp_r = 0.4,     # first pin indicator radius
         fp_d = 0.08,     # first pin indicator distance from edge
@@ -256,6 +276,46 @@ kicad_naming_params_qfn = {
         excluded_pins = ("internals",), #pins to exclude -> None or "internals"
         old_modelName = 'BGA-100_10x10_9.0x9.0mm_Pitch0.8mm', #old_modelName
         modelName = 'BGA-100_9.0x9.0mm_Layout10x10_P0.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-100_11.0x11.0mm_Layout10x10_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00223-02.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 11.0,       # body overall length
+        E = 11.0,       # body overall width
+        A1 = 0.40,  # body-board separation
+        A = 1.4,  # body  overall height
+        b = 0.5,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 1.0,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 10,  # number of pins along X axis (width)
+        npy = 10,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-100_11.0x11.0mm_Layout10x10_P1.0mm_Ball0.5mm_Pad0.4mm_NSMDm', #old_modelName
+        modelName = 'BGA-100_11.0x11.0mm_Layout10x10_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-121_9.0x9.0mm_Layout11x11_P0.8mm_Ball0.4mm_Pad0.35mm_NSMD': Params( # from http://cds.linear.com/docs/en/packaging/05081891_A_bga121.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D =  9.0,       # body overall length
+        E = 9.0,       # body overall width
+        A1 = 0.15,  # body-board separation
+        A = 1.10,  # body  overall height
+        b = 0.4,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 11,  # number of pins along X axis (width)
+        npy = 11,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-121_9.0x9.0mm_Layout11x11_P0.8mm_Ball0.4mm_Pad0.35mm_NSMD', #old_modelName
+        modelName = 'BGA-121_9.0x9.0mm_Layout11x11_P0.8mm_Ball0.4mm_Pad0.35mm_NSMD',
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
@@ -279,6 +339,26 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-144_7.0x7.0mm_Layout13x13_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00346-00.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,       # body overall length
+        E = 7.0,       # body overall width
+        A1 = 0.2,  # body-board separation
+        A = 1.05,  # body  overall height
+        b = 0.3,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.50,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 13,  # number of pins along X axis (width)
+        npy = 13,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-144_7.0x7.0mm_Layout13x13_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD', #old_modelName
+        modelName = 'BGA-144_7.0x7.0mm_Layout13x13_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'BGA-144_12x12_13.0x13.0mm_Pitch1.0mm': Params( # from http://www.topline.tv/drawings/pdf/BGA%201,0mm%20pitch/LBGA144T1.0-DC128.pdf
         fp_r = 0.4,     # first pin indicator radius
         fp_d = 0.08,     # first pin indicator distance from edge
@@ -299,6 +379,66 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-169_11.0x11.0mm_Layout13x13_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00470-01.pdf
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.08,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 11.0,       # body overall length
+        E = 11.0,       # body overall width
+        A1 = 0.4,  # body-board separation
+        A = 1.40,  # body  overall height
+        b = 0.5,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 13,  # number of pins along X axis (width)
+        npy = 13,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-169_11.0x11.0mm_Layout13x13_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD', #old_modelName
+        modelName = 'BGA-169_11.0x11.0mm_Layout13x13_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-256_11.0x11.0mm_Layout20x20_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00348-01.pdf
+        fp_r = 0.8,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 11.0,       # body overall length
+        E = 11.0,       # body overall width
+        A1 = 0.3,  # body-board separation
+        A = 1.05,  # body overall height
+        b = 0.3,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.50,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 20,  # number of pins along X axis (width)
+        npy = 20,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-256_11.0x11.0mm_Layout20x20_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD', #old_modelName
+        modelName = 'BGA-256_11.0x11.0mm_Layout20x20_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-256_14.0x14.0mm_Layout16x16_P0.8mm_Ball0.45mm_Pad0.32mm_NSMD': Params( # from https://www.xilinx.com/support/documentation/package_specs/ft256.pdf
+        fp_r = 0.8,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 14.0,       # body overall length
+        E = 14.0,       # body overall width
+        A1 = 0.4,  # body-board separation
+        A = 1.40,  # body overall height
+        b = 0.45,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.80,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 16,  # number of pins along X axis (width)
+        npy = 16,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-256_14.0x14.0mm_Layout16x16_P0.8mm_Ball0.45mm_Pad0.32mm_NSMD', #old_modelName
+        modelName = 'BGA-256_14.0x14.0mm_Layout16x16_P0.8mm_Ball0.45mm_Pad0.32mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'BGA-256_16x16_17.0x17.0mm_Pitch1.0mm': Params( # from https://www.intersil.com/content/dam/Intersil/documents/v256/v256.17x17.pdf
         fp_r = 0.8,     # first pin indicator radius
         fp_d = 0.12,     # first pin indicator distance from edge
@@ -316,6 +456,46 @@ kicad_naming_params_qfn = {
         excluded_pins = ("internals",), #pins to exclude -> None or "internals"
         old_modelName = 'BGA-256_16x16_17.0x17.0mm_Pitch1.0mm', #old_modelName
         modelName = 'BGA-256_17.0x17.0mm_Layout16x16_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-324_15.0x15.0mm_Layout18x18_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00474-02.pdf
+        fp_r = 0.8,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 15.0,       # body overall length
+        E = 15.0,       # body overall width
+        A1 = 0.4,  # body-board separation
+        A = 1.40,  # body overall height
+        b = 0.5,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.80,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 18,  # number of pins along X axis (width)
+        npy = 18,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-324_15.0x15.0mm_Layout18x18_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD', #old_modelName
+        modelName = 'BGA-324_15.0x15.0mm_Layout18x18_P0.8mm_Ball0.5mm_Pad0.4mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'BGA-324_19.0x19.0mm_Layout18x18_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD': Params( # from https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00474-02.pdf
+        fp_r = 0.8,     # first pin indicator radius
+        fp_d = 0.12,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0    , # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 19.0,       # body overall length
+        E = 19.0,       # body overall width
+        A1 = 0.5,  # body-board separation
+        A = 1.75,  # body overall height
+        b = 0.6,  # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 1.00,  # pin (center-to-center) distance
+        sp = 0.0, #seating plane (pcb penetration)
+        npx = 18,  # number of pins along X axis (width)
+        npy = 18,  # number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'BGA-324_19.0x19.0mm_Layout18x18_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD', #old_modelName
+        modelName = 'BGA-324_19.0x19.0mm_Layout18x18_P1.0mm_Ball0.5mm_Pad0.4mm_NSMD',
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
