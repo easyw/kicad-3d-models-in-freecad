@@ -922,6 +922,46 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'Texas_MicroStar_Junior_BGA-80_5.0x5.0mm_Layout9x9_P0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tlv320aic23b.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 5.00,       # body overall length
+        E = 5.00,       # body overall width
+        A1 = 0.20,  	# body-board separation
+        A = 1.00,  		# body  overall height
+        b = 0.30,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 9,  		# number of pins along X axis (width)
+        npy = 9,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'Texas_MicroStar_Junior_BGA-80_5.0x5.0mm_Layout9x9_P0.5mm', #old_modelName
+        modelName = 'Texas_MicroStar_Junior_BGA-80_5.0x5.0mm_Layout9x9_P0.5mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'Texas_MicroStar_Junior_BGA-113_7.0x7.0mm_Layout12x12_P0.5mm': Params( # from http://www.ti.com/lit/ml/mpbg674/mpbg674.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.00,       # body overall length
+        E = 7.00,       # body overall width
+        A1 = 0.20,  	# body-board separation
+        A = 1.00,  		# body  overall height
+        b = 0.30,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 12,  		# number of pins along X axis (width)
+        npy = 12,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'Texas_MicroStar_Junior_BGA-113_7.0x7.0mm_Layout12x12_P0.5mm', #old_modelName
+        modelName = 'Texas_MicroStar_Junior_BGA-113_7.0x7.0mm_Layout12x12_P0.5mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'Texas_Junior_DSBGA-48': Params( # from http://www.ti.com/lit/ml/mpbg309/mpbg309.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
@@ -942,6 +982,66 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'TFBGA-64_5x5mm_Layout8x8_P0.5mm': Params( # from http://www.st.com/resource/en/datasheet/stm32f100v8.pdf page 83
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 5.00,      # body overall length
+        E = 5.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.20,  		# body  overall height
+        b = 0.30,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 8,  		# number of pins along X axis (width)
+        npy = 8,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-64_5x5mm_Layout8x8_P0.5mm', #old_modelName
+        modelName = 'TFBGA-64_5x5mm_Layout8x8_P0.5mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'TFBGA-100_8x8mm_Layout10x10_P0.8mm': Params( # from http://www.st.com/resource/en/datasheet/stm32f746zg.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 8.00,      # body overall length
+        E = 8.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.10,  		# body  overall height
+        b = 0.40,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 10,  		# number of pins along X axis (width)
+        npy = 10,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-100_8x8mm_Layout10x10_P0.8mm', #old_modelName
+        modelName = 'TFBGA-100_8x8mm_Layout10x10_P0.8mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'TFBGA-100_9.0x9.0mm_Layout10x10_P0.8mm': Params( # from 
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 9.00,      # body overall length
+        E = 9.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.10,  		# body  overall height
+        b = 0.40,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 10,  		# number of pins along X axis (width)
+        npy = 10,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-100_9.0x9.0mm_Layout10x10_P0.8mm', #old_modelName
+        modelName = 'TFBGA-100_9.0x9.0mm_Layout10x10_P0.8mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'TFBGA-121_10x10mm_Layout11x11_P0.8mm': Params( # from http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#p495 
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.01,    # first pin indicator distance from edge
@@ -959,6 +1059,46 @@ kicad_naming_params_qfn = {
         excluded_pins = ("internals",), #pins to exclude -> None or "internals"
         old_modelName = 'TFBGA-121_10x10mm_Layout11x11_P0.8mm', #old_modelName
         modelName = 'TFBGA-121_10x10mm_Layout11x11_P0.8mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'TFBGA-216_13x13mm_Layout15x15_P0.8mm': Params( # from http://www.st.com/resource/en/datasheet/stm32f746zg.pdf page 219
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 13.00,      # body overall length
+        E = 13.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.10,  		# body  overall height
+        b = 0.40,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 15,  		# number of pins along X axis (width)
+        npy = 15,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-216_13x13mm_Layout15x15_P0.8mm', #old_modelName
+        modelName = 'TFBGA-216_13x13mm_Layout15x15_P0.8mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'TFBGA-265_14x14mm_Layout17x17_P0.8mm': Params( # from
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 14.00,      # body overall length
+        E = 14.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.10,  		# body  overall height
+        b = 0.40,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 17,  		# number of pins along X axis (width)
+        npy = 17,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-265_14x14mm_Layout17x17_P0.8mm', #old_modelName
+        modelName = 'TFBGA-265_14x14mm_Layout17x17_P0.8mm', #old_modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
@@ -1019,6 +1159,46 @@ kicad_naming_params_qfn = {
         excluded_pins = (None), #pins to exclude -> None or "internals"
         old_modelName = 'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm', #old_modelName
         modelName = 'ucBGA-36_2.5x2.5mm_Layout6x6_P0.4mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'WLP-4_0.83x0.83mm_P0.4mm': Params( #https://pdfserv.maximintegrated.com/package_dwgs/21-100107.PDF
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.02,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 0.828,      # body overall length
+        E = 0.828,      # body overall width
+        A1 = 0.19,      # body-board separation
+        A = 0.5,        # body  overall height
+        b = 0.27,       # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.4,        # pin (center-to-center) distance
+        sp = 0.0,       #seating plane (pcb penetration)
+        npx = 2,        # number of pins along X axis (width)
+        npy = 2,        # number of pins along y axis (length)
+        excluded_pins = (None), #pins to exclude -> None or "internals"
+        old_modelName = 'WLP-4_0.83x0.83mm_P0.4mm', #old_modelName
+        modelName = 'WLP-4_0.83x0.83mm_P0.4mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+    'WLP-4_0.86x0.86mm_P0.4mm': Params( #https://pdfserv.maximintegrated.com/package_dwgs/21-0612.PDF
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.02,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 0.835,      # body overall length
+        E = 0.835,      # body overall width
+        A1 = 0.19,      # body-board separation
+        A = 0.5,        # body  overall height
+        b = 0.27,       # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.4,        # pin (center-to-center) distance
+        sp = 0.0,       #seating plane (pcb penetration)
+        npx = 2,        # number of pins along X axis (width)
+        npy = 2,        # number of pins along y axis (length)
+        excluded_pins = (None), #pins to exclude -> None or "internals"
+        old_modelName = 'WLP-4_0.86x0.86mm_P0.4mm', #old_modelName
+        modelName = 'WLP-4_0.86x0.86mm_P0.4mm',
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
