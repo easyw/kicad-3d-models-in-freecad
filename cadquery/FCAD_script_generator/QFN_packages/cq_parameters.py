@@ -6987,4 +6987,389 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
+    'AMS_LGA-20_4.7x4.5mm_P0.65mm': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is AMS_LGA-20_4.7x4.5mm_P0.65mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.3,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,        # first pin indicator radius
+        fp_d = 0.5,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.5,         # body length
+        E = 4.7,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.26,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'AMS_LGA-20_4.7x4.5mm_P0.65mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Bosch_LGA-14_3x2.5mm_P0.5mm': Params(
+        #
+        # LGA-14 Bosch https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMI160-DS000-07.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Bosch_LGA-14_3x2.5mm_P0.5mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.5,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.5,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 3,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Bosch_LGA-14_3x2.5mm_P0.5mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.5,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.5,         # body length
+        E = 2.5,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 0,           # number of pins along X axis (width)
+        npy = 4,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering': Params(
+        #
+        # LGA-8, https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP280-DS001-18.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.5,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,         # body length
+        E = 2.5,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 0,           # number of pins along X axis (width)
+        npy = 4,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering': Params(
+        #
+        # Bosch  LGA, 8 Pin (https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf#page=44), generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.5,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.8,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 0,           # number of pins along X axis (width)
+        npy = 4,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'LGA-14_2x2mm_P0.35mm_LayoutBorder3x4y': Params(
+        #
+        # LGA, 14 Pin (http://www.st.com/resource/en/datasheet/lis2dh.pdf), generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is LGA-14_2x2mm_P0.35mm_LayoutBorder3x4y.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,         # body length
+        E = 2.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.14,          # pin width
+        e = 0.35,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 3,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'LGA-14_2x2mm_P0.35mm_LayoutBorder3x4y',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y': Params(
+        #
+        # LGA, 14 Pin (http://www.st.com/resource/en/datasheet/lsm6ds3.pdf), generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.4,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.5,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 3,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'LGA-14_3x5mm_P0.8mm_LayoutBorder1x6y': Params(
+        #
+        # LGA, 14 Pin (http://www.st.com/resource/en/datasheet/lsm303dlhc.pdf), generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is LGA-14_3x5mm_P0.8mm_LayoutBorder1x6y.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.6,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 5.0,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.32,          # pin width
+        e = 0.8,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 6,           # number of pins along X axis (width)
+        npy = 1,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'LGA-14_3x5mm_P0.8mm_LayoutBorder1x6y',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'LGA-8_3x5mm_P1.25mm': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is LGA-8_3x5mm_P1.25mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.95,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 5.0,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.39,          # pin width
+        e = 1.25,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 0,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'LGA-8_3x5mm_P1.25mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Linear_LGA-133_15.0x15.0_Layout12x12_P1.27mm': Params(
+        #
+        # Analog Devices (Linear Tech), 133-pin LGA uModule, 15.0x15.0x4.32mm, https://www.analog.com/media/en/technical-documentation/data-sheets/4637fc.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Linear_LGA-133_15.0x15.0_Layout12x12_P1.27mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.5,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,        # first pin indicator radius
+        fp_d = 0.5,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 15.0,         # body length
+        E = 15.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.5,          # pin width
+        e = 1.27,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 12,           # number of pins along X axis (width)
+        npy = 12,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Linear_LGA-133_15.0x15.0_Layout12x12_P1.27mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
+    'Texas_SIL0010A_MicroSiP-10-1EP_3.8x3mm_P0.6mm_EP0.7x2.9mm': Params(
+        #
+        # Texas SIL0010A MicroSiP, 10 Pin (http://www.ti.com/lit/ml/mpds579b/mpds579b.pdf), generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_SIL0010A_MicroSiP-10-1EP_3.8x3mm_P0.6mm_EP0.7x2.9mm_ThermalVias.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.8,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,        # first pin indicator radius
+        fp_d = 0.3,        # first pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,         # body length
+        E = 3.8,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.24,          # pin width
+        e = 0.6,          # pin (center-to-center) distance
+        m = 0.1,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 0,           # number of pins along y axis (length)
+        epad = (2.5, 0.7),       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_SIL0010A_MicroSiP-10-1EP_3.8x3mm_P0.6mm_EP0.7x2.9mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
+        ),
+
 }
