@@ -67,17 +67,11 @@ Defaultm =  0.0
 Defaultb =  0.2
 
 
-DefaultDestDirPrefix =  "../Package_SON.3dshapes/"
-
-
 #
-# the path to foot print file directory in relation to where this script is placed
+# The path to foot print file directory in relation to where this script is placed
 #
-FPDir = '../kicad-footprints/Package_SO.pretty'
-#
-# the path to foot print file directory in relation to where this script is placed
-#
-ModelDir = '../kicad-footprints/Package_SO.3dshapes'
+FPDir = '../../../../kicad-footprints/Package_SO.pretty'
+KISYS3DMOD = '../../../../kicad-packages3D'
 
 #
 # The name of the result files
@@ -530,8 +524,14 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                 line2 = line4.replace("\t", "/")
                 spline = line2.split('/')
                 if len(spline) > 2:
+                    NewA3Dmodel.destdirprefix = spline[1]
+                    NewA3Dmodel.filename = spline[2]
+                    spline2 = spline[2].split('.wrl')
+                    NewA3Dmodel.model = spline2[0]
+                    #
                     line2 = spline[1] + '/' + spline[2]
-                    Model3DFile = '../kicad-packages3D/' + line2
+                    Model3DFile = KISYS3DMOD + '/' + line2
+#                    print("Model3DFile " + Model3DFile);
                     Model3DFilePath = Path(Model3DFile)
                     if Model3DFilePath.exists():
                         #
@@ -539,11 +539,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         #
 #                        print("3D model exist, skipping it    " + subf);
                         return False
-                    filename = spline[2]
-                    spline2 = spline[2].split('.wrl')
-                    NewA3Dmodel.model = spline2[0]
-                    NewA3Dmodel.old_modelName = spline2[0]
-                    NewA3Dmodel.modelName = spline2[0]
+#                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
                     print("Exclude  " + subf + "   Something fuzzy about 3D model name")
                     return False
