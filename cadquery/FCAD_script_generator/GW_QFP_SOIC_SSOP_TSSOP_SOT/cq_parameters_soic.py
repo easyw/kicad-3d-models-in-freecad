@@ -2585,7 +2585,7 @@ part_params = {
         # The foot print that uses this 3D model is TSOP-I-32_18.4x8mm_P0.5mm.kicad_mod
         # 
         the = 9.0,         # body angle in degrees
-        tb_s = 0.15,       # top part of body is that much smaller
+        tb_s = 0.10,       # top part of body is that much smaller
         c = 0.1,           # pin thickness, body center part height
         R1 = 0.1,          # pin upper corner, inner radius
         R2 = 0.1,          # pin lower corner, inner radius
@@ -2622,7 +2622,7 @@ part_params = {
         # The foot print that uses this 3D model is TSOP-I-48_18.4x12mm_P0.5mm.kicad_mod
         # 
         the = 9.0,         # body angle in degrees
-        tb_s = 0.15,       # top part of body is that much smaller
+        tb_s = 0.10,       # top part of body is that much smaller
         c = 0.1,           # pin thickness, body center part height
         R1 = 0.1,          # pin upper corner, inner radius
         R2 = 0.1,          # pin lower corner, inner radius
@@ -2659,7 +2659,7 @@ part_params = {
         # The foot print that uses this 3D model is TSOP-I-56_18.4x14mm_P0.5mm.kicad_mod
         # 
         the = 9.0,         # body angle in degrees
-        tb_s = 0.15,       # top part of body is that much smaller
+        tb_s = 0.10,       # top part of body is that much smaller
         c = 0.1,           # pin thickness, body center part height
         R1 = 0.1,          # pin upper corner, inner radius
         R2 = 0.1,          # pin lower corner, inner radius
