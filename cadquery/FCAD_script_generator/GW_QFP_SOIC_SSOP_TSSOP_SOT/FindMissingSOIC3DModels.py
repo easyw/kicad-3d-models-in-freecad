@@ -116,9 +116,6 @@ ExcludeModels =[
                     'PowerPAK_SO-8_Dual.kicad_mod',
                     'PowerPAK_SO-8_Single.kicad_mod',
                     'Texas_R-PDSO-N5.kicad_mod',
-                    'TSOP-I-32_18.4x8mm_P0.5mm',            # Remvoed, the script can not handle wide as this one
-                    'TSOP-I-48_18.4x12mm_P0.5mm',           # Remvoed, the script can not handle wide as this one
-                    'TSOP-I-56_18.4x14mm_P0.5mm',           # Remvoed, the script can not handle wide as this one
                 ]
 
 #
@@ -166,9 +163,9 @@ SpecialModels =[
                 ['TSOP-II-44_10.16x18.41mm_P0.8mm',    10.16,  18.41,  11.66,  0.80,  0.25,   0,  22,   "None"],
                 ['TSOP-II-54_22.2x10.16mm_P0.8mm',     10.16,  22.20,  11.66,  0.80,  0.25,   0,  27,   "None"],        # X and Y is revered in the name
                 ['TSSOP-28_4.4x9.7mm_Pitch0.65mm',      4.40,   9.70,   5.90,  0.65,  0.30,   0,  14,   "None"],
-#                ['TSOP-I-32_18.4x8mm_P0.5mm',          18.40,   8.00,  19.90,  0.50,  0.20,   0,  16,   "None"],
-#                ['TSOP-I-48_18.4x12mm_P0.5mm',         18.40,  12.00,  19.90,  0.50,  0.20,   0,  24,   "None"],
-#                ['TSOP-I-56_18.4x14mm_P0.5mm',         18.40,  14.00,  19.90,  0.50,  0.20,   0,  28,   "None"],
+                ['TSOP-I-32_18.4x8mm_P0.5mm',          18.40,   8.00,  19.90,  0.50,  0.20,   0,  16,   "None"],
+                ['TSOP-I-48_18.4x12mm_P0.5mm',         18.40,  12.00,  19.90,  0.50,  0.20,   0,  24,   "None"],
+                ['TSOP-I-56_18.4x14mm_P0.5mm',         18.40,  14.00,  19.90,  0.50,  0.20,   0,  28,   "None"],
                 ]
                 
 
@@ -182,8 +179,9 @@ class A3Dmodel:
         self.subf = subf
         self.currfile = currfile
 
+        self.model = ''      #modelName
         self.the = 9.0       # body angle in degrees
-        self.tb_s = 0.15     # top part of body is that much smaller
+        self.tb_s = 0.10     # top part of body is that much smaller
         self.c = 0.1         # pin thickness, body center part height
         self.R1 = 0.1        # pin upper corner, inner radius
         self.R2 = 0.1        # pin lower corner, inner radius
@@ -210,6 +208,38 @@ class A3Dmodel:
         self.modelName = '' #modelName
         self.rotation = -90   # rotation if required
         self.numpin = 0
+
+        
+    #
+    # Clean up, this function is executed right before it is added to the list
+    #
+    def CleanUp(self):
+    
+        if self.E1 > 8.0:
+            self.tb_s = 0.10
+        else:
+            self.tbs = 0.15
+
+        if self.D1 < 4.0 or self.E1 < 4.0:
+            self.A2 = 1.0
+        else:
+            self.A2 = 1.5
+
+        if self.D1 < 4.0 or self.E1 < 4.0:
+            if self.D1 < 2.0 or self.E1 < 2.0:
+                self.fp_r = 0.1
+                self.fp_d = 0.1
+            else:
+                self.fp_r = 0.2
+                self.fp_d = 0.3
+        else:
+            self.fp_r = 0.4
+            self.fp_d = 0.5
+            
+        self.old_modelName = self.model
+        self.modelName = self.model
+    
+    
     #
     # Print the module on stdout, for debuging purpose
     #
@@ -441,18 +471,8 @@ class A3Dmodel:
         datafile.write('        S  = ' + str(round(self.S, 2)) + ',          # pin top flat part length (excluding corner arc)\n')
         datafile.write('#        L = ' + str(round(self.L, 2)) + ',         # pin bottom flat part length (including corner arc)\n')
         datafile.write('        fp_s = ' + str(round(self.fp_s, 2)) + ',          # True for circular pinmark, False for square pinmark (useful for diodes)\n')
-
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            if self.D1 < 2.0 or self.E1 < 2.0:
-                datafile.write("        fp_r = 0.1,        # first pin indicator radius\n")
-                datafile.write("        fp_d = 0.05,       # first pin indicator distance from edge\n")
-            else:
-                datafile.write("        fp_r = 0.2,        # first pin indicator radius\n")
-                datafile.write("        fp_d = 0.3,        # first pin indicator distance from edge\n")
-        else:
-            datafile.write("        fp_r = 0.4,        # first pin indicator radius\n")
-            datafile.write("        fp_d = 0.5,        # first pin indicator distance from edge\n")
-
+        datafile.write('        fp_r = ' + str(round(self.fp_r, 2)) + ',          # First pin indicator radius\n')
+        datafile.write('        fp_d = ' + str(round(self.fp_d, 2)) + ',          # First pin indicator distance from edge\n')
         datafile.write('        fp_z = ' + str(round(self.fp_z , 2)) + ',       # first pin indicator depth\n')
         datafile.write('        ef = ' + str(round(self.ef, 2)) + ',          # fillet of edges  Note: bigger bytes model with fillet\n')
         datafile.write('        cc1 = ' + str(round(self.cc1, 2)) + ',        # 0.45 chamfer of the 1st pin corner\n')
@@ -460,12 +480,7 @@ class A3Dmodel:
         datafile.write('        E1 = ' + str(round(self.E1, 2)) + ',         # body width\n')
         datafile.write('        E = ' + str(round(self.E, 2)) + ',          # body overall width\n')
         datafile.write('        A1 = ' + str(round(self.A1 , 2)) + ',          # body-board separation\n')
-
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            datafile.write("        A2 = 1.0,          # body height\n")
-        else:
-            datafile.write("        A2 = 1.5,          # body height\n")
-
+        datafile.write('        A2 = ' + str(round(self.A2 , 2)) + ',          # body height\n')
         datafile.write('        b = ' + str(round(self.b, 2)) + ',          # pin width\n')
         datafile.write('        e = ' + str(round(self.e, 2)) + ',          # pin (center-to-center) distance\n')
         datafile.write('        npx = ' + str(round(self.npx, 2)) + ',           # number of pins along X axis (width)\n')
@@ -618,6 +633,7 @@ def FindMissingModels():
                     #
                     if AddMissing:
                         print("Creating " + NewA3Dmodel.model);
+                        NewA3Dmodel.CleanUp()
                         MissingModels.append(NewA3Dmodel)
 #                    NewA3Dmodel.Print()
 
