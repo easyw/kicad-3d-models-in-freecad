@@ -87,7 +87,9 @@ MakeAllfile = 'MakeFindMissingDIP3DModels.sh'
 FreeCadExe = '/c/users/stefan/Downloads/FreeCAD_0.17.11223_x64_dev_win/FreeCAD_0.17.11223_x64_dev_win/bin/FreeCAD.exe'
 MainGenerator = 'main_generator.py '
 
-
+#
+# This list will hold the missing 3D models
+#
 MissingModels = []
 
 #
@@ -341,6 +343,8 @@ def DoNotExcludeModel(subf):
 # Check if a 3D model given in the foot print file is misisng in the 3D model directory
 #
 def ModelDoNotExist(subf, currfile, NewA3Dmodel):
+
+    global SkippingModelCnt
     #
     # Shall the model be excluded becaouse it already exist
     #
@@ -379,6 +383,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         # 3D model already exist
                         #
 #                        print("3D model exist, skipping it    " + subf);
+                        SkippingModelCnt = SkippingModelCnt - 1
                         return False
 #                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
@@ -420,6 +425,7 @@ def IsNotSpecialModel(NewA3Dmodel):
 #
 def FindMissingModels():
 
+    global SkippingModelCnt
     #
     print("Checking dir: " + FPDir)
     currdir = FPDir

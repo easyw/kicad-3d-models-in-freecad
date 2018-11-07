@@ -460,6 +460,8 @@ def DoNotExcludeModel(subf):
 # Check if a 3D model given in the foot print file is misisng in the 3D model directory
 #
 def ModelDoNotExist(subf, currfile, NewA3Dmodel):
+
+    global SkippingModelCnt
     #
     # Shall the model be excluded becaouse it already exist
     #
@@ -495,6 +497,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         # 3D model already exist
                         #
 #                        print("3D model exist, skipping it    " + subf);
+                        SkippingModelCnt = SkippingModelCnt - 1
                         return False
 #                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
@@ -538,6 +541,7 @@ def IsNotSpecialModel(NewA3Dmodel):
 #
 def FindMissingModels():
 
+    global SkippingModelCnt
     #
     print("Checking dir: " + FPDir)
     currdir = FPDir
