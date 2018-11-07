@@ -67,6 +67,8 @@ Defaultm =  0.0
 Defaultb =  0.2
 
 
+SkippingModelCnt = 0
+
 #
 # The path to foot print file directory in relation to where this script is placed
 #
@@ -82,7 +84,7 @@ MakeAllfile = 'MakeFindMissingQFP3DModels.sh'
 # The path to FreeCad, this path will be used in the MakeFindMissingXXX3DModels.sh script
 #
 FreeCadExe = '/c/users/stefan/Downloads/FreeCAD_0.17.11223_x64_dev_win/FreeCAD_0.17.11223_x64_dev_win/bin/FreeCAD.exe'
-MainGenerator = 'main_generator.py'
+MainGenerator = 'main_generator.py model_filter='
 
 
 MissingModels = []
@@ -145,6 +147,28 @@ class A3Dmodel:
         self.numpin = 0
         
         
+    #
+    # Clean up, this function is executed right before it is added to the list
+    #
+    def CleanUp(self):
+
+        if self.D1 < 4.0 or self.E1 < 4.0:
+            if self.D1 < 2.0 or self.E1 < 2.0:
+                self.fp_r = 0.1
+                self.fp_d = 0.05
+            else:
+                self.fp_r = 0.2
+                self.fp_d = 0.3
+        else:
+            self.fp_r = 0.4
+            self.fp_d = 0.5
+
+        if self.D1 < 4.0 or self.E1 < 4.0:
+            self.A2 = 1.0
+        else:
+            self.A2 = 1.5
+
+
     #
     # Print the module on stdout, for debuging purpose
     #
@@ -376,18 +400,8 @@ class A3Dmodel:
         datafile.write('        S  = ' + str(round(self.S, 2)) + ',          # pin top flat part length (excluding corner arc)\n')
         datafile.write('#        L = ' + str(round(self.L, 2)) + ',         # pin bottom flat part length (including corner arc)\n')
         datafile.write('        fp_s = ' + str(round(self.fp_s, 2)) + ',          # True for circular pinmark, False for square pinmark (useful for diodes)\n')
-
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            if self.D1 < 2.0 or self.E1 < 2.0:
-                datafile.write("        fp_r = 0.1,        # first pin indicator radius\n")
-                datafile.write("        fp_d = 0.05,       # first pin indicator distance from edge\n")
-            else:
-                datafile.write("        fp_r = 0.2,        # first pin indicator radius\n")
-                datafile.write("        fp_d = 0.3,        # first pin indicator distance from edge\n")
-        else:
-            datafile.write("        fp_r = 0.4,        # first pin indicator radius\n")
-            datafile.write("        fp_d = 0.5,        # first pin indicator distance from edge\n")
-
+        datafile.write('        fp_r = ' + str(round(self.fp_r, 2)) + ',          # First pin indicator radius\n')
+        datafile.write('        fp_d = ' + str(round(self.fp_d, 2)) + ',          # First pin indicator distance from edge\n')
         datafile.write('        fp_z = ' + str(round(self.fp_z , 2)) + ',       # first pin indicator depth\n')
         datafile.write('        ef = ' + str(round(self.ef, 2)) + ',          # fillet of edges  Note: bigger bytes model with fillet\n')
         datafile.write('        cc1 = ' + str(round(self.cc1, 2)) + ',        # 0.45 chamfer of the 1st pin corner\n')
@@ -395,12 +409,7 @@ class A3Dmodel:
         datafile.write('        E1 = ' + str(round(self.E1, 2)) + ',         # body width\n')
         datafile.write('        E = ' + str(round(self.E, 2)) + ',          # body overall width\n')
         datafile.write('        A1 = ' + str(round(self.A1 , 2)) + ',          # body-board separation\n')
-
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            datafile.write("        A2 = 1.0,          # body height\n")
-        else:
-            datafile.write("        A2 = 1.5,          # body height\n")
-
+        datafile.write('        A2 = ' + str(round(self.A2 , 2)) + ',          # body height\n')
         datafile.write('        b = ' + str(round(self.b, 2)) + ',          # pin width\n')
         datafile.write('        e = ' + str(round(self.e, 2)) + ',          # pin (center-to-center) distance\n')
         datafile.write('        npx = ' + str(round(self.npx, 2)) + ',           # number of pins along X axis (width)\n')
@@ -410,13 +419,14 @@ class A3Dmodel:
         datafile.write("        old_modelName = '" + self.old_modelName + "',            # modelName\n")
         datafile.write("        modelName = '" + self.modelName + "',            # modelName\n")
         datafile.write('        rotation = ' + str(self.rotation) + ',      # rotation if required\n')
+        datafile.write("#        dest_dir_prefix = '../" + self.dest_dir_prefix + "',      # destination directory\n")
         
         datafile.write('        ),\n\n')
 
         #
         # Create the FreeCad command line
         #
-        commandfile.write(FreeCadExe + ' ' + MainGenerator + '  model_filter=' + self.model + '\n')
+        commandfile.write(FreeCadExe + ' ' + MainGenerator + self.model + '\n')
 
 #
 # Check if a foot print file should be excluded form being scanned
@@ -459,7 +469,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                 line2 = line4.replace("\t", "/")
                 spline = line2.split('/')
                 if len(spline) > 2:
-                    NewA3Dmodel.destdirprefix = spline[1]
+                    NewA3Dmodel.dest_dir_prefix = spline[1]
                     NewA3Dmodel.filename = spline[2]
                     spline2 = spline[2].split('.wrl')
                     NewA3Dmodel.model = spline2[0]
@@ -554,31 +564,59 @@ def FindMissingModels():
                     #
                     if AddMissing:
                         print("Creating " + NewA3Dmodel.model);
+                        NewA3Dmodel.CleanUp()
                         MissingModels.append(NewA3Dmodel)
+                else:
+                    SkippingModelCnt = SkippingModelCnt + 1
 #                    NewA3Dmodel.Print()
 
 
 def SaveMissingModels():
 
-    datafile = open(ResultFile, "w") 
-    commandfile = open(MakeAllfile, "w") 
-    
-    commandfile.write('#!/bin/sh\n\n')
-    
-    for n in MissingModels:
-        n.PrintMissingModels(datafile, commandfile)
 
-    datafile.close()
-    commandfile.close()
+    if os.path.isfile(ResultFile):
+        os.remove(ResultFile)
 
-    print("Add paramters in " + ResultFile + " to file cq_parameters_qfp.py")
+    if os.path.isfile(MakeAllfile):
+        os.remove(MakeAllfile)
+    
+    if len(MissingModels) > 0:
+        datafile = open(ResultFile, "w") 
+        commandfile = open(MakeAllfile, "w") 
+        
+        commandfile.write('#!/bin/sh\n\n')
+        
+        for n in MissingModels:
+            n.PrintMissingModels(datafile, commandfile)
+
+        datafile.close()
+        commandfile.close()
+        
+        print(" ")
     
 
 def main(argv):
 
+    global MissingModels
+    global SkippingModelCnt
+
+    SkippingModelCnt = 0
+
     MissingModels = []
     FindMissingModels()
     SaveMissingModels()
+    
+    if len(MissingModels) == 0 and SkippingModelCnt == 0:
+        print("No missing 3D models was found")
+        
+    if len(MissingModels) > 0:
+        print(str(len(MissingModels)) + " 3D models was missing")
+        print("Add paramters in " + ResultFile + " to file cq_parameters.py")
+        print("And execute batch file " + MakeAllfile)
+    
+    if SkippingModelCnt > 0:
+        print(str(SkippingModelCnt) + " Foot prints was skipped, add them to the ExcludeModels list or SpecialModels list")
+
         
 if __name__ == "__main__":
     main(sys.argv[1:])
