@@ -79,8 +79,8 @@ KISYS3DMOD = '../../../../kicad-packages3D'
 #
 # The name of the result files
 #
-ResultFile = 'MissingQFN3DModels.txt'
-MakeAllfile = 'MakeFindMissingQFN3DModels.sh'
+ResultFile = 'MissingLGA3DModels.txt'
+MakeAllfile = 'MakeFindMissingLGA3DModels.sh'
 #
 # The path to FreeCad, this path will be used in the MakeFindMissingXXX3DModels.sh script
 #
@@ -529,7 +529,7 @@ def IsNotSpecialModel(NewA3Dmodel):
             NewA3Dmodel.m = n[6]
             NewA3Dmodel.npy = n[7]
             NewA3Dmodel.npx = n[8]
-            NewA3Dmodel.excluded_pins = n[8]
+            NewA3Dmodel.excluded_pins = n[9]
 #            print("Special  " + NewA3Dmodel.subf)
             return False
 
