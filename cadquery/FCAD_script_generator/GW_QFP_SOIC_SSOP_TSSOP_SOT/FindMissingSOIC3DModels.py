@@ -67,6 +67,9 @@ Defaultm =  0.0
 Defaultb =  0.2
 
 
+SkippingModelCnt = 0
+
+
 #
 # The path to foot print file directory in relation to where this script is placed
 #
@@ -84,7 +87,9 @@ MakeAllfile = 'MakeFindMissingSO3DModels.sh'
 FreeCadExe = '/c/users/stefan/Downloads/FreeCAD_0.17.11223_x64_dev_win/FreeCAD_0.17.11223_x64_dev_win/bin/FreeCAD.exe'
 MainGenerator = 'main_generator.py'
 
-
+#
+# This list will hold the missing 3D models
+#
 MissingModels = []
 
 #
@@ -208,6 +213,7 @@ class A3Dmodel:
         self.modelName = '' #modelName
         self.rotation = -90   # rotation if required
         self.numpin = 0
+        self.dest_dir_prefix = ''
 
         
     #
@@ -490,7 +496,8 @@ class A3Dmodel:
         datafile.write("        old_modelName = '" + self.old_modelName + "',            # modelName\n")
         datafile.write("        modelName = '" + self.modelName + "',            # modelName\n")
         datafile.write('        rotation = ' + str(self.rotation) + ',      # rotation if required\n')
-        
+        datafile.write("#        dest_dir_prefix = '../" + self.dest_dir_prefix + "',      # destination directory\n")
+
         datafile.write('        ),\n\n')
 
         #
@@ -520,6 +527,8 @@ def DoNotExcludeModel(subf):
 # Check if a 3D model given in the foot print file is misisng in the 3D model directory
 #
 def ModelDoNotExist(subf, currfile, NewA3Dmodel):
+
+    global SkippingModelCnt
     #
     # Shall the model be excluded becaouse it already exist
     #
@@ -539,10 +548,12 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                 line2 = line4.replace("\t", "/")
                 spline = line2.split('/')
                 if len(spline) > 2:
-                    NewA3Dmodel.destdirprefix = spline[1]
+                    NewA3Dmodel.dest_dir_prefix = spline[1]
                     NewA3Dmodel.filename = spline[2]
                     spline2 = spline[2].split('.wrl')
                     NewA3Dmodel.model = spline2[0]
+                    NewA3Dmodel.modelName = NewA3Dmodel.model
+                    NewA3Dmodel.old_modelName = NewA3Dmodel.model
                     #
                     line2 = spline[1] + '/' + spline[2]
                     Model3DFile = KISYS3DMOD + '/' + line2
@@ -553,6 +564,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         # 3D model already exist
                         #
 #                        print("3D model exist, skipping it    " + subf);
+                        SkippingModelCnt = SkippingModelCnt - 1
                         return False
 #                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
@@ -594,6 +606,7 @@ def IsNotSpecialModel(NewA3Dmodel):
 #
 def FindMissingModels():
 
+    global SkippingModelCnt
     #
     print("Checking dir: " + FPDir)
     currdir = FPDir
@@ -640,25 +653,50 @@ def FindMissingModels():
 
 def SaveMissingModels():
 
-    datafile = open(ResultFile, "w") 
-    commandfile = open(MakeAllfile, "w") 
-    
-    commandfile.write('#!/bin/sh\n\n')
-    
-    for n in MissingModels:
-        n.PrintMissingModels(datafile, commandfile)
 
-    datafile.close()
-    commandfile.close()
+    if os.path.isfile(ResultFile):
+        os.remove(ResultFile)
+
+    if os.path.isfile(MakeAllfile):
+        os.remove(MakeAllfile)
+    
+    if len(MissingModels) > 0:
+        datafile = open(ResultFile, "w") 
+        commandfile = open(MakeAllfile, "w") 
         
+        commandfile.write('#!/bin/sh\n\n')
+        
+        for n in MissingModels:
+            n.PrintMissingModels(datafile, commandfile)
+
+        datafile.close()
+        commandfile.close()
+        
+        print(" ")
+    
 
 def main(argv):
+
+    global MissingModels
+    global SkippingModelCnt
+
+    SkippingModelCnt = 0
 
     MissingModels = []
     FindMissingModels()
     SaveMissingModels()
+    
+    if len(MissingModels) == 0 and SkippingModelCnt == 0:
+        print("No missing 3D models was found")
+        
+    if len(MissingModels) > 0:
+        print(str(len(MissingModels)) + " 3D models was missing")
+        print("Add paramters in " + ResultFile + " to file cq_parameters.py")
+        print("And execute batch file " + MakeAllfile)
+    
+    if SkippingModelCnt > 0:
+        print(str(SkippingModelCnt) + " Foot prints was skipped, add them to the ExcludeModels list or SpecialModels list")
+
         
 if __name__ == "__main__":
     main(sys.argv[1:])
-        
-        

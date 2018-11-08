@@ -1,9 +1,9 @@
 #
 #
-# Auto create QFP 3D models     version 1.0
+# Auto create BGA 3D models     version 1.0
 #
 # Script to scan SOIC foot print files and create 3D model paramters for those 3D models that 
-# is missing in \Package_QFP.3dshapes
+# is missing in \Package_BGA.3dshapes
 #
 # This script scan all the foot print files , extract the 3D models file name 
 # and check if the specified 3D model exists, if not, the script will create 
@@ -61,30 +61,38 @@ from datetime import datetime as dt
 import re
 from pathlib import Path
 
-DefaultA1 = 0.1
+DefaultA1 = 0.025
+DefaultA2 = 0.75
 DefaultA =  1.0
 Defaultm =  0.0
 Defaultb =  0.2
 
 
 SkippingModelCnt = 0
+ModelExist = False
 
 #
 # The path to foot print file directory in relation to where this script is placed
 #
-FPDir = '../../../../kicad-footprints/Package_QFP.pretty'
+FPDir = '../../../../kicad-footprints/Package_BGA.pretty'
 KISYS3DMOD = '../../../../kicad-packages3D'
 
 #
 # The name of the result files
 #
-ResultFile = 'MissingQFP3DModels.txt'
-MakeAllfile = 'MakeFindMissingQFP3DModels.sh'
+ResultFile = 'MissingBGA3DModels.txt'
+MakeAllfile = 'MakeFindMissingBGA3DModels.sh'
 #
 # The path to FreeCad, this path will be used in the MakeFindMissingXXX3DModels.sh script
 #
 FreeCadExe = '/c/users/stefan/Downloads/FreeCAD_0.17.11223_x64_dev_win/FreeCAD_0.17.11223_x64_dev_win/bin/FreeCAD.exe'
-MainGenerator = 'main_generator.py model_filter='
+MainGenerator = 'main_generator.py '
+Parameters_Py = 'cq_parameters.py'
+
+#
+# this list contain the foot print that is missing it's 3D model but the 3D model is specified in the parameter file
+#
+MissingModelsInParameters = []
 
 #
 # This list will hold the missing 3D models
@@ -95,22 +103,23 @@ MissingModels = []
 # If a foot print file name is in the ExcludeModels list it will not be created
 #
 ExcludeModels =[
-#                    'Infineon_PQFN-22-15-4EP_6x5mm_P0.65mm.kicad_mod', 
+                'Texas_SIL0010A_MicroSiP-10-1EP_3.8x3mm_P0.6mm_EP0.7x2.9mm.kicad_mod', 
+                'BGA-132_12x18mm_Layout11x17_P0.5mm.kicad_mod', 
+                'BGA-152_14x18mm_Layout13x17_P0.5mm.kicad_mod',
+                'LFBGA-169_16x12mm_Layout28x14_P0.5mm_Ball0.3_Pad0.3mm_NSMD.kicad_mod', 
+                'Texas_DSBGA-5_0.822x1.116mm_Layout2x1x2_P0.4mm.kicad_mod',
+                'BGA-152_14x18mm_Layout13x17_P0.5mm.kicad_mod'
                 ]
 
 #
 # If a foot print file contian a model name (xxxx.wrl) that is in the SpecialModels list 
 # it will will be created with those parameters given in the list
 #
-# model, D1, E1, E, e, b, npx, npy, excluded_pins
+# model, D, E, e, b, L, m, npy, npx, excluded_pins
 #
 SpecialModels =[
-#                ['MSOP-12-16-1EP_3x4mm_P0.5mm_EP1.65x2.85mm',                   3.0,  4.00,  4.40,  0.50,  0.200,   0,  16,   "[2, 4, 13, 15]"],
-                ]
-                
-
-       
-                
+#                    ['Linear_LGA-133_15.0x15.0_Layout12x12_P1.27mm',           15.00,  15.00,   1.27,   0.50,   0.50,   0.10,   12,   12, 'None'],
+               ]
                 
 class A3Dmodel:
 
@@ -121,32 +130,41 @@ class A3Dmodel:
 
         self.the = 12.0      # body angle in degrees
         self.tb_s = 0.15     # top part of body is that much smaller
+        self.K = 0.2         # Fillet radius for pin edges
         self.c = 0.1         # pin thickness, body center part height
         self.R1 = 0.1        # pin upper corner, inner radius
         self.R2 = 0.1        # pin lower corner, inner radius
         self.S = 0.10        # pin top flat part length (excluding corner arc)
-        self.L = 0.60        # pin bottom flat part length (including corner arc)
+        self.L = 0.30        # pin bottom flat part length (including corner arc)
         self.fp_s = True     # True for circular pinmark, False for square pinmark (useful for diodes)
         self.fp_r = 0.5      # first pin indicator radius
         self.fp_d = 0.20     # first pin indicator distance from edge
-        self.fp_z = 0.10     # first pin indicator depth
+        self.fp_z = 0.02     # first pin indicator depth
         self.ef = 0.0        # fillet of edges  Note: bigger bytes model with fillet
         self.cc1 = 0.25      # 0.45 chamfer of the 1st pin corner
+        self.cce = 0.20      # 0.45 chamfer of the epad 1st pin corner
         self.D1 = 0.0        # body length
         self.E1 = 0.0        # body width
+        self.D =  0.0        # body overall width
         self.E =  0.0        # body overall width
-        self.A1 = 0.1        # body-board separation
-        self.A2 = 0.0        # body height
+        self.A1 = DefaultA1  # body-board separation
+        self.A2 = DefaultA2  # body height
+        self.A = DefaultA2   # body height
         self.b = 0.0         # pin width
         self.e = 0.0         # pin (center-to-center) distance
+        self.m = 0.1         # margin between pins and body 
+        self.ps = 'square'   # rounded, square pads
         self.npx = 0         # number of pins along X axis (width)
         self.npy = 0         # number of pins along y axis (length)
         self.epad = 'None'   # e Pad
-        self.excluded_pins = 'None' #no pin excluded
-        self.old_modelName = ''    #modelName
-        self.modelName = '' #modelName
-        self.rotation = -90   # rotation if required
+        self.excluded_pins = 'None' # no pin excluded
+        self.model = ''             # modelName
+        self.old_modelName = ''     # modelName
+        self.modelName = ''         # modelName
+        self.rotation = -90         # rotation if required
         self.numpin = 0
+        self.dest_dir_prefix = ''
+        self.descr = ''
         
         
     #
@@ -154,23 +172,14 @@ class A3Dmodel:
     #
     def CleanUp(self):
 
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            if self.D1 < 2.0 or self.E1 < 2.0:
-                self.fp_r = 0.1
-                self.fp_d = 0.05
-            else:
-                self.fp_r = 0.2
-                self.fp_d = 0.3
+        if self.D < 2.0 or self.E < 2.0:
+            self.fp_r = 0.2
+            self.fp_d = 0.1
         else:
             self.fp_r = 0.4
-            self.fp_d = 0.5
-
-        if self.D1 < 4.0 or self.E1 < 4.0:
-            self.A2 = 1.0
-        else:
-            self.A2 = 1.5
-
-
+            self.fp_d = 0.3
+        
+        
     #
     # Print the module on stdout, for debuging purpose
     #
@@ -196,187 +205,79 @@ class A3Dmodel:
         
 
         #
-        # Extract what is possible from the model name
+        sizesx = 0.0
+        sizesy = 0.0
+        sizeex = 0.0
+        sizeey = 0.0
+        self.b = 0.0
+        self.e = 0.0
+        self.npx = 0
+        self.npy = 0
         #
-#        print("self.subf " + self.subf)
-        li0 = self.subf.replace("_Pad", "_XXX")
-        li2 = li0.replace("_PullBack", "_XXX")
-        li3 = li2.replace("_PQFN", "_XXX")
-        li0 = li3.replace("_Pitch", "_P")
-        li1 = li0.replace("Linear_MSOP-", "Linear-MSOP-")
-        #
-        # Extract pitch
-        #
-        FoundPitch = False
-        if '_P' in li1:
-            spline = li1.split('_P')
-            spline2 = spline[1].split('mm')
-            try:
-                self.e = float(spline2[0])
-                FoundPitch = True
-            except ValueError:
-                print("_P in file name is wrong, skipping " + self.subf)
-                return False
-        else:
-            print("_P dont exist in file name, skipping add to exclude or special list " + self.subf)
-            return False
-        
-        #
-        # Extract body size, 
-        # trying to extract 11.0x15.9mm from HSOP-20-1EP_11.0x15.9mm_P1.27mm_SlugDown
-        #
-        FoundSize = False
-        spline = li1.split('_')
-        spline1 = spline[1].split('mm')
-        spline2 = spline1[0].split('x')
-        if len(spline2) == 2:
-            try:
-                self.E1 = float(spline2[0])
-            except ValueError:
-                print("First parameter in body size parameter in file name is wrong, skipping " + self.subf)
-                return False
-            try:
-                self.D1 = float(spline2[1])
-                FoundSize = True
-            except ValueError:
-                print("Second parameter in body size parameter in file name is wrong, skipping " + self.subf)
-                return False
-            
-        else:
-            print("size is 1 or more than 2 parameters, skipping, add to exclude or special list " + self.subf)
-            return False
-        
-#        print("E1, D1 " + str(self.E1), str(self.D1))
-        #
-        # Extract epad size
-        # trying to extract 3.4x6.5mm from HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.kicad_mod
-        #
-        FoundEPad = False
-        self.epad = 'None'
-        if '_EP' in li1:
-            spline = li1.split('_EP')
-            spline2 = spline[1].split('mm')
-            spline3 = spline2[0].split('x')
-            EPadx = 0.0
-            if len(spline3) == 2:
-                try:
-                    EPadx = float(spline3[0])
-                except ValueError:
-                    print("first EPad parameter in file name is wrong, skipping " + self.subf)
-                    return False
-                try:
-                    EPady = float(spline3[1])
-                    if EPady > (self.D1 - 0.5):
-                        EPady = self.D1 - 0.5
-                        if EPady < 0.3:
-                            EPady = 0.2
-                    self.epad = '(' + str(EPady) + ', ' + str(round(EPadx, 2)) + ')'
-                    FoundEPad = True
-                except ValueError:
-                    print("Second EPad parameter in file name is wrong, skipping " + self.subf)
-                    return False
-                
-            else:
-                print("EPad parameter is 1 or more than 2 parameters, skipping, add to exclude or special list " + self.subf)
-                return False
-        
-#        print("epad " + self.epad)
-        #
-        # Extract number of pins
-        # trying to extract 20 from HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.kicad_mod
-        #
-        FoundPinNum = False
-        self.numpin = 0
-        spline = li1.split('_')
-        spline1 = spline[0].split('-')
-        li1 = spline1[len(spline1) - 1]
-        try:
-            if li1 == '1EP':
-                li1 = spline1[len(spline1) - 2]
-                
-            self.numpin = int(li1)
-            FoundPinNum = True
-        except ValueError:
-            print("Pin number is missing in file name, skipping, add to exclude or special list " + self.subf)
-            return False
-
-#        print("self.numpin " + str(self.numpin))
-        PinPos = []
-        #
-        # Collect all pads to calculte npx and npy
-        #
-        minx = 0.0
-        maxx = 0.0
-        
         with open(self.currfile) as currf:
             for line in currf:
-                #
-                if 'pad' in line and ('layers F.Cu F.Paste F.Mask' in line or 'layers F.Cu F.Mask F.Paste' in line) and 'at' in line:
-                    spline = line.split('at ')
-                    spline2 = spline[1].split(')')
-                    spline3 = spline2[0].split(' ')
-                    x = float(spline3[0])
-                    y = float(spline3[1])
-                    minx = min(minx, x)
-                    maxx = max(maxx, x)
-                    PinMissing = True
-                    for i in range(len(PinPos)):
-                        if math.fabs(PinPos[i][0] - x) < 0.0001:
-                            PinMissing = False
-                            PinPos[i][2] = PinPos[i][2] + 1
-                    if PinMissing:
-                        PinPos.append([x, y, 1])
-
-                    spline = line.split('size ')
-                    spline2 = spline[1].split(')')
-                    spline3 = spline2[0].split(' ')
-                    w = float(spline3[0])
-                    h = float(spline3[1])
-                    self.b = round(h * 0.70, 2)
-                    if self.b > (self.e / 2.5):
-                        #
-                        # Pad is probably rotated
-                        #
-                        self.b = round(self.e / 2.5, 2)
-
-                    self.E = (maxx - minx) + 1.0
-#        for i in range(len(PinPos)):
-#            print("PinPos[" + str(i) + "] = " + str(PinPos[i][0]) + ", " + str(PinPos[i][1]) + ", " + str(PinPos[i][2]))
-
-        if len(PinPos) == 2:
-            #
-            # Only got pins along y-axis
-            #
-            if PinPos[0][2] == PinPos[1][2]:
-                self.npy = 0
-                self.npx = PinPos[0][2]
-            else:
-                print("Pads are unequal on left and right side, skipping, add to exclude or special list " + self.subf)
-                return False
+                if line.startswith('  (fp_line') and 'F.Fab' in line:
+                    line2 = line.replace("(", " ")
+                    line = line2.replace(")", " ")
+                    spline = line.split(' ')
+                    sizesx = min(sizesx, float(spline[7]))
+                    sizesx = min(sizesx, float(spline[12]))
+                    sizeex = max(sizeex, float(spline[7]))
+                    sizeex = max(sizeex, float(spline[12]))
+                    #
+                    sizesy = min(sizesy, float(spline[6]))
+                    sizesy = min(sizesy, float(spline[11]))
+                    sizeey = max(sizeey, float(spline[6]))
+                    sizeey = max(sizeey, float(spline[11]))
+                    #
+        #
+        self.D = (0.0 - sizesx) + sizeex
+        self.E = (0.0 - sizesy) + sizeey
+        #
+        #
+        spline = self.subf.split('-')
+        if spline[0] == "Maxim_WLP":
+            spline2 = spline[1].split('.')
+            li1 = spline2[0]                
+        elif "_" in spline[0] or "BGA" in spline[0] or "WLP" in spline[0]:
+            spline2 = spline[1].split('_')
+            li1 = spline2[0]
         else:
-            ssum = 0
-            hnum = 0
-            for i in range(len(PinPos)):
-                ssum = ssum + PinPos[i][2]
-                if PinPos[i][2] > hnum:
-                    hnum = PinPos[i][2]
-            #
-            if ssum == self.numpin:
-                #
-                # number of pads is equal to the number of found
-                #
-                self.npx = hnum
-                self.npy = int((self.numpin - (hnum + hnum)) / 2)
-            else:
-                print("Pads are missing, skipping, add to exclude or special list " + self.subf)
-                return False
+            spline2 = spline[2].split('_')
+            li1 = spline2[0]
             
-            
+        fnp = float(li1)
+        fnp = math.sqrt(fnp)
+        fnp = round(fnp)
+        self.npx = int(fnp)
+        self.npy = self.npx
+
+        #
+        #
+        if '_P' in self.subf:
+            spline = self.subf.split('_P')
+            li1 = spline[1]
+            spline = li1.split('mm')
+            self.e = float(spline[0])
+            self.b = self.e / 2.0
+        if '_Ball' in self.subf:
+            spline1 = self.subf.split('_Ball')
+            spline2 = spline1[1].split('_')
+            spline3 = spline2[0].split('mm')
+            self.b = float(spline3[0])
+        if '_Layout' in self.subf:
+            spline1 = self.subf.split('_Layout')
+            spline2 = spline1[1].split('_')
+            spline3 = spline2[0].split('x')
+            self.npy = int(spline3[0])
+            self.npx = int(spline3[1])
+        #
+        
         if self.npx == 0 and self.npy == 0:
             print("Could not calculte number of pads, skipping, add to exclude or special list " + self.subf)
             sys.exit()
             return False
-        
+
         return True
             
     #
@@ -385,44 +286,33 @@ class A3Dmodel:
     def PrintMissingModels(self, datafile, commandfile):
 
 
-        
         datafile.write("    '" + self.model + "': Params(\n")
         datafile.write("        #\n")
         datafile.write("        # " + self.descr + "\n")
         datafile.write("        # This model have been auto generated based on the foot print file\n")
-        datafile.write("        # A number of paramters have been fixed or guessed, such as A2\n")
+        datafile.write("        # A number of paramters have been fixed or guessed, such as A and A1\n")
         datafile.write("        # \n")
         datafile.write("        # The foot print that uses this 3D model is " + self.subf + "\n")
         datafile.write("        # \n")
-        datafile.write('        the = ' + str(round(self.the, 2)) + ',         # body angle in degrees\n')
-        datafile.write('        tb_s = ' + str(round(self.tb_s, 2)) + ',       # top part of body is that much smaller\n')
-        datafile.write('        c = ' + str(round(self.c, 2)) + ',           # pin thickness, body center part height\n')
-        datafile.write('        R1 = ' + str(round(self.R1, 2)) + ',          # pin upper corner, inner radius\n')
-        datafile.write('        R2 = ' + str(round(self.R2, 2)) + ',          # pin lower corner, inner radius\n')
-        datafile.write('        S  = ' + str(round(self.S, 2)) + ',          # pin top flat part length (excluding corner arc)\n')
-        datafile.write('#        L = ' + str(round(self.L, 2)) + ',         # pin bottom flat part length (including corner arc)\n')
-        datafile.write('        fp_s = ' + str(round(self.fp_s, 2)) + ',          # True for circular pinmark, False for square pinmark (useful for diodes)\n')
+        datafile.write("        fp_z = 0.1,     # first pin indicator depth\n")
         datafile.write('        fp_r = ' + str(round(self.fp_r, 2)) + ',          # First pin indicator radius\n')
         datafile.write('        fp_d = ' + str(round(self.fp_d, 2)) + ',          # First pin indicator distance from edge\n')
-        datafile.write('        fp_z = ' + str(round(self.fp_z , 2)) + ',       # first pin indicator depth\n')
-        datafile.write('        ef = ' + str(round(self.ef, 2)) + ',          # fillet of edges  Note: bigger bytes model with fillet\n')
-        datafile.write('        cc1 = ' + str(round(self.cc1, 2)) + ',        # 0.45 chamfer of the 1st pin corner\n')
-        datafile.write('        D1 = ' + str(round(self.D1, 2)) + ',         # body length\n')
-        datafile.write('        E1 = ' + str(round(self.E1, 2)) + ',         # body width\n')
-        datafile.write('        E = ' + str(round(self.E, 2)) + ',          # body overall width\n')
-        datafile.write('        A1 = ' + str(round(self.A1 , 2)) + ',          # body-board separation\n')
-        datafile.write('        A2 = ' + str(round(self.A2 , 2)) + ',          # body height\n')
-        datafile.write('        b = ' + str(round(self.b, 2)) + ',          # pin width\n')
-        datafile.write('        e = ' + str(round(self.e, 2)) + ',          # pin (center-to-center) distance\n')
-        datafile.write('        npx = ' + str(round(self.npx, 2)) + ',           # number of pins along X axis (width)\n')
-        datafile.write('        npy = ' + str(round(self.npy, 2)) + ',           # number of pins along y axis (length)\n')
-        datafile.write('        epad = ' + self.epad + ',       # e Pad\n')
-        datafile.write('        excluded_pins = ' + str(self.excluded_pins) + ',          # pin excluded\n')
-        datafile.write("        old_modelName = '" + self.old_modelName + "',            # modelName\n")
-        datafile.write("        modelName = '" + self.modelName + "',            # modelName\n")
-        datafile.write('        rotation = ' + str(self.rotation) + ',      # rotation if required\n')
-        datafile.write("#        dest_dir_prefix = '../" + self.dest_dir_prefix + "',      # destination directory\n")
-        
+        datafile.write("        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet\n")
+        datafile.write("        D = " + str(self.D) + ",      # body overall length\n")
+        datafile.write("        E = " + str(self.E) + ",      # body overall width\n")
+        datafile.write("        A1 = " + str(self.A1) + ",      # body-board separation\n")
+        datafile.write("        A = " + str(self.A) + ",       # body overall height\n")
+        datafile.write("        b = " + str(self.b) + ",      # ball pin width diameter with a small extra to obtain a union of balls and case\n")
+        datafile.write("        e = " + str(self.e) + ",       # pin (center-to-center) distance\n")
+
+        datafile.write("        sp = 0.0,       # seating plane (pcb penetration)\n")
+        datafile.write("        npx = " + str(self.npx) + ",      # number of pins along X axis (width)\n")
+        datafile.write("        npy = " + str(self.npy) + ",      # number of pins along y axis (length)\n")
+        datafile.write('        excluded_pins = ("internals",), # pins to exclude -> None or "internals"\n')
+        datafile.write("        old_modelName = '" + self.old_modelName + "', # Old_modelName\n")
+        datafile.write("        modelName = '" + self.modelName + "',\n")
+        datafile.write("        rotation = -90, # rotation if required\n")
+        datafile.write("        dest_dir_prefix = '../" + self.dest_dir_prefix + "',\n")
         datafile.write('        ),\n\n')
 
         #
@@ -453,10 +343,12 @@ def DoNotExcludeModel(subf):
 #
 def ModelDoNotExist(subf, currfile, NewA3Dmodel):
 
-    global SkippingModelCnt
+    global ModelExist
+    
     #
     # Shall the model be excluded becaouse it already exist
     #
+    ModelExist = False
     with open(currfile) as currf:
         for line in currf:
             #
@@ -488,14 +380,12 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         #
                         # 3D model already exist
                         #
-#                        print("3D model exist, skipping it    " + subf);
-                        SkippingModelCnt = SkippingModelCnt - 1
+                        ModelExist = True
+#                        print("3D model already exist  " + NewA3Dmodel.model)
                         return False
-#                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
                     print("Exclude  " + subf + "   Something fuzzy about 3D model name")
                     return False
-    
     return True
 
         
@@ -510,21 +400,47 @@ def IsNotSpecialModel(NewA3Dmodel):
         if n[0] == NewA3Dmodel.model:
             #
             # This model is special setup
-            # model, D1, E1, E, e, b, npx, npy, excluded_pins
-            NewA3Dmodel.E1 = n[1]
-            NewA3Dmodel.D1 = n[2]
-            NewA3Dmodel.E = n[3]
-            NewA3Dmodel.e = n[4]
-            NewA3Dmodel.b = n[5]
-            NewA3Dmodel.npy = n[6]
-            NewA3Dmodel.npx = n[7]
+            # model, D, E, e, b, L, npy, npx, exluded pins
+            #
+            
+            NewA3Dmodel.E = n[1]
+            NewA3Dmodel.D = n[2]
+            NewA3Dmodel.e = n[3]
+            NewA3Dmodel.b = n[4]
+            NewA3Dmodel.L = n[5]
+            NewA3Dmodel.m = n[6]
+            NewA3Dmodel.npy = n[7]
+            NewA3Dmodel.npx = n[8]
             NewA3Dmodel.excluded_pins = n[8]
 #            print("Special  " + NewA3Dmodel.subf)
             return False
 
     return True
-    
+        
+#
+# Check if a 3D model should be created from the SpecialModel list
+#
+def ModelNotAlreadyCreated(NewA3Dmodel):
+    #
+    # Have it already been created
+    #
+    for n in MissingModels:
+        if n.model == NewA3Dmodel.model:
+            # Remove duplicates
+            return False
 
+    #
+    # Do a foot print have a missing 3D model but the 3D model have not been created
+    #
+    with open(Parameters_Py) as currf:
+        for line in currf:
+            if "'" + NewA3Dmodel.model + "'" in line:
+                MissingModelsInParameters.append(NewA3Dmodel.model)
+                return False
+
+    return True
+    
+    
 #
 # Find all missing models
 #
@@ -551,6 +467,7 @@ def FindMissingModels():
                     # Shall the model be excluded because it already exist
                     #
                     AddMissing = ModelDoNotExist(subf, currfile, NewA3Dmodel)
+
                     
                 if AddMissing:
                     #
@@ -564,16 +481,16 @@ def FindMissingModels():
                         
                         
                 if AddMissing:
-                    for n in MissingModels:
-                        if n.model == NewA3Dmodel.model:
-                            AddMissing = False
+                    AddMissing = ModelNotAlreadyCreated(NewA3Dmodel)
                     #
                     if AddMissing:
                         print("Creating " + NewA3Dmodel.model);
                         NewA3Dmodel.CleanUp()
                         MissingModels.append(NewA3Dmodel)
                 else:
-                    SkippingModelCnt = SkippingModelCnt + 1
+                    if not ModelExist:
+                        print("Discard  " + NewA3Dmodel.subf);
+                        SkippingModelCnt = SkippingModelCnt + 1
 #                    NewA3Dmodel.Print()
 
 
@@ -586,6 +503,7 @@ def SaveMissingModels():
     if os.path.isfile(MakeAllfile):
         os.remove(MakeAllfile)
     
+   
     if len(MissingModels) > 0:
         datafile = open(ResultFile, "w") 
         commandfile = open(MakeAllfile, "w") 
@@ -595,11 +513,23 @@ def SaveMissingModels():
         for n in MissingModels:
             n.PrintMissingModels(datafile, commandfile)
 
-        datafile.close()
-        commandfile.close()
-        
-        print(" ")
+        if len(MissingModelsInParameters) > 0:
+            for n in MissingModelsInParameters:
+                commandfile.write(FreeCadExe + ' ' + MainGenerator + n + '\n')
     
+        commandfile.close()
+        datafile.close()
+    else:
+        if len(MissingModelsInParameters) > 0:
+            commandfile = open(MakeAllfile, "w") 
+            #
+            commandfile.write('#!/bin/sh\n\n')
+            #
+            for n in MissingModelsInParameters:
+                commandfile.write(FreeCadExe + ' ' + MainGenerator + n + '\n')
+            commandfile.close()
+    
+    print(" ")
 
 def main(argv):
 
@@ -619,6 +549,11 @@ def main(argv):
         print(str(len(MissingModels)) + " 3D models was missing")
         print("Add paramters in " + ResultFile + " to file cq_parameters.py")
         print("And execute batch file " + MakeAllfile)
+    else:
+        if len(MissingModelsInParameters) > 0:
+            print(str(len(MissingModelsInParameters)) + " 3D models was missing but is included in the " + Parameters_Py)
+            print("Execute batch file " + MakeAllfile)
+    
     
     if SkippingModelCnt > 0:
         print(str(SkippingModelCnt) + " Foot prints was skipped, add them to the ExcludeModels list or SpecialModels list")

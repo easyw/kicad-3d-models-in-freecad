@@ -1202,4 +1202,676 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'BGA-153_8.0x8.0mm_Layout15x15_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD': Params(
+        #
+        # Altera MBGA-153, https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00471-00.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is BGA-153_8.0x8.0mm_Layout15x15_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 8.0,      # body overall length
+        E = 8.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.3,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 15,      # number of pins along X axis (width)
+        npy = 15,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'BGA-153_8.0x8.0mm_Layout15x15_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD', # Old_modelName
+        modelName = 'BGA-153_8.0x8.0mm_Layout15x15_P0.5mm_Ball0.3mm_Pad0.25mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'BGA-36_3.396x3.466mm_Layout6x6_P0.4mm_Ball0.25mm_Pad0.2mm_NSMD': Params(
+        #
+        # Altera V36, https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00486-00.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is BGA-36_3.396x3.466mm_Layout6x6_P0.4mm_Ball0.25mm_Pad0.2mm_NSMD.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 3.466,      # body overall length
+        E = 3.396,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.4,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 6,      # number of pins along X axis (width)
+        npy = 6,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'BGA-36_3.396x3.466mm_Layout6x6_P0.4mm_Ball0.25mm_Pad0.2mm_NSMD', # Old_modelName
+        modelName = 'BGA-36_3.396x3.466mm_Layout6x6_P0.4mm_Ball0.25mm_Pad0.2mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'BGA-672_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD': Params(
+        #
+        # Altera BGA-672, https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/packaging/04r00472-00.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is BGA-672_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 27.0,      # body overall length
+        E = 27.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.6,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 1.0,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 26,      # number of pins along X axis (width)
+        npy = 26,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'BGA-672_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD', # Old_modelName
+        modelName = 'BGA-672_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'BGA-676_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD': Params(
+        #
+        # XILINX BGA-676, https://www.xilinx.com/support/documentation/package_specs/fg676.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is BGA-676_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 27.0,      # body overall length
+        E = 27.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.6,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 1.0,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 26,      # number of pins along X axis (width)
+        npy = 26,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'BGA-676_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD', # Old_modelName
+        modelName = 'BGA-676_27.0x27.0mm_Layout26x26_P1.0mm_Ball0.6mm_Pad0.5mm_NSMD',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'Texas_DSBGA-64_3.415x3.535mm_Layout8x8_P0.4mm': Params(
+        #
+        # Texas Instruments, DSBGA, 3.415x3.535x0.625mm, 64 ball 8x8 area grid, NSMD pad definition (http://www.ti.com/lit/ds/slas718g/slas718g.pdf, http://www.ti.com/lit/an/snva009ag/snva009ag.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is Texas_DSBGA-64_3.415x3.535mm_Layout8x8_P0.4mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 3.535,      # body overall length
+        E = 3.415,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.2,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.4,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 8,      # number of pins along X axis (width)
+        npy = 8,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'Texas_DSBGA-64_3.415x3.535mm_Layout8x8_P0.4mm', # Old_modelName
+        modelName = 'Texas_DSBGA-64_3.415x3.535mm_Layout8x8_P0.4mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'Texas_DSBGA-6_0.9x1.4mm_Layout2x3_P0.5mm': Params(
+        #
+        # Texas Instruments, DSBGA, 0.9x1.4mm, 6 bump 2x3 (perimeter) array, NSMD pad definition (http://www.ti.com/lit/ds/symlink/ts5a3159a.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is Texas_DSBGA-6_0.9x1.4mm_Layout2x3_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.1,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 1.4,      # body overall length
+        E = 0.94,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 3,      # number of pins along X axis (width)
+        npy = 2,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'Texas_DSBGA-6_0.9x1.4mm_Layout2x3_P0.5mm', # Old_modelName
+        modelName = 'Texas_DSBGA-6_0.9x1.4mm_Layout2x3_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'Texas_DSBGA-8_1.43x1.41mm_Layout3x3_P0.5mm': Params(
+        #
+        # Texas Instruments, DSBGA, 1.43x1.41mm, 8 bump 3x3 (perimeter) array, NSMD pad definition (http://www.ti.com/lit/ds/symlink/lmc555.pdf, http://www.ti.com/lit/an/snva009ag/snva009ag.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is Texas_DSBGA-8_1.43x1.41mm_Layout3x3_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.1,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 1.43,      # body overall length
+        E = 1.41,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 3,      # number of pins along X axis (width)
+        npy = 3,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'Texas_DSBGA-8_1.43x1.41mm_Layout3x3_P0.5mm', # Old_modelName
+        modelName = 'Texas_DSBGA-8_1.43x1.41mm_Layout3x3_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'Texas_DSBGA-9_1.4715x1.4715mm_Layout3x3_P0.5mm': Params(
+        #
+        # Texas Instruments, DSBGA, 1.4715x1.4715mm, 9 bump 3x3 array, NSMD pad definition (http://www.ti.com/lit/ds/symlink/lm4990.pdf, http://www.ti.com/lit/an/snva009ag/snva009ag.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is Texas_DSBGA-9_1.4715x1.4715mm_Layout3x3_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.1,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 1.4715,      # body overall length
+        E = 1.4715,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 3,      # number of pins along X axis (width)
+        npy = 3,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'Texas_DSBGA-9_1.4715x1.4715mm_Layout3x3_P0.5mm', # Old_modelName
+        modelName = 'Texas_DSBGA-9_1.4715x1.4715mm_Layout3x3_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UCBGA-81_4x4mm_Layout9x9_P0.4mm': Params(
+        #
+        # UCBGA-81, 9x9 raster, 4x4mm package, pitch 0.4mm; https://www.latticesemi.com/view_document?document_id=213
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UCBGA-81_4x4mm_Layout9x9_P0.4mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 4.0,      # body overall length
+        E = 4.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.2,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.4,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 9,      # number of pins along X axis (width)
+        npy = 9,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UCBGA-81_4x4mm_Layout9x9_P0.4mm', # Old_modelName
+        modelName = 'UCBGA-81_4x4mm_Layout9x9_P0.4mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-100_7x7mm_Layout12x12_P0.5mm': Params(
+        #
+        # UFBGA-100, 12x12 raster, 7x7mm package, pitch 0.5mm; see section 7.1 of http://www.st.com/resource/en/datasheet/stm32f103tb.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-100_7x7mm_Layout12x12_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 12,      # number of pins along X axis (width)
+        npy = 12,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-100_7x7mm_Layout12x12_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-100_7x7mm_Layout12x12_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-132_7x7mm_Layout12x12_P0.5mm': Params(
+        #
+        # UFBGA-132, 12x12 raster, 7x7mm package, pitch 0.5mm; see section 7.4 of http://www.st.com/resource/en/datasheet/stm32l152zc.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-132_7x7mm_Layout12x12_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 12,      # number of pins along X axis (width)
+        npy = 12,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-132_7x7mm_Layout12x12_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-132_7x7mm_Layout12x12_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-132_7x7mm_P0.5mm': Params(
+        #
+        # UFBGA 132 Pins, 0.5mm Pitch, 0.3mm Ball, http://www.st.com/resource/en/datasheet/stm32l486qg.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-132_7x7mm_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 11,      # number of pins along X axis (width)
+        npy = 11,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-132_7x7mm_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-132_7x7mm_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-144_10x10mm_Layout12x12_P0.8mm': Params(
+        #
+        # UFBGA-144, 12x12 raster, 10x10mm package, pitch 0.8mm; see section 7.5 of http://www.st.com/resource/en/datasheet/stm32f446ze.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-144_10x10mm_Layout12x12_P0.8mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 10.0,      # body overall length
+        E = 10.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.4,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.8,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 12,      # number of pins along X axis (width)
+        npy = 12,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-144_10x10mm_Layout12x12_P0.8mm', # Old_modelName
+        modelName = 'UFBGA-144_10x10mm_Layout12x12_P0.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-144_7x7mm_Layout12x12_P0.5mm': Params(
+        #
+        # UFBGA-144, 12x12 raster, 7x7mm package, pitch 0.5mm; see section 7.4 of http://www.st.com/resource/en/datasheet/stm32f446ze.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-144_7x7mm_Layout12x12_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 12,      # number of pins along X axis (width)
+        npy = 12,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-144_7x7mm_Layout12x12_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-144_7x7mm_Layout12x12_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-15_3.0x3.0mm_Layout4x4_P0.65mm': Params(
+        #
+        # UFBGA-15, 4x4, 3x3mm package, pitch 0.65mm
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-15_3.0x3.0mm_Layout4x4_P0.65mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 3.0,      # body overall length
+        E = 3.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.325,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 4,      # number of pins along X axis (width)
+        npy = 4,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-15_3.0x3.0mm_Layout4x4_P0.65mm', # Old_modelName
+        modelName = 'UFBGA-15_3.0x3.0mm_Layout4x4_P0.65mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-169_7x7mm_Layout13x13_P0.5mm': Params(
+        #
+        # UFBGA-169, 13x13 raster, 7x7mm package, pitch 0.5mm; see section 7.6 of http://www.st.com/resource/en/datasheet/stm32f429ng.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-169_7x7mm_Layout13x13_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 13,      # number of pins along X axis (width)
+        npy = 13,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-169_7x7mm_Layout13x13_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-169_7x7mm_Layout13x13_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-201_10x10mm_Layout15x15_P0.65mm': Params(
+        #
+        # UFBGA-201, 15x15 raster, 10x10mm package, pitch 0.65mm; see section 7.6 of http://www.st.com/resource/en/datasheet/stm32f207vg.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-201_10x10mm_Layout15x15_P0.65mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 10.0,      # body overall length
+        E = 10.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.325,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 15,      # number of pins along X axis (width)
+        npy = 15,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-201_10x10mm_Layout15x15_P0.65mm', # Old_modelName
+        modelName = 'UFBGA-201_10x10mm_Layout15x15_P0.65mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-32_4.0x4.0mm_Layout6x6_P0.5mm': Params(
+        #
+        # UFBGA-32, 6x6, 4x4mm package, pitch 0.5mm
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-32_4.0x4.0mm_Layout6x6_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 4.0,      # body overall length
+        E = 4.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 6,      # number of pins along X axis (width)
+        npy = 6,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-32_4.0x4.0mm_Layout6x6_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-32_4.0x4.0mm_Layout6x6_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'UFBGA-64_5x5mm_Layout8x8_P0.5mm': Params(
+        #
+        # UFBGA-64, 8x8 raster, 5x5mm package, pitch 0.5mm; see section 7.1 of http://www.st.com/resource/en/datasheet/stm32f051t8.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is UFBGA-64_5x5mm_Layout8x8_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 5.0,      # body overall length
+        E = 5.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 8,      # number of pins along X axis (width)
+        npy = 8,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'UFBGA-64_5x5mm_Layout8x8_P0.5mm', # Old_modelName
+        modelName = 'UFBGA-64_5x5mm_Layout8x8_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'VFBGA-100_7.0x7.0mm_Layout10x10_P0.65mm': Params(
+        #
+        # VFBGA-100, 10x10, 7x7mm package, pitch 0.65mm
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is VFBGA-100_7.0x7.0mm_Layout10x10_P0.65mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.325,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 10,      # number of pins along X axis (width)
+        npy = 10,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'VFBGA-100_7.0x7.0mm_Layout10x10_P0.65mm', # Old_modelName
+        modelName = 'VFBGA-100_7.0x7.0mm_Layout10x10_P0.65mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'VFBGA-49_5.0x5.0mm_Layout7x7_P0.65mm': Params(
+        #
+        # VFBGA-49, 7x7, 5x5mm package, pitch 0.65mm
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is VFBGA-49_5.0x5.0mm_Layout7x7_P0.65mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 5.0,      # body overall length
+        E = 5.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.325,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 7,      # number of pins along X axis (width)
+        npy = 7,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'VFBGA-49_5.0x5.0mm_Layout7x7_P0.65mm', # Old_modelName
+        modelName = 'VFBGA-49_5.0x5.0mm_Layout7x7_P0.65mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'XFBGA-121_8x8mm_Layout11x11_P0.65mm': Params(
+        #
+        # XFBGA-121, https://www.nxp.com/docs/en/package-information/SOT1533-1.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is XFBGA-121_8x8mm_Layout11x11_P0.65mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 8.0,      # body overall length
+        E = 8.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.325,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 11,      # number of pins along X axis (width)
+        npy = 11,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'XFBGA-121_8x8mm_Layout11x11_P0.65mm', # Old_modelName
+        modelName = 'XFBGA-121_8x8mm_Layout11x11_P0.65mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'XFBGA-36_3.5x3.5mm_Layout6x6_P0.5mm': Params(
+        #
+        # XFBGA-36, https://www.nxp.com/docs/en/package-information/SOT1555-1.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is XFBGA-36_3.5x3.5mm_Layout6x6_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 3.5,      # body overall length
+        E = 3.5,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 6,      # number of pins along X axis (width)
+        npy = 6,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'XFBGA-36_3.5x3.5mm_Layout6x6_P0.5mm', # Old_modelName
+        modelName = 'XFBGA-36_3.5x3.5mm_Layout6x6_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
+    'XFBGA-64_5.0x5.0mm_Layout8x8_P0.5mm': Params(
+        #
+        # XFBGA-64, https://www.nxp.com/docs/en/package-information/SOT1555-1.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A and A1
+        # 
+        # The foot print that uses this 3D model is XFBGA-64_5.0x5.0mm_Layout8x8_P0.5mm.kicad_mod
+        # 
+        fp_z = 0.2,     # first pin indicator depth
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 5.0,      # body overall length
+        E = 5.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A = 0.75,       # body overall height
+        b = 0.25,      # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.5,       # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 8,      # number of pins along X axis (width)
+        npy = 8,      # number of pins along y axis (length)
+        excluded_pins = ("internals",), # pins to exclude -> None or "internals"
+        old_modelName = 'XFBGA-64_5.0x5.0mm_Layout8x8_P0.5mm', # Old_modelName
+        modelName = 'XFBGA-64_5.0x5.0mm_Layout8x8_P0.5mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_BGA.3dshapes',
+        ),
+
 }

@@ -68,6 +68,8 @@ Defaultb =  0.46
 Defaultb1 =  1.52
 
 
+SkippingModelCnt = 0
+
 #
 # The path to foot print file directory in relation to where this script is placed
 #
@@ -83,9 +85,11 @@ MakeAllfile = 'MakeFindMissingDIP3DModels.sh'
 # The path to FreeCad, this path will be used in the MakeFindMissingDIP3DModels.sh script
 #
 FreeCadExe = '/c/users/stefan/Downloads/FreeCAD_0.17.11223_x64_dev_win/FreeCAD_0.17.11223_x64_dev_win/bin/FreeCAD.exe'
-MainGenerator = 'main_generator.py'
+MainGenerator = 'main_generator.py '
 
-
+#
+# This list will hold the missing 3D models
+#
 MissingModels = []
 
 #
@@ -107,6 +111,7 @@ SpecialModels =[
                 ['PowerIntegrations_SDIP-10C',              12.82,  7.62,  4.50, 2.54, 0.46, 10,  'tht', '[4]'], 
                 ['PowerIntegrations_SMD-8',                 10.24,  7.62,  4.90, 2.54, 0.46,  8,  'smd', '[0]'], 
                 ['PowerIntegrations_SMD-8B',                10.24,  7.62,  4.90, 2.54, 0.46,  8,  'smd', '[6]'], 
+                ['PowerIntegrations_SMD-8C',                10.24,  7.62,  4.90, 2.54, 0.46,  8,  'smd', '[3]'], 
                 ['PowerIntegrations_SMD-8C',                10.24,  7.62,  4.90, 2.54, 0.46,  8,  'smd', '[3]'], 
                 ['Toshiba_11-7A9',                           7.86,  7.86,  5.54, 2.54, 0.46,  6,  'tht', '[5]'], 
                 ['DIP-6_W8.89mm_SMDSocket_LongPads',         7.74,  8.89,  5.07, 2.54, 1.30,  6,  'tht', '[0]'], 
@@ -140,7 +145,7 @@ class A3Dmodel:
         self.SMDSocket = 'tht'
         self.PinDist = 0.0
         self.corner = 'fillet'
-        self.destdirprefix = ''
+        self.dest_dir_prefix = ''
         self.filename = ''
         self.rotation = 90
     
@@ -148,27 +153,27 @@ class A3Dmodel:
     # Print the module on stdout, for debuging purpose
     #
     def Print(self):
-        print("self.subf          " + self.subf)
-        print("self.currfile      " + self.currfile)
-        print("self.numpin        " + str(self.numpin))
-        print("self.model         " + self.model)
-        print("self.descr         " + self.descr)
-        print("self.D             " + str(self.D))
-        print("self.E             " + str(self.E))
-        print("self.E1            " + str(self.E1))
-        print("self.A             " + str(self.A))
-        print("self.A1            " + str(self.A1))
-        print("self.A2            " + str(self.A2))
-        print("self.npx           " + str(self.npx))
-        print("self.npy           " + str(self.npy))
-        print("self.e             " + str(self.e))
-        print("self.b             " + str(self.b))
-        print("self.m             " + str(self.m))
-        print("self.epad          " + str(self.epad))
-        print("self.SMDSocket     " + self.SMDSocket)
-        print("self.corner        " + self.corner)
-        print("self.excluded_pins " + self.excluded_pins)
-        print("self.destdirprefix " + self.destdirprefix)
+        print("self.subf            " + self.subf)
+        print("self.currfile        " + self.currfile)
+        print("self.numpin          " + str(self.numpin))
+        print("self.model           " + self.model)
+        print("self.descr           " + self.descr)
+        print("self.D               " + str(self.D))
+        print("self.E               " + str(self.E))
+        print("self.E1              " + str(self.E1))
+        print("self.A               " + str(self.A))
+        print("self.A1              " + str(self.A1))
+        print("self.A2              " + str(self.A2))
+        print("self.npx             " + str(self.npx))
+        print("self.npy             " + str(self.npy))
+        print("self.e               " + str(self.e))
+        print("self.b               " + str(self.b))
+        print("self.m               " + str(self.m))
+        print("self.epad            " + str(self.epad))
+        print("self.SMDSocket       " + self.SMDSocket)
+        print("self.corner          " + self.corner)
+        print("self.excluded_pins   " + self.excluded_pins)
+        print("self.dest_dir_prefix " + self.dest_dir_prefix)
     
         
     #
@@ -293,28 +298,28 @@ class A3Dmodel:
         datafile.write("        # \n")
         datafile.write("        # The foot print that uses this 3D model is " + self.subf + "\n")
         datafile.write("        # \n")
-
         datafile.write('        D  = ' + str(round(self.D, 2)) + ',         # body length\n')
         datafile.write('        E1 = ' + str(round(self.E1, 2)) + ',         # body width\n')
-        datafile.write('        E = ' + str(round(self.E, 2)) + ',          # body overall width\n')
+        datafile.write('        E  = ' + str(round(self.E, 2)) + ',         # body overall width\n')
         datafile.write('        A1 = ' + str(round(self.A1 , 2)) + ',          # body-board separation\n')
         datafile.write('        A2 = ' + str(round(self.A2 , 2)) + ',          # body height\n')
-        datafile.write('        b1 = ' + str(round(self.b1 , 2)) + ',          # pin width\n')
-        datafile.write('        b  = ' + str(round(self.b , 2)) + ',          # pin tip width\n')
-        datafile.write('        e = ' + str(round(self.e , 2)) + ',          # body-board separation\n')
-        datafile.write('        npins = ' + str(self.numpin) + ',          # number of pins\n')
+        datafile.write('        b1 = ' + str(round(self.b1 , 2)) + ',         # pin width\n')
+        datafile.write('        b  = ' + str(round(self.b , 2)) + ',         # pin tip width\n')
+        datafile.write('        e  = ' + str(round(self.e , 2)) + ',         # body-board separation\n')
+        datafile.write('        npins = ' + str(self.numpin) + ',         # number of pins\n')
         datafile.write("        modelName = '" + self.model + "',            # modelName\n")
         datafile.write('        rotation = ' + str(self.rotation) + ',      # rotation if required\n')
-        datafile.write("        type = '" + self.SMDSocket + "',          # tht, smd or thtsmd\n")
-        datafile.write("        corner = '" + self.corner + "',          # chamfer or fillet\n")
-        datafile.write('        excludepins = ' + self.excluded_pins + ',          # pin excluded\n')
+        datafile.write("        type = '" + self.SMDSocket + "',       # tht, smd or thtsmd\n")
+        datafile.write("        corner = '" + self.corner + "',   # chamfer or fillet\n")
+        datafile.write('        excludepins = ' + self.excluded_pins + ',  # pin excluded\n')
+        datafile.write("#        dest_dir_prefix = '../" + self.dest_dir_prefix + "',  # destination directory\n")
         
         datafile.write('        ),\n\n')
 
         #
         # Create the FreeCad command line
         #
-        commandfile.write(FreeCadExe + ' ' + MainGenerator + ' ' + self.model + '\n')
+        commandfile.write(FreeCadExe + ' ' + MainGenerator + self.model + '\n')
         
 #
 # Check if a foot print file should be excluded form being scanned
@@ -338,6 +343,8 @@ def DoNotExcludeModel(subf):
 # Check if a 3D model given in the foot print file is misisng in the 3D model directory
 #
 def ModelDoNotExist(subf, currfile, NewA3Dmodel):
+
+    global SkippingModelCnt
     #
     # Shall the model be excluded becaouse it already exist
     #
@@ -360,10 +367,12 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                 line2 = line4.replace("\t", "/")
                 spline = line2.split('/')
                 if len(spline) > 2:
-                    NewA3Dmodel.destdirprefix = spline[1]
+                    NewA3Dmodel.dest_dir_prefix = spline[1]
                     NewA3Dmodel.filename = spline[2]
                     spline2 = spline[2].split('.wrl')
                     NewA3Dmodel.model = spline2[0]
+                    NewA3Dmodel.modelName = NewA3Dmodel.model
+                    NewA3Dmodel.old_modelName = NewA3Dmodel.model
                     #
                     line2 = spline[1] + '/' + spline[2]
                     Model3DFile = KISYS3DMOD + '/' + line2
@@ -374,6 +383,7 @@ def ModelDoNotExist(subf, currfile, NewA3Dmodel):
                         # 3D model already exist
                         #
 #                        print("3D model exist, skipping it    " + subf);
+                        SkippingModelCnt = SkippingModelCnt - 1
                         return False
 #                    print("3D model do not exist  " + NewA3Dmodel.model)
                 else:
@@ -415,6 +425,7 @@ def IsNotSpecialModel(NewA3Dmodel):
 #
 def FindMissingModels():
 
+    global SkippingModelCnt
     #
     print("Checking dir: " + FPDir)
     currdir = FPDir
@@ -454,29 +465,59 @@ def FindMissingModels():
                     #
                     if AddMissing:
                         print("Creating " + NewA3Dmodel.model);
+                        NewA3Dmodel.CleanUp()
                         MissingModels.append(NewA3Dmodel)
+                else:
+                    SkippingModelCnt = SkippingModelCnt + 1
 #                    NewA3Dmodel.Print()
 
 
 def SaveMissingModels():
 
-    datafile = open(ResultFile, "w") 
-    commandfile = open(MakeAllfile, "w") 
-    
-    commandfile.write('#!/bin/sh\n\n')
-    
-    for n in MissingModels:
-        n.PrintMissingModels(datafile, commandfile)
 
-    datafile.close()
-    commandfile.close()
+    if os.path.isfile(ResultFile):
+        os.remove(ResultFile)
+
+    if os.path.isfile(MakeAllfile):
+        os.remove(MakeAllfile)
+    
+    if len(MissingModels) > 0:
+        datafile = open(ResultFile, "w") 
+        commandfile = open(MakeAllfile, "w") 
         
+        commandfile.write('#!/bin/sh\n\n')
+        
+        for n in MissingModels:
+            n.PrintMissingModels(datafile, commandfile)
+
+        datafile.close()
+        commandfile.close()
+        
+        print(" ")
+    
 
 def main(argv):
+
+    global MissingModels
+    global SkippingModelCnt
+
+    SkippingModelCnt = 0
 
     MissingModels = []
     FindMissingModels()
     SaveMissingModels()
+    
+    if len(MissingModels) == 0 and SkippingModelCnt == 0:
+        print("No missing 3D models was found")
+        
+    if len(MissingModels) > 0:
+        print(str(len(MissingModels)) + " 3D models was missing")
+        print("Add paramters in " + ResultFile + " to file cq_parameters.py")
+        print("And execute batch file " + MakeAllfile)
+    
+    if SkippingModelCnt > 0:
+        print(str(SkippingModelCnt) + " Foot prints was skipped, add them to the ExcludeModels list or SpecialModels list")
+
         
 if __name__ == "__main__":
     main(sys.argv[1:])
