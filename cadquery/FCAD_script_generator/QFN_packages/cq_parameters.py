@@ -7372,4 +7372,634 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_LGA.3dshapes',      # destination directory
         ),
 
+    'Infineon_MLPQ-16-14-1EP_4x4mm_P0.5mm': Params(
+        #
+        # MLPQ 32 leads, 7x7mm, 0.127mm stencil (https://www.infineon.com/dgdl/Infineon-AN1170-AN-v05_00-EN.pdf?fileId=5546d462533600a40153559ac3e51134)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Infineon_MLPQ-16-14-1EP_4x4mm_P0.5mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.15,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 4,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = (10, 15),          # pin excluded
+        modelName = 'Infineon_MLPQ-16-14-1EP_4x4mm_P0.5mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Infineon_MLPQ-48-1EP_7x7mm_P0.5mm_Pad5.55x5.55mm': Params(
+        #
+        # MLPQ 48 leads, 7x7mm (https://www.infineon.com/dgdl/irs2093mpbf.pdf?fileId=5546d462533600a401535675fb892793)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Infineon_MLPQ-48-1EP_7x7mm_P0.5mm_Pad5.55x5.55mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 7.0,         # body length
+        E = 7.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 12,           # number of pins along X axis (width)
+        npy = 12,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Infineon_MLPQ-48-1EP_7x7mm_P0.5mm_Pad5.55x5.55mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_R-PWQFN-N28_EP2.1x3.1mm': Params(
+        #
+        # QFN, 28 Pin (http://www.ti.com/lit/ds/symlink/tps51363.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_R-PWQFN-N28_EP2.1x3.1mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.5,         # body length
+        E = 3.5,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.4,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 9,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_R-PWQFN-N28_EP2.1x3.1mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_RGE0024H_EP2.7x2.7mm': Params(
+        #
+        # Texas  QFN, 24 Pin (http://www.ti.com/lit/ds/symlink/tlc5971.pdf#page=42&zoom=200,-13,779), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_RGE0024H_EP2.7x2.7mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 6,           # number of pins along X axis (width)
+        npy = 6,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_RGE0024H_EP2.7x2.7mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N16_EP2.7x2.7mm': Params(
+        #
+        # QFN, 16 Pin (http://www.ti.com/lit/ds/symlink/msp430g2001.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N16_EP2.7x2.7mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 4,           # number of pins along X axis (width)
+        npy = 4,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N16_EP2.7x2.7mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N20_EP2.4x2.4mm': Params(
+        #
+        # QFN, 20 Pin (http://www.ti.com/lit/ds/symlink/cc1101.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N20_EP2.4x2.4mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N20_EP2.4x2.4mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'QFN-20-1EP_4x4mm_P0.5mm': Params(
+        #
+        # 20-Pin Plastic Quad Flatpack No-Lead Package, Body 4.0x4.0x0.9mm, Pad 3.52x2.62mm, Texas Instruments (see http://www.ti.com/lit/gpn/drv8662)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N20_EP2.7x2.7mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'QFN-20-1EP_4x4mm_P0.5mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N24_EP2.1x2.1mm': Params(
+        #
+        # QFN, 24 Pin (http://www.ti.com/lit/ds/symlink/msp430fr5720.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N24_EP2.1x2.1mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,         # body length
+        E = 4.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 6,           # number of pins along X axis (width)
+        npy = 6,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N24_EP2.1x2.1mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N32_EP3.45x3.45mm': Params(
+        #
+        # QFN, 32 Pin (http://www.ti.com/lit/ds/symlink/msp430f1122.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N32_EP3.45x3.45mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 5.0,         # body length
+        E = 5.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 8,           # number of pins along X axis (width)
+        npy = 8,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N32_EP3.45x3.45mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N36': Params(
+        #
+        # 36 pin S-PVQFN Texas http://www.ti.com/lit/ds/slvsba5d/slvsba5d.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N36.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 6.0,         # body length
+        E = 6.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 9,           # number of pins along X axis (width)
+        npy = 9,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N36',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'QFN-40-1EP_6x6mm_P0.5mm': Params(
+        #
+        # 40-Pin Plastic Quad Flatpack No-Lead Package, Body 6.0x6.0x0.9mm, Pad 2.9x2.9mm, Texas Instruments (see http://www.ti.com/lit/ds/symlink/msp430fr5731.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N40_EP2.9x2.9mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 6.0,         # body length
+        E = 6.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 10,           # number of pins along X axis (width)
+        npy = 10,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'QFN-40-1EP_6x6mm_P0.5mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N48_EP5.15x5.15mm': Params(
+        #
+        # QFN, 48 Pin (http://www.ti.com/lit/ds/symlink/msp430f5232.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N48_EP5.15x5.15mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 7.0,         # body length
+        E = 7.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 12,           # number of pins along X axis (width)
+        npy = 12,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N48_EP5.15x5.15mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PVQFN-N64_EP4.25x4.25mm': Params(
+        #
+        # QFN, 64 Pin (http://www.ti.com/lit/ds/symlink/msp430f5217.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PVQFN-N64_EP4.25x4.25mm.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 9.0,         # body length
+        E = 9.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 16,           # number of pins along X axis (width)
+        npy = 16,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PVQFN-N64_EP4.25x4.25mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PWQFN-N20': Params(
+        #
+        # 20-Pin Plastic Quad Flatpack No-Lead Package, Body 3.0x3.0x0.8mm, Texas Instruments (http://www.ti.com/lit/ds/symlink/tps22993.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PWQFN-N20.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,         # body length
+        E = 3.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.15,          # pin width
+        e = 0.4,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PWQFN-N20',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_S-PWSON-N6': Params(
+        #
+        # 6-Lead Plastic Dual Flat 2x2mm S-PWSON-N6 DFN Texas Instruments http://www.ti.com/lit/ds/symlink/tps717.pdf
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_S-PWSON-N6.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 2.0,         # body length
+        E = 2.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.25,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 3,           # number of pins along X axis (width)
+        npy = 0,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_S-PWSON-N6',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_VQFN-RGR-20-1EP_3.5x3.5mm_Pitch0.5mm': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_VQFN-RGR-20.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,          # First pin indicator radius
+        fp_d = 0.3,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 3.5,         # body length
+        E = 3.5,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.5,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_VQFN-RGR-20-1EP_3.5x3.5mm_Pitch0.5mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_VQFN-RGW-20-1EP_5x5mm_Pitch0.65mm': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_VQFN-RGW-20.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 5.0,         # body length
+        E = 5.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.3,          # pin width
+        e = 0.65,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 5,           # number of pins along X axis (width)
+        npy = 5,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_VQFN-RGW-20-1EP_5x5mm_Pitch0.65mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
+    'Texas_WQFN-MR-100': Params(
+        #
+        # 
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is Texas_WQFN-MR-100_3x3-DapStencil.kicad_mod
+        # 
+        c = 0.1,           # pin thickness, body center part height
+#        K = 0.2,         # Fillet radius for pin edges
+        L = 0.2,         # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,          # First pin indicator radius
+        fp_d = 0.5,          # First pin indicator distance from edge
+        fp_z = 0.02,       # first pin indicator depth
+        ef = 0.0,          # fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.25,        # 0.45 chamfer of the epad 1st pin corner
+        D = 9.0,         # body length
+        E = 9.0,          # body overall width
+        A1 = 0.03,          # body-board separation
+        A2 = 0.75,          # body-board separation
+        b = 0.2,          # pin width
+        e = 0.6,          # pin (center-to-center) distance
+        m = 0.0,          # margin between pins and body 
+        ps = 'square',          # rounded, square pads
+        npx = 13,           # number of pins along X axis (width)
+        npy = 13,           # number of pins along y axis (length)
+        epad = None,       # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_WQFN-MR-100',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
+        ),
+
 }
