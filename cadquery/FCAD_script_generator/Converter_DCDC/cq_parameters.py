@@ -54,7 +54,7 @@ Params = namedtuple_with_defaults("Params", [
 ])
 
 all_params = {
-    
+
     'Converter_DCDC_Cincon_EC5BExx_Single_THT': Params(   # ModelName
         #
         #
@@ -954,5 +954,27 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
+    'Converter_DCDC_XP_POWER_ISU02-Series_SMD': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_XP_POWER_ISU02-Series_SMD',  # Model name
+        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 14.9,  # Package length
+        W  = 19.0,  # Package width
+        H  = 8.50,  # Package height
+        A1 = 0.2,  # Package board seperation
+        pin = ((-8.075, -7.62), (-8.075, -5.08), (-8.075, 5.08), (-8.075, 7.62), (8.075, -7.62), (8.075, 5.08), (8.075, 7.62)),  # Pin placement
+        pin1corner = (0.0, 0.0),  # Left upp corner relationsship to pin 1
+        pinpadh    = 0.2,  # Pin length, pad height
+        pinpadsize = 1.2,  # Pin diameter or pad size
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
 }
-
