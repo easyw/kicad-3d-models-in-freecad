@@ -267,4 +267,108 @@ named_colors = {
         transparency=0.39,
         shininess=0.642424
         ),
+     "glass gren":shaderColor(
+        name="GLASS-GREEN",
+        ambientIntensity=0.250000,
+        diffuseColor=(0.000000, 0.75, 0.44),
+        specularColor=(0.915152, 0.915152, 0.915152),
+        transparency=0.39,
+        shininess=0.642424
+        ),
+     "glass orange":shaderColor(
+        name="GLASS-ORANGE",
+        ambientIntensity=0.250000,
+        diffuseColor=(0.75, 0.44, 0.000000),
+        specularColor=(0.915152, 0.915152, 0.915152),
+        transparency=0.39,
+        shininess=0.642424
+        ),
+     "metal grey":shaderColor(
+        name="MET-01",
+        ambientIntensity=0.249999,
+        diffuseColor=(0.298, 0.298, 0.298),
+        specularColor=(0.398, 0.398, 0.398),
+        transparency=0.0,
+        shininess=0.056122
+        ),
+     "led yellow":shaderColor(
+        name="LED-YELLOW",
+        ambientIntensity=0.522,
+        diffuseColor=(0.98, 0.840, 0.066),
+        specularColor=(0.160, 0.203, 0.320),
+        transparency=0.10,
+        shininess=0.125
+        ),
+     "pcb green":shaderColor(
+        name="BOARD-GREEN-02",
+        ambientIntensity=1.0,
+        diffuseColor=(0.07, 0.3, 0.12),
+        specularColor=(0.07, 0.3, 0.12),
+        transparency=0.0,
+        shininess=0.40
+        ),
+     "pcb blue":shaderColor(
+        name="BOARD-BLUE-01",
+        ambientIntensity=1.0,
+        diffuseColor=(0.07, 0.12, 0.3),
+        specularColor=(0.07, 0.12, 0.3),
+        transparency=0.0,
+        shininess=0.40
+        ),
+     "pcb black":shaderColor(
+        name="BOARD-BLACK-03",
+        ambientIntensity=1.0,
+        diffuseColor=(0.16, 0.16, 0.16),
+        specularColor=(0.16, 0.16, 0.16),
+        transparency=0.0,
+        shininess=0.40
+        ),
+     "metal aluminum":shaderColor(
+        name="MET-ALUMINUM",
+        ambientIntensity=0.256000,
+        diffuseColor=(0.372322, 0.371574, 0.373173),
+        specularColor=(0.556122, 0.554201, 0.556122),
+        transparency=0.0,
+        shininess=0.127551
+        ),
+     "metal bronze":shaderColor(
+        name="MET-BRONZE",
+        ambientIntensity=0.022727,
+        diffuseColor=(0.714, 0.4284, 0.18144),
+        specularColor=(0.393548, 0.271906, 0.166721),
+        transparency=0.0,
+        shininess=0.2
+        ),
+     "metal silver":shaderColor(
+        name="MET-SILVER",
+        ambientIntensity=0.022727,
+        diffuseColor=(0.50754, 0.50754, 0.50754),
+        specularColor=(0.508273, 0.508273, 0.508273),
+        transparency=0.0,
+        shininess=0.4
+        ),
+     "metal copper":shaderColor(
+        name="MET-COPPER",
+        ambientIntensity=0.022727,
+        diffuseColor=(0.7038, 0.27048, 0.0828),
+        specularColor=(0.780612, 0.37, 0.000000),
+        transparency=0.0,
+        shininess=0.2
+        ),
+     "led grey":shaderColor(
+        name="LED-GREY",
+        ambientIntensity=0.494,
+        diffuseColor=(0.27, 0.25, 0.27),
+        specularColor=(0.5, 0.5, 0.6),
+        transparency=0.10,
+        shininess=0.35
+        ),
+     "led black":shaderColor(
+        name="LED-BLACK",
+        ambientIntensity=0.494,
+        diffuseColor=(0.1, 0.05, 0.1),
+        specularColor=(0.6, 0.5, 0.6),
+        transparency=0.0,
+        shininess=0.5
+        ),
 }
