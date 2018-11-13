@@ -1,0 +1,1 @@
+...../bin/FreeCAD.exe main_generator.py <model name>
