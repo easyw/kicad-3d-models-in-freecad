@@ -2548,7 +2548,7 @@ part_params = {
         # The foot print that uses this 3D model is TSOP-I-32_11.8x8mm_P0.5mm.kicad_mod
         # 
         the = 9.0,         # body angle in degrees
-        tb_s = 0.15,       # top part of body is that much smaller
+        tb_s = 0.10,       # top part of body is that much smaller
         c = 0.1,           # pin thickness, body center part height
         R1 = 0.1,          # pin upper corner, inner radius
         R2 = 0.1,          # pin lower corner, inner radius
@@ -2566,8 +2566,8 @@ part_params = {
         A1 = 0.1,          # body-board separation
         A2 = 1.5,          # body height
         b = 0.2,          # pin width
-        e = 0.55,          # pin (center-to-center) distance
-        npx = 14,           # number of pins along X axis (width)
+        e = 0.50,          # pin (center-to-center) distance
+        npx = 16,           # number of pins along X axis (width)
         npy = 0,           # number of pins along y axis (length)
         epad = None,       # e Pad
         excluded_pins = None,          # pin excluded
