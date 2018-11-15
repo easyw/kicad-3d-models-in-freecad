@@ -147,49 +147,11 @@ CASE_SMD_TYPE = 'smd'
 _TYPES = [CASE_THT_TYPE, CASE_SMD_TYPE ]
 
 
-
-def make_case_top_ECC_XXX(params):
-
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    A1 = params.A1              # package height
-    pin = params.pin            # Pins
-    rotation = params.rotation  # Rotation if required
-    pintype = params.pintype    # Pin type , like SMD or THT
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_case_ECC\r\n')
-    #
-    #
-    #
-    p0 = pin[0]
-    p1 = pin[1]
-    x0 = p0[0]
-    y0 = p0[1]
-
-    ff = D / 8.0
-
-    case = cq.Workplane("XY").workplane(offset=A1 + E * 0.90).moveTo(center[0], center[1]).circle(D / 2.0, False).extrude(A1 + E * 0.90)
-    case = case.faces("<Z").edges("<Y").fillet(D / 12.0)
-    case = case.faces(">Z").edges(">Y").fillet(D / 4.0)
-
-    case2=cq.Workplane("XY").workplane(offset=A1 + E * 0.90).moveTo(center[0], center[1]).circle(D / 8.0, False).extrude(A1 + E * 0.10 )
-    case = case.union(case2)
-    case = case.faces(">Z").edges(">Y").fillet(D / 8.1)
-
-    if (rotation != 0):
-        case = case.rotate((0,0,0), (0,0,1), rotation)
-
-    return (case)
-
-
-
 def make_case_top_ECC(params):
 
-
     D = params.D                # package length
     E = params.E                # body overall width
+    H = params.H                # body overall height
     A1 = params.A1              # package height
     pin = params.pin            # Pins
     rotation = params.rotation  # Rotation if required
@@ -207,10 +169,10 @@ def make_case_top_ECC(params):
 
     ff = D / 8.0
 
-    case = cq.Workplane("XY").workplane(offset=A1 + E * 0.90 - (D / 4.0)).moveTo(center[0], center[1]).circle(D / 2.0, False).extrude((D / 4.0))
+    case = cq.Workplane("XY").workplane(offset=A1 + H * 0.90 - (D / 4.0)).moveTo(center[0], center[1]).circle(D / 2.0, False).extrude((D / 4.0))
     case = case.faces(">Z").edges(">Y").fillet(D / 4.1)
 
-    case2=cq.Workplane("XY").workplane(offset=A1 + E * 0.90).moveTo(center[0], center[1]).circle(D / 8.0, False).extrude(A1 + E * 0.10 )
+    case2=cq.Workplane("XY").workplane(offset=A1 + H * 0.90).moveTo(center[0], center[1]).circle(D / 8.0, False).extrude(A1 + H * 0.10 )
     case = case.union(case2)
     case = case.faces(">Z").edges(">Y").fillet(D / 8.1)
 
@@ -220,12 +182,11 @@ def make_case_top_ECC(params):
     return (case)
 
 
-
 def make_case_ECC(params):
-
 
     D = params.D                # package length
     E = params.E                # body overall width
+    H = params.H                # body overall height
     A1 = params.A1              # package height
     pin = params.pin            # Pins
     rotation = params.rotation  # Rotation if required
@@ -236,31 +197,39 @@ def make_case_ECC(params):
     #
     #
     #
-    p0 = pin[0]
-    p1 = pin[1]
-    x0 = p0[0]
-    y0 = p0[1]
+    As = A1
+    Hs = A1 + H * 0.90 - (D / 4.0)
+    Ds = D / 2.0
 
-    ff = D / 8.0
+    ffs = D / 12.0
+    case = cq.Workplane("XY").workplane(offset=As).moveTo(center[0], center[1]).circle(Ds, False).extrude(Hs)
+    case = case.faces("<Z").edges("<Y").fillet(ffs)
 
-    case = cq.Workplane("XY").workplane(offset=A1).moveTo(center[0], center[1]).circle(D / 2.0, False).extrude(A1 + E * 0.90 - (D / 4.0))
-    case = case.faces("<Z").edges("<Y").fillet(D / 12.0)
+    dd = 0.2
+    At = As + (2.0 * dd)
+    Dt = Ds - (2.0 * dd)
+    Ht = Hs - (2.0 * dd)
+    fft = Dt / 16.0
+    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).circle(Dt, False).extrude(Ht)
+    case1 = case1.faces("<Z").edges("<Y").fillet(fft)
+    
+    case = case.cut(case1)
 
     if (rotation != 0):
         case = case.rotate((0,0,0), (0,0,1), rotation)
 
     return (case)
 
-
-
+    
 def make_pins_ECC(params):
 
+    D = params.D                # package length
+    H = params.H                # body overall height
     A1 = params.A1              # Body seperation height
     b = params.b                # pin diameter or pad size
     ph = params.ph              # pin length
     rotation = params.rotation  # rotation if required
     pin = params.pin            # pin/pad cordinates
-    D = params.D                # package length
     npthhole = params.npthhole  # NPTH holes
     center = params.center      # Body center
     
@@ -282,23 +251,46 @@ def make_pins_ECC(params):
     return (pins)
 
 
-
-
 def make_npth_pins_ECC(params):
 
+    D = params.D                # package length
+    E = params.E                # body overall width
+    H = params.H                # body overall height
     A1 = params.A1              # Body seperation height
     b = params.b                # pin diameter or pad size
     ph = params.ph              # pin length
     rotation = params.rotation  # rotation if required
     pin = params.pin            # pin/pad cordinates
-    D = params.D                # package length
     npthhole = params.npthhole  # NPTH holes
     center = params.center      # Body center
-    
+
     FreeCAD.Console.PrintMessage('make_npth_pins_ECC \r\n')
 
     
-    pins = cq.Workplane("XY").workplane(offset=A1 - 0.05).moveTo(center[0], center[1]).circle((D / 2.0) - 0.4, False).extrude(A1 + 2.0)
+    pins = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0], center[1]).circle((D / 2.0) - 0.5, False).extrude(A1 + 2.0)
+    
+    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo((center[0] - (D / 2.0)) + 3.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
+    pint = pint.faces(">Z").fillet(0.4)
+    pins = pins.union(pint)
+    #
+    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo((center[0] + (D / 2.0)) - 3.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
+    pint = pint.faces(">Z").fillet(0.4)
+    pins = pins.union(pint)
+    #
+    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0] - 1.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
+    pint = pint.faces(">Z").fillet(0.4)
+    pins = pins.union(pint)
+    #
+    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0] + 1.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
+    pint = pint.faces(">Z").fillet(0.4)
+    pins = pins.union(pint)
+    #
+    pint = cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(center[0], center[1]).rect(D / 1.5, D / 1.5).extrude(H / 4.0)
+    pint = pint.faces(">Z").fillet(D / 5.0)
+    pint = pint.faces("<Z").fillet(D / 5.0)
+    pins = pins.union(pint)
+
+
     
     if npthhole != None:
         FreeCAD.Console.PrintMessage('make_npth_pins_ECC 2\r\n')
@@ -327,6 +319,152 @@ def make_npth_pins_ECC(params):
 
 
 
+def make_case_top_Glimm(params):
+
+    D = params.D                # package length
+    E = params.E                # body overall width
+    H = params.H                # body overall height
+    A1 = params.A1              # Body seperation height
+    b = params.b                # pin diameter or pad size
+    ph = params.ph              # pin length
+    rotation = params.rotation  # rotation if required
+    pin = params.pin            # pin/pad cordinates
+    npthhole = params.npthhole  # NPTH holes
+    center = params.center      # Body center
+
+    FreeCAD.Console.PrintMessage('make_case_top_Glimm\r\n')
+
+    As = A1
+    Es = E
+    Ds = D
+    Hs = A1+H
+
+    dd = 1.5
+    At = As + dd
+    Et = Es - (2.0 * dd)
+    Dt = Ds - (2.0 * dd)
+    Ht = Hs - (2.0 * dd)
+    Dt = D - (2.0 * dd)
+    fft = Dt / 2.1
+    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).rect(Et, Dt).extrude(Ht)
+    case1 = case1.faces("<X").edges(">Y").fillet(fft)
+    case1 = case1.faces("<X").edges("<Y").fillet(fft)
+    case1 = case1.faces(">X").edges(">Y").fillet(fft)
+    case1 = case1.faces(">X").edges("<Y").fillet(fft)
+    case1 = case1.faces(">Z").fillet(fft)
+    case1 = case1.faces("<Z").fillet(fft)
+    
+    return (case1)
+
+
+def make_case_Glimm(params):
+
+    D = params.D                # package length
+    E = params.E                # body overall width
+    H = params.H                # body overall height
+    A1 = params.A1              # package height
+    pin = params.pin            # Pins
+    rotation = params.rotation  # Rotation if required
+    pintype = params.pintype    # Pin type , like SMD or THT
+    center = params.center      # Body center
+    
+    FreeCAD.Console.PrintMessage('make_case_Glimm\r\n')
+    #
+    #
+    #
+
+    As = A1
+    Es = E
+    Ds = D
+    Hs = A1+H
+    ff = Ds / 2.1
+    case = cq.Workplane("XY").workplane(offset=As).moveTo(center[0], center[1]).rect(Es, Ds).extrude(Hs)
+    case = case.faces("<X").edges(">Y").fillet(ff)
+    case = case.faces("<X").edges("<Y").fillet(ff)
+    case = case.faces(">X").edges(">Y").fillet(ff)
+    case = case.faces(">X").edges("<Y").fillet(ff)
+    case = case.faces(">Z").fillet(ff)
+    case = case.faces("<Z").fillet(ff)
+
+    
+    dd = 0.1
+    At = As + dd
+    Et = Es - (2.0 * dd)
+    Dt = Ds - (2.0 * dd)
+    Ht = Hs - (2.0 * dd)
+    Dt = D - (2.0 * dd)
+    fft = Dt / 2.1
+    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).rect(Et, Dt).extrude(Ht)
+    case1 = case1.faces("<X").edges(">Y").fillet(fft)
+    case1 = case1.faces("<X").edges("<Y").fillet(fft)
+    case1 = case1.faces(">X").edges(">Y").fillet(fft)
+    case1 = case1.faces(">X").edges("<Y").fillet(fft)
+    case1 = case1.faces(">Z").fillet(fft)
+    case1 = case1.faces("<Z").fillet(fft)
+    
+    case = case.cut(case1)
+    
+    
+#    case = case.faces("<Y").shell(0.1)
+
+    if (rotation != 0):
+        case = case.rotate((0,0,0), (0,0,1), rotation)
+
+    return (case)
+
+
+def make_pins_Glimm(params):
+
+    D = params.D                # package length
+    H = params.H                # body overall height
+    A1 = params.A1              # Body seperation height
+    b = params.b                # pin diameter or pad size
+    ph = params.ph              # pin length
+    rotation = params.rotation  # rotation if required
+    pin = params.pin            # pin/pad cordinates
+    npthhole = params.npthhole  # NPTH holes
+    center = params.center      # Body center
+    
+    FreeCAD.Console.PrintMessage('make_pins_ECC \r\n')
+
+    p = pin[0]
+    pins = cq.Workplane("XY").workplane(offset=A1 + 1.0 + (H / 2.0)).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0 + (H / 2.0)))
+    pins = pins.faces("<Z").fillet(b / 5.0)
+    
+    for i in range(1, len(pin)):
+        p = pin[i]
+        pint = cq.Workplane("XY").workplane(offset=A1 + 1.0 + (H / 2.0)).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0 + (H / 2.0)))
+        pint = pint.faces("<Z").fillet(b / 5.0)
+        pins = pins.union(pint)
+
+    if (rotation != 0):
+        pins = pins.rotate((0,0,0), (0,0,1), rotation)
+
+    return (pins)
+
+
+def make_npth_pins_Glimm(params):
+
+    D = params.D                # package length
+    E = params.E                # body overall width
+    H = params.H                # body overall height
+    A1 = params.A1              # Body seperation height
+    b = params.b                # pin diameter or pad size
+    ph = params.ph              # pin length
+    rotation = params.rotation  # rotation if required
+    pin = params.pin            # pin/pad cordinates
+    npthhole = params.npthhole  # NPTH holes
+    center = params.center      # Body center
+
+    FreeCAD.Console.PrintMessage('make_npth_pins_RSX\r\n')
+
+    p = pin[0]
+    pins = cq.Workplane("XY").workplane(offset=A1).moveTo(p[0], -p[1]).circle(0.05, False).extrude(0 - (A1 + 0.1))
+
+    return (pins)
+
+
+
 
 
 def make_3D_model(models_dir, variant):
@@ -340,12 +478,22 @@ def make_3D_model(models_dir, variant):
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
 
     npth_pins = None
-    
+
     if (all_params[variant].serie == 'ECC'):
         case_top = make_case_top_ECC(all_params[variant])
         case = make_case_ECC(all_params[variant])
         pins = make_pins_ECC(all_params[variant])
         npth_pins = make_npth_pins_ECC(all_params[variant])
+        show(case_top)
+        show(case)
+        show(pins)
+        show(npth_pins)
+
+    elif (all_params[variant].serie == 'GLIMM'):
+        case_top = make_case_top_Glimm(all_params[variant])
+        case = make_case_Glimm(all_params[variant])
+        pins = make_pins_Glimm(all_params[variant])
+        npth_pins = make_npth_pins_Glimm(all_params[variant])
         show(case_top)
         show(case)
         show(pins)
@@ -364,17 +512,10 @@ def make_3D_model(models_dir, variant):
     pin_color_key = all_params[variant].pin_color_key
     npth_pin_color_key = all_params[variant].npth_pin_color_key
 
-    FreeCAD.Console.PrintMessage('body_top_color_key ' + body_top_color_key + '\r\n')
-    FreeCAD.Console.PrintMessage('body_color_key     ' + body_color_key + '\r\n')
-    
     body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
-    
-    FreeCAD.Console.PrintMessage('body_color_key     ' + body_color_key + '\r\n')
-    
     body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
     pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
     npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
-
 
     Color_Objects(Gui,objs[0],body_top_color)
     Color_Objects(Gui,objs[1],body_color)
