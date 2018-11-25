@@ -104,12 +104,16 @@ from cq_parameters_glim import *
 import cq_parameters_socket_tag  # modules parameters
 from cq_parameters_socket_tag import *
 
+import cq_parameters_tube_CK6418  # modules parameters
+from cq_parameters_tube_CK6418 import *
+
 
 different_models = [
     cq_parameters_socket_generic(),
     cq_parameters_tube_generic(),
     cq_parameters_glim(),
     cq_parameters_socket_tag(),
+    cq_parameters_tube_CK6418(),
 #    cq_parameters_socket_tht_generic_oval(),
 #    cq_parameters_socket_tht_generic_round(),
 ]
