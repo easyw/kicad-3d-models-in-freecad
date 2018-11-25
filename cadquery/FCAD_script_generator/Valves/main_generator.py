@@ -89,466 +89,61 @@ STR_licOrg = "FreeCAD"
 
 #################################################################################################
 
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
-# Explicitly load all needed functions
-from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
 
-# Sphinx workaround #1
-try:
-    QtGui
-except NameError:
-    QtGui = None
-#
 
-try:
-    # Gui.SendMsgToActiveView("Run")
-#    from Gui.Command import *
-    Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery
-    cq = cadquery
-    from Helpers import show
-    # CadQuery Gui
-except: # catch *all* exceptions
-    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    if QtGui is not None:
-        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-    # maui end
 
-# Sphinx workaround #2
-try:
-    cq
-    checkRequirements(cq)
-except NameError:
-    cq = None
-#
+import cq_parameters_tube_generic  # modules parameters
+from cq_parameters_tube_generic import *
 
-#checking requirements
+import cq_parameters_socket_generic  # modules parameters
+from cq_parameters_socket_generic import *
 
-try:
-    close_CQ_Example(FreeCAD, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+import cq_parameters_glim  # modules parameters
+from cq_parameters_glim import *
 
-destination_dir="/Valve"
-# rotation = 0
+import cq_parameters_socket_tag  # modules parameters
+from cq_parameters_socket_tag import *
 
-import cq_parameters  # modules parameters
-from cq_parameters import *
+import cq_parameters_tube_CK6418  # modules parameters
+from cq_parameters_tube_CK6418 import *
 
 
-CASE_THT_TYPE = 'tht'
-CASE_SMD_TYPE = 'smd'
-_TYPES = [CASE_THT_TYPE, CASE_SMD_TYPE ]
+different_models = [
+    cq_parameters_socket_generic(),
+    cq_parameters_tube_generic(),
+    cq_parameters_glim(),
+    cq_parameters_socket_tag(),
+    cq_parameters_tube_CK6418(),
+#    cq_parameters_socket_tht_generic_oval(),
+#    cq_parameters_socket_tht_generic_round(),
+]
 
 
-def make_case_top_ECC(params):
 
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # package height
-    pin = params.pin            # Pins
-    rotation = params.rotation  # Rotation if required
-    pintype = params.pintype    # Pin type , like SMD or THT
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_case_top_ECC\r\n')
-    #
-    #
-    #
-    p0 = pin[0]
-    p1 = pin[1]
-    x0 = p0[0]
-    y0 = p0[1]
 
-    ff = D / 8.0
 
-    case = cq.Workplane("XY").workplane(offset=A1 + H * 0.90 - (D / 4.0)).moveTo(center[0], center[1]).circle(D / 2.0, False).extrude((D / 4.0))
-    case = case.faces(">Z").edges(">Y").fillet(D / 4.1)
-
-    case2=cq.Workplane("XY").workplane(offset=A1 + H * 0.90).moveTo(center[0], center[1]).circle(D / 8.0, False).extrude(A1 + H * 0.10 )
-    case = case.union(case2)
-    case = case.faces(">Z").edges(">Y").fillet(D / 8.1)
-
-    if (rotation != 0):
-        case = case.rotate((0,0,0), (0,0,1), rotation)
-
-    return (case)
-
-
-def make_case_ECC(params):
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # package height
-    pin = params.pin            # Pins
-    rotation = params.rotation  # Rotation if required
-    pintype = params.pintype    # Pin type , like SMD or THT
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_case_ECC\r\n')
-    #
-    #
-    #
-    As = A1
-    Hs = A1 + H * 0.90 - (D / 4.0)
-    Ds = D / 2.0
-
-    ffs = D / 12.0
-    case = cq.Workplane("XY").workplane(offset=As).moveTo(center[0], center[1]).circle(Ds, False).extrude(Hs)
-    case = case.faces("<Z").edges("<Y").fillet(ffs)
-
-    dd = 0.2
-    At = As + (2.0 * dd)
-    Dt = Ds - (2.0 * dd)
-    Ht = Hs - (2.0 * dd)
-    fft = Dt / 16.0
-    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).circle(Dt, False).extrude(Ht)
-    case1 = case1.faces("<Z").edges("<Y").fillet(fft)
-    
-    case = case.cut(case1)
-
-    if (rotation != 0):
-        case = case.rotate((0,0,0), (0,0,1), rotation)
-
-    return (case)
-
-    
-def make_pins_ECC(params):
-
-    D = params.D                # package length
-    H = params.H                # body overall height
-    A1 = params.A1              # Body seperation height
-    b = params.b                # pin diameter or pad size
-    ph = params.ph              # pin length
-    rotation = params.rotation  # rotation if required
-    pin = params.pin            # pin/pad cordinates
-    npthhole = params.npthhole  # NPTH holes
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_pins_ECC \r\n')
-
-    p = pin[0]
-    pins = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0))
-    pins = pins.faces("<Z").fillet(b / 5.0)
-    
-    for i in range(1, len(pin)):
-        p = pin[i]
-        pint = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0))
-        pint = pint.faces("<Z").fillet(b / 5.0)
-        pins = pins.union(pint)
-
-    if (rotation != 0):
-        pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
-    return (pins)
-
-
-def make_npth_pins_ECC(params):
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # Body seperation height
-    b = params.b                # pin diameter or pad size
-    ph = params.ph              # pin length
-    rotation = params.rotation  # rotation if required
-    pin = params.pin            # pin/pad cordinates
-    npthhole = params.npthhole  # NPTH holes
-    center = params.center      # Body center
-
-    FreeCAD.Console.PrintMessage('make_npth_pins_ECC \r\n')
-
-    
-    pins = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0], center[1]).circle((D / 2.0) - 0.5, False).extrude(A1 + 2.0)
-    
-    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo((center[0] - (D / 2.0)) + 3.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
-    pint = pint.faces(">Z").fillet(0.4)
-    pins = pins.union(pint)
-    #
-    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo((center[0] + (D / 2.0)) - 3.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
-    pint = pint.faces(">Z").fillet(0.4)
-    pins = pins.union(pint)
-    #
-    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0] - 1.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
-    pint = pint.faces(">Z").fillet(0.4)
-    pins = pins.union(pint)
-    #
-    pint = cq.Workplane("XY").workplane(offset=A1 + 0.5).moveTo(center[0] + 1.0, center[1]).circle(0.5, False).extrude((2.0 * H) / 3.0)
-    pint = pint.faces(">Z").fillet(0.4)
-    pins = pins.union(pint)
-    #
-    pint = cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(center[0], center[1]).rect(D / 1.5, D / 1.5).extrude(H / 4.0)
-    pint = pint.faces(">Z").fillet(D / 5.0)
-    pint = pint.faces("<Z").fillet(D / 5.0)
-    pins = pins.union(pint)
-
-
-    
-    if npthhole != None:
-        FreeCAD.Console.PrintMessage('make_npth_pins_ECC 2\r\n')
-        if len(npthhole) > 0:
-            FreeCAD.Console.PrintMessage('make_npth_pins_ECC 3\r\n')
-            p = npthhole[0]
-            b = p[2]
-            ph = p[3]
-            pint = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 0.1))
-            pint = pint.faces("<Z").fillet(b / 5.0)
-            pins = pins.union(pint)
-
-            for i in range(1, len(npthhole)):
-                p = npthhole[i]
-                b = p[2]
-                ph = p[3]
-                pint = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0))
-                pint = pint.faces("<Z").fillet(b / 5.0)
-                pins = pins.union(pint)
-
-
-    if (rotation != 0):
-        pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
-    return (pins)
-
-
-
-def make_case_top_Glimm(params):
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # Body seperation height
-    b = params.b                # pin diameter or pad size
-    ph = params.ph              # pin length
-    rotation = params.rotation  # rotation if required
-    pin = params.pin            # pin/pad cordinates
-    npthhole = params.npthhole  # NPTH holes
-    center = params.center      # Body center
-
-    FreeCAD.Console.PrintMessage('make_case_top_Glimm\r\n')
-
-    As = A1
-    Es = E
-    Ds = D
-    Hs = A1+H
-
-    dd = 1.5
-    At = As + dd
-    Et = Es - (2.0 * dd)
-    Dt = Ds - (2.0 * dd)
-    Ht = Hs - (2.0 * dd)
-    Dt = D - (2.0 * dd)
-    fft = Dt / 2.1
-    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).rect(Et, Dt).extrude(Ht)
-    case1 = case1.faces("<X").edges(">Y").fillet(fft)
-    case1 = case1.faces("<X").edges("<Y").fillet(fft)
-    case1 = case1.faces(">X").edges(">Y").fillet(fft)
-    case1 = case1.faces(">X").edges("<Y").fillet(fft)
-    case1 = case1.faces(">Z").fillet(fft)
-    case1 = case1.faces("<Z").fillet(fft)
-    
-    return (case1)
-
-
-def make_case_Glimm(params):
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # package height
-    pin = params.pin            # Pins
-    rotation = params.rotation  # Rotation if required
-    pintype = params.pintype    # Pin type , like SMD or THT
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_case_Glimm\r\n')
-    #
-    #
-    #
-
-    As = A1
-    Es = E
-    Ds = D
-    Hs = A1+H
-    ff = Ds / 2.1
-    case = cq.Workplane("XY").workplane(offset=As).moveTo(center[0], center[1]).rect(Es, Ds).extrude(Hs)
-    case = case.faces("<X").edges(">Y").fillet(ff)
-    case = case.faces("<X").edges("<Y").fillet(ff)
-    case = case.faces(">X").edges(">Y").fillet(ff)
-    case = case.faces(">X").edges("<Y").fillet(ff)
-    case = case.faces(">Z").fillet(ff)
-    case = case.faces("<Z").fillet(ff)
-
-    
-    dd = 0.1
-    At = As + dd
-    Et = Es - (2.0 * dd)
-    Dt = Ds - (2.0 * dd)
-    Ht = Hs - (2.0 * dd)
-    Dt = D - (2.0 * dd)
-    fft = Dt / 2.1
-    case1 = cq.Workplane("XY").workplane(offset=At).moveTo(center[0], center[1]).rect(Et, Dt).extrude(Ht)
-    case1 = case1.faces("<X").edges(">Y").fillet(fft)
-    case1 = case1.faces("<X").edges("<Y").fillet(fft)
-    case1 = case1.faces(">X").edges(">Y").fillet(fft)
-    case1 = case1.faces(">X").edges("<Y").fillet(fft)
-    case1 = case1.faces(">Z").fillet(fft)
-    case1 = case1.faces("<Z").fillet(fft)
-    
-    case = case.cut(case1)
-    
-    
-#    case = case.faces("<Y").shell(0.1)
-
-    if (rotation != 0):
-        case = case.rotate((0,0,0), (0,0,1), rotation)
-
-    return (case)
-
-
-def make_pins_Glimm(params):
-
-    D = params.D                # package length
-    H = params.H                # body overall height
-    A1 = params.A1              # Body seperation height
-    b = params.b                # pin diameter or pad size
-    ph = params.ph              # pin length
-    rotation = params.rotation  # rotation if required
-    pin = params.pin            # pin/pad cordinates
-    npthhole = params.npthhole  # NPTH holes
-    center = params.center      # Body center
-    
-    FreeCAD.Console.PrintMessage('make_pins_ECC \r\n')
-
-    p = pin[0]
-    pins = cq.Workplane("XY").workplane(offset=A1 + 1.0 + (H / 2.0)).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0 + (H / 2.0)))
-    pins = pins.faces("<Z").fillet(b / 5.0)
-    
-    for i in range(1, len(pin)):
-        p = pin[i]
-        pint = cq.Workplane("XY").workplane(offset=A1 + 1.0 + (H / 2.0)).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0 + (H / 2.0)))
-        pint = pint.faces("<Z").fillet(b / 5.0)
-        pins = pins.union(pint)
-
-    if (rotation != 0):
-        pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
-    return (pins)
-
-
-def make_npth_pins_Glimm(params):
-
-    D = params.D                # package length
-    E = params.E                # body overall width
-    H = params.H                # body overall height
-    A1 = params.A1              # Body seperation height
-    b = params.b                # pin diameter or pad size
-    ph = params.ph              # pin length
-    rotation = params.rotation  # rotation if required
-    pin = params.pin            # pin/pad cordinates
-    npthhole = params.npthhole  # NPTH holes
-    center = params.center      # Body center
-
-    FreeCAD.Console.PrintMessage('make_npth_pins_RSX\r\n')
-
-    p = pin[0]
-    pins = cq.Workplane("XY").workplane(offset=A1).moveTo(p[0], -p[1]).circle(0.05, False).extrude(0 - (A1 + 0.1))
-
-    return (pins)
-
-
-
-
-
-def make_3D_model(models_dir, variant):
+def make_3D_model(models_dir, model_class, modelName):
 
     LIST_license = ["",]
-    modelName = all_params[variant].modelName
 
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
-
-    npth_pins = None
-
-    if (all_params[variant].serie == 'ECC'):
-        case_top = make_case_top_ECC(all_params[variant])
-        case = make_case_ECC(all_params[variant])
-        pins = make_pins_ECC(all_params[variant])
-        npth_pins = make_npth_pins_ECC(all_params[variant])
-        show(case_top)
-        show(case)
-        show(pins)
-        show(npth_pins)
-
-    elif (all_params[variant].serie == 'GLIMM'):
-        case_top = make_case_top_Glimm(all_params[variant])
-        case = make_case_Glimm(all_params[variant])
-        pins = make_pins_Glimm(all_params[variant])
-        npth_pins = make_npth_pins_Glimm(all_params[variant])
-        show(case_top)
-        show(case)
-        show(pins)
-        show(npth_pins)
-    else:
-        print("Serie " + all_params[variant].serie + " is not supported")
-        FreeCAD.Console.PrintMessage('\r\nSerie ' + all_params[variant].serie + ' is not supported\r\n')
-        sys.exit()
-
- 
-    doc = FreeCAD.ActiveDocument
-    objs=GetListOfObjects(FreeCAD, doc)
- 
-    body_top_color_key = all_params[variant].body_top_color_key
-    body_color_key = all_params[variant].body_color_key
-    pin_color_key = all_params[variant].pin_color_key
-    npth_pin_color_key = all_params[variant].npth_pin_color_key
-
-    body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
-    body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-    pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
-    npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
-
-    Color_Objects(Gui,objs[0],body_top_color)
-    Color_Objects(Gui,objs[1],body_color)
-    Color_Objects(Gui,objs[2],pin_color)
-    Color_Objects(Gui,objs[3],npth_pin_color)
-
-    col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-    col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-    col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-    col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
+    destination_dir = model_class.get_dest_3D_dir()
     
-    material_substitutions={
-        col_body_top[:-1]:body_top_color_key,
-        col_body[:-1]:body_color_key,
-        col_pin[:-1]:pin_color_key,
-        col_npth_pin[:-1]:npth_pin_color_key
-    }
-
-    expVRML.say(material_substitutions)
-    while len(objs) > 1:
-            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
-            del objs
-            objs = GetListOfObjects(FreeCAD, doc)
+    material_substitutions = model_class.make_3D_model(modelName)
+    
+    doc = FreeCAD.ActiveDocument
     doc.Label = CheckedmodelName
 
-    del objs
     objs=GetListOfObjects(FreeCAD, doc)
     objs[0].Label = CheckedmodelName
     restore_Main_Tools()
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
     expVRML.say(models_dir)
-    out_dir=models_dir+destination_dir
+    out_dir=models_dir+os.sep+destination_dir
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -592,7 +187,7 @@ def run():
 import add_license as Lic
 
 # when run from command line
-if __name__ == "__main__" or __name__ == "main_generator_Converter_DCDC":
+if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -608,21 +203,29 @@ if __name__ == "__main__" or __name__ == "main_generator_Converter_DCDC":
     expVRML.say(sub_path)
     models_dir=sub_path+"_3Dmodels"
 
+    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
+    
+    model_to_build = ''
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building RV_Disc_D12mm_W3.9mm_P7.5mm\r\n')
-        model_to_build='Valve_ECC-83-1'
+        FreeCAD.Console.PrintMessage('No variant name is given, add a valid model name as an argument or the argument "all"\r\n')
     else:
         model_to_build=sys.argv[2]
 
-    if model_to_build == "all":
-        variants = all_params.keys()
-    else:
-        variants = [model_to_build]
-
-    for variant in variants:
-        FreeCAD.Console.PrintMessage('\r\n' + variant + '\r\n\r\n')
-        if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping. " % variant)
-            continue
-
-        make_3D_model(models_dir, variant)
+    
+    found_one = False
+    if len(model_to_build) > 0:
+        if model_to_build == 'all':
+            found_one = True
+            for n in different_models:
+                listall = n.get_list_all()
+                for i in listall:
+                    FreeCAD.Console.PrintMessage('\r\nMaking model :' + i + '\r\n')
+                    make_3D_model(models_dir, n, i)
+        else:
+            for n in different_models:
+                if n.model_exist(model_to_build):
+                    found_one = True
+                    make_3D_model(models_dir, n, model_to_build)
+        
+        if not found_one:
+            print("Parameters for %s doesn't exist, skipping. " % model_to_build)
