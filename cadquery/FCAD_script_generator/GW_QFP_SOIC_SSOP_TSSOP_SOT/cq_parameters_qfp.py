@@ -229,6 +229,35 @@ part_params = {
         modelName = 'LQFP-52_10x10mm_P0.65mm', #modelName
         rotation = -90, # rotation if required
         ),
+    'LQFP-52_14x14mm_Pitch1mm': Params( # from http://www.holtek.com/documents/10179/116711/HT1632Cv170.pdf
+        the = 12.0,  # body angle in degrees
+        tb_s = 0.15,  # top part of body is that much smaller
+        c = 0.1,  # pin thickness, body center part height
+        R1 = 0.1,  # pin upper corner, inner radius
+        R2 = 0.1,  # pin lower corner, inner radius
+        S = 0.2,  # pin top flat part length (excluding corner arc)
+        # L = 0.6,  # pin bottom flat part length (including corner arc)
+        fp_s = True,  # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,  # first pin indicator radius
+        fp_d = 0.2,  # first pin indicator distance from edge
+        fp_z = 0.1,  # first pin indicator depth
+        ef = 0.05,  # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,  # 0.45 chamfer of the 1st pin corner
+        D1 = 14,  # body length
+        E1 = 14,  # body width
+        E = 16,  # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,  # body-board separation
+        A2 = 1.4,  # body height
+        b = 0.44,  # pin width
+        e = 1,  # pin (center-to-center) distance
+        npx = 13,  # number of pins along X axis (width)
+        npy = 13,  # number of pins along y axis (length)
+        epad = None,  # e Pad
+        excluded_pins = None,  # no pin excluded
+        old_modelName = 'LQFP-52_14x14mm_Pitch1mm',
+        modelName = 'LQFP-52_14x14mm_P1mm',
+        rotation = -90,  # rotation if required
+        ),
     'LQFP-52-1EP_10x10mm_Pitch0.65mm': Params(
         the = 12.0,      # body angle in degrees
         tb_s = 0.15,    # top part of body is that much smaller
