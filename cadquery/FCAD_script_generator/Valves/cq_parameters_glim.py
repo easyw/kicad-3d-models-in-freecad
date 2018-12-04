@@ -302,7 +302,7 @@ class cq_parameters_glim():
 
     all_params = {
 
-        'Valve_Glim': Params(
+        'Valve_Glimm': Params(
             #
             # Valve
             # This model have been auto generated based on the foot print file
@@ -310,7 +310,7 @@ class cq_parameters_glim():
             # 
             # The foot print that uses this 3D model is Valve_Glimm.kicad_mod
             # 
-            modelName = 'Valve_Glim',  # modelName
+            modelName = 'Valve_Glimm',  # modelName
             D = 5.08,                   # Body width/diameter
             E = 10.16,                  # Body length
             H = 10.00,                  # Body height

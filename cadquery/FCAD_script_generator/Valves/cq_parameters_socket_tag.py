@@ -462,13 +462,13 @@ class cq_parameters_socket_tag():
 
     all_params = {
 
-        'Valve_Socket_Belton_VT9_PT-B9A-D21.00mm_Tap': Params(
+        'Valve_Noval-B9A_Belton_VT9_PT_Socket': Params(
             #
             # http://www.belton.co.kr/inc/downfile.php?seq=58&file=pdf
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Socket_Belton_VT9_PT-B9A-D21.00mm_Tap',   # modelName
-            D = 27.00,                  # Body width/diameter
+            modelName = 'Valve_Noval-B9A_Belton_VT9_PT_Socket',   # modelName
+            D = 22.80,                  # Body width/diameter
             socket_H = 08.50,           # Body height
             A1 = 0.03,                  # Body-board separation
             pin_top_diameter = 11.89,   # Diameter of the pin holes ontop

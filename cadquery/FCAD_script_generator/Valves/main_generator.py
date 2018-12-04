@@ -95,27 +95,26 @@ STR_licOrg = "FreeCAD"
 import cq_parameters_tube_generic  # modules parameters
 from cq_parameters_tube_generic import *
 
-import cq_parameters_socket_generic  # modules parameters
-from cq_parameters_socket_generic import *
-
 import cq_parameters_glim  # modules parameters
 from cq_parameters_glim import *
-
-import cq_parameters_socket_tag  # modules parameters
-from cq_parameters_socket_tag import *
 
 import cq_parameters_tube_CK6418  # modules parameters
 from cq_parameters_tube_CK6418 import *
 
+import cq_belton_socket  # modules parameters
+from cq_belton_socket import *
+
+import cq_dongxin_socket  # modules parameters
+from cq_dongxin_socket import *
+
 
 different_models = [
-    cq_parameters_socket_generic(),
-    cq_parameters_tube_generic(),
     cq_parameters_glim(),
-    cq_parameters_socket_tag(),
     cq_parameters_tube_CK6418(),
-#    cq_parameters_socket_tht_generic_oval(),
-#    cq_parameters_socket_tht_generic_round(),
+    cq_belton_socket(),
+    cq_dongxin_socket(),
+
+    cq_parameters_tube_generic(),
 ]
 
 
@@ -214,7 +213,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     
     found_one = False
     if len(model_to_build) > 0:
-        if model_to_build == 'all':
+        if model_to_build == 'all' or model_to_build == 'All' or model_to_build == 'ALL':
             found_one = True
             for n in different_models:
                 listall = n.get_list_all()
