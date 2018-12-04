@@ -383,7 +383,7 @@ class cq_parameters_tube_generic():
             pin_type = ('round', 1.016, 4.0),  # Pin type, diameter, length
             pin_number = 9,             # Number of pins
             pin_arc = 36.0,             # Arch between pins
-            pin_diameter = 17.45,       # Diameter of the circle where pins are located
+            pin_diameter = 26.50,       # Diameter of the circle where pins are located
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'glass_grey',          # Body color
@@ -399,7 +399,7 @@ class cq_parameters_tube_generic():
             # A number of parameters have been fixed or guessed, such as A2
             # 
             modelName = 'Valve_Tube_Noval-B9A',   # modelName
-            D = 25.50,                  # Body width/diameter
+            D = 22.50,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
             pin_spigot = None,          # Spigot
