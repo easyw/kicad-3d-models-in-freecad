@@ -257,11 +257,13 @@ sys.path.append("cq_models")
 import conn_jst_eh_models
 import conn_jst_ph_models
 import conn_jst_xh_models
+import conn_jst_gh_models
 
 all_series = {
     'eh':conn_jst_eh_models,
     'ph':conn_jst_ph_models,
-    'xh':conn_jst_xh_models
+    'xh':conn_jst_xh_models,
+    'gh':conn_jst_gh_models
 }
 
 #########################################################################
