@@ -368,12 +368,12 @@ class cq_parameters_tube_generic():
 
     all_params = {
 
-        'Valve_Tube_Magnoval-B9D-D17.45mm_Pin': Params(
+        'Valve_Tube_Magnoval-B9D': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Magnoval-B9D-D17.45mm_Pin',   # modelName
+            modelName = 'Valve_Tube_Magnoval-B9D',   # modelName
             D = 30.00,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
@@ -383,7 +383,7 @@ class cq_parameters_tube_generic():
             pin_type = ('round', 1.016, 4.0),  # Pin type, diameter, length
             pin_number = 9,             # Number of pins
             pin_arc = 36.0,             # Arch between pins
-            pin_diameter = 17.45,       # Diameter of the circle where pins are located
+            pin_diameter = 26.50,       # Diameter of the circle where pins are located
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'glass_grey',          # Body color
@@ -393,13 +393,13 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Noval-B9A-D11.89mm_Pin': Params(
+        'Valve_Tube_Noval-B9A': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Noval-B9A-D11.89mm_Pin',   # modelName
-            D = 25.50,                  # Body width/diameter
+            modelName = 'Valve_Tube_Noval-B9A',   # modelName
+            D = 22.50,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
             pin_spigot = None,          # Spigot
@@ -418,12 +418,12 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Miniature-B7G-D09.53mm_Pin': Params(
+        'Valve_Tube_Miniature-B7G': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Miniature-B7G-D09.53mm_Pin', # modelName
+            modelName = 'Valve_Tube_Miniature-B7G', # modelName
             D = 15.00,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
@@ -443,12 +443,12 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Loctal-B9G-D21.00mm_Pin': Params(
+        'Valve_Tube_Loctal-B9G': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Loctal-B9G-D21.00mm_Pin', # modelName
+            modelName = 'Valve_Tube_Loctal-B9G', # modelName
             D = 27.58,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
@@ -468,12 +468,12 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Loctal-B8G-D17.45mm-Pin': Params(
+        'Valve_Tube_Loctal-B8G': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Loctal-B8G-D17.45mm-Pin', # modelName
+            modelName = 'Valve_Tube_Loctal-B8G', # modelName
             D = 29.00,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
@@ -493,12 +493,12 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Decar-B10G-D11.89mm_Pin': Params(
+        'Valve_Tube_Decar-B10G': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Decar-B10G-D11.89mm_Pin', # modelName
+            modelName = 'Valve_Tube_Decar-B10G', # modelName
             D = 17.00,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation
@@ -518,12 +518,12 @@ class cq_parameters_tube_generic():
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
 
-        'Valve_Tube_Octal-K8A-D17.45mm_Pin': Params(
+        'Valve_Tube_Octal-K8A': Params(
             #
             # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Tube_Octal-K8A-D17.45mm_Pin', # modelName
+            modelName = 'Valve_Tube_Octal-K8A', # modelName
             D = 29.00,                  # Body width/diameter
             H = 49.20,                  # Body height
             A1 = 0.03,                  # Body-board separation

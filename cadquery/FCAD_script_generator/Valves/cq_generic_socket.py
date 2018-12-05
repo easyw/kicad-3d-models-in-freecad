@@ -52,7 +52,7 @@ from cq_parameters import *
 import math
 
 
-class cq_parameters_socket_tag():
+class cq_belton_socket():
 
     def __init__(self):
         x = 0
@@ -82,10 +82,26 @@ class cq_parameters_socket_tag():
         destination_dir = self.get_dest_3D_dir()
         params = self.all_params[modelName]
 
-        case_top = self.make_case_top(params)
-        show(case_top)
+        
+        if params.serie == 'VT8-PT':
+            case_top = self.make_case_top_VT8_PT(params)
+            show(case_top)
+            case = self.make_case_VT8_PT(params)
+            show(case)
+            pins = self.make_pins_VT8_PT(params)
+            show(pins)
         
         if params.serie == 'VT9-PT':
+            case_top = self.make_case_top(params)
+            show(case_top)
+            case = self.make_case_VT9_PT(params)
+            show(case)
+            pins = self.make_pins_VT9_PT(params)
+            show(pins)
+        
+        if params.serie == 'VT9-PT-C':
+            case_top = self.make_case_top_VT9_PT_C(params)
+            show(case_top)
             case = self.make_case_VT9_PT(params)
             show(case)
             pins = self.make_pins_VT9_PT(params)
@@ -145,7 +161,8 @@ class cq_parameters_socket_tag():
         pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
         rotation = params.rotation          # Rotation if required
 
-        A1 = A1 + pin_type[3]
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
         #
         # Calculate center
         # pin 1 always in origo
@@ -165,6 +182,132 @@ class cq_parameters_socket_tag():
             case = case.rotate((0,0,0), (0,0,1), rotation)
 
         return (case)
+    
+    def make_case_top_VT8_PT(self, params):
+
+        D = params.D                        # package length
+        H = params.socket_H                 # body overall height
+        A1 = params.A1                      # package height
+        sadle = params.sadle                # "npth hole 1 x-pos, y-pos, diameter", "npth hole 2 x-pos, y-pos, diameter", width, length of flange, rotation in degree of flange
+        sadle_hole = params.sadle_hole      # sadle hole1 x pos, sadle hole1 diameter, sadle hole2 x pos, sadle hole2 diameter 
+        sadle_shield = params.sadle_shield  #
+        npth_pin = params.npth_pin          # NPTH hole [(x, y, length)]
+        center_pin = params.center_pin      # center pin ['type', diameter length)]
+        pin_type = params.pin_type          # Pin type, length
+        pin_number = params.pin_number      # Number of pins
+        pin_arc = params.pin_arc            # Arch between pins
+        pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
+        rotation = params.rotation          # Rotation if required
+
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
+        #
+        # Calculate center
+        # pin 1 always in origo
+        #
+        alpha_delta = 0 - ((pin_arc * math.pi) / 180.0)
+        h = pin_diameter / 2.0
+        origo_dx = (h * math.sin(alpha_delta))
+        origo_dy = (h * math.cos(alpha_delta))
+
+        origo_x = 0 - origo_dx
+        origo_y = origo_dy
+        #
+        cq_par = cq_parameters_help()
+        top = cq_par.create_sadle(origo_x, origo_y, A1, D, sadle, sadle_hole, rotation)
+        #
+
+        return (top)
+    
+    def make_case_top_VT9_PT_C(self, params):
+
+        D = params.D                        # package length
+        H = params.socket_H                 # body overall height
+        A1 = params.A1                      # package height
+        sadle = params.sadle                # "npth hole 1 x-pos, y-pos, diameter", "npth hole 2 x-pos, y-pos, diameter", width, length of flange, rotation in degree of flange
+        sadle_hole = params.sadle_hole      # sadle hole1 x pos, sadle hole1 diameter, sadle hole2 x pos, sadle hole2 diameter 
+        sadle_shield = params.sadle_shield  #
+        npth_pin = params.npth_pin          # NPTH hole [(x, y, length)]
+        center_pin = params.center_pin      # center pin ['type', diameter length)]
+        pin_type = params.pin_type          # Pin type, length
+        pin_number = params.pin_number      # Number of pins
+        pin_arc = params.pin_arc            # Arch between pins
+        pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
+        rotation = params.rotation          # Rotation if required
+
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
+        #
+        # Calculate center
+        # pin 1 always in origo
+        #
+        alpha_delta = 0 - ((pin_arc * math.pi) / 180.0)
+        h = pin_diameter / 2.0
+        origo_dx = (h * math.sin(alpha_delta))
+        origo_dy = (h * math.cos(alpha_delta))
+
+        origo_x = 0 - origo_dx
+        origo_y = origo_dy
+        #
+        cq_par = cq_parameters_help()
+        case = cq_par.create_sadle(origo_x, origo_y, A1, D, sadle, sadle_hole, rotation)
+        case1 = cq_par.create_sadle_shield(origo_x, origo_y, A1, sadle, sadle_hole, sadle_shield, rotation)
+        case = case.union(case1)
+        #
+        sadle_z = sadle[0]
+        sadle_w = sadle[1]
+        sadle_r1 = sadle[2] / 2.0
+        sadle_x = sadle[3]
+        sadle_r2 = sadle[4] / 2.0
+        sadle_a = sadle[5]
+        sadle_h = 0.2
+        #
+        case1 = cq.Workplane("XY").workplane(offset=A1 + sadle_z - 6.6).moveTo(sadle_x, 0).circle(1.5, False).extrude(6.6)
+        case1 = case1.rotate((0,0,0), (0,0,1), sadle_a)
+        case1 = case1.translate((origo_x, 0.0 - origo_y, 0.0))
+        case = case.union(case1)
+        
+        case1 = cq.Workplane("XY").workplane(offset=A1 + sadle_z - 6.6).moveTo(sadle_x, 0).circle(0.5, False).extrude(-3.0)
+        case1 = case1.rotate((0,0,0), (0,0,1), sadle_a)
+        case1 = case1.translate((origo_x, 0.0 - origo_y, 0.0))
+        case = case.union(case1)
+
+        return (case)
+
+
+    def make_case_VT8_PT(self, params):
+
+        D = params.D                        # package length
+        H = params.socket_H                 # body overall height
+        A1 = params.A1                      # package height
+        pin_top_diameter = params.pin_top_diameter  # Diameter of pin hole on top
+        pin_spigot = params.pin_spigot      # Spigot
+        npth_pin = params.npth_pin          # NPTH hole [(x, y, length)]
+        center_pin = params.center_pin      # center pin ['type', diameter length)]
+        pin_type = params.pin_type          # Pin type, length
+        pin_number = params.pin_number      # Number of pins
+        pin_arc = params.pin_arc            # Arch between pins
+        pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
+        rotation = params.rotation          # Rotation if required
+
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
+        #
+        # Calculate center
+        # pin 1 always in origo
+        #
+        alpha_delta = 0 - ((pin_arc * math.pi) / 180.0)
+        h = pin_diameter / 2.0
+        origo_dx = (h * math.sin(alpha_delta))
+        origo_dy = (h * math.cos(alpha_delta))
+        
+        origo_x = 0 - origo_dx
+        origo_y = origo_dy
+        
+        cq_par = cq_parameters_help()
+        case = cq_par.make_body_round(origo_x, origo_y, A1, D, pin_number, pin_type, pin_spigot, pin_top_diameter, H, alpha_delta, rotation)
+        
+        return (case)
 
 
     def make_case_VT9_PT(self, params):
@@ -182,7 +325,8 @@ class cq_parameters_socket_tag():
         pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
         rotation = params.rotation          # Rotation if required
 
-        A1 = A1 + pin_type[3]
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
         #
         # Calculate center
         # pin 1 always in origo
@@ -195,94 +339,44 @@ class cq_parameters_socket_tag():
         origo_x = 0 - origo_dx
         origo_y = origo_dy
         
+        cq_par = cq_parameters_help()
+        case = cq_par.make_body_with_ring_with_cut(origo_x, origo_y, A1, D, pin_number, pin_type, pin_spigot, pin_top_diameter, H, alpha_delta, rotation)
         
-        ffs = D / 70.0
-        case = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0 - origo_y).circle(D / 2.0, False).extrude(H)
-        #
-        # Make ring on the middle of the body
-        #
-        TT = 18.50
-        F1 = (H - 2.0) / 2.0
-        case1 = cq.Workplane("XY").workplane(offset=A1 - 0.1).moveTo(origo_x, 0 - origo_y).circle(TT / 2.0 + 6.0, False).extrude(F1 + 0.1)
-        case2 = cq.Workplane("XY").workplane(offset=A1 - 0.1).moveTo(origo_x, 0 - origo_y).circle(TT / 2.0, False).extrude(F1 + 0.1)
-        case1 = case1.cut(case2)
-        case = case.cut(case1)
-        #
-        case1 = cq.Workplane("XY").workplane(offset=A1 + F1 + 2.0).moveTo(origo_x, 0 - origo_y).circle(TT / 2.0 + 6.0, False).extrude(H)
-        case2 = cq.Workplane("XY").workplane(offset=A1 + F1 + 2.0).moveTo(origo_x, 0 - origo_y).circle(TT / 2.0, False).extrude(H)
-        case1 = case1.cut(case2)
-        case = case.cut(case1)
-        
-        #
-        # Round bottom
-        #
-        case = case.faces("<Z").fillet(ffs)
-        #
-        # Cut the edges of the socket
-        #
-        tv = 20
-        ti = ((D - TT) / 2.0) + 0.2
-        ta = 0 - ((tv * math.pi) / 180.0)
-        th = (TT / 2.0) + (ti / 2.0)
-        tdx = (th * math.sin(ta))
-        tdy = (th * math.cos(ta))
-
-        ttx = origo_x + tdx
-        tty = origo_y + tdy
-
-        case1 = cq.Workplane("XY").workplane(offset=A1 - 0.1).moveTo(0,0).rect(D, ti).extrude(H + 0.2)
-        case1 = case1.rotate((0,0,0), (0,0,1), 360 - tv)
-        case1 = case1.translate((ttx, 0 - tty, 0))
-        case = case.cut(case1)
-        #
-        tv = tv + 180
-        ti = ((D - TT) / 2.0) + 0.2
-        ta = 0 - ((tv * math.pi) / 180.0)
-        th = (TT / 2.0) + (ti / 2.0)
-        tdx = (th * math.sin(ta))
-        tdy = (th * math.cos(ta))
-
-        ttx = origo_x + tdx
-        tty = origo_y + tdy
-
-        case1 = cq.Workplane("XY").workplane(offset=A1 - 0.1).moveTo(0,0).rect(D, ti).extrude(H + 0.2)
-        case1 = case1.rotate((0,0,0), (0,0,1), 360 - tv)
-        case1 = case1.translate((ttx, 0 - tty, 0))
-        case = case.cut(case1)
-        
-        if pin_spigot != None:
-            if pin_spigot[0] == 'round':
-                pins = cq.Workplane("XY").workplane(offset=A1 + (H / 4)).moveTo(origo_x, 0 - origo_y).circle(pin_spigot[1] / 2.0, False).extrude(H)
-                case = case.cut(pins)
-                pins = cq.Workplane("XY").workplane(offset=A1 + ((3 * H) / 4)).moveTo(origo_x, 0 - origo_y).circle(pin_spigot[2] / 2.0, False).extrude(H)
-                case = case.cut(pins)
-
-        h = pin_top_diameter / 2.0
-        alpha = alpha_delta
-        x1 = (h * math.sin(alpha)) + origo_x
-        y1 = (h * math.cos(alpha)) - origo_y
-        pins = cq.Workplane("XY").workplane(offset=A1 + (H / 2.0)).moveTo(x1, y1).circle(pin_type[1] / 2.0, False).extrude(H)
-        case = case.cut(pins)
-        alpha = alpha + alpha_delta
-        for i in range(1, pin_number):
-            x1 = (h * math.sin(alpha)) + origo_x
-            y1 = (h * math.cos(alpha)) - origo_y
-            pint = cq.Workplane("XY").workplane(offset=A1 + (H / 2.0)).moveTo(x1, y1).circle(pin_type[1] / 2.0, False).extrude(H)
-            case = case.cut(pint)
-            alpha = alpha + alpha_delta
-
-        #
-        # Round top
-        #
-        case = case.faces(">Z").fillet(ffs)
-
-        
-        if (rotation != 0):
-            case = case.rotate((0,0,0), (0,0,1), rotation)
-
-            
-            
         return (case)
+
+    
+    def make_pins_VT8_PT(self, params):
+
+
+        D = params.D                        # package length
+        H = params.socket_H                 # body overall height
+        A1 = params.A1                      # package height
+        npth_pin = params.npth_pin          # NPTH hole [(x, y, length)]
+        center_pin = params.center_pin      # center pin ['type', diameter length)]
+        pin_type = params.pin_type          # Pin type, length
+        pin_number = params.pin_number      # Number of pins
+        pin_arc = params.pin_arc            # Arch between pins
+        pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
+        rotation = params.rotation          # Rotation if required
+
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
+        #
+        # Calculate center
+        # pin 1 always in origo
+        #
+        alpha_delta = 0 - ((pin_arc * math.pi) / 180.0)
+        h = pin_diameter / 2.0
+        origo_dx = (h * math.sin(alpha_delta))
+        origo_dy = (h * math.cos(alpha_delta))
+
+        origo_x = 0 - origo_dx
+        origo_y = origo_dy
+        
+        cq_par = cq_parameters_help()
+        pins = cq_par.create_pins(origo_x, origo_y, A1, pin_number, pin_type, center_pin, h, alpha_delta, rotation)
+        
+        return (pins)
 
     
     def make_pins_VT9_PT(self, params):
@@ -299,7 +393,8 @@ class cq_parameters_socket_tag():
         pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
         rotation = params.rotation          # Rotation if required
 
-        A1 = A1 + pin_type[3]
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
         #
         # Calculate center
         # pin 1 always in origo
@@ -312,77 +407,9 @@ class cq_parameters_socket_tag():
         origo_x = 0 - origo_dx
         origo_y = origo_dy
         
-        alpha = alpha_delta
-        if pin_type[0] == 'round':
-            x1 = (h * math.sin(alpha)) + origo_x
-            y1 = (h * math.cos(alpha)) - origo_y
-            pins = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(x1, y1).circle(pin_type[1] / 2.0, False).extrude(0 - (0.1 + pin_type[2]))
-            pins = pins.faces("<Z").fillet(pin_type[1] / 5.0)
-            alpha = alpha + alpha_delta
-            for i in range(1, pin_number):
-                x1 = (h * math.sin(alpha)) + origo_x
-                y1 = (h * math.cos(alpha)) - origo_y
-                pint = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(x1, y1).circle(pin_type[1] / 2.0, False).extrude(0 - (0.1 + pin_type[2]))
-                pint = pint.faces("<Z").fillet(pin_type[1] / 5.0)
-                pins = pins.union(pint)
-                alpha = alpha + alpha_delta
-                
-
-        alpha = alpha_delta
-        if pin_type[0] == 'roundtap':
-            xx = (h * math.sin(alpha)) + origo_x
-            yy = (h * math.cos(alpha)) - origo_y
-
-            x1 = (pin_type[4] / 2.0)
-            y1 = A1
-            #
-            x2 = (pin_type[4] / 2.0)
-            y2 = A1 - (pin_type[3] - (pin_type[5] / 2.0))
-            #
-            x3 = (pin_type[6] / 2.0)
-            y3 = A1 - (pin_type[3])
-            #
-            x4 = (pin_type[6] / 2.0)
-            y4 = A1 - (pin_type[3] + pin_type[5])
-            
-
-            pts = [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (0 - x4, y4), (0 - x3, y3), (0 - x2, y2), (0 - x1, y1), (x1, y1)]
-            pins = cq.Workplane("XZ").workplane(offset=0 - (pin_type[2] / 2.0)).polyline(pts).close().extrude(pin_type[2])
-            pins = pins.faces("<Z").edges("<X").fillet(pin_type[6] / 2.3)
-            pins = pins.faces("<Z").edges(">X").fillet(pin_type[6] / 2.3)
-            pint = cq.Workplane("XY").workplane(offset=A1).moveTo(0, 0 - (2.0 - (pin_type[2] / 2.0))).rect(pin_type[4], 4.0).extrude(pin_type[2])
-            pint = pint.faces(">Y").edges(">Z").fillet(pin_type[2] / 1.5)
-            pins = pins.union(pint)
-            pins = pins.rotate((0,0,0), (0,0,1), 360 - (alpha * (180.0 / math.pi)))
-            pins = pins.translate((xx, yy, 0))
-
-            alpha = alpha + alpha_delta
-            for i in range(1, pin_number):
-                xx = (h * math.sin(alpha)) + origo_x
-                yy = (h * math.cos(alpha)) - origo_y
-
-                pine = cq.Workplane("XZ").workplane(offset=0 - (pin_type[2] / 2.0)).polyline(pts).close().extrude(pin_type[2])
-                pine = pine.faces("<Z").edges("<X").fillet(pin_type[6] / 2.3)
-                pine = pine.faces("<Z").edges(">X").fillet(pin_type[6] / 2.3)
-                pinr = cq.Workplane("XY").workplane(offset=A1).moveTo(0, 0 - (2.0 - (pin_type[2] / 2.0))).rect(pin_type[4], 4.0).extrude(pin_type[2])
-                pinr = pinr.faces(">Y").edges(">Z").fillet(pin_type[2] / 1.5)
-                pine = pine.union(pint)
-                pine = pine.rotate((0,0,0), (0,0,1), 360 - (alpha * (180.0 / math.pi)))
-                pine = pine.translate((xx, yy, 0))
-
-                pins = pins.union(pine)
-                alpha = alpha + alpha_delta
-                
-        if center_pin != None:
-            if center_pin[0] == 'metal':
-                pint = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(origo_x, 0 - origo_y).circle(center_pin[1] / 2.0, False).extrude(0 - (0.1 + center_pin[2]))
-                pint = pint.faces("<Z").fillet(pin_type[1] / 5.0)
-                pins  = pins.union(pint)
-                
+        cq_par = cq_parameters_help()
+        pins = cq_par.create_pins(origo_x, origo_y, A1, pin_number, pin_type, center_pin, h, alpha_delta, rotation)
         
-        if (rotation != 0):
-            pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
         return (pins)
 
 
@@ -401,7 +428,8 @@ class cq_parameters_socket_tag():
         pin_diameter = params.pin_diameter  # Diameter of the cricle where pins are located
         rotation = params.rotation          # Rotation if required
 
-        A1 = A1 + pin_type[3]
+        if len(pin_type) > 2:
+            A1 = A1 + pin_type[3]
         #
         # Calculate center
         # pin 1 always in origo
@@ -440,6 +468,11 @@ class cq_parameters_socket_tag():
         'D',				    # Body width/diameter
         'socket_H',			    # Body height
         'A1',				    # Body PCB seperation
+        'flange',               # Flange paramters
+        'sadle',                # Sadle paramters
+        'sadle_hole',           # Sadle hole paramters
+        'sadle_shield',         # Sadle shield
+        'sadle_pcb_hole',       # Sadle pcb hole
         'pin_top_diameter',     # Diameter of the pin holes ontop
         'pin_spigot',           # Spigot
         'npth_pin',             # NPTH holes
@@ -462,25 +495,30 @@ class cq_parameters_socket_tag():
 
     all_params = {
 
-        'Valve_Socket_Belton_VT9_PT-B9A-D21.00mm_Tap': Params(
+
+        'Valve_Miniature-B7G_Socket': Params(
             #
-            # http://www.belton.co.kr/inc/downfile.php?seq=58&file=pdf
+            # https://en.wikipedia.org/wiki/Tube_socket
             # A number of parameters have been fixed or guessed, such as A2
             # 
-            modelName = 'Valve_Socket_Belton_VT9_PT-B9A-D21.00mm_Tap',   # modelName
-            D = 27.00,                  # Body width/diameter
-            socket_H = 08.50,           # Body height
+            modelName = 'Valve_Miniature-B7G_Socket',   # modelName
+            D = 15.00,                  # Body width/diameter
+            socket_H = 08.00,           # Body height
             A1 = 0.03,                  # Body-board separation
-            pin_top_diameter = 11.89,   # Diameter of the pin holes ontop
+            sadle = None,               # Sadle z pos, length, width, xpos r2, diameter r2, rotation
+            sadle_hole = None,          # Sadle hole1 x pos, sadle hole1 diameter, sadle hole2 x pos, sadle hole2 diameter 
+            sadle_shield = None,        # Sadle shield diameter, height
+            sadle_pcb_hole = None,      # Sadle shield diameter, height
+            pin_top_diameter = ('round', 09.53, 1.016),   # Diameter of the pin holes ontop
             pin_spigot = ('round', 3.5, 6.0),          # Spigot in the middle on the top of the socket
             npth_pin = None,            # NPTH hole [(x, y, length)]
             center_pin = None,          # Center pin ('type', diameter, length)
             #
-            pin_type = ('roundtap', 1.8, 0.2, 3.5, 2.6, 3.0, 1.5),  # Pin type, hole diameter, pin thickness upper partlength, upper part width, lower part length, lower part width
-            pin_number = 9,             # Number of pins
-            pin_arc = 36.0,             # Arch between pins
-            pin_diameter = 21.00,       # Diameter of the circle where pins are located
-            serie = 'VT9-PT',            # The serie of the socket
+            pin_type = ('round', 1.8, 0.2, 3.5, 2.6, 3.0, 1.5),  # Pin type, hole diameter, pin thickness upper partlength, upper part width, lower part length, lower part width
+            pin_number = 7,             # Number of pins
+            pin_arc = 45.0,             # Arch between pins
+            pin_diameter = 09.53,       # Diameter of the circle where pins are located
+            serie = 'Miniature-B7G',            # The serie of the socket
             
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'green body',          # Body color
@@ -489,5 +527,6 @@ class cq_parameters_socket_tag():
             rotation = 0,                           # Rotation if required
             dest_dir_prefix = '../Valve.3dshapes',  # destination directory
             ),
+
     }
         
