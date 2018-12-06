@@ -38,6 +38,7 @@ Params = namedtuple_with_defaults("Params", [
 	'L',				# package length
 	'W',			   	# package width
 	'H',				# package height
+	'rim',				# If a rim should be added to the belly
 	'pinpadsize',		# pin diameter or pad size
 	'pinpadh',			# pin length, pad height
 	'pintype',			# Casing type
