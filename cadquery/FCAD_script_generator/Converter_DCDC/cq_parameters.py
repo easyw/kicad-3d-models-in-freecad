@@ -1098,7 +1098,7 @@ all_params = {
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
         H  = 6.35,  # Package height
-        A1 = 0.1,  # Package board separation
+        A1 = 0.01,  # Package board separation
         rim = None, # No rim
         pin = ((0.0, 0.0), (-7.62, 0.0), (0.0, 7.62), (0.0, 12.70), (0.0, 15.24), (-7.62, 15.24) ),  # Pin placement
         pin1corner = (-1.27, -1.40),  # Left upp corner relationsship to pin 1
@@ -1118,12 +1118,12 @@ all_params = {
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAXXXXD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48XXD_DIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
         H  = 6.88,  # Package height
-        A1 = 0.1,  # Package board separation
+        A1 = 0.01,  # Package board separation
         rim = None, # No rim
         pin = ((0.0, 0.0), (-7.62, 0.0), (0.0, 7.62), (0.0, 12.70), (0.0, 15.24), (-7.62, 15.24) ),  # Pin placement
         pin1corner = (-1.27, -1.40),  # Left upp corner relationsship to pin 1
