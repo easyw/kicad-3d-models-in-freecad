@@ -4647,7 +4647,7 @@ kicad_naming_params_qfn = {
 
     'Microsemi_QFN-40-32-2EP_6x8mm_P0.5mm': Params(
         #
-        # 40-Lead (32-Lead Populated) Plastic Quad Flat, No Lead Package - 6x8x0.9mm Body (https://www.microsemi.com/document-portal/doc_download/131677-pd70224-data-sheet)
+        # 40-Lead (32-Lead Populated) Plastic Quad Flat, No Lead Package - 6x8x0.9mm Body (https://www.microsemi.com/document-portal/doc_download/131677-pd70224-datasheet)
         # This model have been auto generated based on the foot print file
         # A number of paramters have been fixed or guessed, such as A and A1
         #
