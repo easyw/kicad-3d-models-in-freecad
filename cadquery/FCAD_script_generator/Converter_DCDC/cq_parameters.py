@@ -1039,19 +1039,19 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 6.09,  # Package length
+        L  = 7.20,  # Package length
         W  = 19.30,  # Package width
-        H  = 6.35,  # Package height
-        A1 = 0.5,  # Package board separation
-        rim = (6.09, 0.5, 0.5),          # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70) ),  # Pin placement
-        pin1corner = (-4.69, -1.40),  # Left upp corner relationsship to pin 1
+        H  = 10.16,  # Package height
+        A1 = 0.01,  # Package board separation
+        rim = (0.0, 0.5, 0.5),          # If a rim should be created at the bottom
+        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
+        pin1corner = (-5.80, -2.03),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.05+0.5,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1064,19 +1064,19 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 7.20,  # Package length
+        L  = 6.09,  # Package length
         W  = 19.30,  # Package width
-        H  = 6.35,  # Package height
-        A1 = 0.5,  # Package board separation
-        rim = (7.20, 0.5, 0.5),          # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70) ),  # Pin placement
-        pin1corner = (-4.69, -1.40),  # Left upp corner relationsship to pin 1
+        H  = 10.16,  # Package height
+        A1 = 0.01,  # Package board separation
+        rim = (0.0, 0.5, 0.5),          # If a rim should be created at the bottom
+        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
+        pin1corner = (-4.69, -2.03),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.05+0.5,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1100,8 +1100,8 @@ all_params = {
         H  = 6.35,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (-7.62, 0.0), (0.0, 7.62), (0.0, 12.70), (0.0, 15.24), (-7.62, 15.24) ),  # Pin placement
-        pin1corner = (-1.27, -1.40),  # Left upp corner relationsship to pin 1
+        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin1corner = (-1.27, -2.54),  # Left upp corner relationsship to pin 1
         pinpadh    = 2.79,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1125,8 +1125,8 @@ all_params = {
         H  = 6.88,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (-7.62, 0.0), (0.0, 7.62), (0.0, 12.70), (0.0, 15.24), (-7.62, 15.24) ),  # Pin placement
-        pin1corner = (-1.27, -1.40),  # Left upp corner relationsship to pin 1
+        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin1corner = (-1.27, -2.54),  # Left upp corner relationsship to pin 1
         pinpadh    = 2.79,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1138,4 +1138,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
+
+
 }

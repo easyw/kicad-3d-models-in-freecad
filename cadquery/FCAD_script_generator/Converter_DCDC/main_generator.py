@@ -201,10 +201,12 @@ def make_case(params):
             FreeCAD.Console.PrintMessage("rdy " + str(rdy) + '\r\n')
             FreeCAD.Console.PrintMessage("rdh " + str(rdh) + '\r\n')
             FreeCAD.Console.PrintMessage('\r\n')
-            case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX + rdx, mvY).rect(L - (2.0 * rdx), 0 - (W + 1.0), False).extrude(rdh)
-            case = case.cut(case1)
-            case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY - rdy).rect(L + 1.0, 0 - (W - (2.0 * rdy)), False).extrude(rdh)
-            case = case.cut(case1)
+            if rdx != 0:
+                case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX + rdx, mvY).rect(L - (2.0 * rdx), 0 - (W + 1.0), False).extrude(rdh)
+                case = case.cut(case1)
+            if rdy != 0:
+                case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY - rdy).rect(L + 1.0, 0 - (W - (2.0 * rdy)), False).extrude(rdh)
+                case = case.cut(case1)
 
     case = case.faces("<X").edges("<Y").fillet(ff)
     case = case.faces("<X").edges(">Y").fillet(ff)
@@ -571,7 +573,7 @@ def run():
 import add_license as Lic
 
 # when run from command line
-if __name__ == "__main__" or __name__ == "main_generator_Converter_DCDC":
+if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
