@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 #
 # This is derived from a cadquery script for generating QFP models in X3D format.
@@ -91,7 +91,7 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
@@ -105,11 +105,19 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements
 
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
+#
+
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
