@@ -1039,11 +1039,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IA48xxS_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IA48XXS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48xxS_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 7.20,  # Package length
         W  = 19.30,  # Package width
@@ -1064,11 +1064,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IAxxxxS_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAXXXXS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IAxxxxS_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 6.09,  # Package length
         W  = 19.30,  # Package width
@@ -1089,11 +1089,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IAXXXXD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IAxxxxD_DIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAXXXXD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IAxxxxD_DIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
@@ -1114,11 +1114,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IA48XXD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IA48xxD_DIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IA48XXD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48xxD_DIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
@@ -1139,11 +1139,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHXXXXS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxS_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHXXXXS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxS_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 7.2,  # Package length
         W  = 19.5,  # Package width
@@ -1164,11 +1164,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHXXXXSH_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxSH_SIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHXXXXSH_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxSH_SIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 7.62,  # Package length
         W  = 19.5,  # Package width
@@ -1189,11 +1189,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHXXXXD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxD_DIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHXXXXD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxD_DIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
@@ -1214,11 +1214,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHXXXXDH_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxDH_DIP_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHXXXXDH_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxDH_DIP_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 10.16,  # Package length
         W  = 20.32,  # Package width
@@ -1229,6 +1229,81 @@ all_params = {
         pin1corner = (-1.27, -2.54),  # Left upp corner relationsship to pin 1
         pinpadh    = 2.79,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
+        show_top   = False,  # If top should be visible or not
+        corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,     # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_XP_POWER-ITQxxxxS-H_SIP_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_XP_POWER-ITQxxxxS-H_SIP_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 9.20,  # Package length
+        W  = 21.85,  # Package width
+        H  = 10.65,  # Package height
+        A1 = 0.01,  # Package board separation
+        rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
+        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
+        pinpadh    = 3.00,  # Pin length, pad height
+        pinpadsize = 0.50,  # Pin diameter or pad size
+        show_top   = False,  # If top should be visible or not
+        corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,     # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_XP_POWER-ITxxxxxS_SIP_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_XP_POWER-ITxxxxxS_SIP_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 9.20,  # Package length
+        W  = 21.85,  # Package width
+        H  = 10.65,  # Package height
+        A1 = 0.01,  # Package board separation
+        rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
+        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 10.16), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
+        pinpadh    = 3.00,  # Pin length, pad height
+        pinpadsize = 0.50,  # Pin diameter or pad size
+        show_top   = False,  # If top should be visible or not
+        corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,     # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_XP_POWER-ITXxxxxSA_SIP_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_XP_POWER-ITXxxxxSA_SIP_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 9.20,  # Package length
+        W  = 21.85,  # Package width
+        H  = 10.65,  # Package height
+        A1 = 0.01,  # Package board separation
+        rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
+        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
+        pinpadh    = 3.00,  # Pin length, pad height
+        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
