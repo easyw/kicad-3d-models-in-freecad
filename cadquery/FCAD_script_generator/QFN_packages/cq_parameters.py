@@ -893,7 +893,7 @@ kicad_naming_params_qfn = {
         npy = 0,  # number of pins along y axis (length)
         epad = (1.35,1.65), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'DFN-6-1EP_2x3mm_Pitch0.5mm', #modelName
+        modelName = 'DFN-6-1EP_3x2mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
