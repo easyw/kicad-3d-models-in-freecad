@@ -105,19 +105,11 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements
 
-# Sphinx workaround #1
-try:
-    QtGui
-except NameError:
-    QtGui = None
-#
-
 try:
     # Gui.SendMsgToActiveView("Run")
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery
-    cq = cadquery
+    import cadquery as cq
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
