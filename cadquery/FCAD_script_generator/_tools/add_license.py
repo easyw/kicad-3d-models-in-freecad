@@ -32,7 +32,11 @@ from collections import namedtuple
 from os.path import expanduser
 
 # additionally needed for POVray export script
-import __builtin__
+try:
+    import __builtin__ as builtin #py2
+except:
+    import builtins as builtin  #py3
+
 import subprocess
 from subprocess import call
 

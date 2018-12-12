@@ -60,6 +60,22 @@ from os.path import expanduser
 import re
 import shaderColors
 
+try:  ## maui py3
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+    py2=True
+
 def say(msg):
     FreeCAD.Console.PrintMessage(msg)
     FreeCAD.Console.PrintMessage('\n')
@@ -132,13 +148,13 @@ class Ui_Dialog(object):
         comboBox_Changed(text)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Material Properties", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Dialog", "Materials", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Color", None, QtGui.QApplication.UnicodeUTF8))
-        self.plainTextEdit.setToolTip(QtGui.QApplication.translate("Dialog", "Shape Color", None, QtGui.QApplication.UnicodeUTF8))
-        self.plainTextEdit_2.setToolTip(QtGui.QApplication.translate("Dialog", "Diffuse Color", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("Dialog", "Diffuse", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("Dialog", "Note: set Material will unmatch colors between wrl and STEP ", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Material Properties"))
+        self.label.setText(QtGui.QApplication.translate("Dialog", "Materials"))
+        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Color"))
+        self.plainTextEdit.setToolTip(QtGui.QApplication.translate("Dialog", "Shape Color"))
+        self.plainTextEdit_2.setToolTip(QtGui.QApplication.translate("Dialog", "Diffuse Color"))
+        self.label_3.setText(QtGui.QApplication.translate("Dialog", "Diffuse"))
+        self.label_4.setText(QtGui.QApplication.translate("Dialog", "Note: set Material will unmatch colors between wrl and STEP "))
 
 #####################################
 # Function infoDialog
@@ -274,7 +290,8 @@ def determineColors(Gui, objects, know_material_substitutions=None):
     Dialog = QtGui.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
-    ui.comboBox.addItems(["as is"]+shaderColors.named_colors.keys())
+    #ui.comboBox.addItems(["as is"]+shaderColors.named_colors.keys())
+    ui.comboBox.addItems(["as is"]+list(shaderColors.named_colors))
     material="as is"
 
 
