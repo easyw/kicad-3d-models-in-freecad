@@ -160,8 +160,8 @@ def make_case(params):
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
-    A1 = params.A1                  # Body seperation height
-    rim = params.rim                # Rim underneth
+    A1 = params.A1                  # Body separation height
+    rim = params.rim                # Rim underneath
     rotation = params.rotation      # rotation if required
     pin1corner = params.pin1corner  # Left upp corner relationsship to pin 1
     pin = params.pin                # pin/pad cordinates
@@ -201,10 +201,12 @@ def make_case(params):
             FreeCAD.Console.PrintMessage("rdy " + str(rdy) + '\r\n')
             FreeCAD.Console.PrintMessage("rdh " + str(rdh) + '\r\n')
             FreeCAD.Console.PrintMessage('\r\n')
-            case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX + rdx, mvY).rect(L - (2.0 * rdx), 0 - (W + 1.0), False).extrude(rdh)
-            case = case.cut(case1)
-            case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY - rdy).rect(L + 1.0, 0 - (W - (2.0 * rdy)), False).extrude(rdh)
-            case = case.cut(case1)
+            if rdx != 0:
+                case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX + rdx, mvY).rect(L - (2.0 * rdx), 0 - (W + 1.0), False).extrude(rdh)
+                case = case.cut(case1)
+            if rdy != 0:
+                case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY - rdy).rect(L + 1.0, 0 - (W - (2.0 * rdy)), False).extrude(rdh)
+                case = case.cut(case1)
 
     case = case.faces("<X").edges("<Y").fillet(ff)
     case = case.faces("<X").edges(">Y").fillet(ff)
@@ -227,11 +229,11 @@ def make_case_top(params):
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
-    A1 = params.A1                    # Body seperation height
-    rotation = params.rotation        # rotation if required
-    pin1corner = params.pin1corner     # Left upp corner relationsship to pin 1
+    A1 = params.A1                  # Body separation height
+    rotation = params.rotation      # rotation if required
+    pin1corner = params.pin1corner  # Left upp corner relationsship to pin 1
     pin = params.pin                # pin/pad cordinates
-    show_top = params.show_top        # If top should be visible or not
+    show_top = params.show_top      # If top should be visible or not
     pintype = params.pintype        # pin type , like SMD or THT
 
     mvX = 0
@@ -282,7 +284,7 @@ def make_case_top(params):
 
     if (rotation != 0):
         casetop = casetop.rotate((0,0,0), (0,0,1), rotation)
-        
+
     return (casetop)
 
 
@@ -291,12 +293,12 @@ def make_pins_tht(params):
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
-    A1 = params.A1                    # Body seperation height
+    A1 = params.A1                  # Body separation height
     rim = params.rim                # Rim underneath
-    pinpadsize = params.pinpadsize    # pin diameter or pad size
+    pinpadsize = params.pinpadsize  # pin diameter or pad size
     pinpadh = params.pinpadh        # pin length, pad height
     pintype = params.pintype        # Casing type
-    rotation = params.rotation        # rotation if required
+    rotation = params.rotation      # rotation if required
     pin = params.pin                # pin/pad cordinates
 
     pinss = 0.1
@@ -306,7 +308,7 @@ def make_pins_tht(params):
             rdy = rim[1]
             rdh = rim[2]
             pinss = rdh + 0.1
-    
+
     p = pin[0]
     pins=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
     pins = pins.faces("<Z").fillet(pinpadsize / 5.0)
@@ -329,11 +331,11 @@ def make_pins_tht_n(params):
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
-    A1 = params.A1                    # Body seperation height
-    pinpadsize = params.pinpadsize    # pin diameter or pad size
+    A1 = params.A1                  # Body separation height
+    pinpadsize = params.pinpadsize  # pin diameter or pad size
     pinpadh = params.pinpadh        # pin length, pad height
     pintype = params.pintype        # Casing type
-    rotation = params.rotation        # rotation if required
+    rotation = params.rotation      # rotation if required
     pin = params.pin                # pin/pad cordinates
 
     FreeCAD.Console.PrintMessage('make_pins_tht_n\r\n')
@@ -366,11 +368,11 @@ def make_pins_smd(params):
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
-    A1 = params.A1                    # Body seperation height
-    pinpadsize = params.pinpadsize    # pin diameter or pad size
+    A1 = params.A1                  # Body separation height
+    pinpadsize = params.pinpadsize  # pin diameter or pad size
     pinpadh = params.pinpadh        # pin length, pad height
     pintype = params.pintype        # Casing type
-    rotation = params.rotation        # rotation if required
+    rotation = params.rotation      # rotation if required
     pin = params.pin                # pin/pad cordinates
 
     #
@@ -571,7 +573,7 @@ def run():
 import add_license as Lic
 
 # when run from command line
-if __name__ == "__main__" or __name__ == "main_generator_Converter_DCDC":
+if __name__ == "__main__" or __name__ == "main_generator":
 
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
