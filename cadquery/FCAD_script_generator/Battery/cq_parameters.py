@@ -38,7 +38,10 @@ Params = namedtuple_with_defaults("Params", [
     'LC',                   # Large circle
     'spigot',               # Spigot
     'L',                    # Package length
+    'L1',                   # Package length 1
+    'L2',                   # Package length 2
     'W',                    # Package width
+    'W1',                   # Package width 1
     'H',                    # Package height
     'BS',                   # If the side should be 'round' or 'chamfer'
     'BC',                   # Battery contact
@@ -607,6 +610,27 @@ all_params = {
 
         rotation = 0,                               # Rotation if required
         body_color_key = 'metal aluminum',          # Body color
+        pin_color_key = 'metal grey pins',          # Pin color
+        dest_dir_prefix = 'Battery.3dshapes',       # destination directory
+        ),
+
+    'Keystone_2993': Params(
+        #
+        # http://www.belton.co.kr/inc/downfile.php?seq=58&file=pdf
+        # A number of parameters have been fixed or guessed, such as A2
+        # 
+        modelname = 'BatteryHolder_Keystone_2993',  # Model name
+        A1 = 0.0,                                   # Body PCB seperation
+        L  = 09.14,                                 # Package length
+        L1 = 02.54,                                 # Package length 1
+        L2 = 02.79,                                 # Package length 2
+        W  = 15.88,                                 # Package width
+        W1 = 13.97,                                 # Package width 1
+        MT = 0.10,                                  # Metal thickness
+        npthpins = [('hole', 1.91, 0.0, 0.79), ('hole', 8.26, 0.0, 0.79), ('hole', 14.61, 0.0, 0.79)],  # 'type', x, y, circle diameter,))]
+
+        rotation = 180,                             # Rotation if required
+        body_color_key = 'metal grey pins',         # Body color
         pin_color_key = 'metal grey pins',          # Pin color
         dest_dir_prefix = 'Battery.3dshapes',       # destination directory
         ),
