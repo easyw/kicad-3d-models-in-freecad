@@ -37,6 +37,7 @@ def make_case_Seiko_MS621F(params):
     #
     case1 = cq.Workplane("XY").workplane(offset=dh).moveTo(0.0, 0.0).circle(D / 2.0, False).extrude(H1)
     case1.edges("<Z").fillet((H1 / 3.0))
+    case1.edges(">Z").fillet(H1 / 20.0)
     case = case.union(case1)
     dh = dh + H1
     
