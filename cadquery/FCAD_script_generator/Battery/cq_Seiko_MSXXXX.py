@@ -65,8 +65,6 @@ def make_pins_Seiko_MS621F(params):
     MT = params.MT              # Metal thickness
     rotation = params.rotation  # Rotation if required
 
-    FreeCAD.Console.PrintMessage('\r\n make_pins_Seiko_MSXXXX \r\n')
-
     TL = 0.5 # the width of the tounghs
     D2 = D * 0.8
     H2 = 0.075
