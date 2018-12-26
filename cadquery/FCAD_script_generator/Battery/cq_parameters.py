@@ -45,6 +45,12 @@ Params = namedtuple_with_defaults("Params", [
     'BM',                   # Center of body
 	'A1',				    # package board seperation
     'A2',                   # Belly distance to board
+    'D',                    # Diameter
+    'PW',                   # Pad width
+    'PL',                   # Pad length
+    'RW',                   # Right width
+    'RW1',                  # Right width 1
+    'MT',                   # Metal thickness
     'pins',                 # Pins tht/smd, x pos, y pos, 'round/rect', diameter/x size, y size, length
     'npthpins',             # npth holes
     'socket',               # 'type', centre diameter, length, height
@@ -582,6 +588,27 @@ all_params = {
         body_color_key  = 'black body',             # Body color
         pin_color_key   = 'metal grey pins',        # Pin color
         dest_dir_prefix = 'Battery.3dshapes'        # Destination directory
+        ),
+
+    'Seiko_MS621F': Params(
+        #
+        # http://www.belton.co.kr/inc/downfile.php?seq=58&file=pdf
+        # A number of parameters have been fixed or guessed, such as A2
+        # 
+        modelname = 'BatteryHolder_Seiko_MS621F',   # Model name
+        A1 = 0.0,                                   # Body PCB seperation
+        D = 6.8,                                    # Battery diameter
+        H = 2.7,                                    # Battery height
+        PW = 1.8,                                   # Pad width
+        PL = 2.0,                                   # Pad length
+        RW = 2.5,                                   # Right width
+        RW1 = 2.2,                                  # Right width 1
+        MT = 0.15,                                  # Metal thickness
+
+        rotation = 0,                               # Rotation if required
+        body_color_key = 'metal aluminum',          # Body color
+        pin_color_key = 'metal grey pins',          # Pin color
+        dest_dir_prefix = 'Battery.3dshapes',       # destination directory
         ),
 
 }

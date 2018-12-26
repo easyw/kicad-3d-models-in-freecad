@@ -158,6 +158,9 @@ from battery_casebutton import *
 import battery_casecylinder
 from battery_casecylinder import *
 
+import cq_Seiko_MSXXXX
+from cq_Seiko_MSXXXX import *
+
 
     
 def make_npthpins_S2(params):
@@ -264,8 +267,15 @@ def make_3D_model(models_dir, variant):
         #
     elif all_params[variant].modeltype == 'Cylinder1':
         case = make_case_Cylinder1(all_params[variant])
-        FreeCAD.Console.PrintMessage('make_pins\r\n')    
         pins = make_pins(all_params[variant])
+        show(case)
+        show(pins)
+        modelfileName = make_modelfileName_Common(all_params[variant])
+        #
+        #
+    elif variant == 'Seiko_MS621F':
+        case = make_case_Seiko_MS621F(all_params[variant])
+        pins = make_pins_Seiko_MS621F(all_params[variant])
         show(case)
         show(pins)
         modelfileName = make_modelfileName_Common(all_params[variant])
@@ -304,8 +314,6 @@ def make_3D_model(models_dir, variant):
             objs = GetListOfObjects(FreeCAD, doc)
     doc.Label = CheckedmodelName
 
-    FreeCAD.Console.PrintMessage("make_3D_model ..3.. \r\n")
-    
     del objs
     objs=GetListOfObjects(FreeCAD, doc)
     objs[0].Label = CheckedmodelName
@@ -313,7 +321,7 @@ def make_3D_model(models_dir, variant):
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
     expVRML.say(models_dir)
-    out_dir=models_dir+ os.sep +  all_params[variant].dest_dir_prefix
+    out_dir=models_dir + os.sep +  all_params[variant].dest_dir_prefix
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -321,7 +329,7 @@ def make_3D_model(models_dir, variant):
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
         LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', modelfileName + ".step", LIST_license,\
+    Lic.addLicenseToStep(out_dir + os.sep, modelfileName + ".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
 
     # scale and export Vrml model
