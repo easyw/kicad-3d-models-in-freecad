@@ -60,13 +60,15 @@ import cq_model_pin_switch
 import cq_model_piano_switch
 import cq_model_smd_switch
 import cq_model_smd_switch_copal
-import cq_model_smd_switch_omron_a6h
+import cq_model_smd_switch_omron
+import cq_model_smd_switch_kingtek
 reload(cq_model_socket_turned_pin)
 reload(cq_model_pin_switch)
 reload(cq_model_piano_switch)
 reload(cq_model_smd_switch)
 reload(cq_model_smd_switch_copal)
-reload(cq_model_smd_switch_omron_a6h)
+reload(cq_model_smd_switch_omron)
+reload(cq_model_smd_switch_kingtek)
 
 series = [
  cq_model_socket_turned_pin.dip_socket_turned_pin,
@@ -74,9 +76,15 @@ series = [
  cq_model_pin_switch.dip_switch_low_profile,
  cq_model_piano_switch.dip_switch_piano,
  cq_model_smd_switch.dip_smd_switch,
+ cq_model_smd_switch.dip_smd_switch_lowprofile,
+ cq_model_smd_switch.dip_smd_switch_lowprofile_jpin,
  cq_model_smd_switch_copal.dip_switch_copal_CHS_A,
  cq_model_smd_switch_copal.dip_switch_copal_CHS_B,
- cq_model_smd_switch_omron_a6h.dip_switch_omron_a6h
+ cq_model_smd_switch_copal.dip_switch_copal_CVS,
+ cq_model_smd_switch_omron.dip_switch_omron_a6h,
+ cq_model_smd_switch_omron.dip_switch_omron_a6s,
+ cq_model_smd_switch_kingtek.dip_switch_kingtek_dshp04tj,
+ cq_model_smd_switch_kingtek.dip_switch_kingtek_dshp06ts,
 ]
 
 family = All # set to All generate all series

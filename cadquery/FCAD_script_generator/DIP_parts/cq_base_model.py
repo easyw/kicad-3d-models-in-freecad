@@ -589,7 +589,7 @@ class PartBase (object):
                           .addArc(-r_upper_o, -90, 1)\
                           .addPoint(-top_length, 0).make().extrude(self.pin_width).translate((-self.pin_width / 2.0, 0, 0))
 
-    def _make_Jhook_pin(self, pin_height, bottom_length, r_upper_i=None, r_lower_i=None):
+    def _make_Jhook_pin(self, pin_height, bottom_length, top_length = 0.05, r_upper_i=None, r_lower_i=None):
         """ create J-hook pin
 
         The pin will placed at coordinate 0, 0 and with the base at Z = 0
@@ -618,7 +618,7 @@ class PartBase (object):
         r_upper_o = r_upper_i + self.pin_thickness # pin upper corner, outer radius
         r_lower_o = r_lower_i + self.pin_thickness # pin lower corner, outer radius
         bottom_length = bottom_length - r_lower_i
-        top_length = 0.05
+        
 
         return Polyline(cq.Workplane("YZ"), (-(top_length + r_upper_i), pin_height))\
                           .addPoint(top_length, 0)\
