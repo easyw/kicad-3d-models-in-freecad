@@ -75,6 +75,7 @@ series = [
  cq_model_pin_switch.dip_switch,
  cq_model_pin_switch.dip_switch_low_profile,
  cq_model_piano_switch.dip_switch_piano,
+ cq_model_piano_switch.dip_switch_piano_cts,
  cq_model_smd_switch.dip_smd_switch,
  cq_model_smd_switch.dip_smd_switch_lowprofile,
  cq_model_smd_switch.dip_smd_switch_lowprofile_jpin,
