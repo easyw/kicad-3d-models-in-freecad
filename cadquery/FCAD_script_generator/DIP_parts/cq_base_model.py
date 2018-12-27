@@ -488,7 +488,7 @@ class PartBase (object):
                                 (-self.pin_width / 4.0, 0.0),
                             ]).addMirror().make().extrude(self.pin_thickness)
 
-    def _make_angled_pin(self, pin_height=None, top_length=0.0, style='SMD'):
+    def _make_angled_pin(self, pin_height=None, top_length=0.0, top_extension=0.0, style='SMD'):
         """ create gull wing pin
 
         The pin will placed at coordinate 0, 0 and with the base at Z = 0
@@ -542,7 +542,16 @@ class PartBase (object):
                      .line(-self.pin_width, 0)\
                      .line(0, -top_length)\
                      .close().extrude(self.pin_thickness))
-
+        elif (round(top_extension, 6) != 0.0):
+            pin = pin.union(cq.Workplane("XZ")\
+                     .workplane(offset=-self.pin_thickness / 2)\
+                     .moveTo(self.pin_width / 2.0, 0.0)\
+                     .line(0.0, top_extension)\
+                     .line(-self.pin_width, 0.0)\
+                     .line(0.0, -top_extension)\
+                     .close().extrude(self.pin_thickness))
+        
+        
         return pin
 
     def _make_gullwing_pin(self, pin_height, bottom_length, r_upper_i=None, r_lower_i=None):
