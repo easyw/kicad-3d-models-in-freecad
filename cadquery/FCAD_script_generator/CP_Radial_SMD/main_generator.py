@@ -63,7 +63,7 @@ from collections import namedtuple
 import sys, os
 import datetime
 from datetime import datetime
-sys.path.append("../_tools")
+sys.path.append(".." + os.sep + "_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
@@ -82,7 +82,7 @@ import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
 
-outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
+outdir=os.path.dirname(os.path.realpath(__file__)+os.sep+".."+os.sep+"_3Dmodels")
 scriptdir=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(outdir)
 sys.path.append(scriptdir)
@@ -132,6 +132,9 @@ from cq_parameters import *
 all_params = kicad_naming_params_radial_smd_cap
 # all_params = all_params_radial_smd_cap
 
+
+color_pin_mark=True
+
 def make_radial_smd(params):
 
     L = params.L    # overall height
@@ -140,7 +143,11 @@ def make_radial_smd(params):
     H = params.H    # max width (x) with pins
     P = params.P    # distance between pins
     W = params.W    # pin width
+    PM = params.PM  # hide pin marker
 
+    if not color_pin_mark:
+        PM=False
+        
     c = 0.15  # pin thickness
 
     bh = L/6 # belt start height
@@ -216,14 +223,16 @@ def make_radial_smd(params):
 
     pins = pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
+    cim = cq.Workplane("XY", (0,0, 0.0)).circle(0.01).extrude(0.01)
     # draw the cathode identification mark
-    cim = cq.Workplane("XY", (-D/2.,0,L-ef)).\
-          box(cimw, D, ef, centered=(False, True, False))
+    if PM:
+        cim = cq.Workplane("XY", (-D/2.,0,L-ef)).\
+              box(cimw, D, ef, centered=(False, True, False))
 
-    # do intersection
-    cim = cim.cut(cim.translate((0,0,0)).cut(body))
+        # do intersection
+        cim = cim.cut(cim.translate((0,0,0)).cut(body))
 
-    body.cut(cim)
+        body.cut(cim)
 
     #show(body)
     #show(base)
@@ -270,6 +279,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     else:
         variants = [model_to_build]
 
+    
     for variant in variants:
         FreeCAD.Console.PrintMessage('\r\n'+variant)
         if not variant in all_params:
