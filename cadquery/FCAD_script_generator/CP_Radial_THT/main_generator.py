@@ -136,8 +136,8 @@ except: # catch *all* exceptions
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-all_params = all_params_radial_th_cap
-#all_params = kicad_naming_params_radial_th_cap
+#all_params = all_params_radial_th_cap
+all_params = kicad_naming_params_radial_th_cap
 
 def make_radial_th(params):
 
@@ -152,6 +152,8 @@ def make_radial_th(params):
         pin3_width = params.pin3[0]
         pin3_x = params.pin3[1]
         pin3_y = params.pin3[2]
+
+    pol = params.pol
 
     bt = 1.        # flat part before belt
     if D > 4:
@@ -199,8 +201,13 @@ def make_radial_th(params):
                line(-dc/2., 0).\
                close()
 
-    body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
-    bar = bodyp().revolve(ciba, (0,0,0), (0,1,0))
+    if pol:
+        body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
+        bar = bodyp().revolve(ciba, (0,0,0), (0,1,0))
+    else:
+        body = bodyp().revolve(360, (0,0,0), (0,1,0))
+        # Hide bar inside the cap
+        bar = cq.Workplane("XY").workplane(offset=bs + 1.0).moveTo(0.0, 0.0).rect(0.001, 0.001).extrude(0.001)
 
     #show(body)
     #show(bar)
@@ -223,14 +230,6 @@ def make_radial_th(params):
         #show(bar)
         #raise
         pass
-    
-    #b_r = D/2.-bd # inner radius of the belt
-    bar = bar.edges(BS((b_r/sqrt(2), 0, bs+bt-0.01),(b_r, -b_r/sqrt(2), bs+bt+bh+0.01))).\
-          fillet(bf)
-
-    body = body.rotate((0,0,0), (0,0,1), 180-ciba/2)
-    bar = bar.rotate((0,0,0), (0,0,1), 180+ciba/2)
-
 
     # draw the plastic at the bottom
     bottom = cq.Workplane("XY").workplane(offset=bs+tc).\
@@ -239,27 +238,40 @@ def make_radial_th(params):
     # draw the metallic part at the top
     top = cq.Workplane("XY").workplane(offset=bs+L-tc-ts).\
          circle(dc/2).extrude(tmt)
+    
+    if pol:
+        #b_r = D/2.-bd # inner radius of the belt
+        bar = bar.edges(BS((b_r/sqrt(2), 0, bs+bt-0.01),(b_r, -b_r/sqrt(2), bs+bt+bh+0.01))).\
+              fillet(bf)
 
-    # draw the slots on top in the shape of plus (+)
-    top = top.faces(">Z").workplane().move(ws/2,ws/2).\
-          line(0,D).line(-ws,0).line(0,-D).\
-          line(-D,0).line(0,-ws).line(D,0).\
-          line(0,-D).line(ws,0).line(0,D).\
-          line(D,0).line(0,ws).close().cutBlind(-ts)
+        body = body.rotate((0,0,0), (0,0,1), 180-ciba/2)
+        bar = bar.rotate((0,0,0), (0,0,1), 180+ciba/2)
+        
+        # draw the slots on top in the shape of plus (+)
+        top = top.faces(">Z").workplane().move(ws/2,ws/2).\
+              line(0,D).line(-ws,0).line(0,-D).\
+              line(-D,0).line(0,-ws).line(D,0).\
+              line(0,-D).line(ws,0).line(0,D).\
+              line(D,0).line(0,ws).close().cutBlind(-ts)
 
-    # draw the (-) marks on the bar
-    n = int(L/(2*mmb_h)) # number of (-) marks to draw
-    points = []
-    first_z = (L-(2*n-1)*mmb_h)/2
-    for i in range(n):
-        points.append((0, (i+0.25)*2*mmb_h+first_z))
-    mmb = cq.Workplane("YZ", (-D/2,0,bs)).pushPoints(points).\
-          box(mmb_w, mmb_h, 2).\
-          edges("|X").fillet(mmb_w/2.-0.001)
+        # draw the (-) marks on the bar
+        n = int(L/(2*mmb_h)) # number of (-) marks to draw
+        points = []
+        first_z = (L-(2*n-1)*mmb_h)/2
+        for i in range(n):
+            points.append((0, (i+0.25)*2*mmb_h+first_z))
+        mmb = cq.Workplane("YZ", (-D/2,0,bs)).pushPoints(points).\
+              box(mmb_w, mmb_h, 2).\
+              edges("|X").fillet(mmb_w/2.-0.001)
 
-    mmb = mmb.cut(mmb.translate((0,0,0)).cut(bar))
-    bar = bar.cut(mmb)
-
+        mmb = mmb.cut(mmb.translate((0,0,0)).cut(bar))
+        bar = bar.cut(mmb)
+    else:
+        body = body.rotate((0,0,0), (0,0,1), 180)
+        # Hide mmb inside the cap
+        mmb = cq.Workplane("XY").workplane(offset=bs + 1.0).moveTo(0.0, 0.0).rect(0.001, 0.001).extrude(0.001)
+    
+        
     # draw the leads
     leads = cq.Workplane("XY").workplane(offset=bs+tc).\
             center(-F/2,0).circle(d/2).extrude(-(ll+tc)).\
