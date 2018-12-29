@@ -308,12 +308,9 @@ def make_3D_model(models_dir, variant, pinnumber):
         #
         #
         modelfileName = modelfileName + all_params[variant].manufacture + '_' + all_params[variant].serie
-        modelfileName = modelfileName + '_1x'
-        if pinnumber < 10:
-            modelfileName = modelfileName + '0'
-            
-        modelfileName = modelfileName + str(pinnumber) + '_P' + str(all_params[variant].PS) + "mm"
-        modelfileName = modelfileName + '_Vertical'
+        modelfileName = modelfileName + '_1x' + '{:02d}'.format(pinnumber)
+        modelfileName = modelfileName + '_P' + '{:.2f}'.format(all_params[variant].PS) + "mm"
+        modelfileName = modelfileName + '_45-Degree'
     else:
         FreeCAD.Console.PrintMessage("\r\nSerie %s does not exist, skipping'\r\n" % all_params[variant].serie)
         return
