@@ -14,7 +14,7 @@
 import collections
 from collections import namedtuple
 
-footprints_dir="Connector_Altech.pretty"
+footprints_dir="TerminalBlock_Altech.pretty"
 
 ##enabling optional/default values to None
 def namedtuple_with_defaults(typename, field_names, default_values=()):
@@ -70,7 +70,7 @@ all_params = {
         rotation = 0,           # Rotation if required
         body_color_key  = 'black body',         # Body color
         pin_color_key   = 'metal grey pins',    # Pin color
-        dest_dir_prefix    = 'Connector_Altech.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'TerminalBlock_Altech.3dshapes'  # Destination directory
         ),
 
 }
