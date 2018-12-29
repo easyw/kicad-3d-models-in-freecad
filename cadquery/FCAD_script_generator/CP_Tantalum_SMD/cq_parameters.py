@@ -71,7 +71,23 @@ all_params = {
         'modelName_maui': 'Tantalum_J_1608H08', #modelName
         'code_metric': '1608-08',
         'code_letter': 'AVX-J',
-        'param_nominal': None,
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TLC
+            # Length, width, height of the tantalum cap
+            L = 1.6,
+            W = 0.85,
+            H = 0.75,
+            F = 0.85,
+            S = 0.05,
+            B = 0.0,  #not beveling
+            P = 0.0,
+            R = 0.0,
+            T = 0.10,
+            G = 0.5,
+            E = 0.8,
+            pml = 0.3
+            ),
         'param_max': None
     },
     'EIA-1608-10':{
@@ -79,7 +95,23 @@ all_params = {
         'modelName_maui': 'Tantalum_L_1608H10', #modelName
         'code_metric': '1608-10',
         'code_letter': 'AVX-L',
-        'param_nominal': None,
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TLC
+            # Length, width, height of the tantalum cap
+            L = 1.6,
+            W = 0.85,
+            H = 0.85,
+            F = 0.85,
+            S = 0.05,
+            B = 0.0,  #not beveling
+            P = 0.0,
+            R = 0.0,
+            T = 0.10,
+            G = 0.5,
+            E = 0.8,
+            pml = 0.3
+            ),
         'param_max': None
     },
     'EIA-2012-12':{
@@ -109,7 +141,23 @@ all_params = {
         'modelName_maui': 'Tantalum_P_2012H15', #modelName
         'code_metric': '2012-15',
         'code_letter': 'AVX-P',
-        'param_nominal': None,
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TLC
+            # Length, width, height of the tantalum cap
+            L = 2.05,
+            W = 1.35,
+            H = 1.50,
+            F = 1.00,
+            S = 0.15,
+            B = 0.0,  #not beveling
+            P = 0.5,
+            R = 0.5,
+            T = 0.10,
+            G = 0.5,
+            E = 0.8,
+            pml = 0.3
+            ),
         'param_max': None
     },
     'EIA-3216-10':{
@@ -117,7 +165,22 @@ all_params = {
         'modelName_maui': 'Tantalum_I_3216H10', #modelName
         'code_metric': '3216-10',
         'code_letter': 'Kemet-I',
-        'param_nominal': None,
+        'param_nominal': Params( # kemet Tantalum S 3216 H12
+            # Dimensions per http://www.kemet.com/Lists/ProductCatalog/Attachments/253/KEM_TC101_STD.pdf
+            # Length, width, height of the tantalum cap
+            L = 3.4,
+            W = 1.8,
+            H = 1.2,
+            F = 1.2,
+            S = 0.8,
+            B = 0.0,  #not beveling
+            P = 0.0,
+            R = 0.4,
+            T = 0.13,
+            G = 1.1,
+            E = 1.3,
+            pml = 0.6
+            ),
         'param_max': None
     },
     'EIA-3216-12':{
@@ -239,7 +302,23 @@ all_params = {
         'modelName_maui': 'Tantalum_H_3528H15', #modelName
         'code_metric': '3528-15',
         'code_letter': 'AVX-H',
-        'param_nominal': None,
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TAJ
+            # Length, width, height of the tantalum cap
+            L = 3.50,
+            W = 2.80,
+            H = 1.50,
+            F = 1.50,
+            S = 0.15,
+            B = 0.5,
+            P = 0.9,
+            R = 1.0,
+            T = 0.13,
+            G = 2.8,
+            E = 2.4,
+            pml = 0.6
+            ),
         'param_max': None
     },
     'EIA-3528-21':{
@@ -323,7 +402,23 @@ all_params = {
         'modelName_maui': 'Tantalum_F_6032H20', #modelName
         'code_metric': '6032-20',
         'code_letter': 'AVX-F',
-        'param_nominal': None,
+        'param_nominal': Params( # kemet Tantalum C 6032 H28
+            # Dimensions per http://partbuilder.avx.com/p/pb/pdf/TAJ_LOW_PROFILE.pdf
+            # This is not the actual AVX-F serie but the TAJ, becaouse 6032-20 in serie AVX-F seems nowhere to find
+            # Length, width, height of the tantalum cap
+            L = 6.0,
+            W = 3.2,
+            H = 2.0,
+            F = 2.2,
+            S = 2.9,
+            B = 0.0,
+            P = 0.0,
+            R = 1.0,
+            T = 0.13,
+            G = 2.8,
+            E = 2.4,
+            pml = 0.6
+            ),
         'param_max': None
     },
     'EIA-6032-28':{
@@ -430,7 +525,23 @@ all_params = {
         'modelName_maui': 'Tantalum_N_7343H30', #modelName
         'code_metric': '7343-30',
         'code_letter': 'AVX-N',
-        'param_nominal': None,
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie F93
+            # Length, width, height of the tantalum cap
+            L = 7.30,
+            W = 4.30,
+            H = 2.80,
+            F = 2.40,
+            S = 1.30,
+            B = 0.0, # not beveling
+            P = 0.9,
+            R = 1.0,
+            T = 0.13,
+            G = 2.8,
+            E = 2.4,
+            pml = 0.6
+            ),
         'param_max': None
     },
     'EIA-7343-31':{
@@ -471,20 +582,27 @@ all_params = {
             pml = 1.2
             )
     },
-    'EIA-7343-38':{
-        'modelName_old': 'CP_Tantalum_Case-V_EIA-7343-38', #modelName
-        'modelName_maui': 'Tantalum_V_7343H38', #modelName
-        'code_metric': '7361-38',
-        'code_letter': 'AVX-V',
-        'param_nominal': None,
-        'param_max': None
-    },
-    'EIA-7343-438':{
-        'modelName_old': 'CP_Tantalum_Case-U_EIA-7343-438', #modelName
-        'modelName_maui': 'Tantalum_U_7343H438', #modelName
-        'code_metric': '7361-438',
-        'code_letter': 'AVX-U',
-        'param_nominal': None,
+    'EIA-7343-40':{
+        'modelName_old': 'CP_Tantalum_Case-Y_EIA-7343-43', #modelName
+        'modelName_maui': 'Tantalum_X_7343H43', #modelName
+        'code_metric': '7343-40',
+        'code_letter': 'Kemet-Y',
+        'param_nominal': Params( # kemet Tantalum Y
+            # Dimensions per https://content.kemet.com/datasheets/KEM_T2076_T52X-530.pdf
+            # Length, width, height of the tantalum cap
+            L = 7.3,
+            W = 4.3,
+            H = 3.8,
+            F = 2.4,
+            S = 1.3,
+            B = 0.5,
+            P = 1.5,
+            R = 1.0,
+            T = 0.13,
+            G = 3.5,
+            E = 3.5,
+            pml = 1.2
+            ),
         'param_max': None
     },
     'EIA-7343-43':{
@@ -547,5 +665,54 @@ all_params = {
             E = 3.5,
             pml = 1.2
             )
+    },
+    'EIA-7361-38':{
+        'modelName_old': 'CP_Tantalum_Case-V_EIA-7343-38', #modelName
+        'modelName_maui': 'Tantalum_V_7343H38', #modelName
+        'code_metric': '7361-38',
+        'code_letter': 'AVX-V',
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TAJ
+            # Length, width, height of the tantalum cap
+            L = 7.3,
+            W = 6.10,
+            H = 3.55,
+            F = 3.10,
+            S = 1.30,
+            B = 0.0,  #not beveling
+            P = 1.0,
+            R = 2.0,
+            T = 0.10,
+            G = 4.40,
+            E = 4.40,
+            pml = 2.0
+            ),
+        'param_max': None
+    },
+    'EIA-7361-438':{
+        'modelName_old': 'CP_Tantalum_Case-U_EIA-7343-438', #modelName
+        'modelName_maui': 'Tantalum_U_7343H438', #modelName
+        'code_metric': '7361-438',
+        'code_letter': 'AVX-U',
+        'param_nominal': Params(
+            # Dimensions per http://catalogs.avx.com/TantalumNiobium.pdf
+            # serie TAJ 
+            # the foot print 7361-438 exist but the casing does not, so the 7361-43 is used
+            # Length, width, height of the tantalum cap
+            L = 7.3,
+            W = 6.10,
+            H = 4.10,
+            F = 3.10,
+            S = 1.30,
+            B = 0.0,  #not beveling
+            P = 1.0,
+            R = 2.0,
+            T = 0.10,
+            G = 4.40,
+            E = 4.40,
+            pml = 2.0
+            ),
+        'param_max': None
     },
 }

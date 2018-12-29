@@ -237,6 +237,8 @@ def make_tantalum(params):
 #import step_license as L
 import add_license as Lic
 
+show_all = False
+
 def generateOneModel(part_params, log):
     place_pinMark=True ##default =True used to exclude pin mark to build sot23-3; sot23-5; sc70 (asimmetrical pins, no pinmark)
 
@@ -245,6 +247,12 @@ def generateOneModel(part_params, log):
         part_params['code_metric'] +
         '  ###############\n')
     dim_params = part_params['param_nominal'] if use_nominal_size else part_params['param_max']
+    if dim_params == None:
+        if show_all:
+            if use_nominal_size:
+                dim_params = part_params['param_max']
+            else:
+                dim_params = part_params['param_nominal']
     if dim_params == None:
         FreeCAD.Console.PrintMessage('No params found for current variant. Skipped\n')
         return
@@ -265,7 +273,7 @@ def generateOneModel(part_params, log):
     show(body)
     show(pins)
     show(mark)
-
+    
     doc = FreeCAD.ActiveDocument
     objs = GetListOfObjects(FreeCAD, doc)
 
@@ -341,6 +349,7 @@ def generateOneModel(part_params, log):
         step_path = out_dir + '/' + ModelName + ".step"
         runGeometryCheck(App, Gui, step_path,
             log, ModelName, save_memory=save_memory)
+            
 
 if __name__ == "__main__" or __name__ == "main_generator":
     expVRML.say(expVRML.__file__)
@@ -372,7 +381,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 color_pin_mark=False
             else:
                 color_pin_mark=True
+            if (sys.argv[3] == 'all'):
+                show_all = True
     if model_to_build == "all":
+        show_all = True
         variants = all_params.keys()
     else:
         variants = [model_to_build]
@@ -390,8 +402,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
             except FreeCADVersionError as e:
                 FreeCAD.Console.PrintError(e)
                 break
-            else:
-                traceback.print_exc()
-                raise
+#            else:
+#                FreeCAD.Console.PrintMessage('generateOneModel 11 \n')
+#                traceback.print_exc()
+#                raise
+
 
     FreeCAD.Console.PrintMessage("\nDone\n")
