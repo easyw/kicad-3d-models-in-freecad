@@ -10,7 +10,7 @@ import FreeCAD, Draft, FreeCADGui
 import Idf
 import ImportGui
 
-from Gui.Command import *
+from CQGui.Command import *
 
 #Gui.SendMsgToActiveView("Run")
 Gui.activateWorkbench("CadQueryWorkbench")
@@ -18,12 +18,6 @@ import FreeCADGui as Gui
 
 import cadquery
 from Helpers import show
-
-#close the example
-App.setActiveDocument("Ex000_Introduction")
-App.ActiveDocument=App.getDocument("Ex000_Introduction")
-Gui.ActiveDocument=Gui.getDocument("Ex000_Introduction")
-App.closeDocument("Ex000_Introduction")
 
 #Getting the main window will allow us to start setting things up the way we want
 mw = FreeCADGui.getMainWindow()
