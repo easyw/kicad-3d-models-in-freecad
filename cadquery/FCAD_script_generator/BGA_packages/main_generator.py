@@ -190,6 +190,7 @@ def make_case(params):
     molded = params.molded
     b   = params.b
     e   = params.e
+    ex   = params.ex
     sp   = params.sp
     npx = params.npx
     npy = params.npy
@@ -197,8 +198,10 @@ def make_case(params):
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
 
-    if cf is None:
-        cf = cff
+    if ex == None:
+        ex = e
+    if ex == 0:
+        ex = e
 
     if params.excluded_pins is not None:
         epl = list(params.excluded_pins)
@@ -230,11 +233,11 @@ def make_case(params):
             if "internals" in excluded_pins:
                 if str(int(pincounter)) not in excluded_pins:
                     if j==0 or j==npy-1 or i==0 or i==npx-1:
-                        pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
+                        pin = bpin.translate((first_pos_x-i*e, (npy*ex/2-ex/2)-j*ex, 0)).\
                                 rotate((0,0,0), (0,0,1), 180)
                         pins.append(pin)
             elif str(int(pincounter)) not in excluded_pins:
-                pin = bpin.translate((first_pos_x-i*e, (npy*e/2-e/2)-j*e, 0)).\
+                pin = bpin.translate((first_pos_x-i*e, (npy*ex/2-ex/2)-j*ex, 0)).\
                         rotate((0,0,0), (0,0,1), 180)
                 pins.append(pin)
                 #expVRML.say(j)

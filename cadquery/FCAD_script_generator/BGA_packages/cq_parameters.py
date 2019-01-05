@@ -46,7 +46,8 @@ Params =namedtuple_with_defaults ("Params", [
     'A2',   # body height or body bottom height optional, needed for molded
     'A',    # body  overall height
     'b',    # ball pin width diameter with a small extra to obtain a union of balls and case
-    'e',    # pin (center-to-center) distance
+    'e',    # pin (center-to-center) distance along x and y axis unless e1 is present
+    'ex',   # pin (center-to-center) distance along x-axis, if this parameter is not present, then e is used
     'sp',   # seating plane (pcb penetration)
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
@@ -70,6 +71,7 @@ kicad_naming_params_qfn = {
 #        A = 0.77,  # body height
 #        b = 0.505,  # ball pin width diameter with a small extra to obtain a union of balls and case
 #        e = 0.8,  # pin (center-to-center) distance
+#        ex = 0.4,  # pin (center-to-center) distance along x-axis, if this parameter is not present, then e is used
 #        sp = 0.0, #seating plane (pcb penetration)
 #        npx = 8,  # number of pins along X axis (width)
 #        npy = 6,  # number of pins along y axis (length)
@@ -79,6 +81,28 @@ kicad_naming_params_qfn = {
 #        rotation = -90, # rotation if required
 #        dest_dir_prefix = '',
 #        ),
+    'Fujitsu_WLP-15_2.28x3.092mm_Layout3x5_P0.4mm': Params( # from http://www.fujitsu.com/global/documents/products/devices/semiconductor/fram/lineup/MB85RS1MT-DS501-00022-7v0-E.pdf
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.04,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 3.09,       # body overall length
+        E = 2.28,       # body overall width
+        A1 = 0.08,      # body-board separation
+        A = 0.25,       # body  overall height
+        b = 0.20,       # ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.3,        # pin (center-to-center) distance
+        ex = 0.4,        # pin (center-to-center) distance
+        sp = 0.0,       # seating plane (pcb penetration)
+        npx = 5,        # number of pins along X axis (width)
+        npy = 3,        # number of pins along y axis (length)
+        excluded_pins = (2, 4, 6, 8, 10, 12, 14), #pins to exclude -> None or "internals"
+        old_modelName = 'Fujitsu_WLP-15_2.28x3.092mm_Layout3x5_P0.4mm', #old_modelName
+        modelName = 'Fujitsu_WLP-15_2.28x3.092mm_Layout3x5_P0.4mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
+
     'BGA-9_3x3_1.6x1.6mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/bq27421-g1.pdf
         fp_r = 0.3,     # first pin indicator radius
         fp_d = 0.04,     # first pin indicator distance from edge
