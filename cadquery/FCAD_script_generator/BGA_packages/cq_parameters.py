@@ -47,7 +47,7 @@ Params =namedtuple_with_defaults ("Params", [
     'A',    # body  overall height
     'b',    # ball pin width diameter with a small extra to obtain a union of balls and case
     'e',    # pin (center-to-center) distance along x and y axis unless e1 is present
-    'ey',   # pin (center-to-center) distance along y-axis, if this parameter is not present, then e is used
+    'ex',   # pin (center-to-center) distance along x-axis, if this parameter is not present, then e is used
     'sp',   # seating plane (pcb penetration)
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
@@ -71,7 +71,7 @@ kicad_naming_params_qfn = {
 #        A = 0.77,  # body height
 #        b = 0.505,  # ball pin width diameter with a small extra to obtain a union of balls and case
 #        e = 0.8,  # pin (center-to-center) distance
-#        ey = 0.4,  # pin (center-to-center) distance along y-axis, if this parameter is not present, then e is used
+#        ex = 0.4,  # pin (center-to-center) distance along x-axis, if this parameter is not present, then e is used
 #        sp = 0.0, #seating plane (pcb penetration)
 #        npx = 8,  # number of pins along X axis (width)
 #        npy = 6,  # number of pins along y axis (length)
@@ -86,16 +86,16 @@ kicad_naming_params_qfn = {
         fp_d = 0.04,    # first pin indicator distance from edge
         fp_z = 0.01,    # first pin indicator depth
         ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        D = 2.28,       # body overall length
-        E = 3.09,       # body overall width
+        D = 3.09,       # body overall length
+        E = 2.28,       # body overall width
         A1 = 0.08,      # body-board separation
         A = 0.25,       # body  overall height
         b = 0.20,       # ball pin width diameter with a small extra to obtain a union of balls and case
-        e = 0.4,        # pin (center-to-center) distance
-        ey = 0.3,        # pin (center-to-center) distance
+        e = 0.3,        # pin (center-to-center) distance
+        ex = 0.4,        # pin (center-to-center) distance
         sp = 0.0,       # seating plane (pcb penetration)
-        npx = 3,        # number of pins along X axis (width)
-        npy = 5,        # number of pins along y axis (length)
+        npx = 5,        # number of pins along X axis (width)
+        npy = 3,        # number of pins along y axis (length)
         excluded_pins = (2, 4, 6, 8, 10, 12, 14), #pins to exclude -> None or "internals"
         old_modelName = 'Fujitsu_WLP-15_2.28x3.092mm_Layout3x5_P0.4mm', #old_modelName
         modelName = 'Fujitsu_WLP-15_2.28x3.092mm_Layout3x5_P0.4mm',
