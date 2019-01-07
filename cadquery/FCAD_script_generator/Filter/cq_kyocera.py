@@ -53,13 +53,13 @@ import sys
 import math
 
 
-class cq_belfuse():
+class cq_kyocera():
 
     def __init__(self):
-        self.body_top_color_key  = 'white body'         # Top color
-        self.body_color_key      = 'orange body'        # Body color
+        self.body_top_color_key  = 'brown body'         # Top color
+        self.body_color_key      = 'black body'         # Body color
         self.pin_color_key       = 'metal grey pins'    # Pin color
-        self.npth_pin_color_key  = 'black body'         # NPTH Pin color
+        self.npth_pin_color_key  = 'brown body'         # NPTH Pin color
 
     def set_colors(self, modelID):
     
@@ -92,7 +92,7 @@ class cq_belfuse():
                 if self.all_params[modelID].dest_dir_prefix != None:
                     return self.all_params[modelID].dest_dir_prefix
 
-        return 'Fuse.3dshapes'
+        return 'Filter.3dshapes'
 
 
     def model_exist(self, modelID):
@@ -116,67 +116,13 @@ class cq_belfuse():
         self.rotatex = 0.0          # Rotation around x-axis if required
         self.rotatey = 0.0          # Rotation around x-axis if required
         self.rotatez = 0.0          # Rotation around y-axis if required
-        
-
-    def get_comp_size(self, modelID):
-
-
-                    # (Fig, A, B, C, D , E, F, G)
-        if modelID == '0ZRE0005FF':
-            return (1, 8.3, 10.7, 5.1, 7.6, 3.8, 1.6, 0.51)
-
-        if modelID == '0ZRE0008FF':
-            return (1, 8.3, 10.7, 5.1, 7.6, 3.8, 1.6, 0.51)
-
-        if modelID == '0ZRE0012FF':
-            return (1, 8.3, 10.7, 5.1, 7.6, 3.8, 1.6, 0.51)
-
-        if modelID == '0ZRE0016FF':
-            return (1, 9.9, 12.5, 5.1, 7.6, 3.8, 1.6, 0.51)
-
-        if modelID == '0ZRE0025FF':
-            return (2, 9.6, 17.4, 5.1, 7.6, 3.8, 1.8, 0.65)
-
-        if modelID == '0ZRE0033FF':
-            return (2, 11.4, 16.5, 5.1, 7.6, 3.8, 1.8, 0.65)
-
-        if modelID == '0ZRE0040FF':
-            return (2, 11.5, 19.5, 5.1, 7.6, 3.8, 1.8, 0.65)
-
-        if modelID == '0ZRE0055FF':
-            return (3, 14.0, 21.7, 5.1, 7.6, 4.1, 1.9, 0.81)
-
-        if modelID == '0ZRE0075FF':
-            return (3, 11.5, 23.4, 5.1, 7.6, 4.8, 1.9, 0.81)
-
-        if modelID == '0ZRE0100FF':
-            return (4, 18.7, 24.4, 10.2, 7.6, 5.1, 1.9, 0.81)
-
-        if modelID == '0ZRE0125FF':
-            return (4, 21.2, 27.4, 10.2, 7.6, 5.3, 1.9, 0.81)
-
-        if modelID == '0ZRE0150FF':
-            return (4, 23.4, 30.9, 10.2, 7.6, 5.3, 1.9, 0.81)
-
-        if modelID == '0ZRE0200FF':
-            return (3, 24.9, 33.8, 10.2, 7.6, 6.1, 1.9, 0.81)
-
-
-        FreeCAD.Console.PrintMessage('\r\n')
-        FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
-        FreeCAD.Console.PrintMessage('\r\n')
-        sys.exit()
-
-        return None
 
 
     def set_translate(self, modelID):
 
-        Fig, A, B, C, D , E, F, G = self.get_comp_size(modelID)
-        
         ttdx = 0.0
         ttdy = 0.0
-        ttdz = D - 2.0
+        ttdz = 0.0
         
         self.translate = (ttdx, ttdy, ttdz)
 
@@ -186,20 +132,27 @@ class cq_belfuse():
         destination_dir = self.get_dest_3D_dir(modelID)
         params = self.all_params[modelID]
 
+        FreeCAD.Console.PrintMessage('\r\n')
+        FreeCAD.Console.PrintMessage('make_3D_model 1 \r\n')
         self.set_colors(modelID)
         self.set_translate(modelID)
         self.set_rotation(modelID)
+        FreeCAD.Console.PrintMessage('make_3D_model 2 \r\n')
         case_top = self.make_top(modelID)
         show(case_top)
+        FreeCAD.Console.PrintMessage('make_3D_model 3 \r\n')
         case = self.make_body(modelID)
         show(case)
 
+        FreeCAD.Console.PrintMessage('make_3D_model 4 \r\n')
         pins = self.make_pin(modelID)
         show(pins)
 
+        FreeCAD.Console.PrintMessage('make_3D_model 5 \r\n')
         npth_pins = self.make_npth_pin(modelID)
         show(npth_pins)
 
+        FreeCAD.Console.PrintMessage('make_3D_model 6 \r\n')
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
 
@@ -242,17 +195,22 @@ class cq_belfuse():
     def make_top(self, modelID):
 
         params = self.all_params[modelID]
-        Fig, A, B, C, D , E, F, G = self.get_comp_size(modelID)
+        W = params.W                # Width
+        L = params.L                # Length
+        H = params.H                # Height
+        H1 = params.H1              # Height 1
+        serie = params.serie        # Serie
+
 
         #
-        # Make dummy
+        # Pin 1 marker 
         #
-        case = cq.Workplane("XY").workplane(offset=-0.5).moveTo(0.0, 0.0).circle(0.01 , False).extrude(0.01)
+        case = cq.Workplane("XY").workplane(offset=H - 0.1).moveTo(0.0 - (W / 2.0) + (W / 5.0) , 0.0 - (L / 2.0) + (L / 5.0)).circle(0.05, False).extrude(0.1)
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
 
-#        case = case.translate(self.translate)
+        case = case.translate(self.translate)
 
         return (case)
 
@@ -260,59 +218,32 @@ class cq_belfuse():
 
     def make_body(self, modelID):
 
+        FreeCAD.Console.PrintMessage('make_body 1 \r\n')
         params = self.all_params[modelID]
-        Fig, A, B, C, D , E, F, G = self.get_comp_size(modelID)
+        W = params.W                # Width
+        L = params.L                # Length
+        H = params.H                # Height
+        H1 = params.H1              # Height 1
+        serie = params.serie        # Serie
 
-        
+
         #
         # Make body
         #
-        ttdz = B - A
-        F1 = F * 0.6
-        if Fig == 1 or Fig == 4:
-            case = cq.Workplane("XZ").workplane(offset=(F / 2.0) - (F1 / 2.0)).moveTo(C / 2.0, (A / 2.0) + ttdz).circle((A / 2.0), False).extrude(F1)
-            case = case.faces("<Y").fillet(F1 / 2.1)
-            case = case.faces(">Y").fillet(F1 / 2.1)
-        else:
-            case = cq.Workplane("XZ").workplane(offset=(F / 2.0) - (F1 / 2.0)).moveTo(C / 2.0, (A / 2.0) + ttdz).rect(A, A).extrude(F1)
-            case = case.faces("<X").edges(">Z").fillet(1.0)
-            case = case.faces("<X").edges("<Z").fillet(1.0)
-            case = case.faces(">X").edges(">Z").fillet(1.0)
-            case = case.faces(">X").edges("<Z").fillet(1.0)
-            case = case.faces("<Y").fillet(F1 / 4.0)
-            case = case.faces(">Y").fillet(F1 / 4.0)
-
-
-        #
-        # Pin 1
-        #
-        pinsl = ((A / 2.0) + ttdz) - (A / 4.0)
-        ex = C / 2.0
-        ey = ((A / 2.0) + ttdz)
-
-        cqrt = cq_parameters_others()
-        case1 = cqrt._make_bent_pin(G, pinsl, ex, ey)
-        case1 = case1.rotate((0,0,0), (0,0,1), -7.0)
-        case = case.union(case1)
-
-        #
-        # Pin 2
-        #
-        cqrt = cq_parameters_others()
-        case1 = cqrt._make_bent_pin(G, pinsl, ex, ey)
-        case1 = case1.rotate((0,0,0), (0,0,1), -7.0)
-        case1 = case1.rotate((0,0,0), (0,0,1), 180)
-        case1 = case1.translate((C, 0.0 - F, 0.0))
-        case = case.union(case1)
-        
-
-
-#        pin = cqrt._make_angled_pin(pin_height = -4.0, top_length=6.0, style='round')
+        case = cq.Workplane("XY").workplane(offset=H1).moveTo(0.0, 0.0).rect(W, L).extrude(H - H1)
+        case = case.faces("<X").edges("<Y").fillet(0.03)
+        case = case.faces("<X").edges(">Y").fillet(0.03)
+        case = case.faces(">X").edges("<Y").fillet(0.03)
+        case = case.faces(">X").edges(">Y").fillet(0.03)
+        case = case.faces(">Z").fillet(0.03)
+                
+        case1 = cq.Workplane("XY").workplane(offset=H - 0.1).moveTo(0.0 - (W / 2.0) + (W / 5.0) , 0.0 - (L / 2.0) + (L / 5.0)).circle(0.05, False).extrude(0.2)
+        case = case.cut(case1)
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
 
-#        case = case.translate(self.translate)
+        case = case.translate(self.translate)
 
         return (case)
 
@@ -320,19 +251,33 @@ class cq_belfuse():
     def make_pin(self, modelID):
 
         params = self.all_params[modelID]
-        Fig, A, B, C, D , E, F, G = self.get_comp_size(modelID)
+        W = params.W                # Width
+        L = params.L                # Length
+        H = params.H                # Height
+        H1 = params.H1              # Height 1
+        serie = params.serie        # Serie
 
-        case = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle(G / 2.0, False).extrude(0.0 - D)
-        case = case.faces("<Z").fillet(G / 2.2)
-        #
-        case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(C, 0.0 - F).circle(G / 2.0, False).extrude(0.0 - D)
-        case1 = case1.faces("<Z").fillet(G / 2.2)
-        case = case.union(case1)
 
+        if serie == 'SF14':
+            case = cq.Workplane("XY").workplane(offset=0.0).moveTo(-0.5, 0.0).rect(0.25, 0.325).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case = case.union(case1)
+            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.5, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case = case.union(case1)
+            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.5, 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case = case.union(case1)
+            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case = case.union(case1)
+        else:
+            #
+            # Make dummy
+            #
+            case = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0, 0.0).circle(0.01, 0.01).extrude(0.01)
+        
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
 
-#        case = case.translate(self.translate)
+        case = case.translate(self.translate)
 
         return (case)
 
@@ -340,18 +285,26 @@ class cq_belfuse():
     def make_npth_pin(self, modelID):
 
         params = self.all_params[modelID]
-        Fig, A, B, C, D , E, F, G = self.get_comp_size(modelID)
+        W = params.W                # Width
+        L = params.L                # Length
+        H = params.H                # Height
+        H1 = params.H1              # Height 1
+        serie = params.serie        # Serie
 
-        
+
         #
         # Make dummy
         #
-        case = cq.Workplane("XY").workplane(offset=-0.5).moveTo(0.0, 0.0).circle(0.01 , False).extrude(0.01)
-        
+        case = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).rect(W, L).extrude(H1)
+        case = case.faces("<X").edges("<Y").fillet(0.03)
+        case = case.faces("<X").edges(">Y").fillet(0.03)
+        case = case.faces(">X").edges("<Y").fillet(0.03)
+        case = case.faces(">X").edges(">Y").fillet(0.03)
+
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
 
-#        case = case.translate(self.translate)
+        case = case.translate(self.translate)
 
         return (case)
 
@@ -370,6 +323,11 @@ class cq_belfuse():
         
     Params = namedtuple_with_defaults("Params", [
         'modelName',		    # modelName
+        'W',		            # Width
+        'L',		            # Length
+        'H',		            # Overall height
+        'H1',		            # Height 1
+        'serie',		        # Serie
         'npth_pin_color_key',   # NPTH Pin color
         'body_top_color_key',	# Top color
         'body_color_key',	    # Body colour
@@ -381,57 +339,15 @@ class cq_belfuse():
     all_params = {
 
         #
-        # https://www.belfuse.com/resources/datasheets/circuitprotection/ds-cp-0zre-series.pdf
+        # https://global.kyocera.com/prdct/electro/product/pdf/sf14_tdlte.pdf
         # 
-        '0ZRE0005FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0005FF_L8.3mm_W3.8mm',    # Model name
+        'SF14-1575F5UUC1': Params(
+            modelName = 'Filter_1411-5_1.4x1.1mm',    # Model name
+            W = 1.40,               # Width
+            L = 1.10,               # Length
+            H = 0.7,                # Overall height
+            H1 = 0.20,              # Height 1
+            serie = 'SF14',         # Serie
             ),
 
-        '0ZRE0008FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0008FF_L8.3mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0012FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0012FF_L8.3mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0016FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0016FF_L9.9mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0025FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0025FF_L9.6mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0033FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0033FF_L11.4mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0040FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0040FF_L11.5mm_W3.8mm',    # Model name
-            ),
-
-        '0ZRE0055FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0055FF_L14.0mm_W4.1mm',    # Model name
-            ),
-
-        '0ZRE0075FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0075FF_L11.5mm_W4.8mm',    # Model name
-            ),
-
-        '0ZRE0100FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0100FF_L18.7mm_W5.1mm',    # Model name
-            ),
-
-        '0ZRE0125FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0125FF_L21.2mm_W5.3mm',    # Model name
-            ),
-
-        '0ZRE0150FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0150FF_L23.4mm_W5.3mm',    # Model name
-            ),
-
-        '0ZRE0200FF': Params(
-            modelName = 'Fuse_BelFuse_0ZRE_0ZRE0200FF_L24.9mm_W6.1mm',    # Model name
-            ),
     }
