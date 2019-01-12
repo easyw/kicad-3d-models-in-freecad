@@ -95,9 +95,29 @@ STR_licOrg = "FreeCAD"
 import cq_belfuse  # modules parameters
 from cq_belfuse import *
 
+import cq_keystone  # modules parameters
+from cq_keystone import *
+
+import cq_bulgin  # modules parameters
+from cq_bulgin import *
+
+import cq_schurter  # modules parameters
+from cq_schurter import *
+
+import cq_tme  # modules parameters
+from cq_tme import *
+
+import cq_littlefuse  # modules parameters
+from cq_littlefuse import *
+
 
 different_models = [
     cq_belfuse(),
+    cq_keystone(),
+    cq_bulgin(),
+    cq_schurter(),
+    cq_tme(),
+    cq_littlefuse(),
 ]
 
 
