@@ -41,7 +41,7 @@
 import collections
 from collections import namedtuple
 
-from math import sin, tan, radians, degrees, asin, sqrt
+from math import cos, sin, tan, radians, degrees, asin, sqrt
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -592,3 +592,113 @@ class cq_parameters_others():
         case = case.union(case4)
 
         return case
+
+
+    def _make_fuse_clip_pin(self, W, L, H, T):
+    
+
+        #
+        alpha = 30.0
+        h2 = T
+        kyc = h2 * cos(radians(alpha))
+        kxc = h2 * sin(radians(alpha))
+        #
+        #
+        k2 = L - (3.0 * T)
+        h = k2 / (sin(radians(alpha)))
+        k1 = (h * cos(radians(alpha)))
+        #
+        p0 = Polyline(cq.Workplane("XY"), (0.0, 0.0))\
+                        .addPoint(W, 0.0)\
+                        .addPoint(0.0, 3.0 * T)\
+                        .addPoint(0.0 - k1, k2)
+        #
+        p0 = p0.addPoint(0.0 - kxc, 0.0 - kyc)
+        tx4 = k1 - kyc
+        ty4 = k2 - kxc
+        #
+        tx4 = k1 - (kyc / 2.0)
+        ty4 = k2 - (kxc / 2.0)
+        p0 = p0.addPoint(tx4, 0.0 - ty4)
+
+        #
+        cx, cy = p0.getCurrentPosition()
+        ty3 = cy - T
+        p0 = p0.addPoint(0.0, 0.0 - ty3)
+        
+        cx, cy = p0.getCurrentPosition()
+        
+        tx2 = (cx - T)
+        p0 = p0.addPoint(0.0 - tx2, 0.0)\
+                        .addPoint(0.0, L - T)\
+                        .addPoint(0.0 - T, 0.0)\
+                        .make()\
+                        .extrude(H)
+                        
+        p2 = p0.rotate((0,L,H / 2.0), (1,0,0), 180.0)
+        p0 = p0.union(p2)
+        #
+        return p0
+
+
+    def _make_arrow_pin(self, W, L, H, WL, HL, HU, shape):
+        
+        p0 = Polyline(cq.Workplane("XZ"), (0.0, 0.0))\
+                        .addPoint(W / 2.0, 0.0)\
+                        .addPoint(0.0, H)
+                        
+        #
+        dx = (WL - W) / 2.0
+        dy = HL - (HU + H)
+        p0 = p0.addPoint(dx, dy)
+        #
+        p0 = p0.addPoint(0.0, HU)
+        p0 = p0.addPoint(0.0 - WL, 0.0)
+        p0 = p0.addPoint(0.0, 0.0 - HU)
+        p0 = p0.addPoint(dx, 0.0 - dy)
+        p0 = p0.addPoint(0.0, 0.0 - H)\
+                        .make()\
+                        .extrude(L)
+        #
+        if shape == 'arrow':
+            p0 = p0.faces("<Z").edges("<X").chamfer(W / 4.0, W / 4.0)
+            p0 = p0.faces("<Z").edges(">X").chamfer(W / 4.0, W / 4.0)
+            
+        p0 = p0.translate((0.0, L / 2.0, 0.0))
+            
+        return p0
+
+
+    def _make_fuse_holder(self, W, L, H, HL, HU, T):
+        
+        p0 = Polyline(cq.Workplane("XZ"), (0.0, 0.0))
+                        
+        ht = H - (HU + HL + T)
+
+        p0 = p0.addPoint(W, 0.0)
+        p0 = p0.addPoint(0.0, T)
+        p0 = p0.addThreePointArc((0.3, 0.5), (0.0, HL))
+        p0 = p0.addThreePointArc((0.3, 0.5), (0.0, HU))
+        p0 = p0.addPoint(ht, ht)
+        p0 = p0.addPoint(0.0 - T, 0.0)
+        p0 = p0.addPoint(0.0 - ht, 0.0 - ht)
+        p0 = p0.addThreePointArc((0.3, 0.0 - 0.5), (0.0, 0.0 - HU))
+        p0 = p0.addThreePointArc((0.3, 0.0 - 0.5), (0.0, 0.0 - HL))
+        p0 = p0.addPoint(0.0 - (W - T), 0.0)
+
+        
+        p0 = p0.addPoint(0.0 - (W - T), 0.0)
+        p0 = p0.addThreePointArc((0.0 - 0.3, 0.5), (0.0, HL))
+        p0 = p0.addThreePointArc((0.0 - 0.3, 0.5), (0.0, HU))
+        p0 = p0.addPoint(0.0 - ht, ht)
+        p0 = p0.addPoint(0.0 - T, 0.0)
+        p0 = p0.addPoint(ht, 0.0 - ht)
+        p0 = p0.addThreePointArc((0.0 - 0.3, 0.0 - 0.5), (0.0, 0.0 - HU))
+        p0 = p0.addThreePointArc((0.0 - 0.3, 0.0 - 0.5), (0.0, 0.0 - HL))
+        p0 = p0.addPoint(0.0, 0.0 - T)
+
+        p0 = p0.make().extrude(L)
+
+        p0 = p0.translate((0.0, L / 2.0, 0.0))
+
+        return p0
