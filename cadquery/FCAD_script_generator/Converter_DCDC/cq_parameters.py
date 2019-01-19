@@ -1039,19 +1039,19 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IA48xxS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IA48xxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IA48xxS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48xxS_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 7.20,  # Package length
-        W  = 19.30,  # Package width
+        L  = 7.20-0.5,  # Package length
+        W  = 19.30-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.5, 0.5),  # If a rim should be created at the bottom
         pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
-        pin1corner = (-5.80, -2.03),  # Left upp corner relationsship to pin 1
+        pin1corner = (-5.80, -1.53),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.05,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1064,19 +1064,19 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IAxxxxS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IAxxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAxxxxS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IAxxxxS_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 6.09,  # Package length
-        W  = 19.30,  # Package width
+        L  = 6.09-0.5,  # Package length
+        W  = 19.30-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.5, 0.5),  # If a rim should be created at the bottom
         pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
-        pin1corner = (-4.69, -2.03),  # Left upp corner relationsship to pin 1
+        pin1corner = (-4.69, -1.53),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.05,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
@@ -1089,15 +1089,15 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IAxxxxD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IAxxxxD_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IAxxxxD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IAxxxxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 10.16,  # Package length
-        W  = 20.32,  # Package width
-        H  = 6.35,  # Package height
+        L  = 10.16-0.5,  # Package length
+        W  = 20.32-0.5,  # Package width
+        H  = 6.35-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
         pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
@@ -1114,15 +1114,15 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IA48xxD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IA48xxD_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IA48xxD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IA48xxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 10.16,  # Package length
-        W  = 20.32,  # Package width
-        H  = 6.88,  # Package height
+        L  = 10.16-0.5,  # Package length
+        W  = 20.32-0.5,  # Package width
+        H  = 6.88-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
         pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
@@ -1139,14 +1139,14 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHxxxxS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHxxxxS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxS_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 7.2,  # Package length
-        W  = 19.5,  # Package width
+        L  = 7.2-0.5,  # Package length
+        W  = 19.5-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
@@ -1164,15 +1164,15 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHxxxxSH_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxSH_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHxxxxSH_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxSH_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 7.62,  # Package length
-        W  = 19.5,  # Package width
-        H  = 10.16,  # Package height
+        L  = 7.62-0.5,  # Package length
+        W  = 19.5-0.5,  # Package width
+        H  = 10.16-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
         pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 10.16), (0.0, 12.70), (0.0, 15.24)),  # Pin placement
@@ -1189,14 +1189,14 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHxxxxD_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxD_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHxxxxD_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 10.16,  # Package length
-        W  = 20.32,  # Package width
+        L  = 10.16-0.5,  # Package length
+        W  = 20.32-0.5,  # Package width
         H  = 6.88,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
@@ -1214,14 +1214,14 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-IHxxxxDH_DIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-IHxxxxDH_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-IHxxxxDH_DIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-IHxxxxDH_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 10.16,  # Package length
-        W  = 20.32,  # Package width
+        L  = 10.16-0.5,  # Package length
+        W  = 20.32-0.5,  # Package width
         H  = 6.88,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
@@ -1239,11 +1239,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-ITQxxxxS-H_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-ITQxxxxS-H_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-ITQxxxxS-H_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-ITQxxxxS-H_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
@@ -1264,11 +1264,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-ITxxxxxS_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-ITxxxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-ITxxxxxS_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-ITxxxxxS_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
@@ -1289,11 +1289,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_XP_POWER-ITXxxxxSA_SIP_THT': Params(   # ModelName
+    'Converter_DCDC_XP_POWER-ITXxxxxSA_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_XP_POWER-ITXxxxxSA_SIP_THT',  # Model name
+        modelName = 'Converter_DCDC_XP_POWER-ITXxxxxSA_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
