@@ -188,7 +188,7 @@ kicad_naming_params_radial_th_cap = {
     ),
     "C_Radial_D4.0mm_H7.0mm_P1.50mm" : Params(# from Jan Kriege's 3d models
         L = 7.0,
-        D = 4.0,
+        D = 5.0,
         d = 0.3,
         F = 1.5,
         ll = 2.0,
@@ -203,7 +203,7 @@ kicad_naming_params_radial_th_cap = {
     ),
     "C_Radial_D5.0mm_H5.0mm_P2.00mm" : Params(# from Jan Kriege's 3d models
         L = 5.0,
-        D = 4.0,
+        D = 5.0,
         d = 0.4,
         F = 2.0,
         ll = 2.0,
@@ -218,7 +218,7 @@ kicad_naming_params_radial_th_cap = {
     ),
     "C_Radial_D5.0mm_H7.0mm_P2.00mm" : Params(# from Jan Kriege's 3d models
         L = 7.0,
-        D = 4.0,
+        D = 5.0,
         d = 0.4,
         F = 2.0,
         ll = 2.0,
@@ -233,7 +233,7 @@ kicad_naming_params_radial_th_cap = {
     ),
     "C_Radial_D5.0mm_H11.0mm_P2.00mm" : Params(# from Jan Kriege's 3d models
         L = 11.0,
-        D = 4.0,
+        D = 5.0,
         d = 0.4,
         F = 2.0,
         ll = 2.0,
