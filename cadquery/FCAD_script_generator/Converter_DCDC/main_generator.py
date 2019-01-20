@@ -590,8 +590,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
     models_dir=sub_path+"_3Dmodels"
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building ACDC-Converter_Hahn-HS-400XX\r\n')
-        model_to_build='ACDC-Converter_Hahn-HS-400XX'
+        FreeCAD.Console.PrintMessage('No variant name is given! building Converter_DCDC_XP_POWER-IAxxxxS_THT\r\n')
+        model_to_build='Converter_DCDC_XP_POWER-IAxxxxS_THT'
     else:
         model_to_build=sys.argv[2]
 
@@ -603,7 +603,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     for variant in variants:
         FreeCAD.Console.PrintMessage('\r\n' + variant + '\r\n\r\n')
         if not variant in all_params:
-            print("Parameters for %s doesn't exist in 'all_params', skipping. " % variant)
+            FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'all_params', skipping. " % variant)
             continue
 
         make_3D_model(models_dir, variant)
