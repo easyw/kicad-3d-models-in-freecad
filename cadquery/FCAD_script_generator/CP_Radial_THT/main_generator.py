@@ -238,6 +238,13 @@ def make_radial_th(params):
     # draw the metallic part at the top
     top = cq.Workplane("XY").workplane(offset=bs+L-tc-ts).\
          circle(dc/2).extrude(tmt)
+        
+    # draw the slots on top in the shape of plus (+)
+    top = top.faces(">Z").workplane().move(ws/2,ws/2).\
+          line(0,D).line(-ws,0).line(0,-D).\
+          line(-D,0).line(0,-ws).line(D,0).\
+          line(0,-D).line(ws,0).line(0,D).\
+          line(D,0).line(0,ws).close().cutBlind(-ts)
     
     if pol:
         #b_r = D/2.-bd # inner radius of the belt
@@ -246,13 +253,6 @@ def make_radial_th(params):
 
         body = body.rotate((0,0,0), (0,0,1), 180-ciba/2)
         bar = bar.rotate((0,0,0), (0,0,1), 180+ciba/2)
-        
-        # draw the slots on top in the shape of plus (+)
-        top = top.faces(">Z").workplane().move(ws/2,ws/2).\
-              line(0,D).line(-ws,0).line(0,-D).\
-              line(-D,0).line(0,-ws).line(D,0).\
-              line(0,-D).line(ws,0).line(0,D).\
-              line(D,0).line(0,ws).close().cutBlind(-ts)
 
         # draw the (-) marks on the bar
         n = int(L/(2*mmb_h)) # number of (-) marks to draw
