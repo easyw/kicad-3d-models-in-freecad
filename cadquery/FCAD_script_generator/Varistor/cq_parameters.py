@@ -1776,6 +1776,29 @@ all_params = {
         dest_dir_prefix = '../Varistor.3dshapes',      # destination directory
         ),
 
+    'RV_Disc_D7mm_W4.9mm_P5mm': Params(
+        #
+        # Varistor, diameter 7mm, width 4.9mm, pitch 5mm
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        # 
+        # The foot print that uses this 3D model is RV_Disc_D7mm_W4.9mm_P5mm.kicad_mod
+        # 
+        modelName = 'RV_Disc_D7mm_W4.9mm_P5mm',            # modelName
+        D = 7.0,         # body length
+        E = 4.9,          # body overall width
+        A1 = 0.03,         # body-board separation
+        b = 0.54,          # pin width
+        ph = 3.0,          # pin length
+        pin = [(0.0, 0.0), (5.0, 2.0)],          # Pins
+        pintype = 'tht',          # Pin type, 'tht', 'smd'
+        serie = 'RV_Disc',        # 
+        body_color_key = 'blue body',          # Body color
+        pin_color_key = 'metal grey pins',          # Pin color
+        rotation = 0,      # rotation if required
+        dest_dir_prefix = '../Varistor.3dshapes',      # destination directory
+        ),
+
     'RV_Disc_D7mm_W4mm_P5mm': Params(
         #
         # Varistor, diameter 7mm, width 4mm, pitch 5mm
