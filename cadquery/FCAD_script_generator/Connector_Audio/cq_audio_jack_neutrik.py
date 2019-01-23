@@ -93,7 +93,7 @@ class cq_audio_jack_neutrik():
         destination_dir = self.get_dest_3D_dir(modelID)
         params = self.all_params[modelID]
 
-        if modelID == 'Jack_3_5mm_Neutrik':
+        if modelID == 'Jack_6_35mm_Neutrik':
             case_top = self.make_top_Jack_3_5mm_Neutrik(params)
             show(case_top)
             case = self.make_case_Jack_3_5mm_Neutrik(params)
@@ -188,7 +188,7 @@ class cq_audio_jack_neutrik():
         #
         pts =[]
         sa = 30.0
-        R = AL1 / 2.0
+        R = AL1 / 1.65
         x = R * math.cos(math.radians(sa))
         y = R * math.sin(math.radians(sa))
         
@@ -201,7 +201,8 @@ class cq_audio_jack_neutrik():
         
         case = cq.Workplane("YZ").workplane(offset=0.0 - (W / 2.0) - (2.0 * AW1)).polyline(pts).close().extrude(AW1)
         case = case.faces("<X").fillet(1.4)
-        case = case.translate((0.0, (L / 2.0) - x, H))
+#        case = case.translate((0.0, (L / 2.0) - R, H))
+        case = case.translate((0.0, x, H))
 
 #        case = cq.Workplane("XZ").workplane(offset=0.0).polyline(pts).close().extrude(2.0)
 
@@ -213,7 +214,7 @@ class cq_audio_jack_neutrik():
         #
         # Make a hole
         #
-        case1 = cq.Workplane("YZ").workplane(offset=0.0 - (W / 2.0) - (3.0 * AW1)).moveTo(0.0, H).circle(3.5 / 2.0, False).extrude(3.0 * AW1)
+        case1 = cq.Workplane("YZ").workplane(offset=0.0 - (W / 2.0) - (3.0 * AW1)).moveTo(0.0, H).circle(6.35 / 2.0, False).extrude(3.0 * AW1)
         case = case.cut(case1)
         
         case = case.translate((BX, BY, A1))
@@ -296,7 +297,7 @@ class cq_audio_jack_neutrik():
         #
         # Make a hole right through the body for the plug
         #
-        case1 = cq.Workplane("YZ").workplane(offset=0.0 - (W / 2.0) - 5.0).moveTo(0.0, H).circle(3.5 / 2.0, False).extrude(AW + 5.2)
+        case1 = cq.Workplane("YZ").workplane(offset=0.0 - (W / 2.0) - 5.0).moveTo(0.0, H).circle(6.35 / 2.0, False).extrude(AW + 5.2)
         case = case.cut(case1)
 
         case = case.translate((BX, BY, A1))
@@ -440,11 +441,11 @@ class cq_audio_jack_neutrik():
 
     all_params = {
 
-        'Jack_3_5mm_Neutrik': Params(
+        'Jack_6_35mm_Neutrik': Params(
             #
-            # https://www.cui.com/product/resource/sj1-353xng.pdf
+            # https://www.neutrik.com/media/8582/download/st-nmj6hcd2.pdf?v=1
             # 
-            modelName = 'Jack_3.5mm_Neutrik_NMJ6HCD2_Horizontal', # modelName
+            modelName = 'Jack_6.35mm_Neutrik_NMJ6HCD2_Horizontal', # modelName
             W = 20.61,                                      # Body width
             L = 18.20,                                      # Body length
             H = 08.14,                                      # Body height
