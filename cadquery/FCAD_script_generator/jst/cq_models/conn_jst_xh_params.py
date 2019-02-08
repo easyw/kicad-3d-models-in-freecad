@@ -135,7 +135,7 @@ class series_params():
 
     variant_params = {
         'top_entry':{
-            'mpn_format_string': 'B{pincount:02}B-XH-A',
+            'mpn_format_string': 'B{pincount:d}B-XH-A',
             'orientation': 'V',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_straight,
@@ -151,7 +151,7 @@ class series_params():
         #     'mount_pin': ''
         # },
         'side_entry':{
-            'mpn_format_string': 'S{pincount:02}B-XH-A',
+            'mpn_format_string': 'S{pincount:d}B-XH-A',
             'orientation': 'H',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_angled,
@@ -159,7 +159,7 @@ class series_params():
             'mount_pin': ''
         },
         'side_entry_short':{
-            'mpn_format_string': 'S{pincount:02}B-XH-A-1',
+            'mpn_format_string': 'S{pincount:d}B-XH-A-1',
             'orientation': 'H',
             'datasheet': 'http://www.jst-mfg.com/product/pdf/eng/eXH.pdf',
             'param_generator': make_params_angled_short,
