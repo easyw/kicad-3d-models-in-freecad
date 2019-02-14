@@ -636,3 +636,162 @@ def make_battery_contact_BC7(params):
     pint1 = pint1.union(pine)
 
     return pint, pint1
+
+
+def make_battery_contact_BC8(params):
+
+    manufacture = params.manufacture    # Model name
+    serie = params.serie                # Model name
+    cellcnt = params.cellcnt            # Number of battery
+    L = params.L                        # Package width
+    W = params.W                        # Package width
+    H = params.H                        # Package height
+    LC = params.LC                      # Large circle [x pos, y pos, outer diameter, inner diameter, height]
+    BC = params.BC                      # Blend height
+    BM = params.BM                      # Center of body
+    A1 = params.A1                      # package board seperation
+    pins = params.pins                  # Pins tht/smd, x pos, y pos, 'round/rect', diameter/x size, y size, length
+    cellsize = params.cellsize          # Battery type
+    npthpins = params.npthpins          # npth holes
+    socket = params.socket              # 'type', centre diameter, length, height
+    spigot = params.spigot              # Spigot, distance from edge to pin 1, height
+    topear = params.topear              # Top ear
+    rotation = params.rotation          # Rotation if required
+    modelname = params.modelname        # Model name
+
+    A11 = 0.0
+    cellD, cellL = get_battery_size(params)
+
+    bcd = cellD
+    #
+    # Make base
+    #
+    dtx = BC[1]
+    dty = BC[2]
+    sl  = BC[3]
+    tdx = BC[4]
+    bl = LC[0]
+    bldx = (L - bl) / 2.0
+
+    x1 = 0.0
+    y1 = 0.0
+    pts = []
+    x1 = 0.0
+    y1 = sl
+    pts.append((x1, y1))
+
+    x1 = tdx
+    y1 = y1 + ((W - bldx) - sl)
+    pts.append((x1, y1))
+
+    x1 = L - tdx
+    pts.append((x1, y1))
+
+    x1 = L
+    y1 = sl
+    pts.append((x1, y1))
+
+    y1 = 0.0
+    pts.append((x1, y1))
+
+    x1 = x1 - bldx
+    y1 = y1 - bldx
+    pts.append((x1, y1))
+
+    x1 = bldx
+    pts.append((x1, y1))
+    pine = cq.Workplane("XY").workplane(offset = 0.0).polyline(pts).close().extrude(0.2)
+    pint = pine.translate((dtx, bldx + dty, 0.0))
+    #
+    # Make the '+'
+    #
+    ty3 = dty + 4.0
+    pine = cq.Workplane("XY").workplane(offset=0.0 - 0.1).moveTo(0.0, ty3).rect(3.0, 0.5).extrude(0.4)
+    pint = pint.cut(pine)
+    pine = cq.Workplane("XY").workplane(offset=0.0 - 0.1).moveTo(0.0, ty3).rect(0.5, 3.0).extrude(0.4)
+    pint = pint.cut(pine)
+    
+    pine = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle(0.1, False).extrude(1.0)
+#    pint = pint.union(pine)
+    #
+    # Make the two circles
+    #
+    tx3 = L / 4.0
+    pine = cq.Workplane("XY").workplane(offset=0.0 - 0.1).moveTo(tx3, ty3).circle(2.0, False).extrude(0.4)
+    pint = pint.cut(pine)
+    pine = cq.Workplane("XY").workplane(offset=0.0 - 0.1).moveTo(0.0 - tx3, ty3).circle(2.0, False).extrude(0.4)
+    pint = pint.cut(pine)
+    #
+    # Cut out for lend
+    #
+    pine = cq.Workplane("XY").workplane(offset = 0.0 - 0.1).moveTo(tx3, ty3 + 4.0).rect(2.5, 7.0).extrude(0.4)
+    pint = pint.cut(pine)
+    pine = cq.Workplane("XY").workplane(offset = 0.0 - 0.1).moveTo(0.0 - tx3, ty3 + 4.0).rect(2.5, 7.0).extrude(0.4)
+    pint = pint.cut(pine)
+    #
+    # Add the lends going downwards
+    #
+    pine = cq.Workplane("XY").workplane(offset = 0.0).moveTo(tx3, ty3 + 4.0).rect(2.5, 7.0).extrude(0.2)
+    pine = pine.faces("<Y").edges("<X").fillet(1.22)
+    pine = pine.faces("<Y").edges(">X").fillet(1.22)
+    pine = pine.rotate((0,0,0), (1,0,0), 20.0)
+    pine = pine.translate((0.0, 0.32, 0.0 - 1.39))
+    pint = pint.union(pine)
+    pine = cq.Workplane("XY").workplane(offset = 0.0).moveTo(0.0 - tx3, ty3 + 4.0).rect(2.5, 7.0).extrude(0.2)
+    pine = pine.faces("<Y").edges("<X").fillet(1.22)
+    pine = pine.faces("<Y").edges(">X").fillet(1.22)
+    pine = pine.rotate((0,0,0), (1,0,0), 20.0)
+    pine = pine.translate((0.0, 0.32, 0.0 - 1.39))
+    pint = pint.union(pine)
+    #
+    # Cut out circle in the middle on front side
+    #
+    pine = cq.Workplane("XY").workplane(offset=0.0 - 0.1).moveTo(0.0, W).circle(10.0, False).extrude(0.4)
+    pint = pint.cut(pine)
+    
+    #
+    # round the two taps on front side
+    #
+    pint = pint.faces(">Y").edges("<X").fillet(1.22)
+    pint = pint.faces(">Y").edges(">X").fillet(1.22)
+    
+    pint = pint.translate((0.0, 0.0, A1 + A11 + H))
+    
+    #
+    # Make back end
+    #
+    pine = cq.Workplane("XY").workplane(offset = 0.0).moveTo(0.0, dty + 0.1).rect(bl, 0.2).extrude(H)
+    pine = pine.translate((0.0, 0.0, A1 + A11))
+    pint = pint.union(pine)
+    #
+    # Make left side
+    #
+    pine = cq.Workplane("XY").workplane(offset = 0.0).moveTo(0.0 - (L / 2.0), (dty + bldx) + (sl / 2.0)).rect(0.2, sl).extrude(H)
+    pine = pine.translate((0.1, 0.0, A1 + A11))
+    pint = pint.union(pine)
+    #
+    # Make right side
+    #
+    pine = cq.Workplane("XY").workplane(offset = 0.0).moveTo((L / 2.0), (dty + bldx) + (sl / 2.0)).rect(0.2, sl).extrude(H)
+    pine = pine.translate((0.0 - 0.1, 0.0, A1 + A11))
+    pint = pint.union(pine)
+    #
+    # Make pads
+    #
+    pin = pins[0]
+    x = pin[1]
+    y = pin[2]
+    w = pin[4]
+    h = pin[5]
+    pint1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(x, y).rect(w, h).extrude(0.2)
+
+    pin = pins[1]
+    x = pin[1]
+    y = pin[2]
+    w = pin[4]
+    h = pin[5]
+    pine = cq.Workplane("XY").workplane(offset=0.0).moveTo(x, y).rect(w, h).extrude(0.2)
+    pint1 = pint1.union(pine)
+    pint1 = pint1.translate((0.0, 0.0, A1 + A11))
+
+    return pint, pint1

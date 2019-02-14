@@ -142,6 +142,10 @@ def make_pins(params):
             pint, pint1 = make_battery_contact_BC7(params)
             pp = pp.union(pint)
             pp = pp.union(pint1)
+        elif BC[0] == 'BC8':
+            pint, pint1 = make_battery_contact_BC8(params)
+            pp = pp.union(pint)
+            pp = pp.union(pint1)
                 
     if (rotation > 0.01):
         pp = pp.rotate((0,0,0), (0,0,1), rotation)

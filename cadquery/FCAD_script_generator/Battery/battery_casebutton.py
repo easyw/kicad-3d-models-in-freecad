@@ -152,23 +152,10 @@ def make_case_Button2(params):
     #
     # Spigot
     #
-    if pins != None:
-        if len(pins) > 0:
-            n = pins[0]
-            xsp1 = n[1]
-            ysp1 = n[2]
-            wsp1 = n[5]
-            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(xsp1, ysp1 - (wsp1 / 2.0)).rect(0.0 - xsp1, wsp1, centered=False).extrude(H)
+    if spigot != None:
+        if len(spigot) == 2:
+            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0, 0.0).rect(spigot[0], spigot[1]).extrude(H)
             case = case.union(case1)
-        #
-        if len(pins) > 1:
-            n = pins[1]
-            xsp1 = n[1]
-            ysp1 = n[2]
-            wsp1 = n[5]
-            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(xsp1, ysp1 - (wsp1 / 2.0)).rect(0.0 - xsp1, wsp1, centered=False).extrude(H)
-            case = case.union(case1)
-    
     
     # Cut out the inner circle
     case1 = cq.Workplane("XY").workplane(offset=A1 + A11 + 1.0).moveTo(x1, y1).circle(id / 2.0, False).extrude(hh + 2.0)
@@ -271,32 +258,13 @@ def make_case_Button3(params):
     case = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(x1, y1).rect(od, W).extrude(hh)
     case = case.faces("<Y").edges("<X").chamfer(1.0)
 
-    
-#    case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).rect(od, W).extrude(H + 2.0)
-#    case1 = case1.rotate((0,0,0), (0,0,1), 45.0)
-#    case1 = case1.translate((od / 2.0, W / 2.0, A1 + A11 - 0.1))
-#    case1 = case1.translate(0.0, W / 2.0, A1 + A11 - 0.1))
-#    case = case.union(case1)
     #
     # Spigot
     #
-    if pins != None:
-        if len(pins) > 0:
-            n = pins[0]
-            xsp1 = n[1]
-            ysp1 = n[2]
-            wsp1 = n[5]
-            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(xsp1, ysp1 - (wsp1 / 2.0)).rect(0.0 - xsp1, wsp1, centered=False).extrude(H)
+    if spigot != None:
+        if len(spigot) == 2:
+            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0, 0.0).rect(spigot[0], spigot[1]).extrude(H)
             case = case.union(case1)
-        #
-        if len(pins) > 1:
-            n = pins[1]
-            xsp1 = n[1]
-            ysp1 = n[2]
-            wsp1 = n[5]
-            case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(xsp1, ysp1 - (wsp1 / 2.0)).rect(0.0 - xsp1, wsp1, centered=False).extrude(H)
-            case = case.union(case1)
-    
     
     # Cut out the inner circle
     case1 = cq.Workplane("XY").workplane(offset=A1 + A11 + 1.0).moveTo(x1, y1).circle(id / 2.0, False).extrude(hh + 2.0)
