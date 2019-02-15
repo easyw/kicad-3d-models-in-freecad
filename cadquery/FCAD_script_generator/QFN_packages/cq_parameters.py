@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 #
 # This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
@@ -3931,6 +3931,38 @@ kicad_naming_params_qfn = {
         epad = (2.7, 1.75),    # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'DFN-10-1EP_3x3mm_P0.5mm_EP1.75x2.7mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
+    'DFN-10-1EP_4x4mm_P0.65mm_EP2.65x3.05mm': Params(
+        #
+        # 10-Lead Plastic Dual Flat No-Lead Package, 4x4mm body, 0.65mm pitch with 2.65 x 3.05mm
+        # heat sink pad.
+        # See https://www.ichaus.de/upload/pdf/Package%20dimensions%20DFN_QFN_b2es.pdf
+        #
+        c = 0.2,        # pin thickness, body center part height
+        #K=0.175,        # Fillet radius for pin edges
+        L = 0.4,        # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.3,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 4.0,        # body overall length
+        E = 4.0,        # body overall width
+        A1 = 0.1,       # body-board separation
+        A2 = 0.9,       # body overall height
+        b = 0.3,        # pin width
+        e = 0.65,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'square',  # rounded, square pads
+        npx = 5,        # number of pins along X axis (width)
+        npy = 0,        # number of pins along y axis (length)
+        epad = (3.05, 2.65),    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'DFN-10-1EP_4x4mm_P0.65mm_EP2.65x3.05mm',
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
