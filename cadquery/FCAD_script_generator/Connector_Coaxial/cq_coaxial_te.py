@@ -108,37 +108,29 @@ class cq_coaxial_te():
         pins = self.make_pin(params)
         show(pins)
             
-        npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
-     
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
      
         body_top_color_key = params.body_top_color_key
         body_color_key = params.body_color_key
         pin_color_key = params.pin_color_key
-        npth_pin_color_key = params.npth_pin_color_key
 
         body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
         body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
         pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
-        npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
 
         Color_Objects(Gui,objs[0],body_top_color)
         Color_Objects(Gui,objs[1],body_color)
         Color_Objects(Gui,objs[2],pin_color)
-        Color_Objects(Gui,objs[3],npth_pin_color)
 
         col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
         
         material_substitutions={
             col_body_top[:-1]:body_top_color_key,
             col_body[:-1]:body_color_key,
             col_pin[:-1]:pin_color_key,
-            col_npth_pin[:-1]:npth_pin_color_key
         }
         
         expVRML.say(material_substitutions)
@@ -148,20 +140,6 @@ class cq_coaxial_te():
                 objs = GetListOfObjects(FreeCAD, doc)
 
         return material_substitutions
-
-
-    def make_npth_pins_dummy(self, params):
-
-        A1 = params.A1                      # package height
-        rotation = params.rotation          # Rotation if required
-
-        # Dummy
-        case = cq.Workplane("XY").workplane(offset=A1 + 0.2).moveTo(0.0, 0.0).circle(0.01, False).extrude(0.01)
-        
-        if (rotation != 0):
-            case = case.rotate((0,0,0), (0,0,1), rotation)
-
-        return (case)
 
 
     def make_top_BNC_TEConnectivity_1478204(self, params):
@@ -232,8 +210,8 @@ class cq_coaxial_te():
         case = case.faces("<Z").chamfer(0.2)
         
         #
-        case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle((AW / 2.0), False).extrude(AL)
-        case2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle((AW / 2.0) - 0.1, False).extrude(AL)
+        case1 = cq.Workplane("XY").workplane(offset=L - 0.01).moveTo(0.0, 0.0).circle((AW / 2.0), False).extrude(AL)
+        case2 = cq.Workplane("XY").workplane(offset=L - 0.01).moveTo(0.0, 0.0).circle((AW / 2.0) - 0.1, False).extrude(AL)
         case1 = case1.cut(case2)
         case = case.union(case1)
 
@@ -353,7 +331,7 @@ class cq_coaxial_te():
 
         'BNC_TEConnectivity_1478204': Params(
             #
-            # https://www.cui.com/product/resource/sj1-353xng.pdf
+            # http://www.te.com/usa-en/product-1-1478204-0.html
             # 
             modelName = 'BNC_TEConnectivity_1478204_Vertical',  # modelName
             W = 12.00,                                      # Body width

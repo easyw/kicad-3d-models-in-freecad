@@ -118,37 +118,29 @@ class cq_coaxial_molex():
         pins = self.make_pin(params)
         show(pins)
             
-        npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
-     
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
      
         body_top_color_key = params.body_top_color_key
         body_color_key = params.body_color_key
         pin_color_key = params.pin_color_key
-        npth_pin_color_key = params.npth_pin_color_key
 
         body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
         body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
         pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
-        npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
 
         Color_Objects(Gui,objs[0],body_top_color)
         Color_Objects(Gui,objs[1],body_color)
         Color_Objects(Gui,objs[2],pin_color)
-        Color_Objects(Gui,objs[3],npth_pin_color)
 
         col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
         col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
         col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
         
         material_substitutions={
             col_body_top[:-1]:body_top_color_key,
             col_body[:-1]:body_color_key,
             col_pin[:-1]:pin_color_key,
-            col_npth_pin[:-1]:npth_pin_color_key
         }
         
         expVRML.say(material_substitutions)
@@ -158,21 +150,6 @@ class cq_coaxial_molex():
                 objs = GetListOfObjects(FreeCAD, doc)
 
         return material_substitutions
-
-
-    def make_npth_pins_dummy(self, params):
-
-        A1 = params.A1                      # package height
-        rotation = params.rotation          # Rotation if required
-
-        # Dummy
-        case = cq.Workplane("XY").workplane(offset=A1 + 0.2).moveTo(0.0, 0.0).circle(0.01, False).extrude(0.01)
-        
-        if rotation != None:
-            if (rotation != 0):
-                case = case.rotate((0,0,0), (0,0,1), rotation)
-
-        return (case)
 
 
     def make_top_SMA_Molex_73251_2200(self, params):
@@ -203,10 +180,10 @@ class cq_coaxial_molex():
         rotationy = params.rotationy    # Rotation if required
         translate = params.translate    # Rotation if required
         
-        case = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(AW1 / 2.0 - 0.5, False).extrude(AL1 - 3.0)
+        case = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(AW1 / 2.0 - 0.5, False).extrude(AL1)
 
         # cut out pin
-        case1 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.5, False).extrude(AL1 - 3.0)
+        case1 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.8, False).extrude(AL1)
         case = case.cut(case1)
 
         case = case.translate((BX, BY, A1))
@@ -254,10 +231,10 @@ class cq_coaxial_molex():
         rotationy = params.rotationy    # Rotation if required
         translate = params.translate    # Rotation if required
         
-        case = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(AW1 / 2.0 - 0.5, False).extrude(AL1 - 3.0)
+        case = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(AW1 / 2.0 - 0.5, False).extrude(AL1)
 
         # cut out pin
-        case1 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.5, False).extrude(AL1 - 3.0)
+        case1 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.8, False).extrude(AL1)
         case = case.cut(case1)
 
         case = case.translate((BX, BY, A1))
@@ -406,8 +383,8 @@ class cq_coaxial_molex():
         #
         # Add center tap
         #
-        case2 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.5, False).extrude(AL1 - 3.0)
-        case3 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.2, False).extrude(AL1 - 3.0)
+        case2 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.8, False).extrude(AL1)
+        case3 = cq.Workplane("XZ").workplane(offset=AY1).moveTo(AX1, AZ1).circle(0.76, False).extrude(AL1)
         case2 = case2.cut(case3)
         case1 = case1.union(case2)
         
@@ -508,8 +485,8 @@ class cq_coaxial_molex():
         #
         # Add center tap
         #
-        case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.5, False).extrude(AL1 - 3.0)
-        case3 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.2, False).extrude(AL1 - 3.0)
+        case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.5, False).extrude(AL1)
+        case3 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.2, False).extrude(AL1)
         case2 = case2.cut(case3)
         case1 = case1.union(case2)
         
@@ -778,7 +755,7 @@ class cq_coaxial_molex():
 
             A1 = 0.01,                                      # Body-board separation
 
-            pin = [['smd', 0.0, 1.5, 0.8, 0.8, 0.1], ['smd', 0.0, -1.5, 0.8, 0.8, 0.1], ['smd', -1.475, 0.0, 0.9, 2.0, 0.1], ['smd', 1.475, 0.0, 0.9, 2.0, 0.1]],
+            pin = [['smd', 0.0, 1.325, 0.6, 0.35, 0.1], ['smd', 0.0, -1.325, 0.6, 0.35, 0.1], ['smd', -1.3, 0.0, 0.35, 1.8, 0.1], ['smd', 1.3, 0.0, 0.35, 1.8, 0.1]],
             body_top_color_key  = 'gold pins',              # Top color
             body_color_key      = 'white body',             # Body color
             pin_color_key       = 'gold pins',              # Pin color
@@ -791,7 +768,7 @@ class cq_coaxial_molex():
 
         'SMA_Molex_73251_1153': Params(
             #
-            # https://www.cui.com/product/resource/sj1-353xng.pdf
+            # http://www.molex.com/pdm_docs/sd/732511150_sd.pdf
             # 
             modelName = 'SMA_Molex_73251-1153_EdgeMount_Horizontal',    # modelName
             W = 09.52,                                      # Body width
