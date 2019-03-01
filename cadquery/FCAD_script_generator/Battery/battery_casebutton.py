@@ -172,7 +172,7 @@ def make_case_Button2(params):
     #
     # Cut the jagged edge on the side
     #
-    ll = W / 4.0
+    ll = W / 3.3
     pts = []
     pts.append((ll, ll))
     pts.append((ll + (ll / 2.0), ll))
