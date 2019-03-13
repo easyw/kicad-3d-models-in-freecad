@@ -28,7 +28,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.4 02/12/2017"
+___ver___ = "1.2.5 13/13/2019"
 
 import FreeCAD, Draft, FreeCADGui
 from cqToolsExceptions import *
@@ -575,6 +575,9 @@ def checkRequirements(cq):
     FreeCAD.Console.PrintMessage(FreeCAD.Version())
     FC_majorV=FreeCAD.Version()[0];FC_minorV=FreeCAD.Version()[1]
     FreeCAD.Console.PrintMessage('FC Version '+FC_majorV+FC_minorV+'\r\n')
+    import PySide, sys
+    FreeCAD.Console.PrintMessage('QtCore Version '+PySide.QtCore.qVersion()+'\n')
+    FreeCAD.Console.PrintMessage('Python Version '+sys.version+'\n') 
 
     if int(FC_majorV) <= 0:
         if int(FC_minorV) < 15:
