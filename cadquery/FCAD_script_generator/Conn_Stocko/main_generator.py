@@ -110,7 +110,9 @@ def MakeConnector(name, params):
     }
     expVRML.say(material_substitutions)
 
-    #FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name)
+    FuseObjs_wColors(FreeCAD, FreeCADGui,
+        doc.Name, objs[0].Name, objs[1].Name)
+
     doc.Label=model_name
     objs=GetListOfObjects(FreeCAD, doc)
     objs[0].Label=model_name
