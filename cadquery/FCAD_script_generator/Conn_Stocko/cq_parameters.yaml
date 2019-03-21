@@ -1,0 +1,116 @@
+general:
+  pitch: 2.5
+  t_cutout_h: 1
+  t_cutout_w: 10.5
+  b_cutout_long_w: 1.4
+  b_cutout_short_w: 1.1
+  b_cutout_h: 0.9
+  lr_sides_t: 1.6
+  tb_sides_t: 2
+  depth: 11
+  leaf: 2
+  base_cutout: 2
+  pin:
+    length_above_board: 10.0
+    length_below_board: 3.1
+    end_chamfer: 0.1
+    width: 0.64
+  base_w: 7.5
+  base_h: 14
+  output_directory: '/Connector_Stocko.3dshapes'
+  source: 'https://www.stocko-contact.com/downloads/steckverbindersystem-raster-2,5-mm.pdf#page=15'
+
+Stocko_MKS_1651:
+  outline_x: 3.6
+  top_cutout: False
+  pins: 2
+
+Stocko_MKS_1652:
+  outline_x: 2.7
+  top_cutout: False
+  pins: 2
+
+Stocko_MKS_1653:
+  pins: 3
+  top_cutout: False
+  outline_x: 3.6
+
+Stocko_MKS_1654:
+  pins: 4
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1655:
+  pins: 5
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1656:
+  pins: 6
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1657:
+  pins: 7
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1658:
+  pins: 8
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1659:
+  pins: 9
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1660:
+  pins: 10
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1661:
+  pins: 11
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1662:
+  pins: 12
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1663:
+  pins: 13
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1664:
+  pins: 14
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1665:
+  pins: 15
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1666:
+  pins: 16
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1667:
+  pins: 17
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1668:
+  pins: 18
+  top_cutout: True
+  outline_x: 3.6
+
+Stocko_MKS_1670:
+  pins: 20
+  top_cutout: True
+  outline_x: 3.6
