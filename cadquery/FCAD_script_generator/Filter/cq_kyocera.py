@@ -209,6 +209,10 @@ class cq_kyocera():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -242,6 +246,10 @@ class cq_kyocera():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -259,14 +267,14 @@ class cq_kyocera():
 
 
         if serie == 'SF14':
-            case = cq.Workplane("XY").workplane(offset=0.0).moveTo(-0.5, 0.0).rect(0.25, 0.325).extrude(0.1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case = cq.Workplane("XY").workplane(offset=-0.005).moveTo(-0.5, 0.0).rect(0.25, 0.325).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.0, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.5, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.5, 0.0 - 0.2875).rect(0.25, 0.325).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.5, 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.5, 0.2875).rect(0.25, 0.325).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.2875).rect(0.25, 0.325).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.0, 0.2875).rect(0.25, 0.325).extrude(0.1)
             case = case.union(case1)
         else:
             #
@@ -276,6 +284,10 @@ class cq_kyocera():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -303,6 +315,10 @@ class cq_kyocera():
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -341,6 +357,15 @@ class cq_kyocera():
         #
         # https://global.kyocera.com/prdct/electro/product/pdf/sf14_tdlte.pdf
         # 
+        'Filter_1411-5_1.4x1.1mm': Params(
+            modelName = 'Filter_1411-5_1.4x1.1mm',    # Model name
+            W = 1.40,               # Width
+            L = 1.10,               # Length
+            H = 0.7,                # Overall height
+            H1 = 0.20,              # Height 1
+            serie = 'SF14',         # Serie
+            ),
+
         'SF14-1575F5UUC1': Params(
             modelName = 'Filter_1411-5_1.4x1.1mm',    # Model name
             W = 1.40,               # Width
