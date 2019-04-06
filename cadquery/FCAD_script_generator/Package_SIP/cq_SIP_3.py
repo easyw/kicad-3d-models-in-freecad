@@ -126,6 +126,14 @@ class cq_SIP_3():
             pins = self.make_pins_SIP_8(params)
             show(pins)
 
+        elif modelName == 'SIP-9':
+            case_top = self.make_top_dummy(params)
+            show(case_top)
+            case = self.make_case_SIP_9(params)
+            show(case)
+            pins = self.make_pins_SIP_9(params)
+            show(pins)
+
         elif modelName == 'SLA704XM':
             case_top = self.make_top_dummy(params)
             show(case_top)
@@ -553,6 +561,40 @@ class cq_SIP_3():
         return (case)
 
 
+    def make_case_SIP_9(self, params):
+
+        A1 = params.A1                      # Body PCB seperation
+        rotation = params.rotation          # Rotation if required
+
+        L = 3.0
+        W = 21.54
+        H = 6.4
+        S = L / 2.2
+        #
+        # Create body
+        #
+        case = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).rect(W, L).extrude(H)
+        
+        case = case.faces(">Z").edges("<Y").chamfer(0.4, S)
+        case = case.faces(">Z").edges(">Y").chamfer(S, 0.4)
+        case = case.faces("<Z").edges("<Y").chamfer(0.4, S)
+        case = case.faces("<Z").edges(">Y").chamfer(S, 0.4)
+        case = case.faces(">X").edges("<Y").chamfer(0.4, S)
+        case = case.faces(">X").edges(">Y").chamfer(S, 0.4)
+        case = case.faces("<X").edges("<Y").chamfer(S, 0.4)
+        case = case.faces("<X").edges(">Y").chamfer(S, 0.4)
+
+        case1 = cq.Workplane("XZ").workplane(offset=((L / 2.0) + 0.1)).moveTo(0.0 - ((W / 2.0) - 1.5), 1.5).circle(0.5, False).extrude(0.0 - 0.2)
+        case = case.cut(case1)
+
+        case = case.translate((10.61,  0.0, A1))
+        
+        if (rotation != 0):
+            case = case.rotate((0,0,0), (0,0,1), rotation)
+
+        return (case)
+
+
     def make_pins_SIP_8(self, params):
 
         A1 = params.A1                      # Body PCB seperation
@@ -577,6 +619,54 @@ class cq_SIP_3():
         pin = pin.union(pin1)
 
         for i in range(0, 6):
+            dx = dx + 2.54
+            pin2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W1, L).extrude(0.0 - H1)
+            pin1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W, L).extrude(0.0 - H)
+            pin1 = pin1.faces("<Z").edges("<X").chamfer(0.75, 0.1)
+            pin1 = pin1.faces("<Z").edges(">X").chamfer(0.1, 0.75)
+            pin1 = pin1.union(pin2)
+            pin = pin.union(pin1)
+
+        dx = dx + 2.54
+        pin2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx - (W / 2.0), 0.0).rect((W1 / 2.0), L).extrude(0.0 - H1)
+        pin1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W, L).extrude(0.0 - H)
+        pin1 = pin1.faces("<Z").edges("<X").chamfer(0.75, 0.1)
+        pin1 = pin1.faces("<Z").edges(">X").chamfer(0.1, 0.75)
+        pin1 = pin1.union(pin2)
+        pin = pin.union(pin1)
+
+        pin = pin.translate((0.0,  0.0, A1))
+
+        if (rotation != 0):
+            pin = pin.rotate((0,0,0), (0,0,1), rotation)
+
+        return (pin)
+
+
+    def make_pins_SIP_9(self, params):
+
+        A1 = params.A1                      # Body PCB seperation
+        rotation = params.rotation          # Rotation if required
+
+        cqsup = cq_support()
+        L = 0.2
+        W = 0.5
+        W1 = 1.2
+        H = 4.3
+        H1 = 1.3
+
+        #
+        #
+        # Create pins
+        #
+        dx = 0.0
+        pin = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx + (W / 2.0), 0.0).rect((W1 / 2.0), L).extrude(0.0 - H1)
+        pin1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W, L).extrude(0.0 - H)
+        pin1 = pin1.faces("<Z").edges("<X").chamfer(0.75, 0.1)
+        pin1 = pin1.faces("<Z").edges(">X").chamfer(0.1, 0.75)
+        pin = pin.union(pin1)
+
+        for i in range(0, 7):
             dx = dx + 2.54
             pin2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W1, L).extrude(0.0 - H1)
             pin1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(dx, 0.0).rect(W, L).extrude(0.0 - H)
@@ -962,7 +1052,23 @@ class cq_SIP_3():
             # A number of parameters have been fixed or guessed, such as A2
             # 
             modelName = 'SIP-8_19x3mm_P2.54mm',         # modelName
-            A1 = 1.3,                                  # Body PCB seperation
+            A1 = 1.3,                                   # Body PCB seperation
+
+            body_top_color_key = 'metal grey pins',     # Top color
+            body_color_key = 'black body',              # Body color
+            pin_color_key = 'metal grey pins',          # Pin color
+            npth_pin_color_key = 'grey body',           # NPTH Pin color
+            rotation = 0,                               # Rotation if required
+            dest_dir_prefix = 'Package_SIP.3dshapes',   # destination directory
+            ),
+
+        'SIP-9': Params(
+            #
+            # http://www.njr.com/semicon/PDF/package/SIP8_E.pdf
+            # A number of parameters have been fixed or guessed, such as A2
+            # 
+            modelName = 'SIP-9_21.54x3mm_P2.54mm',      # modelName
+            A1 = 1.3,                                   # Body PCB seperation
 
             body_top_color_key = 'metal grey pins',     # Top color
             body_color_key = 'black body',              # Body color
