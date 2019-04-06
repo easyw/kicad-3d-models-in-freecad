@@ -111,11 +111,17 @@ class cq_minicircuit():
         return list
 
 
-    def set_rotation(self, params):
+    def set_rotation(self, modelID):
 
+        params = self.all_params[modelID]
+        
         self.rotatex = 0.0          # Rotation around x-axis if required
         self.rotatey = 0.0          # Rotation around x-axis if required
-        self.rotatez = 0.0          # Rotation around y-axis if required
+
+        if params.serie == 'FV1206-1':
+            self.rotatez = 270.0          # Rotation around x-axis if required
+        else:
+            self.rotatez = 0.0          # Rotation around x-axis if required
 
 
     def set_translate(self, modelID):
@@ -219,6 +225,10 @@ class cq_minicircuit():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -348,6 +358,10 @@ class cq_minicircuit():
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -467,6 +481,10 @@ class cq_minicircuit():
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -499,6 +517,10 @@ class cq_minicircuit():
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 

@@ -209,6 +209,10 @@ class cq_murata():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -242,6 +246,10 @@ class cq_murata():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -264,14 +272,14 @@ class cq_murata():
             #
             case = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0, 0.0).circle(0.01, 0.01).extrude(0.01)
         elif serie == 'SAFFB':
-            case = cq.Workplane("XY").workplane(offset=0.0).moveTo(-0.385, 0.0).rect(0.18, 0.25).extrude(0.1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0 - 0.25).rect(0.18, 0.25).extrude(0.1)
+            case = cq.Workplane("XY").workplane(offset=-0.005).moveTo(-0.385, 0.0).rect(0.18, 0.25).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.0, 0.0 - 0.25).rect(0.18, 0.25).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.25, 0.0 - 0.25).rect(0.18, 0.25).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.25, 0.0 - 0.25).rect(0.18, 0.25).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.25, 0.25).rect(0.18, 0.25).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.25, 0.25).rect(0.18, 0.25).extrude(0.1)
             case = case.union(case1)
-            case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.25).rect(0.18, 0.25).extrude(0.1)
+            case1 = cq.Workplane("XY").workplane(offset=-0.005).moveTo(0.0, 0.25).rect(0.18, 0.25).extrude(0.1)
             case = case.union(case1)
         elif serie == 'SAWEN':
             #
@@ -291,6 +299,10 @@ class cq_murata():
         
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -318,6 +330,10 @@ class cq_murata():
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
+        if self.rotatey > 0.0:
+            case = case.rotate((0,0,0), (0,1,0), self.rotatey)
+        if self.rotatez > 0.0:
+            case = case.rotate((0,0,0), (0,0,1), self.rotatez)
 
         case = case.translate(self.translate)
 
@@ -363,6 +379,15 @@ class cq_murata():
             H = 0.5,                # Overall height
             H1 = 0.17,              # Height 1
             serie = 'SAFEA',        # Serie
+            ),
+
+        'Filter_1109-5_1.1x0.9mm': Params(
+            modelName = 'Filter_1109-5_1.1x0.9mm',    # Model name
+            W = 1.1,                # Width
+            L = 0.9,                # Length
+            H = 0.5,                # Overall height
+            H1 = 0.15,              # Height 1
+            serie = 'SAFFB',        # Serie
             ),
 
         'SAFFB2G14FA0F0A': Params(
