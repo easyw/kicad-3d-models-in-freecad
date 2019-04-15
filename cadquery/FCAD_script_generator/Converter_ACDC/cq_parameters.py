@@ -137,12 +137,12 @@ all_params = {
         #
         modelName = 'Converter_ACDC_MeanWell_IRM-03-xx_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 37.0,  # Package length
-        W  = 24.0,  # Package width
+        L  = 24.0,  # Package length
+        W  = 37.0,  # Package width
         H  = 15.0,  # Package height
         A1 = 0.1,  # Package board seperation
-        pin = ((0.0, 0.0), (5.08, 0.0), (30.48, 0.0), (30.48, 17.18), (25.4, 17.18)),  # Pin placement
-        pin1corner = (-3.26, -3.11),  # Left upp corner relationsship to pin 1
+        pin = ((0.0, 0.0), (0.0, 5.08), (0.0, 30.48), (17.78, 30.48), (17.78, 25.4)),  # Pin placement
+        pin1corner = (-3.11, -3.26),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.5,  # Pin length, pad height
         pinpadsize = 0.6,  # Pin diameter or pad size
         show_top   = 0,  # If top should be visible or not
