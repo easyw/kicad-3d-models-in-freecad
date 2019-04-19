@@ -8085,5 +8085,39 @@ kicad_naming_params_qfn = {
         rotation = -90,      # rotation if required
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes',      # destination directory
         ),
+    'Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm': Params(
+        #
+        # Texas X2SON-4, DMR0004A, (http://www.ti.com/lit/ds/symlink/drv5032.pdf)
+        # This model have been auto generated based on the foot print file
+        # A number of paramters have been fixed or guessed, such as A2
+        #
+        # The foot print that uses this 3D model is Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm.kicad_mod
+        #
+        c = 0.2,           # pin thickness, body center part height
+#        K = 0.2,           # Fillet radius for pin edges
+        L = 0.22,          # pin bottom flat part length (including corner arc)
+        fp_s = 1,          # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.1,        # First pin indicator radius
+        fp_d = 0.1,       # First pin indicator distance from edge
+        fp_z = 0.02,       # First pin indicator depth
+        ef = 0.0,          # Fillet of edges  Note: bigger bytes model with fillet
+#        cc1 = 0.25,        # 0.45 chamfer of the 1st pin corner
+        cce = 0.15,        # 0.45 chamfer of the epad 1st pin corner
+        D = 1.4,           # body length
+        E = 1.1,           # body overall width
+        A1 = 0.025,        # body-board separation
+        A2 = 0.35,         # body height
+        b = 0.2,           # pin width
+        e = 0.5,           # pin (center-to-center) distance
+        m = 0.0,           # margin between pins and body
+        ps = 'square',     # rounded, square pads
+        npx = 0,           # number of pins along X axis (width)
+        npy = 2,           # number of pins along y axis (length)
+        epad = (0.6, 0.8), # e Pad
+        excluded_pins = None,          # pin excluded
+        modelName = 'Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm',            # modelName
+        rotation = -90,      # rotation if required
+        dest_dir_prefix = '../Package_SON.3dshapes',      # destination directory
+        ),
 
 }
