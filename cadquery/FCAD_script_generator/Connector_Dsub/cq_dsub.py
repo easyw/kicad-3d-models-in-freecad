@@ -264,37 +264,65 @@ class cq_dsub():
         show(pins)
 
         npth_pins = self.make_npth_pins(params)
-        show(npth_pins)
-
-        doc = FreeCAD.ActiveDocument
-        objs=GetListOfObjects(FreeCAD, doc)
-
-        body_top_color_key = self.body_top_color_key
-        body_color_key = self.body_color_key
-        pin_color_key = self.pin_color_key
-        npth_pin_color_key = self.npth_pin_color_key
-
-        body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
-        body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-        pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
-        npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
-
-        Color_Objects(Gui,objs[0],body_top_color)
-        Color_Objects(Gui,objs[1],body_color)
-        Color_Objects(Gui,objs[2],pin_color)
-        Color_Objects(Gui,objs[3],npth_pin_color)
-
-        col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
         
-        material_substitutions={
-            col_body_top[:-1]:body_top_color_key,
-            col_body[:-1]:body_color_key,
-            col_pin[:-1]:pin_color_key,
-            col_npth_pin[:-1]:npth_pin_color_key
-        }
+        if npth_pins == None:
+
+            doc = FreeCAD.ActiveDocument
+            objs=GetListOfObjects(FreeCAD, doc)
+
+            body_top_color_key = self.body_top_color_key
+            body_color_key = self.body_color_key
+            pin_color_key = self.pin_color_key
+
+            body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
+            body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+            pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
+
+            Color_Objects(Gui,objs[0],body_top_color)
+            Color_Objects(Gui,objs[1],body_color)
+            Color_Objects(Gui,objs[2],pin_color)
+
+            col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+            col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+            col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+            
+            material_substitutions={
+                col_body_top[:-1]:body_top_color_key,
+                col_body[:-1]:body_color_key,
+                col_pin[:-1]:pin_color_key,
+            }
+        else:
+            show(npth_pins)
+
+            doc = FreeCAD.ActiveDocument
+            objs=GetListOfObjects(FreeCAD, doc)
+
+            body_top_color_key = self.body_top_color_key
+            body_color_key = self.body_color_key
+            pin_color_key = self.pin_color_key
+            npth_pin_color_key = self.npth_pin_color_key
+
+            body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
+            body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+            pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
+            npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
+
+            Color_Objects(Gui,objs[0],body_top_color)
+            Color_Objects(Gui,objs[1],body_color)
+            Color_Objects(Gui,objs[2],pin_color)
+            Color_Objects(Gui,objs[3],npth_pin_color)
+
+            col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+            col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+            col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+            col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
+            
+            material_substitutions={
+                col_body_top[:-1]:body_top_color_key,
+                col_body[:-1]:body_color_key,
+                col_pin[:-1]:pin_color_key,
+                col_npth_pin[:-1]:npth_pin_color_key
+            }
         
         expVRML.say(material_substitutions)
         while len(objs) > 1:
@@ -447,7 +475,7 @@ class cq_dsub():
             #
         else:
             # Dummy
-            case = cq.Workplane("XY").workplane(offset=1.0).moveTo(0.0, 0.0).circle(0.01, False).extrude(0.01)
+            return None
 
         if self.rotatex > 0.0:
             case = case.rotate((0,0,0), (1,0,0), self.rotatex)
