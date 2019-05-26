@@ -120,10 +120,10 @@ def make_3D_model(models_dir, model_class, modelID, gender):
     
     
     doc = FreeCAD.ActiveDocument
-    doc.Label = CheckedmodelName
+    doc.Label = modelName
 
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = CheckedmodelName
+    objs[0].Label = modelName
     restore_Main_Tools()
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
