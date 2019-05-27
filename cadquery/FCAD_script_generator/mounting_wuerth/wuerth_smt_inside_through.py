@@ -71,12 +71,25 @@ global_3dpath = '../_3Dmodels/'
 import sys, os
 import traceback
 from datetime import datetime
+from math import sqrt
 
-def generate(id, od, od1, h1, h):
+thread_minor_diameter = {
+    'M1.6': 1.22,
+    'M2': 1.57,
+    'M2.5': 2.01,
+    'M3': 2.46,
+    'M4': 3.24
+    }
+
+def generate(id, od, od1, h1, h, td=None, dd=None):
 
     body = cq.Workplane("XY").circle(od/2).extrude(h)
     body = body.faces("<Z").workplane().circle(od1/2).extrude(h1)
-    body = body.faces("<Z").workplane().circle(id/2).cutBlind(-h-h1)
+    if td is not None:
+        body = body.faces(">Z").workplane().circle(id/2).cutBlind(-td)
+        body = body.faces(">Z").workplane().circle(id/2-0.01).cutBlind(-dd)
+    else:
+        body = body.faces(">Z").workplane().circle(id/2).cutBlind(-(h+h1))
     return body
 
 # opend from within freecad
@@ -89,7 +102,9 @@ if "module" in __name__:
         od=4.35,
         od1=2.8,
         h1=1.4,
-        h=3)
+        h=3,
+        td=2,
+        dd=2.5)
     show(body)
 
 if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
@@ -167,7 +182,12 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
         if 'M' not in size:
             size = "{}mm".format(size)
 
-        FileName = "Mounting_Wuerth_Inside-{size}_H{h}mm_{mpn}".format(size=size, h=part_params['h'], mpn=mpn)
+        td = ""
+        if 'thread_depth' in part_params:
+            td = "_ThreadDepth{}mm".format(part_params['thread_depth'])
+
+        FileName = "Mounting_Wuerth_{series}-{size}_H{h}mm{td}_{mpn}".format(
+                    size=size, h=part_params['h'], mpn=mpn, td=td, series=params['series_prefix'])
 
         lib_name = "Mounting_Wuerth"
 
@@ -186,13 +206,15 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
 
         id = mech_params['id']
         if type(id) not in [float, int]:
-            id = float(id[1:])
+            id = thread_minor_diameter[id]
         cq_obj_data = generate(
                             id=id,
                             od=mech_params['od'],
                             od1=mech_params['od1'],
                             h1=mech_params['h1'],
-                            h=part_params['h']
+                            h=part_params['h'],
+                            td=part_params.get('thread_depth'),
+                            dd=part_params.get('drill_depth')
                             )
 
         color_i = colors[0] + (0,)
