@@ -367,6 +367,46 @@
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
 
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H10mm_9776100960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H2mm_9776020960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H4mm_9776040960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H25mm_9776025960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H7mm_9776070960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H3mm_9776030960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H8mm_9776080960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H9mm_9776090960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H6mm_9776060960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSSR_snap_rivet_33mm_H5mm_9776050960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
 ## Checking Mounting_Wuerth_WA_SMST_27mm_H2mm_9774020951
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]

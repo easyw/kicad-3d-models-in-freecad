@@ -81,15 +81,17 @@ thread_minor_diameter = {
     'M4': 3.24
     }
 
-def generate(id, od, od1, h1, h, td=None, dd=None):
+def generate(id, od, od1, h1, h, td=None, dd=None, id1=None, t1=0):
 
     body = cq.Workplane("XY").circle(od/2).extrude(h)
     body = body.faces("<Z").workplane().circle(od1/2).extrude(h1)
     if td is not None:
-        body = body.faces(">Z").workplane().circle(id/2).cutBlind(-td)
-        body = body.faces(">Z").workplane().circle(id/2-0.01).cutBlind(-dd)
+        body = body.faces(">Z").workplane(-t1).circle(id/2).cutBlind(-td+t1)
+        body = body.faces(">Z").workplane(-t1).circle(id/2-0.01).cutBlind(-dd+t1)
     else:
-        body = body.faces(">Z").workplane().circle(id/2).cutBlind(-(h+h1))
+        body = body.faces(">Z").workplane(-t1).circle(id/2).cutBlind(-(h+h1-t1))
+    if id1 is not None:
+        body = body.faces(">Z").workplane().circle(id1/2).cutBlind(-(t1))
     return body
 
 # opend from within freecad
@@ -216,7 +218,9 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
                             h1=mech_params['h1'] if 'h1' in mech_params else part_params['h1'],
                             h=part_params['h'] if 'h' in part_params else mech_params['h'],
                             td=part_params.get('thread_depth'),
-                            dd=part_params.get('drill_depth')
+                            dd=part_params.get('drill_depth'),
+                            id1=mech_params.get('id1'),
+                            t1=mech_params.get('t1', 0)
                             )
 
         color_i = colors[0] + (0,)
