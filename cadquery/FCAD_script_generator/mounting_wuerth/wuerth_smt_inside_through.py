@@ -186,8 +186,10 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
         if 'thread_depth' in part_params:
             td = "_ThreadDepth{}mm".format(part_params['thread_depth'])
 
+        h = part_params['h'] if 'h' in part_params else part_params['h1']
+
         FileName = "Mounting_Wuerth_{series}-{size}_H{h}mm{td}_{mpn}".format(
-                    size=size, h=part_params['h'], mpn=mpn, td=td, series=params['series_prefix'])
+                        size=size, h=h, mpn=mpn, td=td, series=params['series_prefix'])
 
         lib_name = "Mounting_Wuerth"
 
@@ -211,8 +213,8 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
                             id=id,
                             od=mech_params['od'],
                             od1=mech_params['od1'],
-                            h1=mech_params['h1'],
-                            h=part_params['h'],
+                            h1=mech_params['h1'] if 'h1' in mech_params else part_params['h1'],
+                            h=part_params['h'] if 'h' in part_params else mech_params['h'],
                             td=part_params.get('thread_depth'),
                             dd=part_params.get('drill_depth')
                             )

@@ -107,6 +107,58 @@
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
 
+## Checking Mounting_Wuerth_WA_SMSR_M3_H31mm_9775031360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H51mm_9775051360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H56mm_9775056360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H46mm_9775046360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H41mm_9775041360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H96mm_9775096360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H36mm_9775036360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H116mm_9775116360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H76mm_9775076360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H86mm_9775086360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H26mm_9775026360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H66mm_9775066360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_M3_H106mm_9775106360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
 ## Checking Mounting_Wuerth_WA_SMSI_M16_H5mm_ThreadDepth2mm_97730506332
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
@@ -172,6 +224,58 @@
 	- Geometry check: [    pass    ]
 
 ## Checking Mounting_Wuerth_WA_SMSI_45mm_H2mm_9774020482
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H36mm_9775036960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H106mm_9775106960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H41mm_9775041960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H96mm_9775096960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H56mm_9775056960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H66mm_9775066960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H46mm_9775046960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H86mm_9775086960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H51mm_9775051960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H76mm_9775076960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H116mm_9775116960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H31mm_9775031960
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSR_32mm_H26mm_9775026960
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
 
