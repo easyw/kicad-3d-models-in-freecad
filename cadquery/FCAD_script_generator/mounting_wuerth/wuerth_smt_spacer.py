@@ -44,6 +44,8 @@
 #*                                                                          *
 #****************************************************************************
 
+from __future__ import division
+
 __title__ = "generator for wuert smt mounting hardware with inner through holes"
 __author__ = "scripts: maurice and hyOzd; models: poeschlr"
 __Comment__ = '''This generates step/wrl files for the official kicad library.'''
@@ -81,17 +83,74 @@ thread_minor_diameter = {
     'M4': 3.24
     }
 
-def generate(id, od, od1, h1, h, td=None, dd=None, id1=None, t1=0):
+def generate(**kwargs):
+    id = kwargs.get('id')
+    od = kwargs['od']
+    od1 = kwargs.get('od1')
+    h1 = kwargs.get('h1', 0)
+    h = kwargs['h']
+    td = kwargs.get('td')
+    dd = kwargs.get('dd')
+    id1 = kwargs.get('id1')
+    t1 = kwargs.get('t1', 0)
+    ext_thread = kwargs.get('ext_thread')
 
     body = cq.Workplane("XY").circle(od/2).extrude(h)
-    body = body.faces("<Z").workplane().circle(od1/2).extrude(h1)
-    if td is not None:
-        body = body.faces(">Z").workplane(-t1).circle(id/2).cutBlind(-td+t1)
-        body = body.faces(">Z").workplane(-t1).circle(id/2-0.01).cutBlind(-dd+t1)
-    else:
-        body = body.faces(">Z").workplane(-t1).circle(id/2).cutBlind(-(h+h1-t1))
-    if id1 is not None:
-        body = body.faces(">Z").workplane().circle(id1/2).cutBlind(-(t1))
+    if od1 is not None:
+        body = body.faces("<Z").workplane().circle(od1/2).extrude(h1)
+
+    if ext_thread is not None:
+        od = float(ext_thread['od'][1:])
+        thread = cq.Workplane("XY").workplane(h+ext_thread['undercut']['L'][0])\
+            .circle(od/2).extrude(ext_thread['L']-ext_thread['undercut']['L'][0])
+
+        thread = thread.faces("<Z").chamfer(
+                   ext_thread['undercut']['L'][1] - ext_thread['undercut']['L'][0],
+                   (od - ext_thread['undercut']['od'])/2)
+        thread = thread.faces(">Z").chamfer(
+                    (od - thread_minor_diameter[ext_thread['od']])/2)
+        thread = thread.faces("<Z").workplane()\
+                    .circle(ext_thread['undercut']['od']/2)\
+                    .extrude(ext_thread['undercut']['L'][0]+0.1)
+
+        body = body.union(thread)
+        body = body.edges(cq.selectors.BoxSelector(
+            [-ext_thread['undercut']['od']/2-0.1,
+             -ext_thread['undercut']['od']/2-0.1,
+             h-0.1
+             ],
+             [ext_thread['undercut']['od']/2+0.1,
+             ext_thread['undercut']['od']/2+0.1,
+             h+0.1
+             ], boundingbox=True)).fillet(ext_thread['undercut']['r'])
+
+    if id is not None:
+        if id in thread_minor_diameter:
+            idf = thread_minor_diameter[id]
+            ch = (float(id[1:])-idf)/2
+        else:
+            idf = float(id)
+            ch = 0
+
+        if td is not None:
+            body = body.faces(">Z").workplane(-t1).circle(idf/2).cutBlind(-td+t1)
+            body = body.faces(">Z").workplane(-t1).circle(idf/2-0.01).cutBlind(-dd+t1)
+
+            if ch > 0:
+                body = body.edges(cq.selectors.BoxSelector(
+                            [-idf/2-0.1,
+                             -idf/2-0.1,
+                             h-0.1
+                             ],
+                             [idf/2+0.1,
+                             idf/2+0.1,
+                             h+0.1
+                             ], boundingbox=True))\
+                         .chamfer(ch)
+        else:
+            body = body.faces(">Z").workplane(-t1).circle(idf/2).cutBlind(-(h+h1-t1))
+        if id1 is not None:
+            body = body.faces(">Z").workplane().circle(id1/2).cutBlind(-(t1))
     return body
 
 # opend from within freecad
@@ -99,17 +158,34 @@ if "module" in __name__:
     import cadquery as cq
     from Helpers import show
 
+    ext_thread = {
+      'od': 'M3',
+      'L': 6,
+      'undercut':{
+        'od': 2.2,
+        'L': [0.5, 1.25],
+        'r': 0.2
+        }
+    }
+
     body = generate(
-        id=2.25,
+        id="M2.5",
         od=4.35,
         od1=2.8,
         h1=1.4,
         h=3,
         td=2,
         dd=2.5)
+    # body = generate(
+    #     od=6,
+    #     od1=0.8,
+    #     h1=0.5,
+    #     h=3,
+    #     ext_thread=ext_thread
+    # )
     show(body)
 
-if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
+if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
     sys.path.append("../_tools")
     import exportPartToVRML as expVRML
     import shaderColors
@@ -161,8 +237,6 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
     #import FreeCAD, Draft, FreeCADGui
     import ImportGui
 
-    print(" ------------- Hello -------------- ")
-
     #######################################################################
 
     def export_one_part(params, mpn, log):
@@ -180,7 +254,11 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
         mech_params = params['mechanical']
         part_params = params['parts'][mpn]
 
-        size = str(mech_params['id'])
+        if 'id' in mech_params:
+            size = str(mech_params['id'])
+        elif 'ext_thread' in mech_params:
+            size = str(mech_params['ext_thread']['od'])
+
         if 'M' not in size:
             size = "{}mm".format(size)
 
@@ -208,19 +286,17 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
         color_keys = ["metal grey pins"]
         colors = [shaderColors.named_colors[key].getDiffuseInt() for key in color_keys]
 
-        id = mech_params['id']
-        if type(id) not in [float, int]:
-            id = thread_minor_diameter[id]
         cq_obj_data = generate(
-                            id=id,
+                            id=mech_params.get('id'),
                             od=mech_params['od'],
-                            od1=mech_params['od1'],
-                            h1=mech_params['h1'] if 'h1' in mech_params else part_params['h1'],
-                            h=part_params['h'] if 'h' in part_params else mech_params['h'],
+                            od1=mech_params.get('od1'),
+                            h1=mech_params.get('h1', part_params.get('h1', 0)),
+                            h=part_params.get('h', mech_params.get('h')),
                             td=part_params.get('thread_depth'),
                             dd=part_params.get('drill_depth'),
                             id1=mech_params.get('id1'),
-                            t1=mech_params.get('t1', 0)
+                            t1=mech_params.get('t1', 0),
+                            ext_thread=mech_params.get('ext_thread')
                             )
 
         color_i = colors[0] + (0,)

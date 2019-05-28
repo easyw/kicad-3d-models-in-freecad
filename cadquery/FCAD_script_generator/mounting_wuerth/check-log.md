@@ -107,6 +107,50 @@
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
 
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H5mm_9771050360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H6mm_9771060360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H8mm_9771080360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H12mm_9771120360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H13mm_9771130360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H7mm_9771070360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H11mm_9771110360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H15mm_9771150360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H9mm_9771090360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H10mm_9771100360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSE_external_M3_H14mm_9771140360
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
 ## Checking Mounting_Wuerth_WA_SMSR_M3_H31mm_9775031360
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
