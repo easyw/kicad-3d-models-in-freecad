@@ -1,4 +1,32 @@
 
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H45mm_ThreadDepth2mm_97730456330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H5mm_ThreadDepth2mm_97730506330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H35mm_ThreadDepth2mm_97730356330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H6mm_ThreadDepth2mm_97730606330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H25mm_ThreadDepth15mm_97730256330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H3mm_ThreadDepth18mm_97730306330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
+## Checking Mounting_Wuerth_WA_SMSI_no_npth_M16_H4mm_ThreadDepth2mm_97730406330
+	- Union check:    [    pass    ]
+	- Geometry check: [    pass    ]
+
 ## Checking Mounting_Wuerth_WA_SMST_45mm_H5mm_9774050982
 	- Union check:    [    pass    ]
 	- Geometry check: [    pass    ]
