@@ -170,7 +170,7 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
 
         if LICENCE_Info.LIST_license[0]=="":
             LIST_license=L.LIST_int_license
-            LIST_license.append("")
+            # LIST_license.append("")
         else:
             LIST_license=LICENCE_Info.LIST_license
 
@@ -281,7 +281,7 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_inside_through":
             runGeometryCheck(App, Gui, step_path,
                 log, ModelName, save_memory=save_memory)
 
-    with open('./wuerth_smt_inside_through.yaml', 'r') as params_stream:
+    with open('./wuerth_smt_spacer.yaml', 'r') as params_stream:
         try:
             params = yaml.safe_load(params_stream)
         except yaml.YAMLError as exc:
