@@ -263,13 +263,21 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
             size = "{}mm".format(size)
 
         td = ""
+        size_prefix = ""
         if 'thread_depth' in part_params:
             td = "_ThreadDepth{}mm".format(part_params['thread_depth'])
+        elif 'ext_thread' in mech_params:
+            size_prefix = 'External'
 
         h = part_params['h'] if 'h' in part_params else part_params['h1']
 
-        FileName = "Mounting_Wuerth_{series}-{size}_H{h}mm{td}_{mpn}".format(
-                        size=size, h=h, mpn=mpn, td=td, series=params['series_prefix'])
+        suffix = ''
+        if 'suffix' in params:
+            suffix = '_{}'.format(params['suffix'])
+
+        FileName = "Mounting_Wuerth_{series}-{size_prefix}{size}_H{h}mm{td}{suffix}_{mpn}".format(
+                        size=size, h=h, mpn=mpn, td=td, size_prefix=size_prefix,
+                        series=params['series_prefix'], suffix=suffix)
 
         lib_name = "Mounting_Wuerth"
 
