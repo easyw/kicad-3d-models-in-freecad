@@ -54,6 +54,40 @@ Params = namedtuple_with_defaults("Params", [
 ])
 
 all_params = {
+
+    'Relay_1P1T_Panasonic_ADW11_FormA': Params(   # ModelName
+        #
+        # https://www.panasonic-electric-works.com/pew/es/downloads/ds_dw_hl_en.pdf
+        #
+        modelName = 'Relay_1P1T_Panasonic_ADW11_FormA',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 24,  # Package length
+        W  = 10,  # Package width
+        H  = 18.8,  # Package height
+        A1 = 0.1,   # Package board seperation
+		#rim_h = 0.7 # TODO: Improve the model by adding the correct rim
+        #rim = (
+		#    (5, 1.25, 2, -0.5),
+		#    (17, 1.25, 2, -0.5),
+		#    (5, -8.75, 2, 0.5),
+		#    (15, -8.75, 2, 0.5)),
+        pin = (
+		    (0.0, 0.0, 'round', 0.4),
+			(0.0, -7.5, 'round', 0.4),
+			(21, 0.0, 'rect', 0.8, 0.2),
+			(17.5, -7.5, 'rect', 0.8, 0.2)),  # Pin placement
+        pin1corner = (-1.5, -8.75),  # Left up corner relationsship to pin 1
+        pinpadh    = 3.5,           # Pin length, pad height
+        pinpadsize = 1.0,           # Pin diameter or pad size
+        show_top   = 0,             # If top should be visible or not
+        corner     = 'none',        # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,             # If belly of caseing should be round (or flat)
+        rotation   = 0,             # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',       # Body color
+        body_top_color_key = 'black body',       # Body top color
+        pin_color_key      = 'metal grey pins', # Pin color
+        dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
+        ),
     
     'Relay_SPST_SANYOU_SRD_Series_Form_A': Params(   # ModelName
         #
