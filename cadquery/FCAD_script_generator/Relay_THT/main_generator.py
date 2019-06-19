@@ -92,7 +92,17 @@ STR_licOrg = "FreeCAD"
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+'''
+try:
+    import importlib
+    importlib.reload(module)
+except Exception:
+    try:
+        import imp
+        imp.reload(module)
+    except Exception:
+        reload(cq_cad_tools)
+'''
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
