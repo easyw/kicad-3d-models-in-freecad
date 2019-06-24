@@ -355,5 +355,28 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
+    'Converter_ACDC_HiLink_HLK-PMxx': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_HiLink_HLK-PMxx',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 34.0,  # Package length
+        W  = 20.2,  # Package width
+        H  = 15.0,  # Package height
+        A1 = 0.1,  # Package board seperation
+        pin = ((0.0, 0.0), (0, -5.0), (29.4, -10.2), (29.4, 5.2)),  # Pin placement
+        pin1corner = (-2.3, -12.6),  # Left upp corner relationsship to pin 1
+        pinpadh    = 5.0,  # Pin length, pad height
+        pinpadsize = 0.9,  # Pin diameter or pad size
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
 }
 
