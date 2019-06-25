@@ -310,13 +310,30 @@ def make_pins_tht(params):
             pinss = rdh + 0.1
 
     p = pin[0]
-    pins=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
+    
+    if len(p) == 3:
+        pinpadsize = p[2]
+        
+    if len(p) == 2 or len(p) == 3:
+        pins=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
+    else:
+        pins=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).rect(p[2], p[3]).extrude(0 - (pinpadh + pinss))
+    
     pins = pins.faces("<Z").fillet(pinpadsize / 5.0)
 
     for i in range(1, len(pin)):
         p = pin[i]
-        pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
-        pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
+        pinpadsize = params.pinpadsize  # pin diameter or pad size
+        
+        if len(p) == 3:
+            pinpadsize = p[2]
+            
+        if len(p) == 2 or len(p) == 3:
+            pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
+            pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
+        else:
+            pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).rect(p[2], p[3]).extrude(0 - (pinpadh + pinss))
+#        pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
         pins = pins.union(pint)
 
 
