@@ -178,29 +178,21 @@ def make_case(params):
     # Dummy
     case=cq.Workplane("XY").workplane(offset=A1).moveTo(0, 0).rect(1, 1, False).extrude(H)
 
-
     if (pintype == CASE_SMD_TYPE):
         mvX = 0 - (L / 2.0)
         mvY = 0 - (W / 2.0)
-        case=cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, W, False).extrude(H)
-    elif (pintype == CASE_THT_TYPE) or (pintype == CASE_THT_N_TYPE):
+        case = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, W, False).extrude(H)
+    elif (pintype == CASE_THT_TYPE or pintype == CASE_THT_N_TYPE ):
         p = pin[0]
-        mvX = p[0] + pin1corner[0]
-        mvY = p[1] - pin1corner[1]
-        FreeCAD.Console.PrintMessage('\r\n')
-        FreeCAD.Console.PrintMessage('CASE_THT_TYPE\r\n')
-        case=cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, -W, False).extrude(H)
+        mvX = p[1] + pin1corner[0]
+        mvY = p[2] - pin1corner[1]
+        case = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX, mvY).rect(L, -W, False).extrude(H)
 
     if rim != None:
         if len(rim) == 3:
             rdx = rim[0]
             rdy = rim[1]
             rdh = rim[2]
-            FreeCAD.Console.PrintMessage('\r\n')
-            FreeCAD.Console.PrintMessage("rdx " + str(rdx) + '\r\n')
-            FreeCAD.Console.PrintMessage("rdy " + str(rdy) + '\r\n')
-            FreeCAD.Console.PrintMessage("rdh " + str(rdh) + '\r\n')
-            FreeCAD.Console.PrintMessage('\r\n')
             if rdx != 0:
                 case1 = cq.Workplane("XY").workplane(offset=A1).moveTo(mvX + rdx, mvY).rect(L - (2.0 * rdx), 0 - (W + 1.0), False).extrude(rdh)
                 case = case.cut(case1)
@@ -261,8 +253,8 @@ def make_case_top(params):
             casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, W1, False).extrude(0.2)
         elif (pintype == CASE_THT_TYPE or pintype == CASE_THT_N_TYPE ):
             p = pin[0]
-            mvX = (p[0] + pin1corner[0]) + ((L - L1) / 2.0)
-            mvY = (p[1] - pin1corner[1]) - ((W - W1) / 2.0)
+            mvX = (p[1] + pin1corner[0]) + ((L - L1) / 2.0)
+            mvY = (p[2] - pin1corner[1]) - ((W - W1) / 2.0)
             casetop=cq.Workplane("XY").workplane(offset=tty).moveTo(mvX, mvY).rect(L1, -W1, False).extrude(0.2)
 
         casetop = casetop.faces("<X").edges("<Y").fillet(ff)
@@ -277,8 +269,8 @@ def make_case_top(params):
             casetop=cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(mvX, mvY).rect(0.1, 0.1, False).extrude(0.1)
         else:
             p = pin[0]
-            mvX = (p[0] + pin1corner[0]) + (L / 2.0)
-            mvY = (p[1] - pin1corner[1]) - (W / 2.0)
+            mvX = (p[1] + pin1corner[0]) + (L / 2.0)
+            mvY = (p[2] - pin1corner[1]) - (W / 2.0)
             casetop=cq.Workplane("XY").workplane(offset=A1 + (H / 4.0)).moveTo(mvX, mvY).rect(0.1, 0.1, False).extrude(0.1)
 
 
@@ -288,19 +280,18 @@ def make_case_top(params):
     return (casetop)
 
 
-def make_pins_tht(params):
+def make_pins(params):
 
     L = params.L                    # package length
     W = params.W                    # package width
     H = params.H                    # package height
     A1 = params.A1                  # Body separation height
-    rim = params.rim                # Rim underneath
-    pinpadsize = params.pinpadsize  # pin diameter or pad size
-    pinpadh = params.pinpadh        # pin length, pad height
-    pintype = params.pintype        # Casing type
     rotation = params.rotation      # rotation if required
     pin = params.pin                # pin/pad cordinates
+    rim = params.rim                # Rim underneath
 
+    pins = None
+    
     pinss = 0.1
     if rim != None:
         if len(rim) == 3:
@@ -308,149 +299,133 @@ def make_pins_tht(params):
             rdy = rim[1]
             rdh = rim[2]
             pinss = rdh + 0.1
-
-    p = pin[0]
-    pins=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
-    pins = pins.faces("<Z").fillet(pinpadsize / 5.0)
-
-    for i in range(1, len(pin)):
-        p = pin[i]
-        pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + pinss))
-        pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
-        pins = pins.union(pint)
-
-
-    if (rotation != 0):
-        pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
-    return (pins)
-
-
-def make_pins_tht_n(params):
-
-    L = params.L                    # package length
-    W = params.W                    # package width
-    H = params.H                    # package height
-    A1 = params.A1                  # Body separation height
-    pinpadsize = params.pinpadsize  # pin diameter or pad size
-    pinpadh = params.pinpadh        # pin length, pad height
-    pintype = params.pintype        # Casing type
-    rotation = params.rotation      # rotation if required
-    pin = params.pin                # pin/pad cordinates
-
-    FreeCAD.Console.PrintMessage('make_pins_tht_n\r\n')
-
-    p = pin[0]
-    pins=cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 2.0))
-    pins = pins.faces("<Z").fillet(pinpadsize / 5.0)
-    pind= cq.Workplane("XZ").workplane(offset= 0 -p[1] + (pinpadsize / 2.0)).moveTo(p[0], A1 + 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
-    pind = pind.faces("<Y").fillet(pinpadsize / 2.0)
-    pins = pins.union(pind)
-
-    for i in range(1, len(pin)):
-        p = pin[i]
-        pint= cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(p[0], -p[1]).circle(pinpadsize / 2.0, False).extrude(0 - (pinpadh + 2.0))
-        pint = pint.faces("<Z").fillet(pinpadsize / 5.0)
-        pind= cq.Workplane("XZ").workplane(offset= 0 -p[1] + (pinpadsize / 2.0)).moveTo(p[0], A1 + 2.0).circle(pinpadsize / 2.0, False).extrude( 0 - (W / 2.0))
-        pind = pind.faces("<Y").fillet(pinpadsize / 2.0)
-        pint = pint.union(pind)
-        pins = pins.union(pint)
-
-
-    if (rotation != 0):
-        pins = pins.rotate((0,0,0), (0,0,1), rotation)
-
-    return (pins)
-
-
-def make_pins_smd(params):
-
-    L = params.L                    # package length
-    W = params.W                    # package width
-    H = params.H                    # package height
-    A1 = params.A1                  # Body separation height
-    pinpadsize = params.pinpadsize  # pin diameter or pad size
-    pinpadh = params.pinpadh        # pin length, pad height
-    pintype = params.pintype        # Casing type
-    rotation = params.rotation      # rotation if required
-    pin = params.pin                # pin/pad cordinates
-
     #
     # Dummy
     #
     pins=cq.Workplane("XY").workplane(offset=0).moveTo(0, 0).rect(0.1, 0.1).extrude(0.1)
+    pint=cq.Workplane("XY").workplane(offset=0).moveTo(0, 0).rect(0.1, 0.1).extrude(0.1)
     #
+
+    FreeCAD.Console.PrintMessage('make_pins 1\r\n')
+
 
     for i in range(0, len(pin)):
         p = pin[i]
-        myX1 = p[0] - pinpadsize
-        myY1 = -p[1]
-        xD = myX1
-        yD = pinpadsize
-        if p[0] < 0 and (p[1] > (0 - (W / 2.0)) and p[1] < ((W / 2.0))):
-            # Left side
-            if p[0] < (0 - (L / 2.0)):
-                # Normal pad
-                myX1 = p[0] / 2.0
-                myY1 = -p[1]
-                xD = p[0]
-                yD = pinpadsize
-                pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
-            else:
-                # pad cordinate is inside the body
-                myZ1 = pinpadsize / 2.0
-                myY1 = -p[1]
-                xD = pinpadsize
-                yD = pinpadsize
-                pint=cq.Workplane("ZY").workplane(offset=(L / 2.0) - (pinpadh / 2.0)).moveTo(myZ1, myY1).rect(xD, yD).extrude(pinpadh)
 
-        #
-        elif p[0] >= 0 and (p[1] > (0 - (W / 2.0)) and p[1] < ((W / 2.0))):
-            # Right side
-            if p[0] > (L / 2.0):
-                # Normal pad
-                myX1 = p[0] / 2.0
-                xD = -p[0]
-                yD = pinpadsize
-                pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
-            else:
-                # pad cordinate is inside the body
-                myZ1 = pinpadsize / 2.0
-                myY1 = -p[1]
-                xD = pinpadsize
-                yD = pinpadsize
-                pint=cq.Workplane("ZY").workplane(offset=0 - ((L / 2.0) + (pinpadh / 2.0))).moveTo(myZ1, myY1).rect(xD, yD).extrude(pinpadh)
-        elif p[1] < 0:
-            # top pad
-            if p[1] < (W / 2.0):
-                myX1 = p[0] - (pinpadsize / 2.0)
-                myY1 = 0 - (p[1] / 2.0)
-                yD = 0 - p[1]
-                xD = pinpadsize
-                pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
-            else:
-                # pad cordinate is inside the body
-                myZ1 = pinpadsize / 2.0
-                yD = pinpadsize
-                xD = pinpadsize
-                myX1 = p[0] - (pinpadsize / 2.0)
-                pint=cq.Workplane("ZX").workplane(offset=((W / 2.0) - (pinpadh / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(pinpadh)
-        else:
-            # bottom pad
-            if p[1] > (W / 2.0):
-                myX1 = p[0] - (pinpadsize / 2.0)
-                myY1 = 0 - (p[1] / 2.0)
-                yD = 0 - p[1]
-                xD = pinpadsize
-                pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(pinpadh)
-            else:
-                # pad cordinate is inside the body
-                myX1 =  p[0] - (pinpadsize / 2.0)
-                myZ1 = pinpadsize / 2.0
-                yD = pinpadsize
-                xD = pinpadsize
-                pint=cq.Workplane("ZX").workplane(offset=0 -((W / 2.0) + (pinpadh / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(pinpadh)
+        pt = str(p[0])
+        px = float(p[1])
+        py = float(p[2])
 
+        if pt == 'rect':
+            pl = float(p[3])
+            pw = float(p[4])
+            ph = float(p[5])
+            FreeCAD.Console.PrintMessage('make_pins 1.1\r\n')
+
+            pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(px, -py).rect(pl, pw).extrude(0 - (ph + pinss))
+
+        elif pt == 'round':
+            FreeCAD.Console.PrintMessage('make_pins 1.2 i ' + str(i) + '\r\n')
+            FreeCAD.Console.PrintMessage('make_pins 1.2 pt ' + str(pt) + '\r\n')
+            FreeCAD.Console.PrintMessage('make_pins 1.2 px ' + str(px) + '\r\n')
+            FreeCAD.Console.PrintMessage('make_pins 1.2 py ' + str(py) + '\r\n')
+            pd = p[3]
+            ph = p[4]
+            FreeCAD.Console.PrintMessage('make_pins 1.2 pd ' + str(pd) + '\r\n')
+            FreeCAD.Console.PrintMessage('make_pins 1.2 ph ' + str(ph) + '\r\n')
+
+            pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(px, -py).circle(pd / 2.0, False).extrude(0 - (ph + pinss))
+            pint = pint.faces("<Z").fillet(pd / 5.0)
+
+        elif pt == 'smd':
+            pd = p[3]
+            ph = p[4]
+            myX1 = px - pd
+            myY1 = -py
+            xD = myX1
+            yD = pd
+            if px < 0 and (py > (0 - (W / 2.0)) and py < ((W / 2.0))):
+                # Left side
+                if px < (0 - (L / 2.0)):
+                    FreeCAD.Console.PrintMessage('make_pins smd 1\r\n')
+                    # Normal pad
+                    myX1 = px / 2.0
+                    myY1 = -py
+                    xD = px
+                    yD = pd
+                    pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(ph)
+                else:
+                    # pad cordinate is inside the body
+                    FreeCAD.Console.PrintMessage('make_pins smd 2\r\n')
+                    myZ1 = pd / 2.0
+                    myY1 = -py
+                    xD = pd
+                    yD = pd
+                    pint=cq.Workplane("ZY").workplane(offset=(L / 2.0) - (ph / 2.0)).moveTo(myZ1, myY1).rect(xD, yD).extrude(ph)
+
+            #
+            elif px >= 0 and (py > (0 - (W / 2.0)) and py < ((W / 2.0))):
+                # Right side
+                if px > (L / 2.0):
+                    FreeCAD.Console.PrintMessage('make_pins smd 3\r\n')
+                    # Normal pad
+                    myX1 = px / 2.0
+                    xD = -px
+                    yD = pd
+                    pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(ph)
+                else:
+                    FreeCAD.Console.PrintMessage('make_pins smd 4\r\n')
+                    # pad cordinate is inside the body
+                    myZ1 = pd / 2.0
+                    myY1 = -py
+                    xD = pd
+                    yD = pd
+                    pint=cq.Workplane("ZY").workplane(offset=0 - ((L / 2.0) + (ph / 2.0))).moveTo(myZ1, myY1).rect(xD, yD).extrude(ph)
+            elif py < 0:
+                # top pad
+                if p[1] < (W / 2.0):
+                    FreeCAD.Console.PrintMessage('make_pins smd 5\r\n')
+                    myX1 = px - (pd / 2.0)
+                    myY1 = 0 - (py / 2.0)
+                    yD = 0 - py
+                    xD = pd
+                    pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(ph)
+                else:
+                    FreeCAD.Console.PrintMessage('make_pins smd 6\r\n')
+                    # pad cordinate is inside the body
+                    myZ1 = pd / 2.0
+                    yD = pd
+                    xD = pd
+                    myX1 = px - (pd / 2.0)
+                    pint=cq.Workplane("ZX").workplane(offset=((W / 2.0) - (ph / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(ph)
+            else:
+                # bottom pad
+                if py > (W / 2.0):
+                    FreeCAD.Console.PrintMessage('make_pins smd 7\r\n')
+                    myX1 = px - (pd / 2.0)
+                    myY1 = 0 - (py / 2.0)
+                    yD = 0 - py
+                    xD = pd
+                    pint=cq.Workplane("XY").workplane(offset=0).moveTo(myX1, myY1).rect(xD, yD).extrude(ph)
+                else:
+                    FreeCAD.Console.PrintMessage('make_pins smd 8\r\n')
+                    # pad cordinate is inside the body
+                    myX1 =  px - (pd / 2.0)
+                    myZ1 = pd / 2.0
+                    yD = pd
+                    xD = pd
+                    pint=cq.Workplane("ZX").workplane(offset=0 -((W / 2.0) + (ph / 2.0))).moveTo(myZ1, myX1).rect(xD, yD).extrude(ph)
+
+        elif pt == 'tht_n':
+            pd = p[3]
+            pl = p[4]
+
+            pint= cq.Workplane("XY").workplane(offset=A1 + 2.0).moveTo(px, -py).circle(pd / 2.0, False).extrude(0 - (pl + 2.0))
+            pint = pint.faces("<Z").fillet(pd / 5.0)
+            pind= cq.Workplane("XZ").workplane(offset= 0 -py + (pd / 2.0)).moveTo(px, A1 + 2.0).circle(pd / 2.0, False).extrude( 0 - (W / 2.0))
+            pind = pind.faces("<Y").fillet(pd / 2.0)
+            pint = pint.union(pind)
+        
         if i == 0:
             pins = pint
         else:
@@ -467,22 +442,21 @@ def make_3D_model(models_dir, variant):
     LIST_license = ["",]
     modelName = all_params[variant].modelName
 
+    FreeCAD.Console.PrintMessage('make_3D_model 1\r\n')
+
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
+    FreeCAD.Console.PrintMessage('make_3D_model 1.2\r\n')
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
+    FreeCAD.Console.PrintMessage('make_3D_model 1.4\r\n')
 
     case = make_case(all_params[variant])
+    FreeCAD.Console.PrintMessage('make_3D_model 2\r\n')
     casetop = make_case_top(all_params[variant])
-
-    if (all_params[variant].pintype == CASE_THT_TYPE):
-        pins = make_pins_tht(all_params[variant])
-
-    if (all_params[variant].pintype == CASE_THT_N_TYPE):
-        pins = make_pins_tht_n(all_params[variant])
-
-    if (all_params[variant].pintype == CASE_SMD_TYPE):
-        pins = make_pins_smd(all_params[variant])
+    FreeCAD.Console.PrintMessage('make_3D_model 3\r\n')
+    pins = make_pins(all_params[variant])
+    FreeCAD.Console.PrintMessage('make_3D_model 4\r\n')
 
     show(case)
     show(casetop)

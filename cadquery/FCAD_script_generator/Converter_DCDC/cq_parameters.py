@@ -61,16 +61,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Cincon_EC5BExx_Single_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,   # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 3.5), ('round', 5.08, 0.0, 1.0, 3.5), ('round', -7.62, 20.32, 1.0, 3.5), ('round', 12.7, 20.32, 1.0, 3.5)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.5,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -87,16 +85,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Cincon_EC5BExx_Dual_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32), (2.54, 20.32), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 3.5), ('round', 5.08, 0.0, 1.0, 3.5), ('round', -7.62, 20.32, 1.0, 3.5), ('round', 12.7, 20.32, 1.0, 3.5), ('round', 2.54, 20.32, 1.0, 3.5), ('round', 12.7, 0.0, 1.0, 3.5)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.5,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -113,15 +109,13 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Cincon_EC6Cxx_Single_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 50.8,  # Package length
         W  = 50.8,  # Package width
         H  = 24.0,  # Package height
         A1 = 0.1,  # Package board separation
-        pin = ((0.0, 0.0), (0.0, 15.24), (0.0, 22.86), (45.72, 5.08), (45.72, 15.24), (45.72, 25.4)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.02, 5.6), ('round', 0.0, 15.24, 1.02, 5.6), ('round', 0.0, 22.86, 1.02, 5.6), ('round', 45.72, 5.08, 1.02, 5.6), ('round', 45.72, 15.24, 1.02, 5.6), ('round', 45.72, 25.4, 1.02, 5.6)),  # Pin placement
         pin1corner = (-2.54, -5.08),  # Left upp corner relationsship to pin 1
-        pinpadh    = 5.6,  # Pin length, pad height
-        pinpadsize = 1.02,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -138,16 +132,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Cincon_EC6Cxx_Dual-Triple_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 50.8,  # Package length
         W  = 50.8,  # Package width
         H  = 24.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (0.0, 22.86), (45.72, 5.08), (45.72, 15.24), (45.72, 25.4), (45.72, 35.56)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.02, 5.6), ('round', 0.0, 15.24, 1.02, 5.6), ('round', 0.0, 22.86, 1.02, 5.6), ('round', 45.72, 5.08, 1.02, 5.6), ('round', 45.72, 15.24, 1.02, 5.6), ('round', 45.72, 25.4, 1.02, 5.6), ('round', 45.72, 35.56, 1.02, 5.6)),  # Pin placement
         pin1corner = (-2.54, -5.08),  # Left upp corner relationsship to pin 1
-        pinpadh    = 5.6,  # Pin length, pad height
-        pinpadsize = 1.02,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -164,16 +156,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Bothhand_CFUSxxxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 16.8,  # Package length
         W  = 32.6,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 22.86), (0.0, 25.4), (0.0, 27.94), (15.24, 27.94), (15.24, 25.4), (15.24, 22.86), (15.24, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.5), ('round', 0.0, 22.86, 0.5, 3.5), ('round', 0.0, 25.4, 0.5, 3.5), ('round', 0.0, 27.94, 0.5, 3.5), ('round', 15.24, 27.94, 0.5, 3.5), ('round', 15.24, 25.4, 0.5, 3.5), ('round', 15.24, 22.86, 0.5, 3.5), ('round', 15.24, 0.0, 0.5, 3.5)),  # Pin placement
         pin1corner = (-0.78, -2.65),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.5,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -190,16 +180,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Bothhand_CFUSxxxxEH_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 16.8,  # Package length
         W  = 32.6,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 22.86), (0.0, 25.4), (0.0, 27.94), (15.24, 27.94), (15.24, 25.4), (15.24, 22.86), (15.24, 5.08), (15.24, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.5), ('round', 0.0, 22.86, 0.5, 3.5), ('round', 0.0, 25.4, 0.5, 3.5), ('round', 0.0, 27.94, 0.5, 3.5), ('round', 15.24, 27.94, 0.5, 3.5), ('round', 15.24, 25.4, 0.5, 3.5), ('round', 15.24, 22.86, 0.5, 3.5), ('round', 15.24, 5.08, 0.5, 3.5), ('round', 15.24, 0.0, 0.5, 3.5)),  # Pin placement
         pin1corner = (-0.78, -2.65),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.5,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -216,16 +204,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Bothhand_CFUDxxxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 16.8,  # Package length
         W  = 32.6,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 22.86), (0.0, 25.4), (0.0, 27.94), (15.24, 27.94), (15.24, 25.4), (15.24, 22.86), (15.24, 17.78), (15.24, 12.7), (15.24, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.5), ('round', 0.0, 22.86, 0.5, 3.5), ('round', 0.0, 25.4, 0.5, 3.5), ('round', 0.0, 27.94, 0.5, 3.5), ('round', 15.24, 27.94, 0.5, 3.5), ('round', 15.24, 25.4, 0.5, 3.5), ('round', 15.24, 22.86, 0.5, 3.5), ('round', 15.24, 17.78, 0.5, 3.5), ('round', 15.24, 12.7, 0.5, 3.5), ('round', 15.24, 0.0, 0.5, 3.5)),  # Pin placement
         pin1corner = (-0.78, -2.65),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.5,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -242,16 +228,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_MeanWell_NID30_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.7,  # Package length
         W  = 50.8,  # Package width
         H  = 13.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 7.62), (0.0, 10.16), (0.0, 35.56), (0.0, 38.1), (0.0, 40.64), (0.0, 43.18), (0.0, 45.72), (0.0, 48.26)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.64, 4.5), ('round', 0.0, 2.54, 0.64, 4.5), ('round', 0.0, 5.08, 0.64, 4.5), ('round', 0.0, 7.62, 0.64, 4.5), ('round', 0.0, 10.16, 0.64, 4.5), ('round', 0.0, 35.56, 0.64, 4.5), ('round', 0.0, 38.1, 0.64, 4.5), ('round', 0.0, 40.64, 0.64, 4.5), ('round', 0.0, 43.18, 0.64, 4.5), ('round', 0.0, 45.72, 0.64, 4.5), ('round', 0.0, 48.26, 0.64, 4.5)),  # Pin placement
         pin1corner = (-4.0, -0.92),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.5,  # Pin length, pad height
-        pinpadsize = 0.64,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -268,16 +252,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_MeanWell_NID60_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.7,  # Package length
         W  = 50.8,  # Package width
         H  = 26.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 7.62), (0.0, 10.16), (0.0, 35.56), (0.0, 38.1), (0.0, 40.64), (0.0, 43.18), (0.0, 45.72), (0.0, 48.26)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.64, 4.5), ('round', 0.0, 2.54, 0.64, 4.5), ('round', 0.0, 5.08, 0.64, 4.5), ('round', 0.0, 7.62, 0.64, 4.5), ('round', 0.0, 10.16, 0.64, 4.5), ('round', 0.0, 35.56, 0.64, 4.5), ('round', 0.0, 38.1, 0.64, 4.5), ('round', 0.0, 40.64, 0.64, 4.5), ('round', 0.0, 43.18, 0.64, 4.5), ('round', 0.0, 45.72, 0.64, 4.5), ('round', 0.0, 48.26, 0.64, 4.5)),  # Pin placement
         pin1corner = (-4.0, -1.2),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.5,  # Pin length, pad height
-        pinpadsize = 0.64,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -294,16 +276,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Murata_NCS1SxxxxSC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 21.87,  # Package length
         W  = 8.2,  # Package width
         H  = 11.3,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0), (12.7, 0.0), (15.24, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 2.54, 0.0, 0.5, 4.1), ('round', 5.08, 0.0, 0.5, 4.1), ('round', 12.7, 0.0, 0.5, 4.1), ('round', 15.24, 0.0, 0.5, 4.1)),  # Pin placement
         pin1corner = (-2.27, -3.195),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -320,16 +300,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_CRE1xxxxxx3C_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.1,  # Package length
         W  = 11.53,  # Package width
         H  = 7.62,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 7.62)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 2.54, 0.5, 4.1), ('round', 0.0, 5.08, 0.5, 4.1), ('round', 0.0, 7.62, 0.5, 4.1)),  # Pin placement
         pin1corner = (-1.25, -2.07),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -346,16 +324,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_CRE1xxxxxxDC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.9,  # Package length
         W  = 11.6,  # Package width
         H  = 6.9,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 7.62), (7.62, 7.62), (7.62, 2.54)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 7.62, 0.5, 4.1), ('round', 7.62, 7.62, 0.5, 4.1), ('round', 7.62, 2.54, 0.5, 4.1)),  # Pin placement
         pin1corner = (-1.3, -2.1),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -372,16 +348,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_CRE1xxxxxxSC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.1,  # Package length
         W  = 11.53,  # Package width
         H  = 10.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 7.62)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 2.54, 0.5, 4.1), ('round', 0.0, 5.08, 0.5, 4.1), ('round', 0.0, 7.62, 0.5, 4.1)),  # Pin placement
         pin1corner = (-1.25, -2.07),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -398,16 +372,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_NMAxxxxDC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.8,  # Package length
         W  = 19.5,  # Package width
         H  = 6.8,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 15.24), (7.62, 12.7), (7.62, 7.62), (7.62, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 15.24, 0.5, 4.1), ('round', 7.62, 15.24, 0.5, 4.1), ('round', 7.62, 12.7, 0.5, 4.1), ('round', 7.62, 7.62, 0.5, 4.1), ('round', 7.62, 0.0, 0.5, 4.1)),  # Pin placement
         pin1corner = (-1.22, -2.23),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -424,15 +396,13 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_NMAxxxxSC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.0,  # Package length
         W  = 19.5,  # Package width
         H  = 10.0,  # Package height
         A1 = 0.1,  # Package board separation
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.7)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 2.54, 0.5, 4.1), ('round', 0.0, 7.62, 0.5, 4.1), ('round', 0.0, 10.16, 0.5, 4.1), ('round', 0.0, 12.7, 0.5, 4.1)),  # Pin placement
         pin1corner = (-4.77, -2.03),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -449,16 +419,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_muRata_NXE2SxxxxMC_THT',  # Model name
-        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 10.41,  # Package length
         W  = 12.7,  # Package width
         H  = 4.41,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((-4.7, -3.81), (-4.7, -1.27), (-4.7, 3.81), (4.7, 3.81), (4.7, -3.81)),  # Pin placement
+        pin = (('smd', -4.7, -3.81, 0.61, 0.2), ('smd', -4.7, -1.27, 0.61, 0.2), ('smd', -4.7, 3.81, 0.61, 0.2), ('smd', 4.7, 3.81, 0.61, 0.2), ('smd', 4.7, -3.81, 0.61, 0.2)),  # Pin placement
         pin1corner = (0.0, 0.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 0.2,  # Pin length, pad height
-        pinpadsize = 0.61,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -468,49 +436,20 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
-
-    'Converter_DCDC_Murata_MGJ2DxxxxxxSC_THT': Params(   # ModelName
-        #
-        #
-        #
-        modelName = 'Converter_DCDC_Murata_MGJ2DxxxxxxSC_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
-        L  = 19.5,  # Package length
-        W  = 9.8,  # Package width
-        H  = 12.5,  # Package height
-        A1 = 0.1,  # Package board separation
-        rim = None, # No rim
-        pin = ((0, 0), (2.54, 0), (10.16, 0), (12.70, 0), (15.24, 0)),  # Pin placement
-        pin1corner = (-2.13, -2.67),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.56,  # Pin diameter or pad size
-        show_top   = False,  # If top should be visible or not
-        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
-        roundbelly = 1,  # If belly of caseing should be round (or flat)
-        rotation   = 0.0,  # If belly of caseing should be round (or flat)
-        body_color_key     = 'black body',  # Body color
-        body_top_color_key = 'black body',  # Body top color
-        pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
-        ),
-
 
     'Converter_DCDC_RECOM_R-78B-2.0_THT': Params(   # ModelName
         #
         #
         #
         modelName = 'Converter_DCDC_RECOM_R-78B-2.0_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.5,  # Package length
         W  = 8.5,  # Package width
         H  = 17.5,  # Package height
         rim = None, # No rim
         A1 = 0.1,  # Package board separation
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.64, 4.1), ('round', 2.54, 0.0, 0.64, 4.1), ('round', 5.08, 0.0, 0.64, 4.1)),  # Pin placement
         pin1corner = (-3.21, -2.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.64,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -527,16 +466,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R-78E-0.5_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.6,  # Package length
         W  = 8.5,  # Package width
         H  = 10.4,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 2.54, 0.0, 0.5, 4.1), ('round', 5.08, 0.0, 0.5, 4.1)),  # Pin placement
         pin1corner = (-3.31, -6.5),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -553,16 +490,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R-78HB-0.5_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.5,  # Package length
         W  = 8.5,  # Package width
         H  = 17.5,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.7, 4.1), ('round', 2.54, 0.0, 0.7, 4.1), ('round', 5.08, 0.0, 0.7, 4.1)),  # Pin placement
         pin1corner = (-3.21, -2.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.7,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -579,16 +514,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R-78S-0.1_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.6,  # Package length
         W  = 8.5,  # Package width
         H  = 10.4,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0), (7.62, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.7, 4.1), ('round', 2.54, 0.0, 0.7, 4.1), ('round', 5.08, 0.0, 0.7, 4.1), ('round', 7.62, 0.0, 0.7, 4.1)),  # Pin placement
         pin1corner = (-2.0, -6.5),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.7,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -605,16 +538,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R-78HB-0.5L_THT',  # Model name
-        pintype   = 'tht_n',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht_n',  # Pin type, 'tht', 'smd'
         L  = 11.5,  # Package length
         W  = 17.5,  # Package width
         H  = 8.5,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.7, 4.1), ('round', 2.54, 0.0, 0.7, 4.1), ('round', 5.08, 0.0, 0.7, 4.1)),  # Pin placement
         pin1corner = (-3.21, -19.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.7,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -631,16 +562,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R5xxxDA_THT',  # Model name
-        pintype   = 'tht_n',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht_n',  # Pin type, 'tht', 'smd'
         L  = 32.2,  # Package length
         W  = 15.0,  # Package width
         H  = 9.1,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0), (7.62, 0.0), (10.16, 0.0), (12.7, 0.0), (15.24, 0.0), (17.78, 0.0), (20.32, 0.0), (22.86, 0.0), (25.4, 0.0), (27.94, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.7, 4.1), ('round', 2.54, 0.0, 0.7, 4.1), ('round', 5.08, 0.0, 0.7, 4.1), ('round', 7.62, 0.0, 0.7, 4.1), ('round', 10.16, 0.0, 0.7, 4.1), ('round', 12.7, 0.0, 0.7, 4.1), ('round', 15.24, 0.0, 0.7, 4.1), ('round', 17.78, 0.0, 0.7, 4.1), ('round', 20.32, 0.0, 0.7, 4.1), ('round', 22.86, 0.0, 0.7, 4.1), ('round', 25.4, 0.0, 0.7, 4.1), ('round', 27.94, 0.0, 0.7, 4.1)),  # Pin placement
         pin1corner = (-2.1, -17.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.1,  # Pin length, pad height
-        pinpadsize = 0.7,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -657,16 +586,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_RECOM_R5xxxPA_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 32.2,  # Package length
         W  = 9.1,  # Package width
         H  = 15.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0), (7.62, 0.0), (10.16, 0.0), (12.7, 0.0), (15.24, 0.0), (17.78, 0.0), (20.32, 0.0), (22.86, 0.0), (25.4, 0.0), (27.94, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.7, 4.0), ('round', 2.54, 0.0, 0.7, 4.0), ('round', 5.08, 0.0, 0.7, 4.0), ('round', 7.62, 0.0, 0.7, 4.0), ('round', 10.16, 0.0, 0.7, 4.0), ('round', 12.7, 0.0, 0.7, 4.0), ('round', 15.24, 0.0, 0.7, 4.0), ('round', 17.78, 0.0, 0.7, 4.0), ('round', 20.32, 0.0, 0.7, 4.0), ('round', 22.86, 0.0, 0.7, 4.0), ('round', 25.4, 0.0, 0.7, 4.0), ('round', 27.94, 0.0, 0.7, 4.0)),  # Pin placement
         pin1corner = (-2.1, -0.8),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.0,  # Pin length, pad height
-        pinpadsize = 0.7,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -683,16 +610,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TMR-1SM_SMD',  # Model name
-        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 13.7,  # Package length
         W  = 18.9,  # Package width
         H  = 8.45,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((-8.075, -7.62), (-8.075, -5.08), (-8.075, 5.08), (-8.075, 7.62), (8.075, -7.62), (8.075, 5.08), (8.075, 7.62)),  # Pin placement
+        pin = (('round', -8.075, -7.62, 0.2, 1.2), ('round', -8.075, -5.08, 0.2, 1.2), ('round', -8.075, 5.08, 0.2, 1.2), ('round', -8.075, 7.62, 0.2, 1.2), ('round', 8.075, -7.62, 0.2, 1.2), ('round', 8.075, 5.08, 0.2, 1.2), ('round', 8.075, 7.62, 0.2, 1.2)),  # Pin placement
         pin1corner = (0.0, 0.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 0.2,  # Pin length, pad height
-        pinpadsize = 1.2,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -709,16 +634,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TMR-1-xxxx_Single_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 17.0,  # Package length
         W  = 7.62,  # Package width
         H  = 11.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (7.62, 0.0), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.2), ('round', 2.54, 0.0, 0.5, 3.2), ('round', 7.62, 0.0, 0.5, 3.2), ('round', 12.7, 0.0, 0.5, 3.2)),  # Pin placement
         pin1corner = (-2.3, -2.5),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.2,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -735,16 +658,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TMR-1-xxxx_Dual_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 17.0,  # Package length
         W  = 7.62,  # Package width
         H  = 11.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (7.62, 0.0), (10.16, 0.0), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.2), ('round', 2.54, 0.0, 0.5, 3.2), ('round', 7.62, 0.0, 0.5, 3.2), ('round', 10.16, 0.0, 0.5, 3.2), ('round', 12.7, 0.0, 0.5, 3.2)),  # Pin placement
         pin1corner = (-2.3, -2.5),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.2,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -761,16 +682,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TMR-xxxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 21.8,  # Package length
         W  = 9.2,  # Package width
         H  = 11.0,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0), (10.16, 0.0), (12.7, 0.0), (15.24, 0.0), (17.78, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.0), ('round', 2.54, 0.0, 0.5, 4.0), ('round', 5.08, 0.0, 0.5, 4.0), ('round', 10.16, 0.0, 0.5, 4.0), ('round', 12.7, 0.0, 0.5, 4.0), ('round', 15.24, 0.0, 0.5, 4.0), ('round', 17.78, 0.0, 0.5, 4.0)),  # Pin placement
         pin1corner = (-2.0, -3.2),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.0,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -787,16 +706,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TSR-1_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.7,  # Package length
         W  = 7.6,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (2.54, 0.0), (5.08, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 4.0), ('round', 2.54, 0.0, 0.5, 4.0), ('round', 5.08, 0.0, 0.5, 4.0)),  # Pin placement
         pin1corner = (-3.3, -5.6),  # Left upp corner relationsship to pin 1
-        pinpadh    = 4.0,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -813,16 +730,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN10-xxxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.12, -15.2),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -839,16 +754,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN10-xxxx_Single_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.12, -15.2),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -865,16 +778,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN10-xxxx_Dual_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (2.54, 20.32), (12.7, 20.32)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 2.54, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.12, -15.2),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -891,16 +802,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN20-xxxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (2.54, 20.32), (12.7, 20.32), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 2.54, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0), ('round', 12.7, 0.0, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -917,16 +826,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN20-xxxx-N4_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0), ('round', 12.7, 0.0, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -943,16 +850,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN20-xxxx_Single_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (12.7, 20.32), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0), ('round', 12.7, 0.0, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -969,16 +874,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_TRACO_TEN20-xxxx_Dual_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 25.4,  # Package length
         W  = 50.8,  # Package width
         H  = 10.2,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (5.08, 0.0), (-7.62, 20.32), (2.54, 20.32), (12.7, 20.32), (12.7, 0.0)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 1.0, 6.0), ('round', 5.08, 0.0, 1.0, 6.0), ('round', -7.62, 20.32, 1.0, 6.0), ('round', 2.54, 20.32, 1.0, 6.0), ('round', 12.7, 20.32, 1.0, 6.0), ('round', 12.7, 0.0, 1.0, 6.0)),  # Pin placement
         pin1corner = (-10.16, -15.24),  # Left upp corner relationsship to pin 1
-        pinpadh    = 6.0,  # Pin length, pad height
-        pinpadsize = 1.0,  # Pin diameter or pad size
         show_top   = True,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -995,16 +898,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER_JTExxxxDxx_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 20.32,  # Package length
         W  = 31.75,  # Package width
         H  = 10.4,  # Package height
         A1 = 0.1,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 17.78), (0.0, 22.86), (15.24, 22.86), (15.24, 17.78), (15.24, 0.0), (0.0, 2.54), (15.24, 2.54)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.05), ('round', 0.0, 17.78, 0.5, 3.05), ('round', 0.0, 22.86, 0.5, 3.05), ('round', 15.24, 22.86, 0.5, 3.05), ('round', 15.24, 17.78, 0.5, 3.05), ('round', 15.24, 0.0, 0.5, 3.05), ('round', 0.0, 2.54, 0.5, 3.05), ('round', 15.24, 2.54, 0.5, 3.05)),  # Pin placement
         pin1corner = (-2.54, -4.445),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.05,  # Pin length, pad height
-        pinpadsize = 0.5,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,  # If belly of caseing should be round (or flat)
@@ -1020,16 +921,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER_ISU02-Series_SMD',  # Model name
-        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 14.9,  # Package length
         W  = 19.0,  # Package width
         H  = 8.50,  # Package height
         A1 = 0.2,  # Package board separation
         rim = None, # No rim
-        pin = ((-8.075, -7.62), (-8.075, -5.08), (-8.075, 5.08), (-8.075, 7.62), (8.075, -7.62), (8.075, 5.08), (8.075, 7.62)),  # Pin placement
+        pin = (('smd', -8.075, -7.62, 1.2, 0.2), ('smd', -8.075, -5.08, 1.2, 0.2), ('smd', -8.075, 5.08, 1.2, 0.2), ('smd', -8.075, 7.62, 1.2, 0.2), ('smd', 8.075, -7.62, 1.2, 0.2), ('smd', 8.075, 5.08, 1.2, 0.2), ('smd', 8.075, 7.62, 1.2, 0.2)),  # Pin placement
         pin1corner = (0.0, 0.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 0.2,  # Pin length, pad height
-        pinpadsize = 1.2,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -1045,16 +944,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_Artesyn_ATA-Series_SMD',  # Model name
-        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 13.7,  # Package length
         W  = 24.0,  # Package width
         H  = 8.0,  # Package height
         A1 = 0.25,  # Package board separation
         rim = None, # No rim
-        pin = ((-8.25, -8.89), (-8.25, -6.35), (-8.25, 6.35), (-8.25, 8.89), (8.25, 8.89), (8.25, 6.35), (8.25, -8.89)),  # Pin placement
+        pin = (('smd', -8.25, -8.89, 1.2, 0.2), ('smd', -8.25, -6.35, 1.2, 0.2), ('smd', -8.25, 6.35, 1.2, 0.2), ('smd', -8.25, 8.89, 1.2, 0.2), ('smd', 8.25, 8.89, 1.2, 0.2), ('smd', 8.25, 6.35, 1.2, 0.2), ('smd', 8.25, -8.89, 1.2, 0.2)),  # Pin placement
         pin1corner = (0.0, 0.0),  # Left upp corner relationsship to pin 1
-        pinpadh    = 0.2,  # Pin length, pad height
-        pinpadsize = 1.2,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 1,  # If belly of caseing should be round (or flat)
@@ -1070,13 +967,13 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IA48xxS_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 7.20-0.5,  # Package length
         W  = 19.30-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.5, 0.5),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 3.05), ('round', 0.0, 2.54, 0.51, 3.05), ('round', 0.0, 7.62, 0.51, 3.05), ('round', 0.0, 10.16, 0.51, 3.05), ('round', 0.0, 12.70, 0.51, 3.05)),  # Pin placement
         pin1corner = (-5.80+0.5, -1.53),  # Left upp corner relationsship to pin 1
         pinpadh    = 3.05,  # Pin length, pad height
         pinpadsize = 0.51,  # Pin diameter or pad size
@@ -1095,16 +992,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IAxxxxS_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.09-0.5,  # Package length
         W  = 19.30-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.5, 0.5),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 3.05), ('round', 0.0, 2.54, 0.51, 3.05), ('round', 0.0, 7.62, 0.51, 3.05), ('round', 0.0, 10.16, 0.51, 3.05), ('round', 0.0, 12.70, 0.51, 3.05)),  # Pin placement
         pin1corner = (-4.69+0.5, -1.53),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.05,  # Pin length, pad height
-        pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1120,16 +1015,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IAxxxxD_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.16-0.5,  # Package length
         W  = 20.32-0.5,  # Package width
         H  = 6.35-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 2.79), ('round', 0.0, 15.24, 0.51, 2.79), ('round', 7.62, 0.0, 0.51, 2.79), ('round', 7.62, 7.62, 0.51, 2.79), ('round', 7.62, 12.70, 0.51, 2.79), ('round', 7.62, 15.24, 0.51, 2.79)),  # Pin placement
         pin1corner = (-1.27+0.25, -2.54+0.25),  # Left upp corner relationsship to pin 1
-        pinpadh    = 2.79,  # Pin length, pad height
-        pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1145,16 +1038,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IA48xxD_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.16-0.5,  # Package length
         W  = 20.32-0.5,  # Package width
         H  = 6.88-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 2.79), ('round', 0.0, 15.24, 0.51, 2.79), ('round', 7.62, 0.0, 0.51, 2.79), ('round', 7.62, 7.62, 0.51, 2.79), ('round', 7.62, 12.70, 0.51, 2.79), ('round', 7.62, 15.24, 0.51, 2.79)),  # Pin placement
         pin1corner = (-1.27+0.25, -2.54+0.25),  # Left upp corner relationsship to pin 1
-        pinpadh    = 2.79,  # Pin length, pad height
-        pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1170,16 +1061,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IHxxxxS_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 7.2-0.5,  # Package length
         W  = 19.5-0.5,  # Package width
         H  = 10.16,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 7.62), (0.0, 10.16), (0.0, 12.70)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.00), ('round', 0.0, 2.54, 0.5, 3.00), ('round', 0.0, 7.62, 0.5, 3.00), ('round', 0.0, 10.16, 0.5, 3.00), ('round', 0.0, 12.70, 0.5, 3.00)),  # Pin placement
         pin1corner = (-5.95+0.5, -2.29),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.05,  # Pin length, pad height
-        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1195,16 +1084,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IHxxxxSH_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 7.62-0.5,  # Package length
         W  = 19.5-0.5,  # Package width
         H  = 10.16-0.5,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 10.16), (0.0, 12.70), (0.0, 15.24)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.00), ('round', 0.0, 2.54, 0.5, 3.00), ('round', 0.0, 10.16, 0.5, 3.00), ('round', 0.0, 12.70, 0.5, 3.00), ('round', 0.0, 15.24, 0.5, 3.00)),  # Pin placement
         pin1corner = (-6.37+0.5, -2.29),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.05,  # Pin length, pad height
-        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1220,16 +1107,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IHxxxxD_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.16-0.5,  # Package length
         W  = 20.32-0.5,  # Package width
         H  = 6.88,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 7.62), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 2.79), ('round', 0.0, 15.24, 0.51, 2.79), ('round', 7.62, 0.0, 0.51, 2.79), ('round', 7.62, 7.62, 0.51, 2.79), ('round', 7.62, 12.70, 0.51, 2.79), ('round', 7.62, 15.24, 0.51, 2.79)),  # Pin placement
         pin1corner = (-1.27+0.25, -2.54+0.25),  # Left upp corner relationsship to pin 1
-        pinpadh    = 2.79,  # Pin length, pad height
-        pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1245,16 +1130,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-IHxxxxDH_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 10.16-0.5,  # Package length
         W  = 20.32-0.5,  # Package width
         H  = 6.88,  # Package height
         A1 = 0.01,  # Package board separation
         rim = None, # No rim
-        pin = ((0.0, 0.0), (0.0, 15.24), (7.62, 0.0), (7.62, 10.16), (7.62, 12.70), (7.62, 15.24)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.51, 2.79), ('round', 0.0, 15.24, 0.51, 2.79), ('round', 7.62, 0.0, 0.51, 2.79), ('round', 7.62, 10.16, 0.51, 2.79), ('round', 7.62, 12.70, 0.51, 2.79), ('round', 7.62, 15.24, 0.51, 2.79)),  # Pin placement
         pin1corner = (-1.27+0.25, -2.54+0.25),  # Left upp corner relationsship to pin 1
-        pinpadh    = 2.79,  # Pin length, pad height
-        pinpadsize = 0.51,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1270,16 +1153,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-ITQxxxxS-H_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
         H  = 10.65,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.00), ('round', 0.0, 2.54, 0.5, 3.00), ('round', 0.0, 5.08, 0.5, 3.00), ('round', 0.0, 12.70, 0.5, 3.00), ('round', 0.0, 15.24, 0.5, 3.00), ('round', 0.0, 17.78, 0.5, 3.00)),  # Pin placement
         pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.00,  # Pin length, pad height
-        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1295,16 +1176,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-ITxxxxxS_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
         H  = 10.65,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 5.08), (0.0, 10.16), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.00), ('round', 0.0, 2.54, 0.5, 3.00), ('round', 0.0, 5.08, 0.5, 3.00), ('round', 0.0, 10.16, 0.5, 3.00), ('round', 0.0, 12.70, 0.5, 3.00), ('round', 0.0, 15.24, 0.5, 3.00), ('round', 0.0, 17.78, 0.5, 3.00)),  # Pin placement
         pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.00,  # Pin length, pad height
-        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1320,16 +1199,14 @@ all_params = {
         #
         #
         modelName = 'Converter_DCDC_XP_POWER-ITXxxxxSA_THT',  # Model name
-        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.20,  # Package length
         W  = 21.85,  # Package width
         H  = 10.65,  # Package height
         A1 = 0.01,  # Package board separation
         rim = (0.0, 0.38, 0.38),  # If a rim should be created at the bottom
-        pin = ((0.0, 0.0), (0.0, 2.54), (0.0, 12.70), (0.0, 15.24), (0.0, 17.78)),  # Pin placement
+        pin = (('round', 0.0, 0.0, 0.5, 3.00), ('round', 0.0, 2.54, 0.5, 3.00), ('round', 0.0, 12.70, 0.5, 3.00), ('round', 0.0, 15.24, 0.5, 3.00), ('round', 0.0, 17.78, 0.5, 3.00)),  # Pin placement
         pin1corner = (-6.00, -2.035),  # Left upp corner relationsship to pin 1
-        pinpadh    = 3.00,  # Pin length, pad height
-        pinpadsize = 0.50,  # Pin diameter or pad size
         show_top   = False,  # If top should be visible or not
         corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
         roundbelly = 0,     # If belly of caseing should be round (or flat)
@@ -1337,6 +1214,29 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_Murata_MGJ2DxxxxxxSC_THT': Params(   # ModelName
+        #
+        # https://power.murata.com/pub/data/power/ncl/kdc_mgj2.pdf
+        #
+        modelName = 'Converter_DCDC_Murata_MGJ2DxxxxxxSC_THT',  # Model name
+        pintype   = 'tht',      # Pin type, 'tht', 'smd'
+        L  = 10.42,             # Package length
+        W  = 19.50,             # Package width
+        H  = 12.50,             # Package height
+        A1 = 0.01,              # Package board separation
+        rim = (0.0, 0.4, 0.4),  # If a rim should be created at the bottom
+        pin = (('rect', 0.0, 0.0, 0.25, 0.5, 4.1), ('rect', 0.0, 2.54, 0.25, 0.5, 4.1), ('rect', 0.0, 10.16, 0.25, 0.5, 4.1), ('rect', 0.0, 12.70, 0.25, 0.5, 4.1), ('rect', 0.0, 15.24, 0.25, 0.5, 4.1)),  # Pin placement
+        pin1corner = (-2.13, -2.67),  # Left upp corner relationsship to pin 1
+        show_top   = False,     # If top should be visible or not
+        corner     = 'fillet',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,         # If belly of caseing should be round (or flat)
+        rotation   = 0.0,       # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',      # Body color
+        body_top_color_key = 'black body',      # Body top color
+        pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
