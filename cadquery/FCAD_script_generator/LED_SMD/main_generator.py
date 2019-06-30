@@ -158,8 +158,6 @@ def make_chip(model, all_params):
     # dimensions for LED's
     package_found = True
     
-    FreeCAD.Console.PrintMessage('make_chip 1 \r\n')
-
     package_type = all_params[model]['package_type']
     length = all_params[model]['length'] # package length
     width = all_params[model]['width'] # package width
@@ -171,7 +169,6 @@ def make_chip(model, all_params):
     base_height = all_params[model]['base_height'] # pin thickness
     edge_fillet = all_params[model]['edge_fillet'] # fillet of edges
     place_pinmark = all_params[model]['pinmark']
-    pincnt = all_params[model]['pincnt']
     pinmark = 0
     if edge_fillet == 'auto':
         edge_fillet = pin_thickness
@@ -248,6 +245,7 @@ def make_chip(model, all_params):
             lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
    
     elif package_type == 'plcc_a':
+        pincnt = all_params[model]['pincnt']
         #
         # Make the main block
         base = cq.Workplane("XY").workplane(offset=base_height).moveTo(0.0, 0.0).rect(length, width, True).extrude(height)
@@ -370,41 +368,44 @@ if __name__ == "__main__" or __name__ == "main_generator":
             print("package_type is not recognized")
             continue
             
-        b_c = all_params[model]['body_color']
-        if len(b_c) > 0:
-            body_color_key = all_params[model]['body_color']
-            body_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
-        else:
+        try:
+            b_c = all_params[model]['body_color']
+            if len(b_c) > 0:
+                body_color_key = all_params[model]['body_color']
+                body_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+        except:
             # Default value
             body_color_key = "white body"  #"white body"
             body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-
-        b_c = all_params[model]['top_color']
-        if len(b_c) > 0:
-            top_color_key = all_params[model]['top_color']
-            top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
-        else:
+            
+            
+        try:
+            b_c = all_params[model]['top_color']
+            if len(b_c) > 0:
+                top_color_key = all_params[model]['top_color']
+                top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+        except:
             # Default value
             top_color_key = "led white"
             top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 
-        b_c = all_params[model]['pin_color']
-        if len(b_c) > 0:
-            pins_color_key = all_params[model]['pin_color']
-            pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-        else:
+        try:
+            b_c = all_params[model]['pin_color']
+            if len(b_c) > 0:
+                pins_color_key = all_params[model]['pin_color']
+                pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+        except:
             # Default value
             pins_color_key = "gold pins"
             pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 
-        FreeCAD.Console.PrintMessage('\r\nRunning 1 ...\r\n')
-
-        b_c = all_params[model]['pinmark_color']
-        FreeCAD.Console.PrintMessage('\r\nRunning 2 ...\r\n')
-        if len(b_c) > 0:
-            pinmark_color_key = all_params[model]['pinmark_color']
-            pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
-        else:
+        try:
+            b_c = all_params[model]['pinmark_color']
+            FreeCAD.Console.PrintMessage('\r\nRunning 2 ...\r\n')
+            if len(b_c) > 0:
+                pinmark_color_key = all_params[model]['pinmark_color']
+                pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
+        except:
             # Default value
             pinmark_color_key = "green body"
             pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()

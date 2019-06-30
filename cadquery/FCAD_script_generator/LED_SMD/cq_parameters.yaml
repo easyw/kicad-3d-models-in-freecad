@@ -611,7 +611,7 @@ LED_RGB_PLCC-6:
   top_color: 'led white'
   pinmark: True
   source: ''
-LED_WS2812B-PLCC4:
+LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm:
   package_type: 'plcc_a'
   length: 5.0
   width: 5.0
@@ -624,8 +624,7 @@ LED_WS2812B-PLCC4:
   rotation: 0
   body_color: 'white body'
   pin_color: 'metal grey pins'
-  top_color: 'glass_grey'
-  pinmark_color: 'glass_grey'
+  top_color: 'blue body'
   pinmark: True
   source: 'https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf'
 LED_WS2812-PLCC6:
@@ -641,8 +640,7 @@ LED_WS2812-PLCC6:
   rotation: 0
   body_color: 'white body'
   pin_color: 'metal grey pins'
-  top_color: 'glass_grey'
-  pinmark_color: 'glass_grey'
+  top_color: 'blue body'
   pinmark: True
   source: 'https://cdn-shop.adafruit.com/datasheets/WS2812.pdf'
 LED_SK6812_PLCC4:
@@ -658,7 +656,6 @@ LED_SK6812_PLCC4:
   rotation: 0
   body_color: 'white body'
   pin_color: 'metal grey pins'
-  top_color: 'glass_grey'
-  pinmark_color: 'glass_grey'
+  top_color: 'blue body'
   pinmark: True
   source: 'https://cdn-shop.adafruit.com/product-files/1138/SK6812+LED+datasheet+.pdf'
