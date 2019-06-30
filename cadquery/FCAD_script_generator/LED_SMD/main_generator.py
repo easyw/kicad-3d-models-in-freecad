@@ -65,7 +65,7 @@ sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "white body"  #"light brown body"
+body_color_key = "white body"  #"white body"
 body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 pins_color_key = "gold pins"
 pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
@@ -157,7 +157,7 @@ except: # catch *all* exceptions
 def make_chip(model, all_params):
     # dimensions for LED's
     package_found = True
-
+    
     package_type = all_params[model]['package_type']
     length = all_params[model]['length'] # package length
     width = all_params[model]['width'] # package width
@@ -243,6 +243,58 @@ def make_chip(model, all_params):
             pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
             pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
             lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
+   
+    elif package_type == 'plcc_a':
+        pincnt = all_params[model]['pincnt']
+        #
+        # Make the main block
+        base = cq.Workplane("XY").workplane(offset=base_height).moveTo(0.0, 0.0).rect(length, width, True).extrude(height)
+        #
+        # Cut out the edge of the corner
+        p2 = cq.Workplane("XY").workplane(offset=base_height + (height * 0.8)).moveTo(0.0, 0.0).rect(length, width, True).extrude(height)
+        p2 = p2.rotate((0,0,0), (0,0,1), 45.0)
+        p2 = p2.translate((length * 0.75, 0.0 - (width * 0.75), 0.0))
+        base = base.cut(p2)
+        #
+        # Make rounded top
+        base = base.faces(">Z").fillet(height / 20.0)
+        #
+        # Cut out the circular hole ontop
+        tp = cq.Workplane("XY").workplane(offset=base_height + (height / 2.0)).moveTo(0.0, 0.0).circle(width / 3.0, False).extrude(2 * height)
+        base = base.cut(tp)
+        base = base.faces(">Z[3]").chamfer(height / 5.0)
+        #
+        # Create the glass top
+        top = cq.Workplane("XY").workplane(offset=base_height + (height / 2.0)).moveTo(0.0, 0.0).circle(width / 3.0, False).extrude(height / 4.0)
+        
+        pins = None
+        for i in range(0, len(pincnt)):
+            p = pincnt[i]
+            px = p[0]
+            py = p[1]
+            pw = p[2]
+            pl = p[3]
+            ph = p[4]
+            
+            p2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(px, py).rect(pl, pw, True).extrude(ph)
+            p3 = cq.Workplane("XY").workplane(offset=pin_thickness).moveTo(px, py).rect(pl - (2.0 * pin_thickness), pw + (2.0 * pin_thickness), True).extrude(ph - (2.0 * pin_thickness))
+            p3 = p3.faces("<X").fillet(pin_thickness / 2.0)
+            p3 = p3.faces(">X").fillet(pin_thickness / 2.0)
+            p2 = p2.cut(p3)
+            if px < 0:
+                p2 = p2.faces("<X").edges(">Z").fillet(pin_thickness / 2.0)
+                p2 = p2.faces("<X").edges("<Z").fillet(pin_thickness / 2.0)
+            else:
+                p2 = p2.faces(">X").edges(">Z").fillet(pin_thickness / 2.0)
+                p2 = p2.faces(">X").edges("<Z").fillet(pin_thickness / 2.0)
+
+            if i == 0:
+                pins = p2
+            else:
+                pins = pins.union(p2)
+            
+        pinmark = cq.Workplane("XY").workplane(offset=pin_thickness + (height / 2.0)).moveTo(0.0, 0.0).circle(width / 3.0, False).extrude(height / 8.0)
+        
     else:
         package_found = False
         base = 0
@@ -277,11 +329,12 @@ if __name__ == "__main__" or __name__ == "main_generator":
     models_dir=sub_path+"_3Dmodels"
     #expVRML.say(models_dir)
     #stop
-
+    
     try:
         with open('cq_parameters.yaml', 'r') as f:
             all_params = yaml.load(f)
     except yaml.YAMLError as exc:
+        FreeCAD.Console.PrintMessage('%s\r\n' % str(exc))
         print(exc)
 
     from sys import argv
@@ -293,7 +346,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         print model_to_build
     else:
         model_to_build = sys.argv[2]
-
+    
     if model_to_build == "all":
         models = all_params
         save_memory=True
@@ -314,10 +367,49 @@ if __name__ == "__main__" or __name__ == "main_generator":
         if package_found == False:
             print("package_type is not recognized")
             continue
+            
+        try:
+            b_c = all_params[model]['body_color']
+            if len(b_c) > 0:
+                body_color_key = all_params[model]['body_color']
+                body_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+        except:
+            # Default value
+            body_color_key = "white body"  #"white body"
+            body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+            
+            
+        try:
+            b_c = all_params[model]['top_color']
+            if len(b_c) > 0:
+                top_color_key = all_params[model]['top_color']
+                top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+        except:
+            # Default value
+            top_color_key = "led white"
+            top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
 
-        top_color_key = all_params[model]['color']
-        top_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+        try:
+            b_c = all_params[model]['pin_color']
+            if len(b_c) > 0:
+                pins_color_key = all_params[model]['pin_color']
+                pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
+        except:
+            # Default value
+            pins_color_key = "gold pins"
+            pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
 
+        try:
+            b_c = all_params[model]['pinmark_color']
+            FreeCAD.Console.PrintMessage('\r\nRunning 2 ...\r\n')
+            if len(b_c) > 0:
+                pinmark_color_key = all_params[model]['pinmark_color']
+                pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
+        except:
+            # Default value
+            pinmark_color_key = "green body"
+            pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
+        
         show(base)
         show(top)
         show(pins)
@@ -325,7 +417,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
    
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
-        
+               
         Color_Objects(Gui,objs[0],body_color)
         Color_Objects(Gui,objs[1],top_color)
         Color_Objects(Gui,objs[2],pins_color)

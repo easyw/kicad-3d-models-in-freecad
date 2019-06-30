@@ -1,3 +1,7 @@
+Till few time ago, yaml was not included on FC Appimage and adding yaml is not easy on Appimages.
+Since latest FC 0.19 yaml has been added, so it won't be an issue for next FC releases, but it could for version 0.18 and older.
+
+
 STEP AP214 and VRML FreeCAD script generator
 ============================================
 :Author:    Maurice
