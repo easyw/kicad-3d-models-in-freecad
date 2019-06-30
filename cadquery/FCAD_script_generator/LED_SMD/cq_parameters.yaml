@@ -573,18 +573,21 @@ LED_RGB_1210:
   pinmark: True
   source: ''
 LED_RGB_5050-6:
-  package_type: 'lala'
-  length: 0
-  width: 0
-  height: 0
-  pin_band: 0
-  pin_thickness: 'auto'
-  base_height: 0
+  package_type: 'plcc_a'
+  length: 5.0
+  width: 5.0
+  height: 1.6
+  pincnt: [[-2.2, -1.7, 1.0, 1.0, 1.0], [-2.2, 0.0, 1.0, 1.0, 1.0], [-2.2, 1.7, 1.0, 1.0, 1.0], [2.2, 1.7, 1.0, 1.0, 1.0], [2.2, 0.0, 1.0, 1.0, 1.0], [2.2, -1.7, 1.0, 1.0, 1.0]]
+  pin_band: 'auto'
+  pin_thickness: 0.2
+  base_height: 0.1
   edge_fillet: 'auto'
   rotation: 0
-  top_color: 'led white'
+  body_color: 'white body'
+  pin_color: 'metal grey pins'
+  top_color: 'blue body'
   pinmark: True
-  source: ''
+  source: 'https://static.sparkfun.com/datasheets/Components/LED/5060BRG4.pdf'
 LED_RGB_Getian_GT-P6PRGB4303:
   package_type: 'lala'
   length: 0
@@ -621,7 +624,7 @@ LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm:
   pin_thickness: 0.1
   base_height: 0.1
   edge_fillet: 'auto'
-  rotation: 0
+  rotation: 180
   body_color: 'white body'
   pin_color: 'metal grey pins'
   top_color: 'blue body'

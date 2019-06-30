@@ -253,7 +253,7 @@ def make_chip(model, all_params):
         # Cut out the edge of the corner
         p2 = cq.Workplane("XY").workplane(offset=base_height + (height * 0.8)).moveTo(0.0, 0.0).rect(length, width, True).extrude(height)
         p2 = p2.rotate((0,0,0), (0,0,1), 45.0)
-        p2 = p2.translate((length * 0.75, 0.0 - (width * 0.75), 0.0))
+        p2 = p2.translate((0.0 - (length * 0.75), (width * 0.75), 0.0))
         base = base.cut(p2)
         #
         # Make rounded top
