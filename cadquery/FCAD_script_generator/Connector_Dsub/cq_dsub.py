@@ -629,7 +629,7 @@ class cq_dsub():
         #
         # Add plate at bottom
         # 
-        case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).rect(D - 3.0, E - 1.0).extrude(0.2)
+        case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).rect(D - 3.0, E - 1.0).extrude(0.5)
         case = case.union(case1)
 
         case = case.faces(">Z").chamfer(0.1)
@@ -695,13 +695,13 @@ class cq_dsub():
         # Add the metal inside the holes on each sides
         #
         if npthserie[0] == 2:
-            case1 = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0 - (B / 2.0), 0.0).circle(G / 2.0 + 0.4, False).extrude(0.0 - 2.05)
-            case2 = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0 - (B / 2.0), 0.0).circle(G / 2.0, False).extrude(0.0 - 2.05)
+            case1 = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0 - (B / 2.0), 0.0).circle(G / 2.0 + 0.4, False).extrude(0.0 - 2.20)
+            case2 = cq.Workplane("XY").workplane(offset=0.1).moveTo(0.0 - (B / 2.0), 0.0).circle(G / 2.0, False).extrude(0.0 - 2.25)
             case1 = case1.cut(case2)
             case = case.union(case1)
             #
-            case1 = cq.Workplane("XY").workplane(offset=0.1).moveTo((B / 2.0), 0.0).circle(G / 2.0 + 0.4, False).extrude(0.0 - 2.05)
-            case2 = cq.Workplane("XY").workplane(offset=0.1).moveTo((B / 2.0), 0.0).circle(G / 2.0, False).extrude(0.0 - 2.05)
+            case1 = cq.Workplane("XY").workplane(offset=0.1).moveTo((B / 2.0), 0.0).circle(G / 2.0 + 0.4, False).extrude(0.0 - 2.20)
+            case2 = cq.Workplane("XY").workplane(offset=0.1).moveTo((B / 2.0), 0.0).circle(G / 2.0, False).extrude(0.0 - 2.25)
             case1 = case1.cut(case2)
             case = case.union(case1)
 
@@ -753,9 +753,9 @@ class cq_dsub():
 
         #
         for i in range(0, np):
-            if t == 'round':
-                case1 = cq.Workplane("XY").workplane(offset=0.0).moveTo(x, y).circle(pind / 2.0, False).extrude(0.0 - pinl)
-                case1 = case1.faces("<Z").fillet(pind / 2.4)
+            if t == 'round' or (t == 'round1' and ns == 2):
+                case1 = cq.Workplane("XY").workplane(offset=0.4).moveTo(x, y).circle(pind / 2.0, False).extrude(0.0 - (pinl + 0.4))
+                case1 = case1.faces("<Z").fillet(pind / 4.0)
             elif t == 'round1':
                 r2 = (pind / 2.0) * 4.0
                 r = r2 - r2 / math.sqrt(2.0)
@@ -772,7 +772,7 @@ class cq_dsub():
                 case1 = cq.Workplane("XY")\
                         .circle((pind / 2.0))\
                         .sweep(path).faces(">Y")\
-                        .fillet(pind / 2.4)\
+                        .faces("<Z").fillet(pind / 4.0)\
                         .translate((x, y, 0.0))
                 #
                 #
@@ -793,7 +793,7 @@ class cq_dsub():
                 else:
                     case1 = cq.Workplane("XY").workplane(offset=4.4).moveTo(x, y).circle(pind / 2.0, False).extrude(pinl + 2.0)
                 
-                case1 = case1.faces(">Z").fillet(pind / 2.4)
+                case1 = case1.faces("<Y").fillet(pind / 4.0)
                 
                 
                 if t == 'round1':
