@@ -244,6 +244,61 @@ def make_chip(model, all_params):
             pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
             lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
    
+    elif package_type == 'chip_concave_4':
+    
+        top_length = all_params[model]['top_length']
+        top_width = all_params[model]['top_width']
+        top_height = all_params[model]['top_height']
+
+        pincnt = all_params[model]['pincnt']
+        
+        # creating base
+        base = cq.Workplane("XY").workplane(offset=pin_thickness).moveTo(0.0, 0.0).rect(length, width, True).extrude(height)
+        
+        # creating top
+        top = cq.Workplane("XY").workplane(offset=pin_thickness + (height - 0.0001)).moveTo(0.0, 0.0).rect(top_length, top_width, True).extrude(top_height)
+        top = top.faces("<X").edges(">Z").chamfer(top_height - 0.002, top_height / 4.0)
+        top = top.faces(">X").edges(">Z").chamfer(top_height / 4.0, top_height - 0.002)
+        top = top.faces(">Z").edges(">X").fillet(top_height / 10.0)
+        top = top.faces(">Z").edges("<X").fillet(top_height / 10.0)
+
+        # creating pins
+        pins = None
+        for i in range(0, len(pincnt)):
+            p = pincnt[i]
+            px = p[0]
+            py = p[1]
+            pw = p[2]
+            pl = p[3]
+            ph = p[4]
+            
+            p2 = cq.Workplane("XY").workplane(offset=0.0).moveTo(px, py).rect(pl, pw, True).extrude(ph)
+            
+            pcx = 0.0
+            if px > 0:
+                pcx = px + (pl / 2.0)
+            else:
+                pcx = (px - (pl / 2.0))
+            
+            pc0 = cq.Workplane("XY").workplane(offset=0.0).moveTo(pcx, py).circle(pw / 4.0, False).extrude(2 * base_height)
+            p2 = p2.cut(pc0)
+            base = base.cut(pc0)
+
+            if i == 0:
+                pins = p2
+            else:
+                pins = pins.union(p2)
+
+        # creating pinmark
+        if place_pinmark == True:
+            pinmark_side = width*0.4
+            pinmark_length = sqrt(pinmark_side*pinmark_side - pinmark_side/2*pinmark_side/2)
+            pinmark = cq.Workplane("XY").workplane(offset=pin_thickness/2).moveTo(-pinmark_length/2,0).\
+            lineTo(pinmark_length/2,pinmark_side/2).lineTo(pinmark_length/2,-pinmark_side/2).close().extrude(pin_thickness/2)
+        else:
+           pinmark = cq.Workplane("XY").workplane(offset=pin_thickness + 0.05).moveTo(0.0, 0.0).rect(0.05, 0.05, True).extrude(0.05)
+
+   
     elif package_type == 'plcc_a':
         pincnt = all_params[model]['pincnt']
         #
@@ -372,7 +427,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
             b_c = all_params[model]['body_color']
             if len(b_c) > 0:
                 body_color_key = all_params[model]['body_color']
-                body_color = shaderColors.named_colors[top_color_key].getDiffuseFloat()
+                body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
         except:
             # Default value
             body_color_key = "white body"  #"white body"
@@ -401,7 +456,6 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
         try:
             b_c = all_params[model]['pinmark_color']
-            FreeCAD.Console.PrintMessage('\r\nRunning 2 ...\r\n')
             if len(b_c) > 0:
                 pinmark_color_key = all_params[model]['pinmark_color']
                 pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
@@ -409,7 +463,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
             # Default value
             pinmark_color_key = "green body"
             pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
-        
+                
+
         show(base)
         show(top)
         show(pins)
@@ -417,7 +472,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
    
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
-               
+
         Color_Objects(Gui,objs[0],body_color)
         Color_Objects(Gui,objs[1],top_color)
         Color_Objects(Gui,objs[2],pins_color)
