@@ -90,8 +90,6 @@ STR_licOrg = "FreeCAD"
 #################################################################################################
 
 
-
-
 import cq_dsub  # modules parameters
 from cq_dsub import *
 
@@ -100,8 +98,8 @@ different_models = [
     cq_dsub(),
 ]
 
-
-
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
 
 
 def make_3D_model(models_dir, model_class, modelID, gender):
@@ -116,14 +114,14 @@ def make_3D_model(models_dir, model_class, modelID, gender):
     destination_dir = model_class.get_dest_3D_dir(modelID)
     
     material_substitutions = model_class.make_3D_model(modelID, gender)
-    modelName = model_class.get_model_name(modelID, gender)
+    ModelName = model_class.get_model_name(modelID, gender)
     
     
     doc = FreeCAD.ActiveDocument
-    doc.Label = modelName
+    doc.Label = ModelName
 
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = modelName
+    objs[0].Label = ModelName
     restore_Main_Tools()
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
@@ -132,35 +130,55 @@ def make_3D_model(models_dir, model_class, modelID, gender):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    exportSTEP(doc, modelName, out_dir)
+    exportSTEP(doc, ModelName, out_dir)
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
         LIST_license.append("")
-    Lic.addLicenseToStep(out_dir + os.sep, modelName+".step", LIST_license,\
+    Lic.addLicenseToStep(out_dir + os.sep, ModelName+".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
 
     # scale and export Vrml model
     scale=1/2.54
-    #exportVRML(doc,modelName,scale,out_dir)
+    #exportVRML(doc,ModelName,scale,out_dir)
     del objs
     objs=GetListOfObjects(FreeCAD, doc)
     expVRML.say("######################################################################")
     expVRML.say(objs)
     expVRML.say("######################################################################")
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-    export_file_name=out_dir+os.sep+modelName+'.wrl'
+    export_file_name=out_dir+os.sep+ModelName+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
     #scale=0.3937001
-    #exportVRML(doc,modelName,scale,out_dir)
+    #exportVRML(doc,ModelName,scale,out_dir)
+    #
     # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, modelName,out_dir)
+    saveFCdoc(App, Gui, doc, ModelName,out_dir)
     #display BBox
     Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
-    #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
+    # 
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    check_Model=True
+    if save_memory == True or check_Model==True:
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
+
+    step_path=os.path.join(out_dir,ModelName+u'.step')
+    if check_Model==True:
+        #ImportGui.insert(step_path,ModelName)
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        if cq_cad_tools.checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file for ' + ModelName + ' is correctly Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+        else:
+            FreeCAD.Console.PrintError('step file ' + ModelName + ' is NOT Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+            sys.exit()
 
 
 def run():
@@ -195,6 +213,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         sys.exit()
     else:
         model_to_build=sys.argv[2]
+
+    if model_to_build == 'all' or model_to_build == 'All' or model_to_build == 'ALL':
+        save_memory = True
         
     if len(sys.argv) > 3:
         gender_to_build=sys.argv[3]
@@ -208,11 +229,13 @@ if __name__ == "__main__" or __name__ == "main_generator":
             for n in different_models:
                 listall = n.get_list_all()
                 for i in listall:
-                    FreeCAD.Console.PrintMessage('\r\nMaking model :' + i + '\r\n')
                     if gender_to_build == 'all':
+                        FreeCAD.Console.PrintMessage('\r\nMaking model male :' + i + '\r\n')
                         make_3D_model(models_dir, n, i, 'male')
+                        FreeCAD.Console.PrintMessage('\r\nMaking model female :' + i + '\r\n')
                         make_3D_model(models_dir, n, i, 'female')
                     else:
+                        FreeCAD.Console.PrintMessage('\r\nMaking model ' + gender_to_build + ' :' + i + '\r\n')
                         make_3D_model(models_dir, n, i, gender_to_build)
                     
         elif model_to_build == 'list':
@@ -228,10 +251,15 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 if n.model_exist(model_to_build):
                     found_one = True
                     if gender_to_build == 'all':
+                        FreeCAD.Console.PrintMessage('\r\nMaking model male : ' + model_to_build + '\r\n')
                         make_3D_model(models_dir, n, model_to_build, 'male')
+                        FreeCAD.Console.PrintMessage('\r\nMaking model female : ' + model_to_build + '\r\n')
                         make_3D_model(models_dir, n, model_to_build, 'female')
                     else:
+                        FreeCAD.Console.PrintMessage('\r\nMaking model ' + gender_to_build + ' : ' + model_to_build + '\r\n')
                         make_3D_model(models_dir, n, model_to_build, gender_to_build)
         
         if not found_one:
             print("Parameters for %s doesn't exist, skipping. " % model_to_build)
+
+    FreeCAD.Console.PrintMessage('\r\n\r\n *** Done *** \r\n')
