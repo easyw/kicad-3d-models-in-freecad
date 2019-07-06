@@ -94,8 +94,12 @@ import add_license as Lic
 import cq_parameters_Resonator_SMD_muRata_CSTx  # modules parameters
 from cq_parameters_Resonator_SMD_muRata_CSTx import *
 
+import cq_parameters_Resonator_AT310  # modules parameters
+from cq_parameters_Resonator_AT310 import *
+
 different_models = [
     cq_parameters_Resonator_SMD_muRata_CSTx(),
+    cq_parameters_Resonator_AT310(),
 ]
 
 
@@ -159,8 +163,9 @@ def make_3D_model(models_dir, model_class, modelName):
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
 
-    check_Model=True
+    check_Model=False
     if save_memory == True:
+        check_Model=True
         doc=FreeCAD.ActiveDocument
         FreeCAD.closeDocument(doc.Name)
 
