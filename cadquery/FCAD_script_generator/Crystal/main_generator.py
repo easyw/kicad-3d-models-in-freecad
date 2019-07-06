@@ -99,6 +99,8 @@ different_models = [
 ]
 
 
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
 
 
 
@@ -112,7 +114,9 @@ def make_3D_model(models_dir, model_class, modelName):
     Newdoc = App.newDocument(CheckedmodelName)
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
-    destination_dir = model_class.get_dest_3D_dir()
+    destination_dir = model_class.get_dest_3D_dir(modelName)
+    
+    model_filename = model_class.get_dest_file_name(modelName)
     
     material_substitutions = model_class.make_3D_model(modelName)
     
@@ -129,29 +133,49 @@ def make_3D_model(models_dir, model_class, modelName):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    exportSTEP(doc, modelName, out_dir)
+    exportSTEP(doc, model_filename, out_dir)
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
         LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', modelName+".step", LIST_license,\
+    Lic.addLicenseToStep(out_dir+'/', model_filename+".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
 
     # scale and export Vrml model
     scale=1/2.54
-    #exportVRML(doc,modelName,scale,out_dir)
+    #exportVRML(doc,model_filename,scale,out_dir)
     del objs
     objs=GetListOfObjects(FreeCAD, doc)
     expVRML.say("######################################################################")
     expVRML.say(objs)
     expVRML.say("######################################################################")
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-    export_file_name=out_dir+os.sep+modelName+'.wrl'
+    export_file_name=out_dir+os.sep+model_filename+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-    saveFCdoc(App, Gui, doc, modelName,out_dir)
+    saveFCdoc(App, Gui, doc, model_filename,out_dir)
     Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
+    # 
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    check_Model=True
+    if save_memory == True:
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
+
+    step_path=os.path.join(out_dir,model_filename+u'.step')
+    if check_Model==True:
+        #ImportGui.insert(step_path,model_filename)
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        if cq_cad_tools.checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file for ' + model_filename + ' is correctly Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+        else:
+            FreeCAD.Console.PrintError('step file ' + model_filename + ' is NOT Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+            sys.exit()
 
 def run():
     ## # get variant names from command line
@@ -186,6 +210,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     found_one = False
     if len(model_to_build) > 0:
         if model_to_build == 'all' or model_to_build == 'All' or model_to_build == 'ALL':
+            save_memory = True
             found_one = True
             for n in different_models:
                 listall = n.get_list_all()

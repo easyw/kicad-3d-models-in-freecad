@@ -56,9 +56,18 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
     def __init__(self):
         x = 0
 
-        
-    def get_dest_3D_dir(self):
-        return 'Crystal.3dshapes'
+
+    def get_dest_3D_dir(self, modelName):
+        for n in self.all_params:
+            if n == modelName:
+                return self.all_params[modelName].dest_dir_prefix
+
+
+    def get_dest_file_name(self, modelName):
+        for n in self.all_params:
+            if n == modelName:
+                return self.all_params[modelName].filename
+
 
     def model_exist(self, modelName):
         for n in self.all_params:
@@ -78,11 +87,9 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         
     def make_3D_model(self, modelName):
         
-        destination_dir = self.get_dest_3D_dir()
-        
         case_top = self.make_case_top(self.all_params[modelName])
         case = self.make_case(self.all_params[modelName])
-        pins = self.make_pins(self.all_params[modelName])
+        pins = self.make_pins(case, self.all_params[modelName])
         show(case_top)
         show(case)
         show(pins)
@@ -142,12 +149,17 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         #
         origo_x = 0.0
         origo_y = 0.0
-        ff = TH / 7.0
 
         #
-        case=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0 - origo_y).rect(TW, TE).extrude(H + TH)
-        case = case.faces(">Z").fillet(ff)
-
+        case = None
+        if (TW > 0.01):
+            ff = TH / 7.0
+            case=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0 - origo_y).rect(TW, TE).extrude(H + TH)
+            case = case.faces(">Z").fillet(ff)
+        else:
+            # Make dummy
+            case=cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(origo_x, 0 - origo_y).rect(0.1, 0.1).extrude(0.1)
+        
         if (rotation != 0):
             case = case.rotate((0,0,0), (0,0,1), rotation)
 
@@ -172,7 +184,6 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         #
         origo_x = 0.0
         origo_y = 0.0
-        ff = TH / 3.0
         #
         case=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0 - origo_y).rect(W, E).extrude(H)
 
@@ -182,7 +193,7 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         return (case)
 
     
-    def make_pins(self, params):
+    def make_pins(self, case, params):
 
         W = params.W                        # body length
         E = params.E                        # body width
@@ -193,23 +204,58 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         TE = params.TE                      # top width
         TH = params.TH                      # top height
 
-        pin_split = params.pin_split        # top height
-        pin_width = params.pin_width        # top height
+        pin_cnt = params.pin_cnt            # Number of pins
+        pin_cut = params.pin_cut            # If edge should cut
+        pin_split = params.pin_split        # Distance between pins
+        pin_width = params.pin_width        # Pin width
         rotation = params.rotation          # Rotation if required
 
         #
-        origo_x = 0.0
-        origo_y = 0.0
-        ff = TH / 3.0
-        #
-        pins=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
-
-        pin=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x + pin_split, 0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
+        if (pin_cnt == 2):
+            origo_x = 0.0 - (pin_split / 2.0)
+            origo_y = 0.0
+        else:
+            origo_x = 0.0 - pin_split
+            origo_y = 0.0
+        
+        pins = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width - 0.1, E + 0.05).extrude(H + 0.025)
+        case.cut(pins)
+        pins = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
+        if (pin_cut > 0.01):
+            pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) - ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+            pins.cut(pinc)
+            case.cut(pinc)
+            pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) + ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+            pins.cut(pinc)
+            case.cut(pinc)
+        
+        origo_x = origo_x + pin_split
+        pin = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width - 0.1, E + 0.05).extrude(H + 0.025)
+        case.cut(pin)
+        pin = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
+        if (pin_cut > 0.01):
+            pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) - ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+            pin.cut(pinc)
+            case.cut(pinc)
+            pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) + ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+            pin.cut(pinc)
+            case.cut(pinc)
         pins=pins.union(pin)
-
-        pin=cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x - pin_split, 0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
-        pins=pins.union(pin)
-
+        
+        if (pin_cnt == 3):
+            origo_x = origo_x + pin_split
+            pin = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width - 0.1, E + 0.05).extrude(H + 0.025)
+            case.cut(pin)
+            pin = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, 0.0 - origo_y).rect(pin_width, E + 0.05).extrude(H + 0.025)
+            if (pin_cut > 0.01):
+                pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) - ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+                pin.cut(pinc)
+                case.cut(pinc)
+                pinc = cq.Workplane("XY").workplane(offset=A1).moveTo(origo_x, (0.0 - origo_y) + ((E + 0.05) / 2.0)).circle(pin_cut / 2.0, False).extrude(H + 0.1)
+                pin.cut(pinc)
+                case.cut(pinc)
+            pins=pins.union(pin)
+        
         if (rotation != 0):
             pins = pins.rotate((0,0,0), (0,0,1), rotation)
 
@@ -229,7 +275,7 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         return T
         
     Params = namedtuple_with_defaults("Params", [
-        'modelName',		    # modelName
+        'filename',		        # modelName
         'W',				    # Body length
         'E',			   	    # Body width
         'H',			   	    # Body height
@@ -237,8 +283,10 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
         'TE',			   	    # Top width
         'TH',			   	    # Top height
         'A1',				    # Body PCB seperation
+        'pin_cnt',  		    # Number of pins
+        'pin_cut',  		    # If edge should cut
         'pin_split',		    # Distance between pins
-        'pin_width',		    # pin width
+        'pin_width',		    # Pin width
         'body_top_color_key',	# Top color
         'body_color_key',	    # Body colour
         'pin_color_key',	    # Pin color
@@ -248,11 +296,63 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
 
     all_params = {
 
+        'muRata_CSTCC8M00G53': Params(
+            #
+            # http://www.farnell.com/datasheets/19296.pdf?_ga=1.247244932.122297557.1475167906
+            # 
+            filename = 'Resonator_SMD-3Pin_7.2x3.0mm',   # modelName
+            W = 7.2,                  # Body length
+            E = 3.0,                  # Body width
+            H = 0.5,                  # Body height
+            A1 = 0.0,                 # Body-board separation
+
+            TW = 6.6,               # Top length
+            TE = 2.1,               # Top width
+            TH = 1.05,              # Top height
+
+            pin_cnt = 3,            # Pin count
+            pin_cut = 0.45,         # If edge should cut
+            pin_split = 2.5,        # Distance between pins
+            pin_width = 1.2,        # Pin width
+
+            body_top_color_key = 'metal silver',    # Top color
+            body_color_key = 'white body',          # Body color
+            pin_color_key = 'gold pins',            # Pin color
+            rotation = 0,                           # Rotation if required
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
+            ),
+
+        'muRata_CDSCB': Params(
+            #
+            # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
+            # 
+            filename = 'Resonator_SMD_muRata_CDSCB-2Pin_4.5x2.0mm',   # modelName
+            W = 4.5,                  # Body length
+            E = 2.0,                  # Body width
+            H = 0.4,                  # Body height
+            A1 = 0.0,                 # Body-board separation
+
+            TW = 4.1,                 # Top length
+            TE = 1.4,                 # Top width
+            TH = 0.6,                 # Top height
+
+            pin_cnt = 2,            # Pin count
+            pin_cut = 0.4,          # If edge should cut
+            pin_split = 3.0,          # Distance between pins
+            pin_width = 0.8,          # Pin width
+
+            body_top_color_key = 'metal silver',    # Top color
+            body_color_key = 'white body',          # Body color
+            pin_color_key = 'gold pins',            # Pin color
+            rotation = 0,                           # Rotation if required
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
+            ),
+
         'muRata_CSTxExxV': Params(
             #
-            # https://www.murata.com/~/media/webrenewal/support/library/catalog/products/timingdevice/ceralock/p16e.ashx?la=en-gb
+            # https://www.murata.com/en-eu/products/productdata/8801162264606/SPEC-CSTNE16M0VH3C000R0.pdf
             # 
-            modelName = 'Resonator_SMD_muRata_CSTxExxV-3Pin_3.0x1.1mm_HandSoldering',   # modelName
+            filename = 'Resonator_SMD_muRata_CSTxExxV-3Pin_3.0x1.1mm',   # modelName
             W = 3.2,                  # Body length
             E = 1.3,                  # Body width
             H = 0.4,                  # Body height
@@ -262,86 +362,94 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             TE = 1.1,                 # Top width
             TH = 0.5,                 # Top height
 
+            pin_cnt = 3,            # Pin count
+            pin_cut = 0.0,          # If edge should cut
             pin_split = 1.2,          # Distance between pins
-            pin_width = 0.5,          # Distance between pins
+            pin_width = 0.5,          # Pin width
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'white body',          # Body color
             pin_color_key = 'gold pins',            # Pin color
             rotation = 0,                           # Rotation if required
-            dest_dir_prefix = '../Crystal.3dshapes',  # destination directory
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_CSTxExxG': Params(
+        'muRata_SFECV': Params(
             #
-            # https://www.murata.com/~/media/webrenewal/support/library/catalog/products/timingdevice/ceralock/p16e.ashx?la=en-gb
+            # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            modelName = 'Resonator_SMD_muRata_CSTxExxG-3Pin_3.0x1.1mm_HandSoldering',   # modelName
-            W = 3.2,                  # Body length
-            E = 1.3,                  # Body width
-            H = 0.4,                  # Body height
+            filename = 'Resonator_SMD_muRata_SFECV-3Pin_6.9x2.9mm',   # modelName
+            W = 6.9,                  # Body length
+            E = 2.9,                  # Body width
+            H = 1.5,                  # Body height
             A1 = 0.0,                 # Body-board separation
 
-            TW = 3.0,                 # Top length
-            TE = 1.1,                 # Top width
-            TH = 0.3,                 # Top height
+            TW = 0.0,               # Top length
+            TE = 0.0,               # Top width
+            TH = 0.0,               # Top height
 
-            pin_split = 1.2,          # Distance between pins
-            pin_width = 0.5,          # Distance between pins
+            pin_cnt = 3,            # Pin count
+            pin_cut = 0.0,          # If edge should cut
+            pin_split = 2.85,       # Distance between pins
+            pin_width = 1.0,        # Pin width
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'white body',          # Body color
             pin_color_key = 'gold pins',            # Pin color
             rotation = 0,                           # Rotation if required
-            dest_dir_prefix = '../Crystal.3dshapes',  # destination directory
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_CSTxRxxG': Params(
+        'muRata_SFSKA': Params(
             #
-            # https://www.murata.com/~/media/webrenewal/support/library/catalog/products/timingdevice/ceralock/p16e.ashx?la=en-gb
+            # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            modelName = 'Resonator_SMD_muRata_CSTxExxV-3Pin_4.1x1.4mm_HandSoldering',   # modelName
-            W = 4.5,                  # Body length
-            E = 2.0,                  # Body width
-            H = 0.6,                  # Body height
+            filename = 'Resonator_SMD_muRata_SFSKA-3Pin_7.9x3.8mm',   # modelName
+            W = 8.5,                  # Body length
+            E = 3.8,                  # Body width
+            H = 0.5,                  # Body height
             A1 = 0.0,                 # Body-board separation
 
-            TW = 4.1,                 # Top length
-            TE = 1.4,                 # Top width
-            TH = 0.5,                 # Top height
+            TW = 7.9,               # Top length
+            TE = 3.0,               # Top width
+            TH = 1.3,               # Top height
 
-            pin_split = 1.5,          # Distance between pins
-            pin_width = 0.4,          # Distance between pins
+            pin_cnt = 3,            # Pin count
+            pin_cut = 0.6,          # If edge should cut
+            pin_split = 2.5,        # Distance between pins
+            pin_width = 1.0,        # Pin width
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'white body',          # Body color
             pin_color_key = 'gold pins',            # Pin color
             rotation = 0,                           # Rotation if required
-            dest_dir_prefix = '../Crystal.3dshapes',  # destination directory
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_CSTxRxxG_B': Params(
+        'muRata_TPSKA': Params(
             #
-            # https://www.murata.com/~/media/webrenewal/support/library/catalog/products/timingdevice/ceralock/p16e.ashx?la=en-gb
+            # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            modelName = 'Resonator_SMD_muRata_CSTxRxxG_B-3Pin_4.1x1.4mm_HandSoldering',   # modelName
-            W = 4.5,                  # Body length
-            E = 2.0,                  # Body width
-            H = 0.4,                  # Body height
+            filename = 'Resonator_SMD_muRata_TPSKA-3Pin_7.9x3.8mm',   # modelName
+            W = 8.5,                  # Body length
+            E = 3.8,                  # Body width
+            H = 0.5,                  # Body height
             A1 = 0.0,                 # Body-board separation
 
-            TW = 4.1,                 # Top length
-            TE = 1.4,                 # Top width
-            TH = 0.75,                # Top height
+            TW = 7.9,               # Top length
+            TE = 3.0,               # Top width
+            TH = 1.3,               # Top height
 
-            pin_split = 1.5,          # Distance between pins
-            pin_width = 0.8,          # Distance between pins
+            pin_cnt = 3,            # Pin count
+            pin_cut = 0.6,          # If edge should cut
+            pin_split = 2.5,        # Distance between pins
+            pin_width = 1.0,        # Pin width
 
             body_top_color_key = 'metal silver',    # Top color
             body_color_key = 'white body',          # Body color
             pin_color_key = 'gold pins',            # Pin color
             rotation = 0,                           # Rotation if required
-            dest_dir_prefix = '../Crystal.3dshapes',  # destination directory
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
     }
