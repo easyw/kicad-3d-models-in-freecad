@@ -97,9 +97,19 @@ from cq_parameters_Resonator_SMD_muRata_CSTx import *
 import cq_parameters_Resonator_AT310  # modules parameters
 from cq_parameters_Resonator_AT310 import *
 
+import cq_parameters_Resonator_C26_LF  # modules parameters
+from cq_parameters_Resonator_C26_LF import *
+
+import cq_parameters_Resonator_C38_LF  # modules parameters
+from cq_parameters_Resonator_C38_LF import *
+
+
+
 different_models = [
     cq_parameters_Resonator_SMD_muRata_CSTx(),
     cq_parameters_Resonator_AT310(),
+    cq_parameters_Resonator_C26_LF(),
+    cq_parameters_Resonator_C38_LF(),
 ]
 
 
@@ -156,14 +166,13 @@ def make_3D_model(models_dir, model_class, modelName):
     export_file_name=out_dir+os.sep+model_filename+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-    saveFCdoc(App, Gui, doc, model_filename,out_dir)
     Gui.activateWorkbench("PartWorkbench")
     # 
     if save_memory == False:
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
 
-    check_Model=False
+    check_Model=True
     if save_memory == True:
         check_Model=True
         doc=FreeCAD.ActiveDocument
@@ -176,11 +185,15 @@ def make_3D_model(models_dir, model_class, modelName):
         docu = FreeCAD.ActiveDocument
         if cq_cad_tools.checkUnion(docu) == True:
             FreeCAD.Console.PrintMessage('step file for ' + model_filename + ' is correctly Unioned\n')
-            FreeCAD.closeDocument(docu.Name)
         else:
             FreeCAD.Console.PrintError('step file ' + model_filename + ' is NOT Unioned\n')
             FreeCAD.closeDocument(docu.Name)
             sys.exit()
+
+    saveFCdoc(App, Gui, docu, model_filename,out_dir, False)
+    
+    if save_memory == True:
+        FreeCAD.closeDocument(docu.Name)
 
 def run():
     ## # get variant names from command line

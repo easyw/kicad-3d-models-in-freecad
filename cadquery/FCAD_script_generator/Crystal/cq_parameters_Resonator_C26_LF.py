@@ -55,7 +55,7 @@ from math import tan, cos, sin, radians, sqrt, atan
 import cq_base_model  # modules parameters
 from cq_base_model import *
 
-class cq_parameters_Resonator_AT310():
+class cq_parameters_Resonator_C26_LF():
 
     def __init__(self):
         x = 0
@@ -152,12 +152,7 @@ class cq_parameters_Resonator_AT310():
         tr = 0.15
         lb = L * tr
         
-        top = cq.Workplane("XY").workplane(offset = tt).moveTo(0.0, 0.0).circle(W / 2.0, False).extrude(lb)
-        top = top.faces(">Z").edges().chamfer(lb / 4.0)
-
-        top0 = cq.Workplane("XY").workplane(offset = tt).moveTo(0.0, 0.0).circle(W / 2.2, False).extrude(L * (1.0 - tt))
-        top = top.union(top0)
-
+        top = cq.Workplane("XY").workplane(offset = tt).moveTo(0.0, 0.0).circle(W / 2.0, False).extrude(L * (1.0 - tt))
         top = top.faces(">Z").fillet(pd / 1.2)
         
         if (type == 1):
@@ -192,7 +187,7 @@ class cq_parameters_Resonator_AT310():
         FreeCAD.Console.PrintMessage('make_case ...\r\n')
 
         tt = 0.1
-        case = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle(W / 2.2, False).extrude(3.0 * tt)
+        case = cq.Workplane("XY").workplane(offset=0.0).moveTo(0.0, 0.0).circle(W / 2.0, False).extrude(3.0 * tt)
         #
 
         if (type == 1):
@@ -232,12 +227,6 @@ class cq_parameters_Resonator_AT310():
             tr = 0.25
             lb = L * tr
             
-#            pins = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(ps / 2.0, 0.0).circle(pd / 2.0, False).extrude(0.0 - (pl + 0.1))
-#            pins = pins.faces("<Z").fillet(pd / 2.0)
-            
-#            pin = cq.Workplane("XY").workplane(offset=A1 + 0.1).moveTo(0.0 - (ps / 2.0), 0.0).circle(pd / 2.0, False).extrude(0.0 - (pl + 0.1))
-#            pin = pin.faces("<Z").fillet(pd / 2.0)
-#            pins = pins.union(pin)
             zbelow = -3.0 # negative value, length of pins below board level
             #
             r = 0.5
@@ -334,20 +323,20 @@ class cq_parameters_Resonator_AT310():
 
     all_params = {
 
-        'AT310_Horizontal': Params(
+        'C26-LF_Horizontal': Params(
             #
-            # http://www.cinetech.com.tw/upload/2011/04/20110401165201.pdf
+            #
             # 
             type = 1,
-            filename = 'Crystal_AT310_D3.0mm_L10.0mm_Horizontal',   # modelName
-            L = 10.3,               # Top length
-            W = 3.1,                # Top diameter
+            filename = 'Crystal_C26-LF_D2.1mm_L6.5mm_Horizontal',   # modelName
+            L = 6.5,                # Top length
+            W = 2.1,                # Top diameter
             A1 = 0.0,               # Body-board separation
             
-            PBD = 3.0,              # Distance from pin hole to body
+            PBD = 2.0,              # Distance from pin hole to body
             
-            p_hole = 2.54,          # Distance between pin hole
-            p_split = 1.1,          # Distance between pins
+            p_hole = 1.9,           # Distance between pin hole
+            p_split = 0.7,          # Distance between pins
             p_length = 10.0,        # Pin length
             p_diam = 0.3,           # Pin diameter
 
@@ -358,20 +347,20 @@ class cq_parameters_Resonator_AT310():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'AT310_Horizontal_1EP_1': Params(
+        'C26-LF_Horizontal_1EP_1': Params(
             #
-            # http://www.cinetech.com.tw/upload/2011/04/20110401165201.pdf
+            #
             # 
             type = 1,
-            filename = 'Crystal_AT310_D3.0mm_L10.0mm_Horizontal_1EP_style1',   # modelName
-            L = 10.3,               # Top length
-            W = 3.1,                # Top diameter
+            filename = 'Crystal_C26-LF_D2.1mm_L6.5mm_Horizontal_1EP_style1',   # modelName
+            L = 6.5,                # Top length
+            W = 2.1,                # Top diameter
             A1 = 0.0,               # Body-board separation
             
-            PBD = 3.0,              # Distance from pin hole to body
+            PBD = 2.0,              # Distance from pin hole to body
             
-            p_hole = 2.54,          # Distance between pin hole
-            p_split = 1.1,          # Distance between pins
+            p_hole = 1.9,           # Distance between pin hole
+            p_split = 0.7,          # Distance between pins
             p_length = 10.0,        # Pin length
             p_diam = 0.3,           # Pin diameter
 
@@ -382,20 +371,20 @@ class cq_parameters_Resonator_AT310():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'AT310_Horizontal_1EP_2': Params(
+        'C26-LF_Horizontal_1EP_2': Params(
             #
-            # http://www.cinetech.com.tw/upload/2011/04/20110401165201.pdf
+            #
             # 
             type = 1,
-            filename = 'Crystal_AT310_D3.0mm_L10.0mm_Horizontal_1EP_style2',   # modelName
-            L = 10.3,               # Top length
-            W = 3.1,                # Top diameter
+            filename = 'Crystal_C26-LF_D2.1mm_L6.5mm_Horizontal_1EP_style2',   # modelName
+            L = 6.5,                # Top length
+            W = 2.1,                # Top diameter
             A1 = 0.0,               # Body-board separation
             
-            PBD = 3.0,              # Distance from pin hole to body
+            PBD = 2.0,              # Distance from pin hole to body
             
-            p_hole = 2.54,          # Distance between pin hole
-            p_split = 1.1,          # Distance between pins
+            p_hole = 1.9,           # Distance between pin hole
+            p_split = 0.7,          # Distance between pins
             p_length = 10.0,        # Pin length
             p_diam = 0.3,           # Pin diameter
 
@@ -406,20 +395,20 @@ class cq_parameters_Resonator_AT310():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'AT310_Vertical': Params(
+        'C26-LF_Vertical': Params(
             #
-            # http://www.cinetech.com.tw/upload/2011/04/20110401165201.pdf
+            #
             # 
             type = 2,
-            filename = 'Crystal_AT310_D3.0mm_L10.0mm_Vertical',   # modelName
-            L = 10.3,               # Top length
-            W = 3.1,                # Top diameter
+            filename = 'Crystal_C26-LF_D2.1mm_L6.5mm_Vertical',   # modelName
+            L = 6.5,                # Top length
+            W = 2.1,                # Top diameter
             A1 = 2.0,               # Body-board separation
             
-            PBD = 3.0,              # Distance from pin hole to body
+            PBD = 2.0,              # Distance from pin hole to body
             
-            p_hole = 2.54,          # Distance between pin hole
-            p_split = 1.1,          # Distance between pins
+            p_hole = 1.9,           # Distance between pin hole
+            p_split = 0.7,          # Distance between pins
             p_length = 10.0,        # Pin length
             p_diam = 0.3,           # Pin diameter
 
