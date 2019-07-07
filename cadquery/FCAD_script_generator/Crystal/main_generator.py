@@ -103,13 +103,15 @@ from cq_parameters_Resonator_C26_LF import *
 import cq_parameters_Resonator_C38_LF  # modules parameters
 from cq_parameters_Resonator_C38_LF import *
 
-
+import cq_parameters_Resonator_peterman_smd  # modules parameters
+from cq_parameters_Resonator_peterman_smd import *
 
 different_models = [
     cq_parameters_Resonator_SMD_muRata_CSTx(),
     cq_parameters_Resonator_AT310(),
     cq_parameters_Resonator_C26_LF(),
     cq_parameters_Resonator_C38_LF(),
+    cq_parameters_Resonator_peterman_smd(),
 ]
 
 
