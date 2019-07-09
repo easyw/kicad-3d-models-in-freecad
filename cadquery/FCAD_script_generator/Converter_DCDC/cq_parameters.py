@@ -295,11 +295,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_CRE1xxxxxx3C_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_CRE1xxxxxx3C_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_CRE1xxxxxx3C_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_CRE1xxxxxx3C_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.1,  # Package length
         W  = 11.53,  # Package width
@@ -319,11 +319,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_CRE1xxxxxxDC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_CRE1xxxxxxDC_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_CRE1xxxxxxDC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_CRE1xxxxxxDC_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.9,  # Package length
         W  = 11.6,  # Package width
@@ -343,11 +343,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_CRE1xxxxxxSC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_CRE1xxxxxxSC_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_CRE1xxxxxxSC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_CRE1xxxxxxSC_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.1,  # Package length
         W  = 11.53,  # Package width
@@ -367,11 +367,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_NMAxxxxDC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_NMAxxxxDC_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_NMAxxxxDC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_NMAxxxxDC_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 9.8,  # Package length
         W  = 19.5,  # Package width
@@ -391,11 +391,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_NMAxxxxSC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_NMAxxxxSC_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_NMAxxxxSC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_NMAxxxxSC_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 6.0,  # Package length
         W  = 19.5,  # Package width
@@ -414,11 +414,11 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_muRata_NXE2SxxxxMC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_NXE2SxxxxMC_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_muRata_NXE2SxxxxMC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_NXE2SxxxxMC_THT',  # Model name
         pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 10.41,  # Package length
         W  = 12.7,  # Package width
