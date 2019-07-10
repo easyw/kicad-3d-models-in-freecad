@@ -109,8 +109,6 @@ from cq_parameters_Resonator_peterman_smd import *
 import cq_parameters_Resonator_smd_type_2  # modules parameters
 from cq_parameters_Resonator_smd_type_2 import *
 
-
-
 different_models = [
     cq_parameters_Resonator_SMD_muRata_CSTx(),
     cq_parameters_Resonator_AT310(),
