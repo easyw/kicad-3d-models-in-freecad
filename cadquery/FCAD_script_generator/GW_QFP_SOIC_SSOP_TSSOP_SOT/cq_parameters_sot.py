@@ -520,7 +520,7 @@ part_params = {
         modelName = 'TSOT-23-5', #modelName
         rotation = -90, # rotation if required
         ),
-    'TSOT-23-6_MK06A': Params( # http://cds.linear.com/docs/en/packaging/SOT_6_05-08-1636.pdf
+    'TSOT-23-6': Params( # http://cds.linear.com/docs/en/packaging/SOT_6_05-08-1636.pdf
         the = 8.0,      # body angle in degrees
         tb_s = 0.05,    # top part of body is that much smaller
         c = 0.15,        # pin thickness, body center part height
@@ -545,8 +545,8 @@ part_params = {
         npy = 0,   # number of pins along y axis (length)
         epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        old_modelName = 'TSOT-23-6_MK06A', #modelName
-        modelName = 'TSOT-23-6_MK06A', #modelName
+        old_modelName = 'TSOT-23-6', #modelName
+        modelName = 'TSOT-23-6', #modelName
         rotation = -90, # rotation if required
         ),
     'TSOT-23-8': Params( # http://cds.linear.com/docs/en/packaging/SOT_8_05-08-1637.pdf
