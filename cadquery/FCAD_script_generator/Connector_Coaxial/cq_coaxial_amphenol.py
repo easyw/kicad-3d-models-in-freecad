@@ -278,7 +278,7 @@ class cq_coaxial_amphenol():
             tt = tt + 0.4
             
         # Cut out hollow
-        case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(0.0, 0.0).circle((AW1 / 2.0) - 0.4, False).extrude(AL1 + 2.0)
+        case2 = cq.Workplane("XY").workplane(offset=AZ1 + 0.2).moveTo(0.0, 0.0).circle((AW1 / 2.0) - 0.4, False).extrude(AL1 + 2.0)
         case1 = case1.cut(case2)
         # Center pin
         case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.8, False).extrude(AL1)
@@ -478,7 +478,7 @@ class cq_coaxial_amphenol():
             #
             # https://www.cui.com/product/resource/sj1-353xng.pdf
             # 
-            modelName = 'SMA_Amphenol_901-144_Vertical',     # modelName
+            modelName = 'SMA_Amphenol_901-144_Vertical',    # modelName
             W = 06.35,                                      # Body width
             L = 06.35,                                      # Body length
             H = 01.50,                                      # Body height

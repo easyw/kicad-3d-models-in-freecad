@@ -113,6 +113,10 @@ different_models = [
 ]
 
 
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
+
+
 
 
 
@@ -163,15 +167,39 @@ def make_3D_model(models_dir, model_class, modelID):
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
     #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-    #scale=0.3937001
-    #exportVRML(doc,modelName,scale,out_dir)
-    # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, modelName,out_dir)
     #display BBox
     Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
-    #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
+    
+    # 
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    check_Model=True
+    if save_memory == True:
+        check_Model=True
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
+
+    step_path=os.path.join(out_dir,modelName+u'.step')
+    docu = FreeCAD.ActiveDocument
+    if check_Model==True:
+        #ImportGui.insert(step_path,modelName)
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        if cq_cad_tools.checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file for ' + modelName + ' is correctly Unioned\n')
+        else:
+            FreeCAD.Console.PrintError('step file ' + modelName + ' is NOT Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+            if save_memory == True:
+                sys.exit()
+
+    if save_memory == False:
+        saveFCdoc(App, Gui, docu, modelName,out_dir, False)
+    
+    if save_memory == True:
+        FreeCAD.closeDocument(docu.Name)
 
 
 def run():
@@ -211,6 +239,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     if len(model_to_build) > 0:
         if model_to_build == 'all' or model_to_build == 'All' or model_to_build == 'ALL':
             found_one = True
+            save_memory = True
             for n in different_models:
                 listall = n.get_list_all()
                 for i in listall:
