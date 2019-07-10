@@ -552,7 +552,7 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
         os.remove(outdir+os.sep+modelName+'.FCStd1') #removing backup file
     except Exception as exp:
         FreeCAD.Console.PrintWarning("Error while trying to remove backup file in saveFCdoc:")
-        FreeCAD.Console.PrintWarning('{:s}\n'.format(exp))
+        FreeCAD.Console.PrintWarning('{:s}\n'.format(str(exp)))
     if saving == False:
         try:
             os.remove(outdir+os.sep+modelName+'.FCStd') #removing project file

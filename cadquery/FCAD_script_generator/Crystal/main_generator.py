@@ -106,12 +106,16 @@ from cq_parameters_Resonator_C38_LF import *
 import cq_parameters_Resonator_peterman_smd  # modules parameters
 from cq_parameters_Resonator_peterman_smd import *
 
+import cq_parameters_Resonator_smd_type_2  # modules parameters
+from cq_parameters_Resonator_smd_type_2 import *
+
 different_models = [
     cq_parameters_Resonator_SMD_muRata_CSTx(),
     cq_parameters_Resonator_AT310(),
     cq_parameters_Resonator_C26_LF(),
     cq_parameters_Resonator_C38_LF(),
     cq_parameters_Resonator_peterman_smd(),
+    cq_parameters_Resonator_smd_type_2(),
 ]
 
 
@@ -181,6 +185,7 @@ def make_3D_model(models_dir, model_class, modelName):
         FreeCAD.closeDocument(doc.Name)
 
     step_path=os.path.join(out_dir,model_filename+u'.step')
+    docu = FreeCAD.ActiveDocument
     if check_Model==True:
         #ImportGui.insert(step_path,model_filename)
         ImportGui.open(step_path)
@@ -190,9 +195,11 @@ def make_3D_model(models_dir, model_class, modelName):
         else:
             FreeCAD.Console.PrintError('step file ' + model_filename + ' is NOT Unioned\n')
             FreeCAD.closeDocument(docu.Name)
-            sys.exit()
+            if save_memory == True:
+                sys.exit()
 
-    saveFCdoc(App, Gui, docu, model_filename,out_dir, False)
+    if save_memory == False:
+        saveFCdoc(App, Gui, docu, model_filename,out_dir, False)
     
     if save_memory == True:
         FreeCAD.closeDocument(docu.Name)
