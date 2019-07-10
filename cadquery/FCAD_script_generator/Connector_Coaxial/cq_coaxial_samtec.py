@@ -248,7 +248,7 @@ class cq_coaxial_samtec():
             tt = tt + 0.4
             
         # Cut out hollow
-        case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(0.0, 0.0).circle((AW1 / 2.0) - 0.4, False).extrude(AL1 + 2.0)
+        case2 = cq.Workplane("XY").workplane(offset=AZ1 + 0.2).moveTo(0.0, 0.0).circle((AW1 / 2.0) - 0.4, False).extrude(AL1 + 2.0)
         case1 = case1.cut(case2)
         # Center pin
         case2 = cq.Workplane("XY").workplane(offset=AZ1).moveTo(AX1, AY1).circle(0.8, False).extrude(AL1)
