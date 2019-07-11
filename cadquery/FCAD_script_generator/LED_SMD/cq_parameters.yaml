@@ -667,3 +667,19 @@ LED_SK6812_PLCC4_5.0x5.0mm_P3.2mm:
   top_color: 'blue body'
   pinmark: True
   source: 'https://cdn-shop.adafruit.com/product-files/1138/SK6812+LED+datasheet+.pdf'
+LED_Inolux_IN-PI554FCH_PLCC4_5.0x5.0mm_P3.2mm:
+  package_type: 'plcc_a'
+  length: 5.0
+  width: 5.0
+  height: 1.6
+  pincnt: [[-2.2, -1.6, 1.0, 1.0, 0.6], [-2.2, 1.6, 1.0, 1.0, 0.6], [2.2, 1.6, 1.0, 1.0, 0.6], [2.2, -1.6, 1.0, 1.0, 0.6]]
+  pin_band: 'auto'
+  pin_thickness: 0.1
+  base_height: 0.1
+  edge_fillet: 'auto'
+  rotation: 0
+  body_color: 'white body'
+  pin_color: 'metal grey pins'
+  top_color: 'blue body'
+  pinmark: True
+  source: 'http://www.inolux-corp.com/datasheet/SMDLED/Addressable%20LED/IN-PI554FCH_v2.3.pdf'
