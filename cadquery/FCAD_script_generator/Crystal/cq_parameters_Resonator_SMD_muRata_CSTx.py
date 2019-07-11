@@ -296,7 +296,7 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
 
     all_params = {
 
-        'muRata_CSTCC8M00G53': Params(
+        'Murata_CSTCC8M00G53': Params(
             #
             # http://www.farnell.com/datasheets/19296.pdf?_ga=1.247244932.122297557.1475167906
             # 
@@ -322,11 +322,11 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_CDSCB': Params(
+        'Murata_CDSCB': Params(
             #
             # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            filename = 'Resonator_SMD_muRata_CDSCB-2Pin_4.5x2.0mm',   # modelName
+            filename = 'Resonator_SMD_Murata_CDSCB-2Pin_4.5x2.0mm',   # modelName
             W = 4.5,                  # Body length
             E = 2.0,                  # Body width
             H = 0.4,                  # Body height
@@ -348,11 +348,11 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_CSTxExxV': Params(
+        'Murata_CSTxExxV': Params(
             #
             # https://www.murata.com/en-eu/products/productdata/8801162264606/SPEC-CSTNE16M0VH3C000R0.pdf
             # 
-            filename = 'Resonator_SMD_muRata_CSTxExxV-3Pin_3.0x1.1mm',   # modelName
+            filename = 'Resonator_SMD_Murata_CSTxExxV-3Pin_3.0x1.1mm',   # modelName
             W = 3.2,                  # Body length
             E = 1.3,                  # Body width
             H = 0.4,                  # Body height
@@ -374,11 +374,11 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_SFECV': Params(
+        'Murata_SFECV': Params(
             #
             # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            filename = 'Resonator_SMD_muRata_SFECV-3Pin_6.9x2.9mm',   # modelName
+            filename = 'Resonator_SMD_Murata_SFECV-3Pin_6.9x2.9mm',   # modelName
             W = 6.9,                  # Body length
             E = 2.9,                  # Body width
             H = 1.5,                  # Body height
@@ -400,11 +400,11 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_SFSKA': Params(
+        'Murata_SFSKA': Params(
             #
             # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            filename = 'Resonator_SMD_muRata_SFSKA-3Pin_7.9x3.8mm',   # modelName
+            filename = 'Resonator_SMD_Murata_SFSKA-3Pin_7.9x3.8mm',   # modelName
             W = 8.5,                  # Body length
             E = 3.8,                  # Body width
             H = 0.5,                  # Body height
@@ -426,11 +426,11 @@ class cq_parameters_Resonator_SMD_muRata_CSTx():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
-        'muRata_TPSKA': Params(
+        'Murata_TPSKA': Params(
             #
             # http://cdn-reichelt.de/documents/datenblatt/B400/SFECV-107.pdf
             # 
-            filename = 'Resonator_SMD_muRata_TPSKA-3Pin_7.9x3.8mm',   # modelName
+            filename = 'Resonator_SMD_Murata_TPSKA-3Pin_7.9x3.8mm',   # modelName
             W = 8.5,                  # Body length
             E = 3.8,                  # Body width
             H = 0.5,                  # Body height
