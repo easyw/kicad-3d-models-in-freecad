@@ -76,3 +76,68 @@ Bourns_3009Y:
   rotation: 0
   pinmark: False
   source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3299P:
+  package_type: 'Bourns_3299P'
+  file_name: 'Potentiometer_Bourns_3299P_Horizontal'
+  length: 10.03
+  width: 9.53
+  height: 6.10
+  pin1corner: [5.23, 2.225]
+  pincnt: [['round', 0.0, 0.0, 0.51, 3.0], ['round', -2.54, -2.54, 0.51, 3.0], ['round', 0.0, -5.08, 0.51, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.0, 0.64, 5.01, 3.645]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3299W:
+  package_type: 'Bourns_3299W'
+  file_name: 'Potentiometer_Bourns_3299W_Vertical'
+  length: 10.03
+  width: 9.53
+  height: 6.10
+  pin1corner: [2.225, 1.91]
+  pincnt: [['round', 0.0, 0.0, 0.51, 3.0], ['round', -2.54, 0.0, 0.51, 3.0], ['round', -5.08, 0.0, 0.51, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.0, 0.64, 5.01, 1.12]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3299X:
+  package_type: 'Bourns_3299X'
+  file_name: 'Potentiometer_Bourns_3299X_Horizontal'
+  length: 10.03
+  width: 9.53
+  height: 6.10
+  pin1corner: [2.225, 1.91]
+  pincnt: [['round', 0.0, 0.0, 0.51, 3.0], ['round', -2.54, 0.0, 0.51, 3.0], ['round', -5.08, 0.0, 0.51, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.0, 0.64, 5.01, 1.12]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3299Y:
+  package_type: 'Bourns_3299Y'
+  file_name: 'Potentiometer_Bourns_3299Y_Vertical'
+  length: 10.03
+  width: 9.53
+  height: 6.10
+  pin1corner: [2.225, 1.91]
+  pincnt: [['round', 0.0, 0.0, 0.51, 3.0], ['round', -2.54, -2.54, 0.51, 3.0], ['round', -5.08, 0.0, 0.51, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.0, 0.64, 5.01, 1.12]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3299Z:
+  package_type: 'Bourns_3299Z'
+  file_name: 'Potentiometer_Bourns_3299Z_Horizontal'
+  length: 10.03
+  width: 9.53
+  height: 6.10
+  pin1corner: [2.225, 1.91]
+  pincnt: [['round', 0.0, 0.0, 0.51, 3.0], ['round', -2.54, -2.54, 0.51, 3.0], ['round', -5.08, 0.0, 0.51, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.0, 0.64, 5.01, 1.12]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
