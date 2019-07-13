@@ -1,0 +1,78 @@
+Bourns_3005:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3005_Horizontal'
+  length: 19.03
+  width: 4.06
+  height: 7.87
+  pin1corner: [3.03, 2.54]
+  pincnt: [['tht', 0.0, 0.0, 0.4, 0.10, 3.0], ['tht', -7.62, 2.54, 0.4, 0.10, 3.0], ['tht', -12.7, 0.0, 0.4, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 3.0, 0.76, 5.54]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3005.pdf'
+Bourns_3006P:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3006P_Horizontal'
+  length: 19.05
+  width: 4.83
+  height: 6.35
+  pin1corner: [3.05, 2.54]
+  pincnt: [['tht', 0.0, 0.0, 0.51, 0.10, 3.0], ['tht', -7.62, 2.54, 0.51, 0.10, 3.0], ['tht', -12.7, 0.0, 0.51, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.36, 0.79, 4.70]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3006.pdf'
+Bourns_3006W:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3006W_Horizontal'
+  length: 19.05
+  width: 4.83
+  height: 6.35
+  pin1corner: [3.03, 2.54]
+  pincnt: [['tht', 0.0, 0.0, 0.51, 0.10, 3.0], ['tht', -7.62, 5.08, 0.51, 0.10, 3.0], ['tht', -12.7, 0.0, 0.51, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.36, 0.79, 4.70]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3006.pdf'
+Bourns_3006Y:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3006Y_Horizontal'
+  length: 19.05
+  width: 4.83
+  height: 6.35
+  pin1corner: [0.63, 3.685]
+  pincnt: [['tht', 0.0, 0.0, 0.51, 0.10, 3.0], ['tht', -10.16, 2.54, 0.51, 0.10, 3.0], ['tht', -17.78, 0.0, 0.51, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.36, 0.79, 4.70]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3006.pdf'
+Bourns_3009P:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3009P_Horizontal'
+  length: 19.05
+  width: 4.83
+  height: 8.98
+  pin1corner: [3.05, 3.685]
+  pincnt: [['tht', 0.0, 0.0, 0.51, 0.10, 3.0], ['tht', -7.62, 2.54, 0.51, 0.10, 3.0], ['tht', -12.70, 0.0, 0.51, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.36, 0.79, 6.98]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
+Bourns_3009Y:
+  package_type: 'Bourns_3005'
+  file_name: 'Potentiometer_Bourns_3009Y_Horizontal'
+  length: 19.05
+  width: 4.83
+  height: 8.98
+  pin1corner: [0.63, 3.685]
+  pincnt: [['tht', 0.0, 0.0, 0.51, 0.10, 3.0], ['tht', -10.16, 2.54, 0.51, 0.10, 3.0], ['tht', -17.78, 0.0, 0.51, 0.10, 3.0]]
+  base_height: 0.1
+  screw: ['lefttop', 1.52, 2.36, 0.79, 6.98]
+  rotation: 0
+  pinmark: False
+  source: 'https://www.bourns.com/pdfs/3009.pdf'
