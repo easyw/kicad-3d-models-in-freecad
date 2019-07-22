@@ -661,7 +661,7 @@ LED_SK6812_PLCC4_5.0x5.0mm_P3.2mm:
   pin_thickness: 0.1
   base_height: 0.1
   edge_fillet: 'auto'
-  rotation: 0
+  rotation: 180.0
   body_color: 'white body'
   pin_color: 'metal grey pins'
   top_color: 'blue body'
