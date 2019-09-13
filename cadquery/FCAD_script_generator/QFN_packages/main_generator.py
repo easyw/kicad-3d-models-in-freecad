@@ -165,6 +165,7 @@ def make_qfn(params):
     mN  = params.modelName
     rot = params.rotation
     dest_dir_pref = params.dest_dir_prefix
+    pin_shapes = params.pin_shapes
     if params.excluded_pins:
         excluded_pins = params.excluded_pins
     else:
@@ -265,54 +266,66 @@ def make_qfn(params):
         bpin = bpin.faces(">Z").edges(">Y").workplane().circle(b*0.3).cutThruAll()
     elif ps == 'cshaped':
         bpin = cq.Workplane("XY").box(b, L, A2+A1*2).translate((0,E/2-L/2,A2/2+A1)).edges("|X").fillet(A1)
-
+    
     pins = []
-    # create top, bottom side pins
     pincounter = 1
-    first_pos_x = (npx-1)*e/2
-    for i in range(npx):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, -m, 0)). \
-            rotate((0,0,0), (0,0,1), 180)
+    if ps == 'custom':
+        for pin_shape in pin_shapes:
+            first_point = pin_shape[0]
+            pin = cq.Workplane("XY"). \
+                moveTo(first_point[0], first_point[1])
+            for i in range(1, len(pin_shape)):
+                point = pin_shape[i]
+                pin = pin.lineTo(point[0], point[1])
+            pin = pin.close().extrude(c)
             pins.append(pin)
-            if ps == 'concave':
-                pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0)). \
+        pincounter += 1
+    else:
+        # create top, bottom side pins
+        first_pos_x = (npx-1)*e/2
+        for i in range(npx):
+            if pincounter not in excluded_pins:
+                pin = bpin.translate((first_pos_x-i*e, -m, 0)). \
                 rotate((0,0,0), (0,0,1), 180)
-                case = case.cut(pinsubtract)
+                pins.append(pin)
+                if ps == 'concave':
+                    pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0)). \
+                    rotate((0,0,0), (0,0,1), 180)
+                    case = case.cut(pinsubtract)
 
         pincounter += 1
     
-    first_pos_y = (npy-1)*e/2
-    for i in range(npy):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
-            rotate((0,0,0), (0,0,1), 270)
-            pins.append(pin)
-            if ps == 'concave':
-                pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+        first_pos_y = (npy-1)*e/2
+        for i in range(npy):
+            if pincounter not in excluded_pins:
+                pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
                 rotate((0,0,0), (0,0,1), 270)
-                case = case.cut(pinsubtract)
-        pincounter += 1
+                pins.append(pin)
+                if ps == 'concave':
+                    pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+                    rotate((0,0,0), (0,0,1), 270)
+                    case = case.cut(pinsubtract)
+            pincounter += 1
 
-    for i in range(npx):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_x-i*e, -m, 0))
-            pins.append(pin)
-            if ps == 'concave':
-                pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0))
-                case = case.cut(pinsubtract)
-        pincounter += 1
-    
-    for i in range(npy):
-        if pincounter not in excluded_pins:
-            pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
-            rotate((0,0,0), (0,0,1), 90)
-            pins.append(pin)
-            if ps == 'concave':
-                pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+        for i in range(npx):
+            if pincounter not in excluded_pins:
+                pin = bpin.translate((first_pos_x-i*e, -m, 0))
+                pins.append(pin)
+                if ps == 'concave':
+                    pinsubtract = pincut.translate((first_pos_x-i*e, -m, 0))
+                    case = case.cut(pinsubtract)
+            pincounter += 1
+        
+        for i in range(npy):
+            if pincounter not in excluded_pins:
+                pin = bpin.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
                 rotate((0,0,0), (0,0,1), 90)
-                case = case.cut(pinsubtract)
-        pincounter += 1
+                pins.append(pin)
+                if ps == 'concave':
+                    pinsubtract = pincut.translate((first_pos_y-i*e, (D-E)/2-m, 0)).\
+                    rotate((0,0,0), (0,0,1), 90)
+                    case = case.cut(pinsubtract)
+            pincounter += 1
 
     # create exposed thermal pad if requested
     if params.epad:
