@@ -33,15 +33,17 @@ Params = namedtuple("Params", [
     'b',    # pin width
     'e',    # pin (center-to-center) distance
     'm',    # margin between pins and body
-    'ps',   # pad shape square, rounded or concave
+    'ps',   # pad shape square, rounded, concave or custom
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
     'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
-    'dest_dir_prefix' #destination dir prefixD2 = params.epad[0]
+    'dest_dir_prefix', #destination dir prefixD2 = params.epad[0]
+    'pin_shapes',   # coords for pin shapes as [(x,y)]
 ])
+Params.__new__.__defaults__ = (None,) * len(Params._fields)
 
 all_params_qfn = {
     'AMS_LGA-10-1EP_2.7x4mm_P0.6mm': Params(
