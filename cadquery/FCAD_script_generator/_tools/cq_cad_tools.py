@@ -579,8 +579,8 @@ def checkRequirements(cq):
     FreeCAD.Console.PrintMessage('QtCore Version '+PySide.QtCore.qVersion()+'\n')
     FreeCAD.Console.PrintMessage('Python Version '+sys.version+'\n') 
 
-    if int(FC_majorV) <= 0:
-        if int(FC_minorV) < 15:
+    if int(float(FC_majorV)) <= 0:
+        if int(float(FC_minorV)) < 15:
             reply = QtGui.QMessageBox.information(None,"Warning! ...","use FreeCAD version >= "+FC_majorV+"."+FC_minorV+"\r\n")
 
     #check version
@@ -608,10 +608,10 @@ def checkRequirements(cq):
 def runGeometryCheck(App, Gui, step_path, log,
         modelName, save_memory=True, stop_on_first_error = True):
 
-    FC_majorV=int(str(FreeCAD.Version()[0]).replace(',','.'))
-    FC_minorV=int(str(FreeCAD.Version()[1]).replace(',','.'))
+    FC_majorV=int(float(str(FreeCAD.Version()[0]).replace(',','.')))
+    FC_minorV=int(float(str(FreeCAD.Version()[1]).replace(',','.')))
     try:
-        FC_subV=int(str(FreeCAD.Version()[2]).replace(',','.').split(" ")[0])
+        FC_subV=int(float(str(FreeCAD.Version()[2]).replace(',','.').split(" ")[0]))
     except Exception:
         FC_subV = 0
 
