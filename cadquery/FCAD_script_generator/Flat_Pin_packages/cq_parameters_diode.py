@@ -144,6 +144,31 @@ kicad_naming_params_diode = {
         rotation = 0, # rotation if required
         dest_dir_prefix = '../Diodes_SMD.3dshapes/'
         ),
+        'D_SOD-923': Params( # from https://www.nxp.com/docs/en/package-information/SOD923.pdf
+        the = 4.0,      # body angle in degrees
+        c = 0.12,        # pin thickness, body center part height
+#        L = 0.4,       # pin bottom flat part length (including corner arc)
+        fp_s = False,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.25,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, #0.02,      # fillet of edges  Note: bigger bytes model with fillet
+        L = None, #length of pins, if None the pins will be the distance from the body to the overall length
+        D1 = 0.8,       # body length
+        E1 = 0.6,       # body width
+        E = 0.8,        # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.0,  # body-board separation
+        A2 = 0.37,  # body height
+        b = 0.2,  # pin width
+        e = 0.9,  # pin (center-to-center) distance
+        npx = 0,   # number of pins along X axis (width)
+        npy = 1,   # number of pins along y axis (length)
+        epad = None, # e all_params_sod
+        excluded_pins = None, #no pin excluded
+        modelName = 'D_SOD-923', #modelName
+        rotation = 0, # rotation if required
+        dest_dir_prefix = '../Diodes_SMD.3dshapes/'
+        ),
         'D_TUMD2': Params( # from http://rohmfs.rohm.com/en/products/databook/package/spec/discrete/diodepkg.pdf
         the = 4.0,      # body angle in degrees
         c = 0.17,        # pin thickness, body center part height
