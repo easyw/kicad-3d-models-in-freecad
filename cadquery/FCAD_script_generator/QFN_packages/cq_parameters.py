@@ -2447,7 +2447,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
-    'QFN-32-1EP_5x5mm_P0.5mm_EP3.3x3.3mm': Params( #
+    'QFN-32-1EP_5x5mm_P0.5mm_EP3.3x3.3mm': Params( # from http://ww1.microchip.com/downloads/en/DeviceDoc/00002164B.pdf
         c = 0.2,            # pin thickness, body center part height
 #        K=0.2,             # Fillet radius for pin edges
         L = 0.4,            # pin top flat part length (including fillet radius)
@@ -2460,7 +2460,7 @@ kicad_naming_params_qfn = {
         D = 5.0,            # body overall length
         E = 5.0,            # body overall width
         A1 = 0.025,         # body-board separation  maui to check
-        A2 = 0.75,          # body height
+        A2 = 0.85,          # body height
         b = 0.25,           # pin width
         e = 0.5,            # pin (center-to-center) distance
         m = 0.0,            # margin between pins and body
