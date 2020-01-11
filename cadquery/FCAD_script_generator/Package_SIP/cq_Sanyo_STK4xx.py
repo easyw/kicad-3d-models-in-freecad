@@ -195,7 +195,7 @@ class cq_Sanyo_STK4xx():
         case = case.cut(case1)
         
         
-        dx = (7.5 * 2.54)
+        dx = (7.0 * 2.54)
         case = case.translate((dx, 0.0, A1))
 
         case = case.faces(">Z").edges("<X").fillet(3.0)
@@ -298,7 +298,7 @@ class cq_Sanyo_STK4xx():
         case = case.cut(case1)
         
         
-        dx = (7.5 * 2.54)
+        dx = (7.0 * 2.54)
         case = case.translate((dx, 0.0, A1))
 
         case = case.faces(">Z").edges("<X").fillet(3.0)

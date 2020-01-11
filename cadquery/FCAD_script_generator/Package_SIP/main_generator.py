@@ -110,6 +110,8 @@ different_models = [
 ]
 
 
+global save_memory
+save_memory = False #reducing memory consuming for all generation params
 
 
 
@@ -124,12 +126,13 @@ def make_3D_model(models_dir, model_class, modelName):
     destination_dir = model_class.get_dest_3D_dir(modelName)
     
     material_substitutions = model_class.make_3D_model(modelName)
-    
+    modelNameFileName = model_class.get_modelfilename(modelName)
+
     doc = FreeCAD.ActiveDocument
-    doc.Label = CheckedmodelName
+    doc.Label = modelNameFileName
 
     objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label = CheckedmodelName
+    objs[0].Label = modelNameFileName
     restore_Main_Tools()
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
@@ -138,7 +141,6 @@ def make_3D_model(models_dir, model_class, modelName):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    modelNameFileName = model_class.get_modelfilename(modelName)
     exportSTEP(doc, modelNameFileName, out_dir)
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
@@ -165,9 +167,28 @@ def make_3D_model(models_dir, model_class, modelName):
     saveFCdoc(App, Gui, doc, modelNameFileName,out_dir)
     #display BBox
     Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
-    #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
+    # 
+    if save_memory == False:
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.activeDocument().activeView().viewAxometric()
+
+    check_Model=True
+    if save_memory == True or check_Model==True:
+        doc=FreeCAD.ActiveDocument
+        FreeCAD.closeDocument(doc.Name)
+
+    step_path=os.path.join(out_dir, modelNameFileName + u'.step')
+    if check_Model==True:
+        #ImportGui.insert(step_path, modelNameFileName)
+        ImportGui.open(step_path)
+        docu = FreeCAD.ActiveDocument
+        if cq_cad_tools.checkUnion(docu) == True:
+            FreeCAD.Console.PrintMessage('step file for ' + modelNameFileName + ' is correctly Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+        else:
+            FreeCAD.Console.PrintError('step file ' + modelNameFileName + ' is NOT Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+            sys.exit()
 
 
 def run():
