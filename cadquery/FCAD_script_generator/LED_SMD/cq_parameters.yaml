@@ -581,11 +581,11 @@ LED_RGB_5050-6:
   package_type: 'plcc_a'
   length: 5.0
   width: 5.0
-  height: 1.6
+  height: 1.4
   pincnt: [[-2.2, -1.7, 1.0, 1.0, 1.0], [-2.2, 0.0, 1.0, 1.0, 1.0], [-2.2, 1.7, 1.0, 1.0, 1.0], [2.2, 1.7, 1.0, 1.0, 1.0], [2.2, 0.0, 1.0, 1.0, 1.0], [2.2, -1.7, 1.0, 1.0, 1.0]]
   pin_band: 'auto'
-  pin_thickness: 0.2
-  base_height: 0.1
+  pin_thickness: 0.195
+  base_height: 0.2
   edge_fillet: 'auto'
   rotation: 0
   body_color: 'white body'
@@ -659,7 +659,7 @@ LED_SK6812_PLCC4_5.0x5.0mm_P3.2mm:
   pincnt: [[-2.2, -1.6, 1.0, 1.0, 0.6], [-2.2, 1.6, 1.0, 1.0, 0.6], [2.2, 1.6, 1.0, 1.0, 0.6], [2.2, -1.6, 1.0, 1.0, 0.6]]
   pin_band: 'auto'
   pin_thickness: 0.1
-  base_height: 0.1
+  base_height: 0.2
   edge_fillet: 'auto'
   rotation: 180.0
   body_color: 'white body'
