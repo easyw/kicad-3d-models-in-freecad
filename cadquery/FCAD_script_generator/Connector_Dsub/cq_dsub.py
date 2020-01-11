@@ -1047,7 +1047,7 @@ class cq_dsub():
             modelName = 'Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm',    # Model name
             pin = ['round1', 9, 2.77, 2.84, 0.64, 3.9],      # Type of pins
             serie = 2,                                      # Shape
-            npthserie = [2, 7.78, 10.48, 1.42],             # npth shape
+            npthserie = [2, 7.78, 10.48, 0.3],             # npth shape
             ),
             
         'DSUB_3': Params(
@@ -1126,7 +1126,7 @@ class cq_dsub():
             # http://service.powerdynamics.com/ec/Catalog17/Section%2007.pdf
             # 
             modelName = 'Horizontal_P2.29x1.98mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm',    # Model name
-            pin = ['round1', 15, 2.29, 2.54, 0.64, 3.9],     # Type of pins
+            pin = ['round1', 15, 2.29, 1.98, 0.64, 3.9],    # Type of pins
             serie = 3,                                      # Shape
             npthserie = [2, 6.99, 8.6, 1.98],               # npth shape
             ),
@@ -1136,7 +1136,7 @@ class cq_dsub():
             # http://service.powerdynamics.com/ec/Catalog17/Section%2007.pdf
             # 
             modelName = 'Horizontal_P2.29x1.98mm_EdgePinOffset8.35mm_Housed_MountingHolesOffset10.89mm',    # Model name
-            pin = ['round1', 15, 2.29, 2.54, 0.64, 3.9],     # Type of pins
+            pin = ['round1', 15, 2.29, 1.98, 0.64, 3.9],    # Type of pins
             serie = 3,                                      # Shape
             npthserie = [2, 12.31, 13.89, 1.98],            # npth shape
             ),
@@ -1146,7 +1146,7 @@ class cq_dsub():
             # http://service.powerdynamics.com/ec/Catalog17/Section%2007.pdf
             # 
             modelName = 'Horizontal_P2.29x1.98mm_EdgePinOffset9.40mm',    # Model name
-            pin = ['round1', 15, 2.29, 1.98, 0.64, 3.9],     # Type of pins
+            pin = ['round1', 15, 2.29, 1.98, 0.64, 3.9],    # Type of pins
             serie = 3,                                      # Shape
             npthserie = [3, 13.36],                         # npth shape
             ),
@@ -1179,7 +1179,7 @@ class cq_dsub():
             modelName = 'Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm',    # Model name
             pin = ['round1', 15, 2.77, 2.84, 0.64, 3.9],     # Type of pins, type, #pin, x, y, diam, length under pcb, *length above pcb, length form hole), last two is for 90 degree bended
             serie = 2,                                      # Shape
-            npthserie = [2, 7.78, 10.48, 1.42],             # npth shape
+            npthserie = [2, 7.78, 10.48, 0.30],             # npth shape
             ),
 
         'DSUB_36': Params(
@@ -1277,9 +1277,9 @@ class cq_dsub():
             # http://service.powerdynamics.com/ec/Catalog17/Section%2007.pdf
             # 
             modelName = 'Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm',    # Model name
-            pin = ['round1', 25, 2.77, 2.84, 0.64, 3.9],     # Type of pins, type, #pin, x, y, diam, length under pcb, *length above pcb, length form hole), last two is for 90 degree bended
+            pin = ['round1', 25, 2.77, 2.84, 0.64, 3.9],    # Type of pins, type, #pin, x, y, diam, length under pcb, *length above pcb, length form hole), last two is for 90 degree bended
             serie = 2,                                      # Shape
-            npthserie = [2, 7.78, 10.48, 1.42],             # npth shape
+            npthserie = [2, 7.78, 10.48, 0.00],             # npth shape
             ),
 
         'DSUB_46': Params(
@@ -1287,7 +1287,7 @@ class cq_dsub():
             # http://service.powerdynamics.com/ec/Catalog17/Section%2007.pdf
             # 
             modelName = 'Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm',    # Model name
-            pin = ['round1', 25, 2.77, 2.84, 0.64, 3.9],     # Type of pins, type, #pin, x, y, diam, length under pcb, *length above pcb, length form hole), last two is for 90 degree bended
+            pin = ['round1', 25, 2.77, 2.84, 0.64, 3.9],    # Type of pins, type, #pin, x, y, diam, length under pcb, *length above pcb, length form hole), last two is for 90 degree bended
             serie = 2,                                      # Shape
             npthserie = [2, 10.54, 12.34, 1.42],            # npth shape
             ),
