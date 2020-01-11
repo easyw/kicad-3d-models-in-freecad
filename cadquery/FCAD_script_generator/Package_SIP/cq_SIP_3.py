@@ -86,73 +86,58 @@ class cq_SIP_3():
         
         params = self.all_params[modelName]
 
+#        case_top = self.make_top_dummy(params)
+#        show(case_top)
+        
         if modelName == 'SIP4_Sharp_Angled':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP4_Sharp_Angled(params)
             show(case)
             pins = self.make_pins_SIP4_Sharp_Angled(params)
             show(pins)
 
         elif modelName == 'SIP4_Sharp_Straight':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP4_Sharp_Straight(params)
             show(case)
             pins = self.make_pins_SIP4_Sharp_Straight(params)
             show(pins)
 
         elif modelName == 'SIP-3_P1.30mm':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP_3_P1_30mm(params)
             show(case)
             pins = self.make_pins_SIP_3_P1_30mm(params)
             show(pins)
 
         elif modelName == 'SIP-3_P2.90mm':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP_3_P2_90mm(params)
             show(case)
             pins = self.make_pins_SIP_3_P2_90mm(params)
             show(pins)
 
         elif modelName == 'SIP-8':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP_8(params)
             show(case)
             pins = self.make_pins_SIP_8(params)
             show(pins)
 
         elif modelName == 'SIP-9':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SIP_9(params)
             show(case)
             pins = self.make_pins_SIP_9(params)
             show(pins)
 
         elif modelName == 'SLA704XM':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_SLA704XM(params)
             show(case)
             pins = self.make_pins_SLA704XM(params)
             show(pins)
 
         elif modelName == 'STK672-040-E':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_STK672_040_E(params)
             show(case)
             pins = self.make_pins_STK672_040_E(params)
             show(pins)
 
         elif modelName == 'STK672-080-E':
-            case_top = self.make_top_dummy(params)
-            show(case_top)
             case = self.make_case_STK672_080_E(params)
             show(case)
             pins = self.make_pins_STK672_080_E(params)
@@ -160,37 +145,37 @@ class cq_SIP_3():
 
             
             
-        npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
+#        npth_pins = self.make_npth_pins_dummy(params)
+#        show(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
      
-        body_top_color_key = params.body_top_color_key
+#        body_top_color_key = params.body_top_color_key
         body_color_key = params.body_color_key
         pin_color_key = params.pin_color_key
-        npth_pin_color_key = params.npth_pin_color_key
+#        npth_pin_color_key = params.npth_pin_color_key
 
-        body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
+#        body_top_color = shaderColors.named_colors[body_top_color_key].getDiffuseFloat()
         body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
         pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
-        npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
+#        npth_pin_color = shaderColors.named_colors[npth_pin_color_key].getDiffuseFloat()
 
-        Color_Objects(Gui,objs[0],body_top_color)
-        Color_Objects(Gui,objs[1],body_color)
-        Color_Objects(Gui,objs[2],pin_color)
-        Color_Objects(Gui,objs[3],npth_pin_color)
+#        Color_Objects(Gui,objs[0],body_top_color)
+        Color_Objects(Gui,objs[0],body_color)
+        Color_Objects(Gui,objs[1],pin_color)
+#        Color_Objects(Gui,objs[3],npth_pin_color)
 
-        col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-        col_body=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-        col_pin=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
+#        col_body_top=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+        col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+#        col_npth_pin=Gui.ActiveDocument.getObject(objs[3].Name).DiffuseColor[0]
         
         material_substitutions={
-            col_body_top[:-1]:body_top_color_key,
+#            col_body_top[:-1]:body_top_color_key,
             col_body[:-1]:body_color_key,
             col_pin[:-1]:pin_color_key,
-            col_npth_pin[:-1]:npth_pin_color_key
+ #           col_npth_pin[:-1]:npth_pin_color_key
         }
         
         expVRML.say(material_substitutions)
@@ -587,7 +572,7 @@ class cq_SIP_3():
         case1 = cq.Workplane("XZ").workplane(offset=((L / 2.0) + 0.1)).moveTo(0.0 - ((W / 2.0) - 1.5), 1.5).circle(0.5, False).extrude(0.0 - 0.2)
         case = case.cut(case1)
 
-        case = case.translate((10.61,  0.0, A1))
+        case = case.translate(((W / 2.0) - (1.27 / 2.0),  0.0, A1))
         
         if (rotation != 0):
             case = case.rotate((0,0,0), (0,0,1), rotation)
