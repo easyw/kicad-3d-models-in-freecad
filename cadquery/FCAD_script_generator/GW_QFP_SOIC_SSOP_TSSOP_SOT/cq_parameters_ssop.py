@@ -576,33 +576,33 @@ part_params = {
         modelName = 'QSOP-24_3.9x8.7mm_P0.635mm',
         rotation = -90,       # rotation if required
         ),
-    'SOP-4_4.4x2.8mm_Pitch1.27mm': Params( # from http://www.vishay.com/docs/49447/49447.pdf
+    'SOP-4_4.4x2.6mm_Pitch1.27mm': Params( # from http://www.vishay.com/docs/83510/tcmt1100.pdf#page=7
         the = 12.0,           # body angle in degrees
         tb_s = 0.15,          # top part of body is that much smaller
-        c = 0.15,             # pin thickness, body center part height
+        c = 0.2,             # pin thickness, body center part height
         R1 = 0.1,             # pin upper corner, inner radius
         R2 = 0.1,             # pin lower corner, inner radius
-        S = 0.2,              # pin top flat part length (excluding corner arc)
-#        L = 0.64,            # pin bottom flat part length (including corner arc)
+#       S = 0.2,              # pin top flat part length (excluding corner arc)
+        L = 0.60,            # pin bottom flat part length (including corner arc)
         fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
         fp_r = 0.5,           # first pin indicator radius
         fp_d = 0.2,           # first pin indicator distance from edge
         fp_z = 0.1,           # first pin indicator depth
         ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
         cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
-        D1 = 2.8,             # body length
-        E1 = 4.4,             # body width
-        E = 6.4,              # body overall width  E=E1+2*(S+L+c)
-        A1 = 0.1,            # body-board separation
-        A2 = 2.0,            # body height
+        D1 = 2.60,             # body length
+        E1 = 4.40,             # body width
+        E = 7.00,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.10,            # body-board separation
+        A2 = 2.00,            # body height
         b = 0.4,             # pin width
         e = 1.27,            # pin (center-to-center) distance
         npx = 2,             # number of pins along X axis (width)
         npy = 0,              # number of pins along y axis (length)
         epad = None,          # ePad
         excluded_pins = None, # no pin excluded
-        old_modelName = 'SOP-4_4.4x2.8mm_Pitch1.27mm',
-        modelName = 'SOP-4_4.4x2.8mm_P1.27mm',
+        old_modelName = 'SOP-4_4.4x2.6mm_Pitch1.27mm',
+        modelName = 'SOP-4_4.4x2.6mm_P1.27mm',
         rotation = -90,       # rotation if required
         ),
     'SOP-16_4.4x10.4mm_Pitch1.27mm': Params( # from http://www.vishay.com/docs/49447/49447.pdf
