@@ -24,6 +24,15 @@ Params = namedtuple("Params", [
 ])
 
 kicad_naming_params_standoff = {
+    'FF_9.0mm_D5.0': Params(	#from http://katalog.we-online.de
+        OD = 5.0, # Outer Diameter, Flat side to flatside for HEX
+        ID = 3.0, # Inner Diameter
+        H = 9.0, # Height of standoff
+        shape = 'Hex', # Shape can be 'Round' or 'Hex'
+        modelName = 'FF_9.0mm_D5.0', # Modelname
+        rotation = -90, #rotation if required
+        dest_dir_prefix = '../Spacers/', # Destination
+    ),
     'Standoff_Height_13.0mm_HEX': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
         OD = 5.5, # Outer Diameter, Flat side to flatside for HEX
         ID = 3.0, # Inner Diameter
@@ -31,7 +40,7 @@ kicad_naming_params_standoff = {
         shape = 'Hex', # Shape can be 'Round' or 'Hex'
         modelName = 'Standoff_Height_13.0mm_HEX', # Modelname
         rotation = -90, #rotation if required
-        dest_dir_prefix = '../Capacitors_THT.3dshapes/', # Destination
+        dest_dir_prefix = '../Spacers/', # Destination
     ),
     'Standoff_Height_20.0mm_HEX': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
         OD = 4.0, # Outer Diameter, Flat side to flatside for HEX
@@ -39,6 +48,15 @@ kicad_naming_params_standoff = {
         H = 20.0, # Height of standoff
         shape = 'Hex', # Shape can be 'Round' or 'Hex'
         modelName = 'Standoff_Height_20.0mm_HEX', # Modelname
+        rotation = -90, #rotation if required
+        dest_dir_prefix = '../Spacers/', # Destination
+    ),
+    'FF_29.0mm_D5.0': Params(	#from http://katalog.we-online.de
+        OD = 5.0, # Outer Diameter, Flat side to flatside for HEX
+        ID = 3.0, # Inner Diameter
+        H = 29.0, # Height of standoff
+        shape = 'Hex', # Shape can be 'Round' or 'Hex'
+        modelName = 'FF_29.0mm_D5.0', # Modelname
         rotation = -90, #rotation if required
         dest_dir_prefix = '../Spacers/', # Destination
     ),

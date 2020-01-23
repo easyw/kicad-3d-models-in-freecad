@@ -2,8 +2,8 @@ STEP AP214 and VRML FreeCAD script generator
 ============================================
 :Author:    Maurice
 :Email:     https://github.com/easyw
-:Date:      July 2017
-:Revision:  1.6.0
+:Date:      January 2020
+:Revision:  1.7.0
 :website: https://github.com/easyw/kicad-3d-models-in-freecad/
 :docname: README.adoc
 
@@ -24,8 +24,8 @@ link:http://bazaar.launchpad.net/~easyw/kicad-stepup/trunk/files/[kicadStepUp at
 link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
 
 .REQUIREMENTS
-* FreeCAD 0.15 (best for step single object result)
-* CadQuery 0.5.2 
+* FreeCAD stable (FC0.18 at this update)
+* CadQuery FreeCAD Workbench (CadQuery 1.2.0 FreeCAD module at this update)
 
 <<<
 
