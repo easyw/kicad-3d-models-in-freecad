@@ -1,0 +1,21 @@
+Johanson_2450AT18x100:
+  length: 3.2
+  width: 1.6
+  height: 1.3
+  pin_band: 0.5
+  pin_thickness: 0.001
+  edge_fillet: 'auto'
+  rotation: 0
+  pm: 0.5
+  source: 'https://www.johansontechnology.com/datasheets/2450AT18A100/2450AT18A100.pdf'
+Johanson_2450AT43F0100:
+  length: 6.0
+  width: 2.0
+  height: 1.2
+  pin_band: 0.5
+  pin_thickness: 0.001
+  edge_fillet: 'auto'
+  rotation: 0
+  pm: 0.75
+  source: 'https://www.johansontechnology.com/datasheets/2450AT43F0100/2450AT43F0100.pdf'
+  
