@@ -4,7 +4,10 @@ echo cadquery-freecad-module required
 @echo ON
 cd %~p0
 
-start "" "c:\FreeCAD\bin\freecad" main_generator.py FF_9.0mm_D5.0
+start "" "c:\FreeCAD\bin\freecad" main_generator.py all
+::M3x15_MF_D5.5
+::all 
+::M3x9_FF_D5.5
 
 :: start "" "c:\FreeCAD\bin\freecad" main_generator.py FF_9.0mm_D5.0
 :: start "" "c:\FreeCAD\bin\freecad" main_generator.py angled-254-dual 2
