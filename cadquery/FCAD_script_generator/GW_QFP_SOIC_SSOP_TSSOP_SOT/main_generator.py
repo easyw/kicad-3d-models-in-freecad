@@ -572,6 +572,7 @@ import cq_parameters_sot
 import cq_parameters_sot_maui
 import cq_parameters_ssop
 import cq_parameters_ssop_maui
+import cq_parameters_tssop
 import cq_parameters_tssop_maui
 
 all_series = {
@@ -584,6 +585,7 @@ all_series = {
     'sot_maui':cq_parameters_sot_maui,
     'ssop':cq_parameters_ssop,
     'ssop_maui':cq_parameters_ssop_maui,
+    'tssop':cq_parameters_tssop,
     'tssop_maui':cq_parameters_tssop_maui,
 }
 
