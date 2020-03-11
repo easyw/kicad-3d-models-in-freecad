@@ -100,30 +100,56 @@ STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
-
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements
-
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
+#
 
 try:
     # Gui.SendMsgToActiveView("Run")
-    # cq Gui            
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+# Sphinx workaround #2
+try:
+    cq
+    checkRequirements(cq)
+except NameError:
+    cq = None
+#
+
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
+
+
+# Import cad_tools
+import cq_cad_tools
+# Reload tools
+reload_lib(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -131,7 +157,7 @@ checkRequirements(cq)
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print ("CQ 030 doesn't open example file")
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
