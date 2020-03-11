@@ -55,11 +55,11 @@ Params = namedtuple_with_defaults("Params", [
 
 all_params = {
 
-    'Relay_1P1T_Panasonic_ADW11_FormA': Params(   # ModelName
+    'Relay_1P1T_NO_10x24x18.8mm_Panasonic_ADW11xxxxW_THT': Params(   # ModelName
         #
         # https://www.panasonic-electric-works.com/pew/es/downloads/ds_dw_hl_en.pdf
         #
-        modelName = 'Relay_1P1T_Panasonic_ADW11_FormA',  # Model name
+        modelName = 'Relay_1P1T_NO_10x24x18.8mm_Panasonic_ADW11xxxxW_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
         L  = 24,  # Package length
         W  = 10,  # Package width
