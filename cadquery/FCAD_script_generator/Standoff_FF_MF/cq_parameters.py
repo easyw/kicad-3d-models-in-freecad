@@ -76,6 +76,16 @@ kicad_naming_params_standoff = {
         rotation = -90, #rotation if required
         dest_dir_prefix = '../Spacers/', # Destination
     ),
+    'M3x12_FF_D5.5': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
+        OD = 5.5, # Outer Diameter, Flat side to flatside for HEX
+        ID = 3.0, # Inner Diameter
+        H = 12.0, # Height of standoff
+        shape = 'Hex', # Shape can be 'Round' or 'Hex'
+        stud_H = 0.0,  # height of Stud 0.0 means NO Stud
+        modelName = 'M3x12_FF_D5.5', # Modelname
+        rotation = -90, #rotation if required
+        dest_dir_prefix = '../Spacers/', # Destination
+    ),
     'M3x14_FF_D5.5': Params(	#from http://katalog.we-online.de/em/datasheet/6130xx11121.pdf
         OD = 5.5, # Outer Diameter, Flat side to flatside for HEX
         ID = 3.0, # Inner Diameter
