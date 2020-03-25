@@ -188,5 +188,29 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
+    'Relay_DPDT_Omron_G2RL': Params(   # ModelName
+        #
+        # https://omronfs.omron.com/en_US/ecb/products/pdf/en-g2rl.pdf
+        #
+        modelName = 'Relay_DPDT_Omron_G2RL',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 28.8,  # Package length
+        W  = 12.5,  # Package width
+        H  = 15.7,  # Package height
+        A1 = 0.0,   # Package board seperation
+        #rim = (2.0, 2.0, 0.5),  # If a rim should be created at the bottom
+        pin = ((0.0, 0.0, 'rect', 0.5, 0.8), (15.0, 0.0, 'rect', 0.5, 0.8), (20.0, 0.0, 'rect', 0.5, 0.8), (25.0, 0.0, 'rect', 0.5, 0.8), (15.0, -7.50, 'rect', 0.5, 0.8), (0.0, -7.5, 'rect', 0.5, 0.8), (20.0, -7.50, 'rect', 0.5, 0.8), (25.0, -7.50, 'rect', 0.5, 0.8)),  # Pin placement
+        pin1corner = (-2.3, -10.0),  # Left up corner relationsship to pin 1
+        pinpadh    = 3.5,           # Pin length, pad height
+        pinpadsize = 1.0,           # Pin diameter or pad size
+        show_top   = 0,             # If top should be visible or not
+        corner     = 'none',        # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,             # If belly of caseing should be round (or flat)
+        rotation   = 0,             # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',       # Body color
+        body_top_color_key = 'black body',       # Body top color
+        pin_color_key      = 'metal grey pins', # Pin color
+        dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
+        ),
 }
 
