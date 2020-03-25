@@ -54,6 +54,36 @@ part_params = {
         modelName = 'ETSSOP-20-1EP_4.4x6.5mm_P0.65mm',
         rotation = -90,       # rotation if required
         ),
+    'HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3x3.1mm': Params( # Datasheet: http://www.ti.com/lit/ds/symlink/lm5161.pdf#page=34
+                                                                   # Package drawing: http://www.ti.com/lit/ml/mpds370/mpds370.pdf
+        the = 14.0,           # body angle in degrees
+        tb_s = 0.15,          # top part of body is that much smaller
+        c = 0.15,             # pin thickness, body center part height
+        R1 = 0.09,             # pin upper corner, inner radius
+        R2 = 0.09,             # pin lower corner, inner radius
+        S = 0.25,              # pin top flat part length (excluding corner arc)
+#        L = 0.6,            # pin bottom flat part length (including corner arc)
+        fp_s = True,        # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,           # first pin indicator radius
+        fp_d = 0.2,           # first pin indicator distance from edge
+        fp_z = 0.1,           # first pin indicator depth
+        ef = 0, # 0.05,       # fillet of edges  Note: bigger bytes model with fillet
+        cc1 = 0.25,           # 0.45 chamfer of the 1st pin corner
+        D1 = 5.0,             # body length
+        E1 = 4.4,             # body width
+        E = 6.4,              # body overall width  E=E1+2*(S+L+c)
+        A1 = 0.1,            # body-board separation
+        A2 = 1.1,            # body height
+        b = 0.25,             # pin width
+        e = 0.65,            # pin (center-to-center) distance
+        npx = 7,             # number of pins along X axis (width)
+        npy = 0,              # number of pins along y axis (length)
+        epad = (3.0,3.1),          # ePad is guessed from datasheet
+        excluded_pins = None, # no pin excluded
+        old_modelName = 'HTSSOP-14-1EP_4.4x5mm_Pitch0.65mm_ThermalPad',
+        modelName = 'HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3x3.1mm',
+        rotation = -90,       # rotation if required
+        ),
     'HTSSOP-20-1EP_4.4x6.5mm_Pitch0.65mm_ThermalPad': Params( # from http://www.ti.com/lit/ml/mhts001g/mhts001g.pdf
         the = 12.0,           # body angle in degrees
         tb_s = 0.15,          # top part of body is that much smaller
