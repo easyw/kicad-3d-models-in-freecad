@@ -3464,7 +3464,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),
-    'WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm': Params( # from http://www.ti.com/lit/ds/symlink/tlv62080.pdf
+    'WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm': Params( # from http://www.ti.com/lit/ds/symlink/tvs3300.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.25,        # pin top flat part length (including fillet radius)
