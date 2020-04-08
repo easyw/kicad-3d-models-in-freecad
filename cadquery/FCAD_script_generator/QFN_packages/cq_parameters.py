@@ -6732,6 +6732,36 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
+    'TQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm': Params(
+        #
+        # TQFN, 16 Pin (https://www.ti.com/lit/ds/symlink/tpa6132a2.pdf)
+        #
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.40,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.5,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,      # body overall length
+        E = 3.0,      # body overall width
+        A1 = 0.025,      # body-board separation
+        A2 = 0.75,       # body overall height
+        b = 0.24,      # pin width
+        e = 0.5,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'square',  # rounded, square pads
+        npx = 4,      # number of pins along X axis (width)
+        npy = 4,      # number of pins along y axis (length)
+        epad = (1.6, 1.6),    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'TQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
     'TQFN-24-1EP_4x4mm_P0.5mm_EP2.8x2.8mm_PullBack': Params(
         #
         # TQFN, 24 Pin (https://ams.com/documents/20143/36005/AS1115_DS000206_1-00.pdf/3d3e6d35-b184-1329-adf9-2d769eb2404f), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
