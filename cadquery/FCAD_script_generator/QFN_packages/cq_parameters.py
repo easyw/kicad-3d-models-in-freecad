@@ -37,6 +37,8 @@ Params = namedtuple("Params", [
     'npx',  # number of pins along X axis (width)
     'npy',  # number of pins along y axis (length)
     'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
+    'epad_offsetX',  # offset X for exposed pad
+    'epad_offsetY',  # offset X for exposed pad
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
@@ -5194,6 +5196,37 @@ kicad_naming_params_qfn = {
         modelName = 'Panasonic_HSON-8_8x8mm_P2.00mm',
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
+    'Vishay_PowerPAK_1212-8_Single': Params(
+        #
+        # Vishay_PowerPAK_1212-8_Single (https://www.vishay.com/docs/62847/siss27dn.pdf)
+        #
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.43,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.5,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.3,      # body overall length
+        E = 3.3,      # body overall width
+        A1 = 0.05,      # body-board separation
+        A2 = 0.75,       # body overall height
+        b = 0.3,      # pin width
+        e = 0.65,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'square',  # rounded, square pads
+        npx = 4,      # number of pins along X axis (width)
+        npy = 0,      # number of pins along y axis (length)
+        epad = (2.25, 1.7),    # e Pad #epad = None, # e Pad
+        epad_offsetY = 0.39,
+        excluded_pins = None, #no pin excluded
+        modelName = 'Vishay_PowerPAK_1212-8_Single',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_SO.3dshapes/',
         ),
 
     'QFN-16-1EP_3x3mm_P0.5mm_EP2.7x2.7mm_ThermalVias': Params(

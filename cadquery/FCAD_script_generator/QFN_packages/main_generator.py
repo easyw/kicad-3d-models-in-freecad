@@ -202,6 +202,10 @@ def make_qfn(params):
                         epad_offset_y = E/2-E2/2
                 else:
                     epad_offset_y = params.epad[4]
+            if params.epad_offsetX is not None:
+                 epad_offset_x += params.epad_offsetX
+            if params.epad_offsetY is not None:
+                 epad_offset_y += params.epad_offsetY
                     
     A = A1 + A2
 
