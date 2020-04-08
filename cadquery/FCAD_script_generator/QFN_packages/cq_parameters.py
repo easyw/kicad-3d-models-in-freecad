@@ -5193,13 +5193,13 @@ kicad_naming_params_qfn = {
         e = 0.65,       # pin (center-to-center) distance
         m = 0.0,        # margin between pins and body
         ps = 'square',  # rounded, square pads
-        npx = 0,      # number of pins along X axis (width)
-        npy = 4,      # number of pins along y axis (length)
-        epad = (1.7, 2.25),    # e Pad #epad = None, # e Pad
-        epad_offsetX = 0.39,
+        npx = 4,      # number of pins along X axis (width)
+        npy = 0,      # number of pins along y axis (length)
+        epad = (2.25, 1.7),    # e Pad #epad = None, # e Pad
+        epad_offsetY = 0.39,
         excluded_pins = None, #no pin excluded
         modelName = 'Vishay_PowerPAK_1212-8_Single',
-        rotation = 0, # rotation if required
+        rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_SO.3dshapes/',
         ),
 
