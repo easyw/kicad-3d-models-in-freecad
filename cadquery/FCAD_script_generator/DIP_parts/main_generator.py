@@ -48,7 +48,7 @@ script_dir  = os.path.dirname(os.path.realpath(__file__))
 scripts_root = script_dir.split(script_dir.split(os.sep)[-1])[0]
 
 sys.path.append(script_dir)
-sys.path.append(scripts_root + "\_tools")
+sys.path.append(scripts_root + "/_tools")
 
 from cq_model_generator import All, ModelGenerator
 
