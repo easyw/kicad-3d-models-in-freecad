@@ -6930,6 +6930,36 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
+    'VQFN-48-1EP_7x7mm_P0.5mm_EP4.1x4.1mm': Params(
+        #
+        # VQFN, 48 Pin (https://www.ti.com/lit/ds/symlink/cc430f5137.pdf (Page 128)),
+        #
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.4,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.5,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 7.0,      # body overall length
+        E = 7.0,      # body overall width
+        A1 = 0.05,      # body-board separation
+        A2 = 1.0,       # body overall height
+        b = 0.24,      # pin width
+        e = 0.5,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'square',  # rounded, square pads
+        npx = 12,      # number of pins along X axis (width)
+        npy = 12,      # number of pins along y axis (length)
+        epad = (4.1, 4.1),    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'VQFN-48-1EP_7x7mm_P0.5mm_EP4.1x4.1mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
     'WDFN-12-1EP_3x3mm_P0.45mm_EP1.7x2.5mm': Params(
         #
         # WDFN, 12 Pin (https://www.diodes.com/assets/Datasheets/PAM2306.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
