@@ -3178,6 +3178,32 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
+    'UQFN-20_3x3mm_P0.4mm': Params( # from https://resurgentsemi.com/wp-content/uploads/2018/09/MPR121_rev5-Resurgent.pdf
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.5,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.5,     # first pin indicator radius
+        fp_d = 0.2,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.0,       # body overall length
+        E = 3.0,       # body overall width
+        A1 = 0.05,  # body-board separation  maui to check
+        A2 = 0.6,  # body height
+        b = 0.2,  # pin width
+        e = 0.4,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'rounded',   # rounded pads
+        npx = 5,  # number of pins along X axis (width)
+        npy = 5,  # number of pins along y axis (length)
+        #epad = (1.8,1.8), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'UQFN-20_3x3mm_P0.4mm', #modelName 'UQFN-20_3x3mm_P0.4mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/'
+        ),
     'UQFN-20-1EP_4x4mm_Pitch0.5mm': Params( # from footprint
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
