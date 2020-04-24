@@ -23,6 +23,8 @@ Params = namedtuple("Params", [
     'fp_s',  # True for circular pinmark, False for square pinmark (useful for diodes)
     'fp_r', # first pin indicator radius, set to 0.0 to remove first pin indicator
     'fp_d', # first pin indicator distance from edge
+    'fp_dx', # first pin indicator distance from X edge
+    'fp_dy', # first pin indicator distance from Y edge
     'fp_z', # first pin indicator depth
     'ef',   # fillet of edges
     'cce',  # chamfer of the epad 1st pin corner
@@ -40,7 +42,8 @@ Params = namedtuple("Params", [
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
-    'dest_dir_prefix', #destination dir prefixD2 = params.epad[0]
+    'dest_dir_prefix', #destination dir prefixD2 = params.epad[0],
+    'body_color_key', # body color key if not None
     'pin_shapes',   # coords for pin shapes as [(x,y)]
 ])
 Params.__new__.__defaults__ = (None,) * len(Params._fields)
@@ -71,6 +74,7 @@ all_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'AMS_LGA-10-1EP_2.7x4mm_P0.6mm', #modelName
         rotation = -90, # rotation if required
+        body_color_key = None,
         dest_dir_prefix = '../Housings_LGA.3dshapes/'
     ),
     'LGA-12_2x2mm_P0.5mm': Params(
