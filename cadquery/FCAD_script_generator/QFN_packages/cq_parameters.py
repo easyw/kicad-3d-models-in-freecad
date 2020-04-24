@@ -74,7 +74,6 @@ all_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'AMS_LGA-10-1EP_2.7x4mm_P0.6mm', #modelName
         rotation = -90, # rotation if required
-        body_color_key = None,
         dest_dir_prefix = '../Housings_LGA.3dshapes/'
     ),
     'LGA-12_2x2mm_P0.5mm': Params(
