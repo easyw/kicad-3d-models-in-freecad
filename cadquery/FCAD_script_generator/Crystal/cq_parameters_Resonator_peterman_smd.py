@@ -433,5 +433,30 @@ class cq_parameters_Resonator_peterman_smd():
             dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
             ),
 
+        'Crystal_SMD_2012-2Pin_2.0x1.2mm': Params(
+            #
+            # https://www.sii.co.jp/en/quartz/files/2013/03/SC-20S_Leaflet_e20151217.pdf
+            #
+            type = 1,               # Model type
+            filename = 'Crystal_SMD_2012-2Pin_2.0x1.2mm',   # File name
+            L = 2.05,                # Model length
+            W = 1.2,                # Model width
+            H = 0.6,                # Model heigth
+            A1 = 0.0,               # Bottom-board separation
+
+            p_cnt = 2,              # Number of pins
+            p_split_x = 1.5,        # Distance between pins, along length
+            p_length = 0.425,         # Pin length
+            p_width = 1.0,          # Pin width
+
+            body_top_color_key = 'metal aluminum',  # Top color
+            body_color_key = 'gold pins',           # Body color
+            bottom_color_key = 'black body',        # Bottom color
+            pin_color_key = 'metal grey pins',      # Pin color
+            rotation = 0,                           # Rotation if required
+            dest_dir_prefix = 'Crystal.3dshapes',   # destination directory
+            ),
+
+
     }
         
