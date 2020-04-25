@@ -23,6 +23,8 @@ Params = namedtuple("Params", [
     'fp_s',  # True for circular pinmark, False for square pinmark (useful for diodes)
     'fp_r', # first pin indicator radius, set to 0.0 to remove first pin indicator
     'fp_d', # first pin indicator distance from edge
+    'fp_dx', # first pin indicator distance from X edge
+    'fp_dy', # first pin indicator distance from Y edge
     'fp_z', # first pin indicator depth
     'ef',   # fillet of edges
     'cce',  # chamfer of the epad 1st pin corner
@@ -42,7 +44,8 @@ Params = namedtuple("Params", [
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
-    'dest_dir_prefix', #destination dir prefixD2 = params.epad[0]
+    'dest_dir_prefix', #destination dir prefixD2 = params.epad[0],
+    'body_color_key', # body color key if not None
     'pin_shapes',   # coords for pin shapes as [(x,y)]
 ])
 Params.__new__.__defaults__ = (None,) * len(Params._fields)
@@ -73,6 +76,7 @@ all_params_qfn = {
         excluded_pins = None, #no pin excluded
         modelName = 'AMS_LGA-10-1EP_2.7x4mm_P0.6mm', #modelName
         rotation = -90, # rotation if required
+        body_color_key = None,
         dest_dir_prefix = '../Housings_LGA.3dshapes/'
     ),
     'LGA-12_2x2mm_P0.5mm': Params(
@@ -802,6 +806,35 @@ kicad_naming_params_qfn = {
         modelName = 'DFN-6-1EP_1.2x1.2mm_P0.4mm_EP0.3x0.94mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
+        ),
+    'Balun_Johanson_0896BM15A0001': Params( # from http://www.onsemi.com/pub/Collateral/NCP133-D.PDF
+        c = 0.7,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.3,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,     # first pin indicator radius
+        #fp_d = 0.08,     # first pin indicator distance from edge.
+        fp_dx = 0.15,     # first pin indicator distance from edge.
+        fp_dy = 0.45,     # first pin indicator distance from edge.
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.15,      #0.45 chamfer of the epad 1st pin corner
+        D = 2,       # body overall length
+        E = 1.25,       # body overall width
+        A1 = 0.0,  # body-board separation  maui to check
+        A2 = 0.7,  # body height
+        b = 0.3,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'square',   # rounded pads
+        npx = 3,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        #epad = (0.94,0.3), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'Balun_Johanson_0896BM15A0001', #modelName
+        rotation = -90, # rotation if required,
+        body_color_key = 'white body',
+        dest_dir_prefix = '../RF_Converter.3dshapes/'
         ),
     'DFN-6-1EP_2x2mm_Pitch0.5mm': Params( # from http://cds.linear.com/docs/en/packaging/05081703_C_DC6.pdf
         c = 0.2,        # pin thickness, body center part height

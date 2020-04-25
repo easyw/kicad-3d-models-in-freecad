@@ -221,8 +221,19 @@ def make_qfn(params):
     case=case.translate((0,0,A2/2+A1)).rotate((0,0,0), (0,0,1), 0)
 
     # first pin indicator is created with a spherical pocket
-    fp_dx = fp_d
-    fp_dy = fp_d
+    if (fp_d is not None):
+        fp_dx = fp_d
+        fp_dy = fp_d
+    else:
+        if params.fp_dx is not None:
+            fp_dx = params.fp_dx
+        else:
+            fp_dx = 0
+        if params.fp_dy is not None:
+            fp_dy = params.fp_dy
+        else:
+            fp_dy = 0
+
     if ps == 'concave' or ps == 'cshaped':
         if npy is not 0:
             fp_dx = fp_d+L-A1/2
@@ -437,6 +448,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
+
+        if (all_params[variant].body_color_key is not None):
+            body_color_key = all_params[variant].body_color_key
+            body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
 
         Color_Objects(Gui,objs[0],body_color)
         Color_Objects(Gui,objs[1],pins_color)
