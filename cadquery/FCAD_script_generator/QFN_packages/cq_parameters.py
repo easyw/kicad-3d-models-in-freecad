@@ -722,6 +722,33 @@ all_params_qfn = {
 }
 
 kicad_naming_params_qfn = {
+    'AVX_M620720': Params( # from http://datasheets.avx.com/ethertronics/AVX-E_M620720.pdf
+        c = 0.3,        # pin thickness, body center part height
+        L = 2,        # pin top flat part length (including fillet radius)
+        fp_s = False,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.04,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        D = 6,       # body overall length
+        E = 2,       # body overall width
+        A1 = 0,  # body-board separation  maui to check
+        A2 = 1.08,  # body height
+        b = 1.005,  # pin width
+        e = 4.995,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'square',   # rounded pads
+        npx = 2,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+#       If the following line is uncommented, "Exception while processing file: main_generator.py [BRepSweep_Translation::Constructor]" is raised
+#        epad = (0.89,2.0), # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'AVX_M620720', #modelName
+        body_color_key = 'white body',
+        rotation = 0, # rotation if required
+        dest_dir_prefix = '../RF_Antenna.3dshapes/'
+        ),
     'UDFN-10_1.35x2.6mm_Pitch0.5mm': Params( # from http://www.st.com/content/ccc/resource/technical/document/datasheet/f2/11/8a/ed/40/31/40/56/DM00088292.pdf/files/DM00088292.pdf/jcr:content/translations/en.DM00088292.pdf
         c = 0.2,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
