@@ -7203,6 +7203,36 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
+    'WDFN-8-1EP_4x3mm_P0.65mm_EP2.4x1.8mm': Params(
+        #
+        # WDFN, 8 Pin (https://www.onsemi.com/pub/Collateral/LC709203F-D.PDF)
+        #
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.5,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.3,     # first pin indicator distance from edge
+        fp_z = 0.1,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
+        D = 3.0,      # body overall length
+        E = 4.0,      # body overall width
+        A1 = 0.05,      # body-board separation
+        A2 = 0.8,       # body overall height
+        b = 0.25,      # pin width
+        e = 0.65,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'square',  # rounded, square pads
+        npx = 4,      # number of pins along X axis (width)
+        npy = 0,      # number of pins along y axis (length)
+        epad = (1.8, 2.4),    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'WDFN-8-1EP_4x3mm_P0.65mm_EP2.4x1.8mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
     'WDFN-8_2x2mm_P0.5mm': Params(
         #
         # DFN8 2x2, 0.5P; No exposed pad (http://www.onsemi.com/pub/Collateral/NCP4308-D.PDF)
