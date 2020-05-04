@@ -7203,7 +7203,7 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
-    'WDFN-8-1EP_4x3mm_P0.65mm_EP2.4x1.8mm': Params(
+    'WDFN-8-1EP_4x3mm_P0.65mm_EP2.5x1.9mm': Params(
         #
         # WDFN, 8 Pin (https://www.onsemi.com/pub/Collateral/LC709203F-D.PDF)
         #
@@ -7228,7 +7228,7 @@ kicad_naming_params_qfn = {
         npy = 0,      # number of pins along y axis (length)
         epad = (1.8, 2.4),    # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
-        modelName = 'WDFN-8-1EP_4x3mm_P0.65mm_EP2.4x1.8mm',
+        modelName = 'WDFN-8-1EP_4x3mm_P0.65mm_EP2.5x1.9mm',
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
