@@ -55,6 +55,39 @@ ___ver___ = "1.0.5 25/Feb/2017"
 # maui import cadquery as cq
 # maui from Helpers import show
 from math import tan, radians, sqrt
+try:
+    from math import isclose
+except ImportError:
+    def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+        '''
+        Python 2 implementation of Python 3.5 math.isclose()
+        https://hg.python.org/cpython/file/tip/Modules/mathmodule.c#l1993
+        '''
+        # sanity check on the inputs
+        if rel_tol < 0 or abs_tol < 0:
+            raise ValueError("tolerances must be non-negative")
+
+        # short circuit exact equality -- needed to catch two infinities of
+        # the same sign. And perhaps speeds things up a bit sometimes.
+        if a == b:
+            return True
+
+        # This catches the case of two infinities of opposite sign, or
+        # one infinity and one finite number. Two infinities of opposite
+        # sign would otherwise have an infinite relative tolerance.
+        # Two infinities of the same sign are caught by the equality check
+        # above.
+        if math.isinf(a) or math.isinf(b):
+            return False
+
+        # now do the regular computation
+        # this is essentially the "weak" test from the Boost library
+        diff = math.fabs(b - a)
+        result = (((diff <= math.fabs(rel_tol * b)) or
+                   (diff <= math.fabs(rel_tol * a))) or
+                  (diff <= abs_tol))
+        return result
+
 from collections import namedtuple
 
 import sys, os
@@ -170,6 +203,10 @@ def make_qfn(params):
         excluded_pins = params.excluded_pins
     else:
         excluded_pins=() ##no pin excluded 
+
+    if isclose(A1, 0.0):
+        print("A1 can NOT be zero (or this script will fail). Setting A1 to 0.02")
+        A1 = 0.02
 
     epad_rotation = 0.0
     epad_offset_x = 0.0
