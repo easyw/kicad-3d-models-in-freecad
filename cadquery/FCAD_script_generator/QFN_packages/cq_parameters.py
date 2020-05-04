@@ -5161,7 +5161,35 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
-
+    'OnSemi_SIP-38-6EP-9x7mm_P0.65mm_EP0.95x0.95mm': Params( # 2x3, 0.5mm pitch, 10 pins, 0.75mm height  DFN
+        #From- https://www.onsemi.com/pub/Collateral/AX-SIP-SFEU-D.PDF#page=19
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.60,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.35,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.02,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0,      #0.45 chamfer of the epad 1st pin corner
+        D = 7.0,       # body overall length
+        E = 9.0,       # body overall width
+        A1 = 0.05,  # body-board separation  maui to check
+        A2 = 0.996,  # body height
+        b = 0.25,  # pin width
+        e = 0.65,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'rounded',   # rounded pads
+        npx = 8,  # number of pins along X axis (width)
+        npy = 11,  # number of pins along y axis (length)
+        epad = (0.95,0.95), # e Pad #epad = None, # e Pad
+        epad_n = (2, 3), # Matrix of epads
+        epad_pitch = (2, 2), 
+        excluded_pins = None, #no pin excluded
+        modelName = 'OnSemi_SIP-38-6EP-9x7mm_P0.65mm_EP0.95x0.95mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = ''
+        ),
     'OnSemi_VCT-28_3.5x3.5mm_P0.4mm': Params(
         #
         # OnSemi  VCT, 28 Pin (http://www.onsemi.com/pub/Collateral/601AE.PDF), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
