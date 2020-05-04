@@ -730,10 +730,10 @@ kicad_naming_params_qfn = {
         fp_d = 0.04,     # first pin indicator distance from edge
         fp_z = 0.01,     # first pin indicator depth
         ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.2,      #0.45 chamfer of the epad 1st pin corner
+        cce = 0.0,      #0.45 chamfer of the epad 1st pin corner
         D = 6,       # body overall length
         E = 2,       # body overall width
-        A1 = 0,  # body-board separation  maui to check
+        A1 = 0.02,  # body-board separation  maui to check
         A2 = 1.08,  # body height
         b = 1.005,  # pin width
         e = 4.995,  # pin (center-to-center) distance
@@ -741,8 +741,7 @@ kicad_naming_params_qfn = {
         ps = 'square',   # rounded pads
         npx = 2,  # number of pins along X axis (width)
         npy = 0,  # number of pins along y axis (length)
-#       If the following line is uncommented, "Exception while processing file: main_generator.py [BRepSweep_Translation::Constructor]" is raised
-#        epad = (0.89,2.0), # e Pad #epad = None, # e Pad
+        epad = (0.89,2.0), # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'AVX_M620720', #modelName
         body_color_key = 'white body',
