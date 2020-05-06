@@ -345,27 +345,57 @@ def make_qfn(params):
     # create exposed thermal pad if requested
     if params.epad:
         if sq_epad:
-            #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
-            #epad = cq.Workplane("XY", (0,0,A1/2)). \
-            epad = cq.Workplane("XY").\
-            moveTo(-D2/2+cce, -E2/2). \
-            lineTo(D2/2, -E2/2). \
-            lineTo(D2/2, E2/2). \
-            lineTo(-D2/2, E2/2). \
-            lineTo(-D2/2, -E2/2+cce). \
-            close().extrude(A1+A1/2). \
-            translate((epad_offset_x,epad_offset_y,0)). \
-            rotate((0,0,0), (0,0,1), epad_rotation) #+A1/2).translate((0,0,A1/2))
-            #close().extrude(A1+A1/10)
-            pins.append(epad)
+            if params.epad_n is not None and \
+               params.epad_pitch is not None:
+                for nx in range(1,params.epad_n[0]+1):
+                    for ny in range(1,params.epad_n[1]+1):
+                        offset_x = -((params.epad_n[0]-1)*params.epad_pitch[0])/2+(nx-1)*params.epad_pitch[0]
+                        offset_y = -((params.epad_n[1]-1)*params.epad_pitch[1])/2+(ny-1)*params.epad_pitch[1]
+                        epad = cq.Workplane("XY").\
+                        moveTo(-D2/2+cce, -E2/2). \
+                        lineTo(D2/2, -E2/2). \
+                        lineTo(D2/2, E2/2). \
+                        lineTo(-D2/2, E2/2). \
+                        lineTo(-D2/2, -E2/2+cce). \
+                        close().extrude(A1+A1/2). \
+                        translate((epad_offset_x+offset_x,epad_offset_y+offset_y,0)). \
+                        rotate((0,0,0), (0,0,1), epad_rotation) #+A1/2).translate((0,0,A1/2))
+                        #close().extrude(A1+A1/10)
+                        pins.append(epad)
+            else:
+                #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+                #epad = cq.Workplane("XY", (0,0,A1/2)). \
+                epad = cq.Workplane("XY").\
+                moveTo(-D2/2+cce, -E2/2). \
+                lineTo(D2/2, -E2/2). \
+                lineTo(D2/2, E2/2). \
+                lineTo(-D2/2, E2/2). \
+                lineTo(-D2/2, -E2/2+cce). \
+                close().extrude(A1+A1/2). \
+                translate((epad_offset_x,epad_offset_y,0)). \
+                rotate((0,0,0), (0,0,1), epad_rotation) #+A1/2).translate((0,0,A1/2))
+                #close().extrude(A1+A1/10)
+                pins.append(epad)
         else:
-            #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
-            #epad = cq.Workplane("XY", (0,0,A1/2)). \
-            epad = cq.Workplane("XY").\
-            circle(epad_r). \
-            extrude(A1) #+A1/2).translate((0,0,A1/2))
-            #extrude(A1+A1/2).translate((0,0,A1/2))
-            pins.append(epad)
+            if params.epad_n is not None and \
+               params.epad_pitch is not None:
+                for nx in range(1,params.epad_n[0]):
+                    for ny in range(1,params.epad_n[1]):
+                        offset_x = -((params.epad_n[0]-1)*params.epad_pitch[0])/2+(nx-1)*params.epad_pitch[0]
+                        offset_y = -((params.epad_n[1]-1)*params.epad_pitch[1])/2+(ny-1)*params.epad_pitch[1]
+                        epad = cq.Workplane("XY").\
+                        circle(epad_r). \
+                        extrude(A1). \
+                        translate((offset_x,offset_y,A1/2))
+                        pins.append(epad)
+            else:
+                #pins.append(cq.Workplane("XY").box(D2, E2, A1+A1/10).translate((0,0,A1+A1/10)))
+                #epad = cq.Workplane("XY", (0,0,A1/2)). \
+                epad = cq.Workplane("XY").\
+                circle(epad_r). \
+                extrude(A1) #+A1/2).translate((0,0,A1/2))
+                #extrude(A1+A1/2).translate((0,0,A1/2))
+                pins.append(epad)
 
     # merge all pins to a single object
     merged_pins = pins[0]

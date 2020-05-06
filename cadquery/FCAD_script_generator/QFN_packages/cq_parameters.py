@@ -41,6 +41,8 @@ Params = namedtuple("Params", [
     'epad',  # exposed pad, None, radius as float for circular or the dimensions as tuple: (width, length) for square
     'epad_offsetX',  # offset X for exposed pad
     'epad_offsetY',  # offset X for exposed pad
+    'epad_n', # number of exposed pads, specified as tuple (along X axis, along Y axis) in case a matrix of them is needed.
+    'epad_pitch', # epad center to epad center, specified as tuple (along X axis, along Y axis)
     'excluded_pins', #pins to exclude
     'modelName', #modelName
     'rotation', #rotation if required
