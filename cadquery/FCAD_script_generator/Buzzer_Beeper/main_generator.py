@@ -119,6 +119,9 @@ from cq_parameters_StarMicronics_HMB_06_HMB_12 import *
 import cq_parameters_TDK_PS1240P02BT  # modules parameters
 from cq_parameters_TDK_PS1240P02BT import *
 
+import cq_parameters_PUI_AI_1440_TWT_24V_2_R  # modules parameters
+from cq_parameters_PUI_AI_1440_TWT_24V_2_R import *
+
 
 
 
@@ -132,6 +135,7 @@ different_models = [
     cq_parameters_ProSignal_ABI_XXX_RC(),
     cq_parameters_StarMicronics_HMB_06_HMB_12(),
     cq_parameters_TDK_PS1240P02BT(),
+    cq_parameters_PUI_AI_1440_TWT_24V_2_R(),
 ]
 
 
