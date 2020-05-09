@@ -6909,6 +6909,37 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
+    'TQFN-20-1EP_5x5mm_P0.65mm_EP3.1x3.1mm': Params(
+        #
+        # TQFN, 16 Pin (https://www.ti.com/lit/ds/symlink/tpa6132a2.pdf)
+        # Maxim T2055-3 (https://pdfserv.maximintegrated.com/package_dwgs/21-0140.PDF)
+        #
+        c = 0.2,        # pin thickness, body center part height
+#        K=0.2,         # Fillet radius for pin edges
+        L = 0.55,       # pin top flat part length (including fillet radius)
+        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.4,     # first pin indicator radius
+        fp_d = 0.5,     # first pin indicator distance from edge
+        fp_z = 0.05,     # first pin indicator depth
+        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.35,      # 0.45 chamfer of the epad 1st pin corner
+        D = 5.0,      # body overall length
+        E = 5.0,      # body overall width
+        A1 = 0.02,      # body-board separation
+        A2 = 0.75,       # body overall height
+        b = 0.30,      # pin width
+        e = 0.65,       # pin (center-to-center) distance
+        m = 0.0,        # margin between pins and body
+        ps = 'rounded',  # rounded, square pads
+        npx = 5,      # number of pins along X axis (width)
+        npy = 5,      # number of pins along y axis (length)
+        epad = (3.1, 3.1),    # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'TQFN-20-1EP_5x5mm_P0.65mm_EP3.1x3.1mm',
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
+        ),
+
     'TQFN-24-1EP_4x4mm_P0.5mm_EP2.8x2.8mm_PullBack': Params(
         #
         # TQFN, 24 Pin (https://ams.com/documents/20143/36005/AS1115_DS000206_1-00.pdf/3d3e6d35-b184-1329-adf9-2d769eb2404f), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
