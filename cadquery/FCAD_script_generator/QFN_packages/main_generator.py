@@ -272,9 +272,9 @@ def make_qfn(params):
             fp_dy = 0
 
     if ps == 'concave' or ps == 'cshaped':
-        if npy is not 0:
+        if npy != 0:
             fp_dx = fp_d+L-A1/2
-        if npx is not 0:
+        if npx != 0:
             fp_dy = fp_d+L-A1/2
     if fp_r == 0:
         global place_pinMark
