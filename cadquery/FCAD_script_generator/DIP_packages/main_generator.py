@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 # This is derived from a cadquery script for generating PDIP models in X3D format
 #
@@ -124,7 +124,7 @@ checkRequirements(cq)
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print("CQ 030 doesn't open example file")
 
 
 import cq_parameters  # modules parameters
