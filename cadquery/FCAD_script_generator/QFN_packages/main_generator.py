@@ -140,7 +140,7 @@ except:
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements, SimpleCopy_wColors
 
 try:
     # Gui.SendMsgToActiveView("Run")
@@ -272,9 +272,9 @@ def make_qfn(params):
             fp_dy = 0
 
     if ps == 'concave' or ps == 'cshaped':
-        if npy is not 0:
+        if npy != 0:
             fp_dx = fp_d+L-A1/2
-        if npx is not 0:
+        if npx != 0:
             fp_dy = fp_d+L-A1/2
     if fp_r == 0:
         global place_pinMark
@@ -553,6 +553,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         objs=GetListOfObjects(FreeCAD, doc)
         FuseObjs_wColors(FreeCAD, FreeCADGui,
                         doc.Name, objs[0].Name, objs[1].Name)
+        FreeCAD.ActiveDocument.recompute()
         doc.Label=CheckedModelName
         objs=GetListOfObjects(FreeCAD, doc)
         objs[0].Label=CheckedModelName

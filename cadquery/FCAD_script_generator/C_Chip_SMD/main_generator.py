@@ -109,11 +109,15 @@ LIST_license = ["",]
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+try:
+    reload(cq_cad_tools)
+except:
+    import importlib
+    importlib.reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements, SimpleCopy_wColors
 # Sphinx workaround #1
 try:
     QtGui
@@ -149,7 +153,7 @@ except NameError:
 try:
     close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print ("CQ 030 doesn't open example file")
 
 def make_chip(model, all_params):
     # dimensions for chip capacitors
@@ -222,7 +226,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building:\n')
         model_to_build = all_params.keys()[0]
-        print model_to_build
+        print (model_to_build)
     else:
         model_to_build = sys.argv[2]
 
@@ -333,8 +337,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 for o in docu.Objects:
                     if hasattr(o,'Shape'):
                         chks=cq_cad_tools.checkBOP(o.Shape)
-                        print 'chks ',chks
-                        print cq_cad_tools.mk_string(o.Label)
+                        print ('chks ',chks)
+                        print (cq_cad_tools.mk_string(o.Label))
                         if chks != True:
                             msg='shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' is INVALID!\n'
                             FreeCAD.Console.PrintError(msg)

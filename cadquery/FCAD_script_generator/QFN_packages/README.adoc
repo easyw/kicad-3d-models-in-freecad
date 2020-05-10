@@ -24,7 +24,7 @@ link:http://bazaar.launchpad.net/~easyw/kicad-stepup/trunk/files/[kicadStepUp at
 link:http://youtu.be/Ukd47VXYzQU[YouTube Kicad StepUp demo video]
 
 .REQUIREMENTS
-* FreeCAD 0.15 (best for step single object result)
+* FreeCAD >= 0.18.4 (best for step single object result)
 * CadQuery 0.5.2 
 
 <<<

@@ -137,7 +137,7 @@ def getListOfNumbers(string):
 
 ###################################################################
 # close_CQ_Example()  maui
-#	Function to close CQ Example and restore "
+#   Function to close CQ Example and restore "
 #   "Report view" "Python console" "Combo View"
 ###################################################################
 def close_CQ_Example(App, Gui):
@@ -166,7 +166,7 @@ def close_CQ_Example(App, Gui):
 
 ###################################################################
 # FuseObjs_wColors()  maui
-#	Function to fuse two objects together.
+#   Function to fuse two objects together.
 ###################################################################
 def FuseObjs_wColors(App, Gui,
                            docName, part1, part2, keepOriginals=False):
@@ -178,21 +178,21 @@ def FuseObjs_wColors(App, Gui,
     App.ActiveDocument=App.getDocument(docName)
     Gui.ActiveDocument=Gui.getDocument(docName)
     App.activeDocument().addObject("Part::MultiFuse","Fusion")
-    App.activeDocument().Fusion.Shapes = [App.ActiveDocument.getObject(part1), App.ActiveDocument.getObject(part2)]
-    Gui.ActiveDocument.Fusion.ShapeColor=Gui.ActiveDocument.getObject(part1).ShapeColor
-    Gui.ActiveDocument.Fusion.DisplayMode=Gui.ActiveDocument.getObject(part1).DisplayMode
-    App.ActiveDocument.recompute()
-
-    App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
+    App.activeDocument().Fusion.Shapes = [App.activeDocument().getObject(part1),App.activeDocument().getObject(part2),]
+    Gui.activeDocument().getObject(part1).Visibility=False
+    Gui.activeDocument().getObject(part2).Visibility=False
+    Gui.ActiveDocument.Fusion.ShapeColor=Gui.activeDocument().getObject(part1).ShapeColor
+    Gui.ActiveDocument.Fusion.DisplayMode=Gui.activeDocument().getObject(part1).DisplayMode
     App.ActiveDocument.ActiveObject.Label=docName
-    fused_obj = App.ActiveDocument.ActiveObject
-
-    Gui.ActiveDocument.ActiveObject.ShapeColor=Gui.ActiveDocument.Fusion.ShapeColor
-    Gui.ActiveDocument.ActiveObject.LineColor=Gui.ActiveDocument.Fusion.LineColor
-    Gui.ActiveDocument.ActiveObject.PointColor=Gui.ActiveDocument.Fusion.PointColor
-    Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.ActiveDocument.Fusion.DiffuseColor
     App.ActiveDocument.recompute()
-
+    
+    fusedObj = App.ActiveDocument.ActiveObject
+    SimpleCopy_wColors(fusedObj)
+    FreeCAD.ActiveDocument.removeObject(fusedObj.Name)
+    App.getDocument(docName).removeObject(part1)
+    App.getDocument(docName).removeObject(part2)
+    fused_obj = App.ActiveDocument.ActiveObject
+    
     ## ## TBD refine Shape to reduce size maui
     ## App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape.removeSplitter()
     ## App.ActiveDocument.ActiveObject.Label=App.ActiveDocument.Fusion.Label
@@ -206,18 +206,30 @@ def FuseObjs_wColors(App, Gui,
     ## App.ActiveDocument.ActiveObject.Label=docName
     #######################################################
     # Remove the part1 part2 objects
-    if not keepOriginals:
-        App.getDocument(docName).removeObject(part1)
-        App.getDocument(docName).removeObject(part2)
-
-    # Remove the fusion itself
-    App.getDocument(docName).removeObject("Fusion")
-    ## App.getDocument(docName).removeObject("Fusion001")
 
     return fused_obj
+    
+###################################################################
+# SimpleCopy_wColors()  maui
+#   Function to make a simple copy with colors
+###################################################################
+def SimpleCopy_wColors(obj):
+
+    s=obj.Shape
+    FreeCAD.ActiveDocument.addObject('Part::Feature',obj.Label+"_cp").Shape=s
+    FreeCADGui.ActiveDocument.ActiveObject.ShapeColor=FreeCADGui.ActiveDocument.getObject(obj.Name).ShapeColor
+    FreeCADGui.ActiveDocument.ActiveObject.LineColor=FreeCADGui.ActiveDocument.getObject(obj.Name).LineColor
+    FreeCADGui.ActiveDocument.ActiveObject.PointColor=FreeCADGui.ActiveDocument.getObject(obj.Name).PointColor
+    FreeCADGui.ActiveDocument.ActiveObject.DiffuseColor=FreeCADGui.ActiveDocument.getObject(obj.Name).DiffuseColor
+    FreeCADGui.ActiveDocument.ActiveObject.Transparency=FreeCADGui.ActiveDocument.getObject(obj.Name).Transparency
+    new_label=obj.Label+'_cp'
+    FreeCAD.ActiveDocument.ActiveObject.Label=new_label
+    FreeCAD.ActiveDocument.recompute()
+
+    
 ###################################################################
 # FuseObjs_wColors()  poeschlr
-#	Function to fuse multible objects together.
+#   Function to fuse multible objects together.
 ###################################################################
 def multiFuseObjs_wColors(App, Gui, docName, objs, keepOriginals=False):
 
@@ -249,13 +261,16 @@ def multiFuseObjs_wColors(App, Gui, docName, objs, keepOriginals=False):
             App.getDocument(docName).removeObject(o.Name)
 
     # Remove the fusion itself
-    App.getDocument(docName).removeObject("Fusion")
+    fusedObj = App.ActiveDocument.ActiveObject
+    SimpleCopy_wColors(fusedObj)
+    FreeCAD.ActiveDocument.removeObject(fusedObj.Name)
+    fused_obj = App.ActiveDocument.ActiveObject
 
     return fused_obj
 
 ###################################################################
 # FuseObjs_wColors()  poeschlr
-#	Function to fuse multible objects together.
+#   Function to fuse multible objects together.
 ###################################################################
 def multiFuseObjs_wColors(App, Gui, docName, objs, keepOriginals=False):
 
@@ -293,7 +308,7 @@ def multiFuseObjs_wColors(App, Gui, docName, objs, keepOriginals=False):
 
 ###################################################################
 # FuseObjs_wColors_naming()  maui
-#	Function to fuse two objects together.
+#   Function to fuse two objects together.
 ###################################################################
 def FuseObjs_wColors_naming(App, Gui,
                            docName, part1, part2, name, keepOriginals=False):
@@ -335,16 +350,43 @@ def FuseObjs_wColors_naming(App, Gui,
     if not keepOriginals:
         App.getDocument(docName).removeObject(part1)
         App.getDocument(docName).removeObject(part2)
-
     # Remove the fusion itself
     App.getDocument(docName).removeObject("Fusion")
     ## App.getDocument(docName).removeObject("Fusion001")
 
     return 0
 
+def RmvSubTree(objs):
+    def addsubobjs(obj,toremoveset):
+        toremove.add(obj)
+        if hasattr(obj,'OutList'):
+            for subobj in obj.OutList:
+                addsubobjs(subobj,toremoveset)
+    import FreeCAD
+    toremove=set()
+    for obj in objs:
+        addsubobjs(obj,toremove)
+    checkinlistcomplete =False
+    while not checkinlistcomplete:
+        for obj in toremove:
+            if (obj not in objs) and (frozenset(obj.InList) - toremove):
+                toremove.remove(obj)
+                break
+        else:
+            checkinlistcomplete = True
+    for obj in toremove:
+        try:
+            obj.Document.removeObject(obj.Name)
+        except:
+            pass
+###
+
+
+
+
 ###################################################################
 # CutObjs_wColors()  maui
-#	Function to fuse two objects together.
+#   Function to fuse two objects together.
 ###################################################################
 def CutObjs_wColors(App, Gui,
                            docName, part1, part2):
@@ -359,31 +401,24 @@ def CutObjs_wColors(App, Gui,
     obj1=App.ActiveDocument.getObject(part1)
     obj2=App.ActiveDocument.getObject(part2)
     App.activeDocument().addObject("Part::Cut","Cut")
-
-    App.activeDocument().Cut.Base = obj1
-    App.activeDocument().Cut.Tool = obj2
-    #Gui.activeDocument().getObject(objs[0].Name).Visibility=False
-    #Gui.activeDocument().getObject(objs[2].Name).Visibility=False
-    #Gui.ActiveDocument.Cut.ShapeColor=Gui.ActiveDocument.Shape0_0403661773302.ShapeColor
-    #Gui.ActiveDocument.Cut.DisplayMode=Gui.ActiveDocument.Shape0_0403661773302.DisplayMode
+    App.activeDocument().Cut.Base = App.activeDocument().getObject(obj1.Name)
+    App.activeDocument().Cut.Tool = App.activeDocument().getObject(obj2.Name)
     App.ActiveDocument.recompute()
-
-    ### App.ActiveDocument.addObject('Part::Feature','Fusion').Shape=App.ActiveDocument.Fusion.Shape
-    App.ActiveDocument.ActiveObject.Label=docName
-
-    # Remove the part1 part2 objects
+    cutObj = App.ActiveDocument.ActiveObject  #App.activeDocument().getObject('Cut')
+    SimpleCopy_wColors(cutObj)
+    cut_obj = App.ActiveDocument.ActiveObject
+    FreeCAD.ActiveDocument.removeObject(cutObj.Name)
     App.getDocument(docName).removeObject(part1)
     App.getDocument(docName).removeObject(part2)
-
-    # Remove the fusion itself
-    #App.getDocument(docName).removeObject("Fusion")
-    ## App.getDocument(docName).removeObject("Fusion001")
+    App.ActiveDocument.recompute()
+    #RmvSubTree([FreeCAD.ActiveDocument.getObject(cutObj.Name)])
+    App.ActiveDocument.ActiveObject.Label=docName
 
     return 0
 
 ###################################################################
 # GetListOfObjects()  maui
-#	Function to fuse two objects together.
+#   Function to fuse two objects together.
 ###################################################################
 def GetListOfObjects(App, docName):
 
@@ -399,7 +434,7 @@ def GetListOfObjects(App, docName):
 
 ###################################################################
 # Color_Objects()  maui
-#	Function to color objects.
+#   Function to color objects.
 ###################################################################
 def Color_Objects(Gui,obj,color):
 
@@ -417,7 +452,7 @@ def Color_Objects(Gui,obj,color):
 
 ###################################################################
 # restore_Main_Tools()  maui
-#	Function to restore
+#   Function to restore
 #   "Report view" "Python console" "Combo View"
 ###################################################################
 def restore_Main_Tools():
@@ -438,7 +473,7 @@ def restore_Main_Tools():
 
 ###################################################################
 # z_RotateObject()  maui
-#	Function to z-rotate an object
+#   Function to z-rotate an object
 #
 ###################################################################
 def z_RotateObject(doc, rot):
@@ -452,7 +487,7 @@ def z_RotateObject(doc, rot):
 
 ###################################################################
 # exportSTEP()  maui
-#	Function to Export to STEP
+#   Function to Export to STEP
 #
 ###################################################################
 def exportSTEP(doc,modelName, dir, objectToExport=None):
@@ -480,7 +515,7 @@ def exportSTEP(doc,modelName, dir, objectToExport=None):
 
 ###################################################################
 # exportVRML()  maui
-#	Function to Export to VRML
+#   Function to Export to VRML
 #
 ###################################################################
 def exportVRML(doc,modelName,scale,dir):
@@ -525,7 +560,7 @@ def exportVRML(doc,modelName,scale,dir):
 
 ###################################################################
 # saveFCdoc()  maui
-#	Function to save in Native FreeCAD format the doc
+#   Function to save in Native FreeCAD format the doc
 #
 ###################################################################
 def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
@@ -565,7 +600,7 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
 
 ###################################################################
 # checkRequirements()  maui
-#	Function to check FC and CQ minimum versions
+#   Function to check FC and CQ minimum versions
 #
 ###################################################################
 def checkRequirements(cq):
