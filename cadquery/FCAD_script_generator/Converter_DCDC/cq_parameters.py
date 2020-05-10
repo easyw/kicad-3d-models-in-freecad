@@ -260,6 +260,29 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
+    'Converter_DCDC_Murata_MEE1SxxxxSC_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_Murata_MEE1SxxxxSC_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 11.53,  # Package length
+        W  = 6.1,  # Package width
+        H  = 10.0,  # Package height
+        A1 = 0.02,  # Package board separation
+        rim = (0.4, 0.4, 0.4), # No rim
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 4.1), ('rect', 2.54, 0.0, 0.5, 0.25, 4.1), ('rect', 5.08, 0.0, 0.5, 0.25, 4.1), ('rect', 7.62, 0.0, 0.5, 0.25, 4.1)),  # Pin placement
+        pin1corner = (-2.08, -4.97),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = -90,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
     'Converter_DCDC_Murata_MEE3SxxxxSC_THT': Params(   # ModelName
         #
         #
