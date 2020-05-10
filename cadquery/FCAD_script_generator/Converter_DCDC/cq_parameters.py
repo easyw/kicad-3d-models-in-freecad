@@ -1,6 +1,5 @@
-
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 # This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
 #
@@ -55,7 +54,6 @@ Params = namedtuple_with_defaults("Params", [
 ])
 
 all_params = {
-
     'Converter_DCDC_Cincon_EC5BExx_Single_THT': Params(   # ModelName
         #
         #
@@ -78,7 +76,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Cincon_EC5BExx_Dual_THT': Params(   # ModelName
         #
@@ -103,7 +100,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Cincon_EC6Cxx_Single_THT': Params(   # ModelName
         #
         #
@@ -125,7 +121,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Cincon_EC6Cxx_Dual-Triple_THT': Params(   # ModelName
         #
@@ -150,7 +145,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Bothhand_CFUSxxxx_THT': Params(   # ModelName
         #
         #
@@ -173,7 +167,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Bothhand_CFUSxxxxEH_THT': Params(   # ModelName
         #
@@ -198,7 +191,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Bothhand_CFUDxxxx_THT': Params(   # ModelName
         #
         #
@@ -221,7 +213,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_MeanWell_NID30_THT': Params(   # ModelName
         #
@@ -246,7 +237,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_MeanWell_NID60_THT': Params(   # ModelName
         #
         #
@@ -270,6 +260,28 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
+    'Converter_DCDC_Murata_MEE3SxxxxSC_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_Murata_MEE3SxxxxSC_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 14.15,  # Package length
+        W  = 8.15,  # Package width
+        H  = 10.15,  # Package height
+        A1 = 0.02,  # Package board separation
+        rim = (0.4, 0.4, 0.4), # No rim
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 4.1), ('rect', 2.54, 0.0, 0.5, 0.25, 4.1), ('rect', 5.08, 0.0, 0.5, 0.25, 4.1), ('rect', 7.62, 0.0, 0.5, 0.25, 4.1)),  # Pin placement
+        pin1corner = (-3.265, -6.925),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = -90,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        ),
 
     'Converter_DCDC_Murata_NCS1SxxxxSC_THT': Params(   # ModelName
         #
@@ -294,7 +306,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Murata_CRE1xxxxxx3C_THT': Params(   # ModelName
         #
         #
@@ -317,7 +328,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Murata_CRE1xxxxxxDC_THT': Params(   # ModelName
         #
@@ -342,7 +352,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Murata_CRE1xxxxxxSC_THT': Params(   # ModelName
         #
         #
@@ -365,7 +374,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Murata_NMAxxxxDC_THT': Params(   # ModelName
         #
@@ -390,7 +398,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_Murata_NMAxxxxSC_THT': Params(   # ModelName
         #
         #
@@ -412,7 +419,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_Murata_NXE2SxxxxMC_THT': Params(   # ModelName
         #
@@ -460,7 +466,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_RECOM_R-78E-0.5_THT': Params(   # ModelName
         #
         #
@@ -483,7 +488,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_RECOM_R-78HB-0.5_THT': Params(   # ModelName
         #
@@ -508,7 +512,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_RECOM_R-78S-0.1_THT': Params(   # ModelName
         #
         #
@@ -531,7 +534,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_RECOM_R-78HB-0.5L_THT': Params(   # ModelName
         #
@@ -556,7 +558,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_RECOM_R5xxxDA_THT': Params(   # ModelName
         #
         #
@@ -579,7 +580,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_RECOM_R5xxxPA_THT': Params(   # ModelName
         #
@@ -604,7 +604,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TMR-1SM_SMD': Params(   # ModelName
         #
         #
@@ -627,7 +626,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_TRACO_TMR-1-xxxx_Single_THT': Params(   # ModelName
         #
@@ -652,7 +650,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TMR-1-xxxx_Dual_THT': Params(   # ModelName
         #
         #
@@ -675,7 +672,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_TRACO_TMR-xxxx_THT': Params(   # ModelName
         #
@@ -700,7 +696,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TSR-1_THT': Params(   # ModelName
         #
         #
@@ -723,7 +718,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_TRACO_TEN10-xxxx_THT': Params(   # ModelName
         #
@@ -748,7 +742,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TEN10-xxxx_Single_THT': Params(   # ModelName
         #
         #
@@ -771,7 +764,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_TRACO_TEN10-xxxx_Dual_THT': Params(   # ModelName
         #
@@ -796,7 +788,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TEN20-xxxx_THT': Params(   # ModelName
         #
         #
@@ -819,7 +810,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_TRACO_TEN20-xxxx-N4_THT': Params(   # ModelName
         #
@@ -844,7 +834,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TEN20-xxxx_Single_THT': Params(   # ModelName
         #
         #
@@ -868,7 +857,6 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-
     'Converter_DCDC_TRACO_TEN20-xxxx_Dual_THT': Params(   # ModelName
         #
         #
@@ -891,7 +879,6 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 
     'Converter_DCDC_XP_POWER_JTExxxxDxx_THT': Params(   # ModelName
         #
@@ -1239,5 +1226,4 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
-
 }
