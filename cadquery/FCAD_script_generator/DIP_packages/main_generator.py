@@ -334,7 +334,7 @@ def make_pins_tht(params, type, modelName):
         # create other pins (except last one)
         pinsL.append(pin2)
         pinsR.append(pin2.translate((0,0,0)))
-        for i in range(2,npins/2-1):
+        for i in range(2,npins//2-1):
             pin_i = pin2.translate((-e*(i-1),0,0))
             pinsL.append(pin_i)
             pinsR.append(pin_i.translate((0,0,0)))
@@ -381,7 +381,7 @@ def make_pins_tht(params, type, modelName):
     for ei in excludepins:
         tts = "excludepins " + str(ei) + "\r\n"
         FreeCAD.Console.PrintMessage(tts)
-    for i in range(0, npins/2):
+    for i in range(0, npins//2):
         AddPinLeft = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -391,7 +391,7 @@ def make_pins_tht(params, type, modelName):
             FreeCAD.Console.PrintMessage(tts)
             pinsLNew.append(pinsL[i])
 
-    for i in range(npins/2, npins):
+    for i in range(npins//2, npins):
         AddPinRight = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -399,7 +399,7 @@ def make_pins_tht(params, type, modelName):
         if (AddPinRight):
             tts = "Adding to pinsRNew " + str(i - (npins/2)) + "\r\n"
             FreeCAD.Console.PrintMessage(tts)
-            pinsRNew.append(pinsR[i - (npins/2)])
+            pinsRNew.append(pinsR[i - (npins//2)])
 
     # union all pins
     pinsLT = union_all(pinsLNew)
@@ -510,7 +510,7 @@ def make_pins_smd(params, type, modelName):
         # create other pins (except last one)
         pinsL.append(pin2)
         pinsR.append(pin2.translate((0,0,0)))
-        for i in range(2,npins/2-1):
+        for i in range(2,npins//2-1):
             pin_i = pin2.translate((-e*(i-1),0,0))
             pinsL.append(pin_i)
             pinsR.append(pin_i.translate((0,0,0)))
@@ -557,7 +557,7 @@ def make_pins_smd(params, type, modelName):
     for ei in excludepins:
         tts = "excludepins " + str(ei) + "\r\n"
         FreeCAD.Console.PrintMessage(tts)
-    for i in range(0, npins/2):
+    for i in range(0, npins//2):
         AddPinLeft = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -567,7 +567,7 @@ def make_pins_smd(params, type, modelName):
             FreeCAD.Console.PrintMessage(tts)
             pinsLNew.append(pinsL[i])
 
-    for i in range(npins/2, npins):
+    for i in range(npins//2, npins):
         AddPinRight = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -575,7 +575,7 @@ def make_pins_smd(params, type, modelName):
         if (AddPinRight):
             tts = "Adding to pinsRNew " + str(i - (npins/2)) + "\r\n"
             FreeCAD.Console.PrintMessage(tts)
-            pinsRNew.append(pinsR[i - (npins/2)])
+            pinsRNew.append(pinsR[i - (npins//2)])
 
     # union all pins
     pinsLT = union_all(pinsLNew)
