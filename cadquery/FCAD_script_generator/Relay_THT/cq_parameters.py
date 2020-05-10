@@ -1,4 +1,3 @@
-
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
@@ -88,7 +87,7 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
-    
+
     'Relay_SPST_SANYOU_SRD_Series_Form_A': Params(   # ModelName
         #
         # http://www.sanyourelay.ca/public/products/pdf/SRD.pdf
@@ -113,7 +112,7 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
-    
+
     'Relay_SPST_SANYOU_SRD_Series_Form_B': Params(   # ModelName
         #
         # http://www.sanyourelay.ca/public/products/pdf/SRD.pdf
@@ -138,7 +137,7 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
-    
+
     'Relay_SPDT_SANYOU_SRD_Series_Form_C': Params(   # ModelName
         #
         # http://www.sanyourelay.ca/public/products/pdf/SRD.pdf
@@ -163,7 +162,7 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
-    
+
     'Relay_SPDT_Omron-G5LE-1': Params(   # ModelName
         #
         # http://www.sanyourelay.ca/public/products/pdf/SRD.pdf
@@ -188,6 +187,7 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
+
     'Relay_DPDT_Omron_G2RL': Params(   # ModelName
         #
         # https://omronfs.omron.com/en_US/ecb/products/pdf/en-g2rl.pdf
@@ -212,5 +212,29 @@ all_params = {
         pin_color_key      = 'metal grey pins', # Pin color
         dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
         ),
-}
 
+    'Relay_SPDT_Finder_36.11': Params(   # ModelName
+        #
+        # https://gfinder.findernet.com/public/attachments/36/EN/S36EN.pdf
+        #
+        modelName = 'Relay_SPDT_Finder_36.11',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 19.0,  # Package length
+        W  = 15.2,  # Package width
+        H  = 15.5,  # Package height
+        A1 = 0.02,   # Package board seperation
+        rim = (0.5, 0.5, 0.38),  # If a rim should be created at the bottom
+        pin = ((0.0, 0.0, 'rect', 0.3, 1.2), (2.0, 6.0, 'rect', 0.5, 0.5), (2.0, -6.0, 'rect', 0.5, 0.5), (14.2, 6.0, 'rect', 0.9, 0.5), (14.2, -6.0, 'rect', 0.9, 0.5)),  # Pin placement
+        pin1corner = (-1.4, -7.6),  # Left up corner relationsship to pin 1
+        pinpadh    = 3.5,           # Pin length, pad height
+        pinpadsize = 0.9,           # Pin diameter or pad size
+        show_top   = 0,             # If top should be visible or not
+        corner     = 'none',        # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,             # If belly of caseing should be round (or flat)
+        rotation   = 0,             # If belly of caseing should be round (or flat)
+        body_color_key     = 'white body',       # Body color
+        body_top_color_key = 'white body',       # Body top color
+        pin_color_key      = 'metal grey pins', # Pin color
+        dest_dir_prefix    = '../Relay_THT.3dshapes'  # Destination directory
+        ),
+}
