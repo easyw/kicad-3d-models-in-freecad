@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 # This is derived from a cadquery script for generating PDIP models in X3D format
 #
@@ -91,32 +91,59 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 
 #################################################################################################
 
-# Import cad_tools
-import cq_cad_tools
-# Reload tools
-reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
 
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
-    msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
-    reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
+        reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
+
+# Sphinx workaround #2
+try:
+    cq
+    checkRequirements(cq)
+except NameError:
+    cq = None
+#
+
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        importlib.reload (lib)
+
+
+# Import cad_tools
+import cq_cad_tools
+# Reload tools
+reload_lib(cq_cad_tools)
+# Explicitly load all needed functions
+from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
+ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ CutObjs_wColors, checkRequirements, runGeometryCheck
 
 #checking requirements
 checkRequirements(cq)
@@ -124,13 +151,13 @@ checkRequirements(cq)
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print("CQ 030 doesn't open example file")
 
-    
+
 import cq_parameters  # modules parameters
 from cq_parameters import *
 
-    
+
 # case_color = (0.1, 0.1, 0.1)
 # pins_color = (0.9, 0.9, 0.9)
 #case_color = (50, 50, 50)
@@ -162,7 +189,7 @@ def make_case(params, type, modelName):
     e = params.e    # pin center to center distance (pitch)
 
     npins = params.npins  # number of pins
-    
+
     corner = params.corner
     excludepins = params.excludepins
 
@@ -177,8 +204,8 @@ def make_case(params, type, modelName):
 
     ti_r = 0.75     # top indicator radius
     ti_d = 0.5      # top indicator depth
-   
-    
+
+
     the = 12.0      # body angle in degrees
     tb_s = 0.15     # top part of body is that much smaller
 
@@ -243,7 +270,7 @@ def make_pins_tht(params, type, modelName):
     e = params.e    # pin center to center distance (pitch)
 
     npins = params.npins  # number of pins
-    
+
     corner = params.corner
     excludepins = params.excludepins
 
@@ -287,7 +314,7 @@ def make_pins_tht(params, type, modelName):
 
     pinsL = [pin]
     pinsR = [pin.translate((0,0,0))]
-	
+
     if npins/2>2:
         # draw the 2nd pin (regular pin shape)
         x = e*(npins/4.-0.5-1) # center x position of 2nd pin
@@ -296,7 +323,7 @@ def make_pins_tht(params, type, modelName):
             line(-b/4.,-b).line(-b/2.,0).line(-b/4.,b).line(0,L-b).\
             line(-(b1-b)/2.,0).line(0,ty).\
             close().extrude(c)
-    
+
         # draw the top part of the pin
         pin2 = pin2.faces(">Z").workplane().center(0,-E/4.).rect(b1,-E/2.).extrude(-c)
         if (corner == CORNER_CHAMFER_TYPE):
@@ -307,11 +334,11 @@ def make_pins_tht(params, type, modelName):
         # create other pins (except last one)
         pinsL.append(pin2)
         pinsR.append(pin2.translate((0,0,0)))
-        for i in range(2,npins/2-1):
+        for i in range(2,npins//2-1):
             pin_i = pin2.translate((-e*(i-1),0,0))
             pinsL.append(pin_i)
             pinsR.append(pin_i.translate((0,0,0)))
-			
+
     # create last pin (mirrored 1st pin)
     x = -e*(npins/4.-0.5)
     pinl = cq.Workplane("XZ", (x, E/2., 0)).\
@@ -328,7 +355,7 @@ def make_pins_tht(params, type, modelName):
 
     pinsL.append(pinl)
     pinsR.append(pinl.translate((0,0,0)))
-	
+
 #    FreeCAD.Console.PrintMessage("\r\n\r\n")
 #    ttts = "pins = " + str(len(pins)) + "\r\n"
 #    FreeCAD.Console.PrintMessage(ttts)
@@ -352,9 +379,9 @@ def make_pins_tht(params, type, modelName):
     tts = "len(pinsR) " + str(len(pinsR)) + "\r\n"
     FreeCAD.Console.PrintMessage(tts)
     for ei in excludepins:
-		tts = "excludepins " + str(ei) + "\r\n"
-		FreeCAD.Console.PrintMessage(tts)
-    for i in range(0, npins/2):
+        tts = "excludepins " + str(ei) + "\r\n"
+        FreeCAD.Console.PrintMessage(tts)
+    for i in range(0, npins//2):
         AddPinLeft = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -364,7 +391,7 @@ def make_pins_tht(params, type, modelName):
             FreeCAD.Console.PrintMessage(tts)
             pinsLNew.append(pinsL[i])
 
-    for i in range(npins/2, npins):
+    for i in range(npins//2, npins):
         AddPinRight = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -372,8 +399,8 @@ def make_pins_tht(params, type, modelName):
         if (AddPinRight):
             tts = "Adding to pinsRNew " + str(i - (npins/2)) + "\r\n"
             FreeCAD.Console.PrintMessage(tts)
-            pinsRNew.append(pinsR[i - (npins/2)])
-		
+            pinsRNew.append(pinsR[i - (npins//2)])
+
     # union all pins
     pinsLT = union_all(pinsLNew)
     pinsRT = union_all(pinsRNew)
@@ -385,7 +412,7 @@ def make_pins_tht(params, type, modelName):
     #mvX = (npins*e/4+e/2)
     #mvY = (E-c)/2
     #pins = pins.translate ((-mvX,-mvY,0))
-    
+
     return (pinsT)
 
 
@@ -402,7 +429,7 @@ def make_pins_smd(params, type, modelName):
     e = params.e    # pin center to center distance (pitch)
 
     npins = params.npins  # number of pins
-    
+
     corner = params.corner
     excludepins = params.excludepins
 
@@ -425,11 +452,11 @@ def make_pins_smd(params, type, modelName):
             edges(BS((1000, E/2.-c-0.001, ty-c-0.001), (-1000, E/2.-c+0.001, ty-c+0.001))).chamfer(c/0.18).\
             edges(BS((1000, E/2.-0.001, ty-0.001), (-1000, E/2.+0.001, ty+0.001))).chamfer(6.*c)
 
-            
+
     # draw 1st pin
     x = e*(npins/4.-0.5) # center x position of first pin
     ty = (A2+c)/2.+A1 # top point (max z) of pin
-	
+
     # draw the side part of the pin
     pin = cq.Workplane("XZ", (x, E/2., 0)). \
         moveTo(-b, 0). \
@@ -458,7 +485,7 @@ def make_pins_smd(params, type, modelName):
     pinsR = [pin.translate((0,0,0))]
 #
 #
-#        
+#
     if npins/2>2:
         # draw the 2nd pin (regular pin shape)
         x = e*(npins/4.-0.5-1) # center x position of 2nd pin
@@ -468,7 +495,7 @@ def make_pins_smd(params, type, modelName):
             lineTo(b, ty). \
             lineTo(b, 0). \
             close().extrude(c)
-    
+
         # draw the top part of the pin
         pin2 = pin2.faces(">Z").workplane().center(0, -(4. * b) + c/2.).rect(2*b, 8 * b).extrude(-c)
 
@@ -483,12 +510,12 @@ def make_pins_smd(params, type, modelName):
         # create other pins (except last one)
         pinsL.append(pin2)
         pinsR.append(pin2.translate((0,0,0)))
-        for i in range(2,npins/2-1):
+        for i in range(2,npins//2-1):
             pin_i = pin2.translate((-e*(i-1),0,0))
             pinsL.append(pin_i)
             pinsR.append(pin_i.translate((0,0,0)))
 
-        
+
     # create last pin (mirrored 1st pin)
     x = -e*(npins/4.-0.5)
     pinl = cq.Workplane("XZ", (x, E/2., 0)). \
@@ -510,7 +537,7 @@ def make_pins_smd(params, type, modelName):
     pinsL.append(pinl)
     pinsR.append(pinl.translate((0,0,0)))
 
-    
+
     def union_all(objects):
         o = objects[0]
         for i in range(1,len(objects)):
@@ -528,9 +555,9 @@ def make_pins_smd(params, type, modelName):
     tts = "len(pinsR) " + str(len(pinsR)) + "\r\n"
     FreeCAD.Console.PrintMessage(tts)
     for ei in excludepins:
-		tts = "excludepins " + str(ei) + "\r\n"
-		FreeCAD.Console.PrintMessage(tts)
-    for i in range(0, npins/2):
+        tts = "excludepins " + str(ei) + "\r\n"
+        FreeCAD.Console.PrintMessage(tts)
+    for i in range(0, npins//2):
         AddPinLeft = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -540,7 +567,7 @@ def make_pins_smd(params, type, modelName):
             FreeCAD.Console.PrintMessage(tts)
             pinsLNew.append(pinsL[i])
 
-    for i in range(npins/2, npins):
+    for i in range(npins//2, npins):
         AddPinRight = True
         for ei in excludepins:
             if ((i + 1) == ei):
@@ -548,8 +575,8 @@ def make_pins_smd(params, type, modelName):
         if (AddPinRight):
             tts = "Adding to pinsRNew " + str(i - (npins/2)) + "\r\n"
             FreeCAD.Console.PrintMessage(tts)
-            pinsRNew.append(pinsR[i - (npins/2)])
-		
+            pinsRNew.append(pinsR[i - (npins//2)])
+
     # union all pins
     pinsLT = union_all(pinsLNew)
     pinsRT = union_all(pinsRNew)
@@ -576,19 +603,19 @@ def make_one(variant, filename, type):
 ##               filename)
     print("Done generating DIL %s variant." % variant)
 
-    
+
 def make_3D_model(models_dir, variant):
-                
+
     LIST_license = ["",]
     modelName = all_params[variant].modelName
-        
+
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
 
     case = make_case(all_params[variant], type, modelName)
-    
+
     if (all_params[variant].type == CASE_THT_TYPE):
         pins = make_pins_tht(all_params[variant], type, modelName)
 
@@ -609,7 +636,7 @@ def make_3D_model(models_dir, variant):
     show(pins)
     #show(pinmark)
     #stop
-    
+
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
 
@@ -703,7 +730,7 @@ def make_3D_model(models_dir, variant):
 
     #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
 
-    
+
 def run():
     ## # get variant names from command line
 
@@ -768,29 +795,29 @@ if __name__ == "__main__" or __name__ == "main_generator":
     #stop
 
     buildAllSMD = 0
-    
+
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building DIP-8_W7.62mm')
         model_to_build='DIP-8_W7.62mm'
     else:
         model_to_build=sys.argv[2]
-    
+
     if model_to_build == "all":
         variants = all_params.keys()
-    
+
     if model_to_build == "allsmd":
         variants = all_params.keys()
         buildAllSMD = 1
     else:
         variants = [model_to_build]
-    
-    
+
+
     if (buildAllSMD == 1):
         for variant in variants:
             if (all_params[variant].type == CASE_SMD_TYPE):
                 FreeCAD.Console.PrintMessage('\r\n'+variant)
                 make_3D_model(models_dir, variant)
-    
+
     else:
         for variant in variants:
             FreeCAD.Console.PrintMessage('\r\n'+variant)
