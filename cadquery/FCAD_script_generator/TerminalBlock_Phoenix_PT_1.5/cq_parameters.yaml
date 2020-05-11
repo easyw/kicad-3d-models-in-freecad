@@ -1,0 +1,20 @@
+TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  pitch: 5.0
+  n: 2
+  height: 11.4
+  width: 8.3
+  backoffset: 4.0
+  pinsize: 1.0
+  pinshape: 'rect'
+  color: 'green'
+TerminalBlock_Phoenix_PT-1,5-3-5.0-H_1x03_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  pitch: 5.0
+  n: 3
+  height: 11.4
+  width: 8.3
+  backoffset: 4.0
+  pinsize: 1.0
+  pinshape: 'rect'
+  color: 'green'
