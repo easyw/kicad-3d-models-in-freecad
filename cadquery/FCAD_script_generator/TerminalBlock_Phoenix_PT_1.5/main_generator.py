@@ -187,16 +187,43 @@ except: # catch *all* exceptions
     # case = case.cut(pins)
     # return (case, pins)
 
-def make_pin(model, all_params, i):
+def make_pin(model, all_params, i, bs):
     # make pins
-    pinsize = all_params[model]['pinsize']
-    pin_l = 3.50
-    if (all_params[model]['pinshape'] == "rect"):
-        pin = cq.Workplane("XY").workplane().rect(pinsize,pinsize).extrude(-1*pin_l)
+    pinsize = bs['pin_size']
+    pinl = bs['pin_l']
+    if (bs['pin_shape'] == "rect"):
+        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().rect(pinsize,pinsize).extrude(-1*(pinl + bs['opening_z']))
     else:
-        pin = cq.Workplane("XY").workplane().circle(pinsize/2).extrude(-1*pin_l)
+        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().circle(pinsize/2).extrude(-1*(pinl + bs['opening_z']))
     pin = pin.translate((all_params[model]['pitch']*i,0,0))
     return pin
+    
+def get_bodystyle(model, all_params):
+
+    if 'bodystyle' in all_params[model]:
+        if all_params[model]['bodystyle'] in all_params['bodystyles']:
+            return all_params['bodystyles'][all_params[model]['bodystyle']]
+    
+    p = all_params[model]['pitch']
+    bsdefault = {
+        'chf' : False,
+        'chb' : False,
+        'opening_w' : p*0.8,
+        'opening_h' : p*0.8,
+        'opening_z' : 1.0,
+        'terminal_w' : p*0.8,
+        'terminal_h' : p*0.8,
+        'terminal_d' : p*0.8,
+        'terminal_hole' : 'circle',
+        'terminal_hole_r' : p*0.6,
+        'screw_dia' : p*0.8,
+        'screw_cross' : False,
+        'pin_shape' : 'circle',
+        'pin_size' : 1.0,
+        'pin_l' : 3.5
+        }    
+    return bsdefault
+    
 
 def make_part(model, all_params):
 
@@ -206,26 +233,68 @@ def make_part(model, all_params):
     n = all_params[model]['n']
     h = all_params[model]['height']
     bo = all_params[model]['backoffset']
- 
+
+    # bodystyle common feature definitions (might put in config later)
+    bs = get_bodystyle(model, all_params)
+    
     # calculate helper dimensions
     l = p * n
     
     # set fixed values (for later parameters)
-    chf_y = 0.55
-    chf_z = 4.20
-    chf_ins = 0.10
-    chb_y = 0.55
-    chb_z = 4.20
-    chb_ins = 0.10
+    screw_clearance = 0.05
     
-    # make body
+    # make base body (rectangle)
     body = cq.Workplane("YZ").workplane().rect(w, h, False).extrude(l)
+    
+    # add front nub for pt (has to happen first)
+    if all_params[model]['bodystyle'] == "phoenixpt5":
+        nub_h = 3.5
+        nub_w = 0.75
+        body = body.union(cq.Workplane("YZ",origin=(0,-1*nub_w,h-bs['chf_z']-nub_h)).rect(nub_w, nub_h, False).extrude(l).edges("<Y").edges("|X").fillet(nub_w*0.8))
+        
+    # common style features
+    for i in range(0,n): # per opening
+        xcl = p*(i+0.5)
+        #FreeCAD.Console.PrintMessage('Making cutout ' + str(i) + ' @ x=' + str(xcl) + '...\n')
+        body = body.cut(cq.Workplane("XZ",origin=(xcl,-100,bs['opening_z']+bs['opening_h']/2)).rect(bs['opening_w'], bs['opening_h']).extrude(-1*(100+w-bo+(bs['terminal_d']/2)))) # opening
+        body = body.cut(cq.Workplane("XY",origin=(xcl,w-bo,h)).circle(bs['screw_dia']/2).extrude(-1*(h-bs['opening_z']))) # screw hole
+        pinco_w = 2.2
+        body = body.cut(cq.Workplane("XZ",origin=(xcl,0,bs['opening_z']/2)).rect(pinco_w,bs['opening_z']).extrude(-1*(w-bo+pinco_w/2))) # slot for pin
+        if all_params[model]['bodystyle'] == "phoenixpt5":
+            body = body.cut(cq.Workplane("XY",origin=(xcl,-50,0)).rect(bs['opening_w'],100).extrude(h)) # clear out nub (anything forward of front face)
+            backhole_d = 2.2
+            backhole_h = 5.35
+            body = body.cut(cq.Workplane("XZ",origin=(xcl,w,backhole_h)).circle(backhole_d/2).extrude(w))
+  
+    
+    if bs['chf']: # front chamfer
+        FreeCAD.Console.PrintMessage('Making front chamfer...\n')
+        if bs['chf_ins'] > 0:
+            body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y']+bs['chf_ins'], h).lineTo(bs['chf_ins'],h-bs['chf_z']).lineTo(0,h-bs['chf_z']).close().extrude(l))
+        else:
+            body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y'], h).lineTo(0,h-bs['chf_z']).close().extrude(l))
+    if bs['chb']: # front chamfer
+        FreeCAD.Console.PrintMessage('Making back chamfer...\n')
+        if bs['chb_ins'] > 0:
+            body = body.cut(cq.Workplane("YZ").moveTo(w,h).lineTo(w-bs['chb_y']-bs['chb_ins'], h).lineTo(w-bs['chb_ins'],h-bs['chb_z']).lineTo(w,h-bs['chb_z']).close().extrude(l))
+        else:
+            body = body.cut(cq.Workplane("YZ").moveTo(w,h).lineTo(w-bs['chb_y'], h).lineTo(w,h-bs['chb_z']).close().extrude(l))
+
+    if all_params[model]['bodystyle'] == "phoenixpt5":
+        rib_w = 0.80
+        rib_h = 9.36
+        for i in range(1,n):
+            xcl = p*i
+            body = body.union(cq.Workplane("XZ",origin=(xcl,w,rib_h/2)).rect(rib_w,rib_h).extrude(bs['chb_y']))
+    
+    # position body
     body = body.translate((-0.5*p,-1*bo,0))
     
-    # make pins
-    pins = make_pin(model, all_params, 0)
+    #make pins
+    pins = make_pin(model, all_params, 0, bs)
     for i in range(1,n):
-        pins = pins.union(make_pin(model, all_params, i))
+        FreeCAD.Console.PrintMessage('Making pin ' + str(i) + '...\n')
+        pins = pins.union(make_pin(model, all_params, i, bs))
     
     return (body, pins)
 
@@ -278,6 +347,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
     for model in models:
         if not model in all_params.keys():
             FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'all_params', skipping.\n" % model)
+            continue
+        
+        if model == 'bodystyles':
             continue
 
         ModelName = model
@@ -371,7 +443,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         saveFCdoc(App, Gui, doc, ModelName,out_dir, False)
 
 
-        check_Model=True
+        check_Model=False
         if save_memory == True or check_Model==True:
             doc=FreeCAD.ActiveDocument
             FreeCAD.closeDocument(doc.Name)
