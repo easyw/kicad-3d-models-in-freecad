@@ -187,61 +187,105 @@ except: # catch *all* exceptions
     # case = case.cut(pins)
     # return (case, pins)
 
-def make_pin(model, all_params, i, bs):
-    # make pins
+screw_clearance = 0.10
+screw_t = 0.70
+screw_down = 0.20
+
+def make_pin(model, i, bs):
+
+    # make pin
     pinsize = bs['pin_size']
     pinl = bs['pin_l']
+    h = bs['height']
     if (bs['pin_shape'] == "rect"):
         pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().rect(pinsize,pinsize).extrude(-1*(pinl + bs['opening_z']))
     else:
         pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().circle(pinsize/2).extrude(-1*(pinl + bs['opening_z']))
-    pin = pin.translate((all_params[model]['pitch']*i,0,0))
+    
+    # make terminal
+    pin = pin.union(cq.Workplane("XY",origin=(0,0,bs['opening_z'])).rect(bs['opening_w'], bs['terminal_d']).extrude(bs['opening_h']))
+
+    # screw model
+    pin = pin.union(cq.Workplane("XY",origin=(0,0,bs['opening_z']+bs['opening_h'])).circle(bs['screw_dia']/2 - screw_clearance).extrude(h-bs['opening_h']-bs['opening_z']-screw_down))
+    pin = pin.cut(cq.Workplane("XY",origin=(0,0,h-screw_down)).rect(screw_t, bs['screw_dia']).extrude(-1*screw_t))
+    if bs['screw_cross']:
+        pin = pin.cut(cq.Workplane("XY",origin=(0,0,h-screw_down)).rect(bs['screw_dia']/2,screw_t).extrude(-1*screw_t))
+   
+    # make terminal hole
+    if bs['terminal_hole'] == 'rect':
+        pin = pin.cut(cq.Workplane("XZ",origin=(0,bs['terminal_d']/2,bs['terminal_hole_z'])).rect(bs['terminal_hole_w'],bs['terminal_hole_h']).extrude(bs['terminal_d']).edges("|Y").fillet(bs['terminal_hole_r']))
+    else:
+        pin = pin.cut(cq.Workplane("XZ",origin=(0,bs['terminal_d']/2,bs['terminal_hole_z'])).circle(bs['terminal_hole_d']).extrude(bs['terminal_d']))
+    
+    # move into position
+    pin = pin.translate((bs['pitch']*i,0,0))
+
     return pin
     
 def get_bodystyle(model, all_params):
 
     if 'bodystyle' in all_params[model]:
         if all_params[model]['bodystyle'] in all_params['bodystyles']:
-            return all_params['bodystyles'][all_params[model]['bodystyle']]
+            bs = all_params['bodystyles'][all_params[model]['bodystyle']]
+            # allow overrides in model def
+            for k in bs.keys():
+                if k in all_params[model]:
+                    bs[k] = all_params[model][k]
+        return bs
     
-    p = all_params[model]['pitch']
+    # not defined - pitch required to defined other values
+    if 'pitch' in all_params[model]:
+        p = all_params[model]['pitch']
+    else:
+        p = 5.0;
+    
     bsdefault = {
+        'pitch': p,
+        'height': 12,
+        'width' : 8,
         'chf' : False,
         'chb' : False,
         'opening_w' : p*0.8,
         'opening_h' : p*0.8,
         'opening_z' : 1.0,
-        'terminal_w' : p*0.8,
-        'terminal_h' : p*0.8,
         'terminal_d' : p*0.8,
         'terminal_hole' : 'circle',
-        'terminal_hole_r' : p*0.6,
+        'terminal_hole_d' : p*0.6,
         'screw_dia' : p*0.8,
         'screw_cross' : False,
         'pin_shape' : 'circle',
         'pin_size' : 1.0,
         'pin_l' : 3.5
         }    
+    #allow overrides again
+    for k in bsdefault.keys():
+        if k in all_params[model]:
+            bsdefault[k] = all_params[model][k]
     return bsdefault
-    
+
+dt_w = 0.71
+dt_l = 0.57
+dt_h = 4.30
+dt_s = 3.70
+        
+def make_dovetail_r(body):
+    return body.moveTo(0,dt_w/4).lineTo(dt_l,dt_w/2).lineTo(dt_l,-0.5*dt_w).lineTo(0,-0.25*dt_w).close().extrude(-1*dt_h)
+
 
 def make_part(model, all_params):
 
-    # get often-used params
-    p = all_params[model]['pitch']
-    w = all_params[model]['width']
-    n = all_params[model]['n']
-    h = all_params[model]['height']
-    bo = all_params[model]['backoffset']
-
-    # bodystyle common feature definitions (might put in config later)
+    # bodystyle defines series features/dimensions
     bs = get_bodystyle(model, all_params)
+    
+    # get often-used params
+    p = bs['pitch']
+    w = bs['width']
+    n = all_params[model]['n']
+    h = bs['height']
+    bo = bs['backoffset']
     
     # calculate helper dimensions
     l = p * n
-    
-    # set fixed values (for later parameters)
-    screw_clearance = 0.05
     
     # make base body (rectangle)
     body = cq.Workplane("YZ").workplane().rect(w, h, False).extrude(l)
@@ -259,7 +303,7 @@ def make_part(model, all_params):
         body = body.cut(cq.Workplane("XZ",origin=(xcl,-100,bs['opening_z']+bs['opening_h']/2)).rect(bs['opening_w'], bs['opening_h']).extrude(-1*(100+w-bo+(bs['terminal_d']/2)))) # opening
         body = body.cut(cq.Workplane("XY",origin=(xcl,w-bo,h)).circle(bs['screw_dia']/2).extrude(-1*(h-bs['opening_z']))) # screw hole
         pinco_w = 2.2
-        body = body.cut(cq.Workplane("XZ",origin=(xcl,0,bs['opening_z']/2)).rect(pinco_w,bs['opening_z']).extrude(-1*(w-bo+pinco_w/2))) # slot for pin
+        body = body.cut(cq.Workplane("XZ",origin=(xcl,0,bs['opening_z']/2)).rect(pinco_w,bs['opening_z']).extrude(-1*(w-bo+pinco_w/2)).edges(">Y").edges("|Z").fillet(pinco_w*0.45)) # slot for pin
         if all_params[model]['bodystyle'] == "phoenixpt5":
             body = body.cut(cq.Workplane("XY",origin=(xcl,-50,0)).rect(bs['opening_w'],100).extrude(h)) # clear out nub (anything forward of front face)
             backhole_d = 2.2
@@ -268,13 +312,13 @@ def make_part(model, all_params):
   
     
     if bs['chf']: # front chamfer
-        FreeCAD.Console.PrintMessage('Making front chamfer...\n')
+        #FreeCAD.Console.PrintMessage('Making front chamfer...\n')
         if bs['chf_ins'] > 0:
             body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y']+bs['chf_ins'], h).lineTo(bs['chf_ins'],h-bs['chf_z']).lineTo(0,h-bs['chf_z']).close().extrude(l))
         else:
             body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y'], h).lineTo(0,h-bs['chf_z']).close().extrude(l))
     if bs['chb']: # front chamfer
-        FreeCAD.Console.PrintMessage('Making back chamfer...\n')
+        #FreeCAD.Console.PrintMessage('Making back chamfer...\n')
         if bs['chb_ins'] > 0:
             body = body.cut(cq.Workplane("YZ").moveTo(w,h).lineTo(w-bs['chb_y']-bs['chb_ins'], h).lineTo(w-bs['chb_ins'],h-bs['chb_z']).lineTo(w,h-bs['chb_z']).close().extrude(l))
         else:
@@ -286,15 +330,19 @@ def make_part(model, all_params):
         for i in range(1,n):
             xcl = p*i
             body = body.union(cq.Workplane("XZ",origin=(xcl,w,rib_h/2)).rect(rib_w,rib_h).extrude(bs['chb_y']))
+        body = body.cut(make_dovetail_r(cq.Workplane("XY", origin=(0,w/2+0.5*dt_s,h))))
+        body = body.cut(make_dovetail_r(cq.Workplane("XY", origin=(0,w/2-0.5*dt_s,h))))
+        body = body.union(make_dovetail_r(cq.Workplane("XY", origin=(l,w/2+0.5*dt_s,h))))
+        body = body.union(make_dovetail_r(cq.Workplane("XY", origin=(l,w/2-0.5*dt_s,h))))       
     
     # position body
-    body = body.translate((-0.5*p,-1*bo,0))
+    body = body.translate((-0.5*p,-1*(w-bo),0))
     
     #make pins
-    pins = make_pin(model, all_params, 0, bs)
+    pins = make_pin(model, 0, bs)
     for i in range(1,n):
-        FreeCAD.Console.PrintMessage('Making pin ' + str(i) + '...\n')
-        pins = pins.union(make_pin(model, all_params, i, bs))
+        #FreeCAD.Console.PrintMessage('Making pin ' + str(i) + '...\n')
+        pins = pins.union(make_pin(model, i, bs))
     
     return (body, pins)
 
@@ -443,7 +491,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         saveFCdoc(App, Gui, doc, ModelName,out_dir, False)
 
 
-        check_Model=False
+        check_Model=True
         if save_memory == True or check_Model==True:
             doc=FreeCAD.ActiveDocument
             FreeCAD.closeDocument(doc.Name)

@@ -1,23 +1,85 @@
 TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal:
   source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
-  pitch: 5.0
   n: 2
-  height: 11.4
-  width: 8.3
-  backoffset: 4.0
-  color: 'green'
   bodystyle: 'phoenixpt5'
+
 TerminalBlock_Phoenix_PT-1,5-3-5.0-H_1x03_P5.00mm_Horizontal:
   source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
-  pitch: 5.0
   n: 3
-  height: 11.4
-  width: 8.3
-  backoffset: 4.0
-  color: 'green'
   bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-4-5.0-H_1x04_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 4
+  bodystyle: 'phoenixpt5'
+  
+TerminalBlock_Phoenix_PT-1,5-5-5.0-H_1x05_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 5
+  bodystyle: 'phoenixpt5'
+  
+TerminalBlock_Phoenix_PT-1,5-6-5.0-H_1x06_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 6
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-7-5.0-H_1x07_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 7
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-8-5.0-H_1x03_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 8
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-9-5.0-H_1x09_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 9
+  bodystyle: 'phoenixpt5'
+ 
+TerminalBlock_Phoenix_PT-1,5-10-5.0-H_1x10_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 10    
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-11-5.0-H_1x11_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 11    
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-12-5.0-H_1x12_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 12    
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-13-5.0-H_1x13_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 13   
+  bodystyle: 'phoenixpt5'
+  
+TerminalBlock_Phoenix_PT-1,5-14-5.0-H_1x14_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 14    
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-15-5.0-H_1x15_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 15    
+  bodystyle: 'phoenixpt5'
+
+TerminalBlock_Phoenix_PT-1,5-16-5.0-H_1x16_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 16    
+  bodystyle: 'phoenixpt5'
+
 bodystyles:
     phoenixpt5:
+        pitch: 5.0
+        height: 11.4
+        width: 8.3
+        backoffset: 4.0
+        color: 'green'
         chf: true
         chf_y: 0.53
         chf_z: 4.30
@@ -29,7 +91,6 @@ bodystyles:
         opening_w: 4.10
         opening_h: 5.70
         opening_z: 0.80
-        terminal_h: 5.70
         terminal_d: 4.60
         terminal_hole: 'rect'
         terminal_hole_w: 2.60
