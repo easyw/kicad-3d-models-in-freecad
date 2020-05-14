@@ -73,9 +73,83 @@ TerminalBlock_Phoenix_PT-1,5-16-5.0-H_1x16_P5.00mm_Horizontal:
   n: 16    
   bodystyle: 'phoenix_pt_5'
   lib: 'TerminalBlock_Phoenix'
+  
+  
+  
+  
 TerminalBlock_Phoenix_PT-1,5-2-3.5-H_1x02_P3.50mm_Horizontal:
   source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
   n: 2
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 3
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-4-3.5-H_1x04_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 4
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-5-3.5-H_1x05_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 5
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-6-3.5-H_1x06_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 6
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-7-3.5-H_1x07_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 7
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-8-3.5-H_1x08_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 8
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-9-3.5-H_1x09_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 9
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-10-3.5-H_1x10_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 10
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-11-3.5-H_1x11_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 11
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-12-3.5-H_1x12_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 12
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-13-3.5-H_1x13_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 13
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-14-3.5-H_1x14_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 14
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-15-3.5-H_1x15_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 15
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-16-3.5-H_1x16_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 16
   bodystyle: 'phoenix_pt_35'
   lib: 'TerminalBlock_Phoenix'
 
@@ -385,7 +459,7 @@ bodystyles:
     phoenix_pt_5:
         pitch: 5.0
         height: 11.4
-        width: 8.3
+        width: 8.25
         backoffset: 4.0
         endpadding: 0
         color: 'green'
@@ -424,8 +498,8 @@ bodystyles:
         source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
         pitch: 3.5
         height: 9.2
-        width: 7.6
-        backoffset: 4.0
+        width: 7.00
+        backoffset: 3.05
         endpadding: 0
         color: 'green'
         chf: true
@@ -530,7 +604,7 @@ bodystyles:
         key_vert: 'bottom'
         key_lat: 'front'
         key_w: 0.92
-        key_l: 0.74
+        key_l: -0.74
         key_h: 7.00
         key_off: 3.6
     phoenix_mkds_3_508:

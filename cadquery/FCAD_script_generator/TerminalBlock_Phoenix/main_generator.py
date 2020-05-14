@@ -308,6 +308,7 @@ def make_part(model, all_params):
         if 'phoenix_pt' in all_params[model]['bodystyle']:
             FreeCAD.Console.PrintMessage('  Cleaning nub...\n')
             body = body.cut(cq.Workplane("XY",origin=(xcl,-50,0)).rect(bs['opening_w'],100).extrude(h)) # clear out nub (anything forward of front face)
+        if all_params[model]['bodystyle'] == "phoenix_pt_5":
             backhole_d = 2.2
             backhole_h = 5.35
             FreeCAD.Console.PrintMessage('  Adding backhole...\n')
@@ -347,7 +348,7 @@ def make_part(model, all_params):
         else:
             body = body.cut(cq.Workplane("YZ",origin=(-1*ep,0,0)).moveTo(w,h).lineTo(w-bs['chb_y'], h).lineTo(w,h-bs['chb_z']).close().extrude(l+2*ep))
 
-    if all_params[model]['bodystyle'] == "phoenixpt5":
+    if all_params[model]['bodystyle'] == "phoenix_pt_5":
         FreeCAD.Console.PrintMessage('Making back ribs...\n')
         rib_w = 0.80
         rib_h = 9.36
