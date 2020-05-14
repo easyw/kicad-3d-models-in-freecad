@@ -28,7 +28,7 @@ TerminalBlock_Phoenix_PT-1,5-7-5.0-H_1x07_P5.00mm_Horizontal:
   n: 7
   bodystyle: 'phoenix_pt_5'
   lib: 'TerminalBlock_Phoenix'
-TerminalBlock_Phoenix_PT-1,5-8-5.0-H_1x03_P5.00mm_Horizontal:
+TerminalBlock_Phoenix_PT-1,5-8-5.0-H_1x08_P5.00mm_Horizontal:
   source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
   n: 8
   bodystyle: 'phoenix_pt_5'
