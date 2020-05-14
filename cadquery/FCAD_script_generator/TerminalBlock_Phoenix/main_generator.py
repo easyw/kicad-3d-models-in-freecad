@@ -45,11 +45,11 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make phoenix pt 3D models"
+__title__ = "make terminal block phoenix 3D models"
 __author__ = "maurice & Frank/Shack & grob6000"
-__Comment__ = 'make phoenix pt 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make termianl block phoenix 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.2 09/02/2017"
+___ver___ = "1.0.0 14/05/2020"
 
 # thanks to Frank Severinsen Shack for including vrml materials
 
