@@ -153,39 +153,7 @@ except NameError:
 try:
     close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
-    print ("CQ 030 doesn't open example file")
-
-# def make_chip(model, all_params):
-    # # dimensions for chip capacitors
-    # length = all_params[model]['length'] # package length
-    # width = all_params[model]['width'] # package width
-    # height = all_params[model]['height'] # package height
-
-    # pin_band = all_params[model]['pin_band'] # pin band
-    # pin_thickness = all_params[model]['pin_thickness'] # pin thickness
-    # if pin_thickness == 'auto':
-        # pin_thickness = pin_band/10.0
-
-    # edge_fillet = all_params[model]['edge_fillet'] # fillet of edges
-    # if edge_fillet == 'auto':
-        # edge_fillet = pin_thickness
-
-    # # Create a 3D box based on the dimension variables above and fillet it
-    # case = cq.Workplane("XY").workplane(offset=pin_thickness).\
-    # box(length-2*pin_band, width-2*pin_thickness, height-2*pin_thickness,centered=(True, True, False)). \
-    # edges("|X").fillet(edge_fillet)
-
-    # # Create a 3D box based on the dimension variables above and fillet it
-    # pin1 = cq.Workplane("XY").box(pin_band, width, height)
-    # pin1.edges("|X").fillet(edge_fillet)
-    # pin1=pin1.translate((-length/2+pin_band/2,0,height/2))
-    # pin2 = cq.Workplane("XY").box(pin_band, width, height)
-    # pin2.edges("|X").fillet(edge_fillet)
-    # pin2=pin2.translate((length/2-pin_band/2,0,height/2))
-    # pins = pin1.union(pin2)
-    # #body_copy.ShapeColor=result.ShapeColor
-    # case = case.cut(pins)
-    # return (case, pins)
+    print ("CQ doesn't open example file")
 
 screw_clearance = 0.10
 screw_t = 0.70
@@ -194,30 +162,46 @@ screw_down = 0.20
 def make_pin(model, i, bs):
 
     # make pin
-    pinsize = bs['pin_size']
+    pinsize = 1.0
+    px = 1.0
+    py = 1.0
+    if 'pin_size' in bs:
+        px = bs['pin_size']
+    if 'pin_sizex' in bs:
+        px = bs['pin_sizex']
+    if 'pin_sizey' in bs:
+        py = bs['pin_sizey']
     pinl = bs['pin_l']
     h = bs['height']
+    FreeCAD.Console.PrintMessage('  Making pin...\n')
     if (bs['pin_shape'] == "rect"):
-        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().rect(pinsize,pinsize).extrude(-1*(pinl + bs['opening_z']))
+        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().rect(px,py).extrude(-1*(pinl + bs['opening_z']))
     else:
-        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().circle(pinsize/2).extrude(-1*(pinl + bs['opening_z']))
+        pin = cq.Workplane("XY", origin=(0,0,bs['opening_z'])).workplane().circle(px/2).extrude(-1*(pinl + bs['opening_z']))
     
     # make terminal
+    FreeCAD.Console.PrintMessage('  Making terminal...\n')
     pin = pin.union(cq.Workplane("XY",origin=(0,0,bs['opening_z'])).rect(bs['opening_w'], bs['terminal_d']).extrude(bs['opening_h']))
 
     # screw model
-    pin = pin.union(cq.Workplane("XY",origin=(0,0,bs['opening_z']+bs['opening_h'])).circle(bs['screw_dia']/2 - screw_clearance).extrude(h-bs['opening_h']-bs['opening_z']-screw_down))
-    pin = pin.cut(cq.Workplane("XY",origin=(0,0,h-screw_down)).rect(screw_t, bs['screw_dia']).extrude(-1*screw_t))
+    FreeCAD.Console.PrintMessage('  Making screw...\n')
+    pin = pin.union(cq.Workplane("XY",origin=(0,bs['screw_y'],bs['opening_z']+bs['opening_h'])).circle(bs['screw_dia']/2 - screw_clearance).extrude(h-bs['opening_h']-bs['opening_z']-screw_down))
+    pin = pin.cut(cq.Workplane("XY",origin=(0,bs['screw_y'],h-screw_down)).rect(screw_t, bs['screw_dia']).extrude(-1*screw_t))
     if bs['screw_cross']:
-        pin = pin.cut(cq.Workplane("XY",origin=(0,0,h-screw_down)).rect(bs['screw_dia']/2,screw_t).extrude(-1*screw_t))
+        pin = pin.cut(cq.Workplane("XY",origin=(0,bs['screw_y'],h-screw_down)).rect(bs['screw_dia']/2,screw_t).extrude(-1*screw_t))
    
     # make terminal hole
+    FreeCAD.Console.PrintMessage('  Making terminal hole...\n')
     if bs['terminal_hole'] == 'rect':
-        pin = pin.cut(cq.Workplane("XZ",origin=(0,bs['terminal_d']/2,bs['terminal_hole_z'])).rect(bs['terminal_hole_w'],bs['terminal_hole_h']).extrude(bs['terminal_d']).edges("|Y").fillet(bs['terminal_hole_r']))
+        hole = cq.Workplane("XZ",origin=(0,bs['terminal_d']/2,bs['terminal_hole_z'])).rect(bs['terminal_hole_w'],bs['terminal_hole_h']).extrude(bs['terminal_d'])
+        if bs['terminal_hole_r']>0:
+            hole = hole.edges("|Y").fillet(bs['terminal_hole_r'])
+        pin = pin.cut(hole)
     else:
         pin = pin.cut(cq.Workplane("XZ",origin=(0,bs['terminal_d']/2,bs['terminal_hole_z'])).circle(bs['terminal_hole_d']).extrude(bs['terminal_d']))
     
     # move into position
+    FreeCAD.Console.PrintMessage('  Moving pin...\n')
     pin = pin.translate((bs['pitch']*i,0,0))
 
     return pin
@@ -252,25 +236,28 @@ def get_bodystyle(model, all_params):
         'terminal_hole' : 'circle',
         'terminal_hole_d' : p*0.6,
         'screw_dia' : p*0.8,
+        'screw_t': 0,
         'screw_cross' : False,
         'pin_shape' : 'circle',
         'pin_size' : 1.0,
-        'pin_l' : 3.5
+        'pin_l' : 3.5,
+        'key': 'none',
+        'pinslot': 0
+        
         }    
     #allow overrides again
     for k in bsdefault.keys():
         if k in all_params[model]:
             bsdefault[k] = all_params[model][k]
     return bsdefault
-
-dt_w = 0.71
-dt_l = 0.57
-dt_h = 4.30
-dt_s = 3.70
         
-def make_dovetail_r(body):
-    return body.moveTo(0,dt_w/4).lineTo(dt_l,dt_w/2).lineTo(dt_l,-0.5*dt_w).lineTo(0,-0.25*dt_w).close().extrude(-1*dt_h)
+def make_dovetail(body, bs):
+    dt_w = bs['key_w']
+    dt_l = bs['key_l']
+    dt_h = bs['key_h']
+    return body.moveTo(0,dt_w/4).lineTo(dt_l,dt_w/2).lineTo(dt_l,-0.5*dt_w).lineTo(0,-0.25*dt_w).close().extrude(dt_h)
 
+    
 
 def make_part(model, all_params):
 
@@ -288,60 +275,128 @@ def make_part(model, all_params):
     l = p * n
     
     # make base body (rectangle)
-    body = cq.Workplane("YZ").workplane().rect(w, h, False).extrude(l)
+    if 'endpadding' in bs:
+        ep = bs['endpadding']
+    else:
+        ep = 0;
+    body = cq.Workplane("YZ", origin=(-1*ep,0,0)).rect(w, h, False).extrude(l+2*ep)
+
     
     # add front nub for pt (has to happen first)
-    if all_params[model]['bodystyle'] == "phoenixpt5":
-        nub_h = 3.5
-        nub_w = 0.75
+    if 'phoenix_pt' in all_params[model]['bodystyle']:
+        FreeCAD.Console.PrintMessage('Making nubs...\n')
+        if all_params[model]['bodystyle'] == "phoenix_pt_5":
+            nub_h = 3.5
+            nub_w = 0.75
+        else: # _35
+            nub_h = 2.85
+            nub_w = 0.55
         body = body.union(cq.Workplane("YZ",origin=(0,-1*nub_w,h-bs['chf_z']-nub_h)).rect(nub_w, nub_h, False).extrude(l).edges("<Y").edges("|X").fillet(nub_w*0.8))
-        
+    
+    
     # common style features
     for i in range(0,n): # per opening
         xcl = p*(i+0.5)
-        #FreeCAD.Console.PrintMessage('Making cutout ' + str(i) + ' @ x=' + str(xcl) + '...\n')
+        FreeCAD.Console.PrintMessage('Making body pinwise features for pin ' + str(i+1) + ' @ x=' + str(xcl) + '...\n')
+        FreeCAD.Console.PrintMessage('  Making cutout...\n')
         body = body.cut(cq.Workplane("XZ",origin=(xcl,-100,bs['opening_z']+bs['opening_h']/2)).rect(bs['opening_w'], bs['opening_h']).extrude(-1*(100+w-bo+(bs['terminal_d']/2)))) # opening
-        body = body.cut(cq.Workplane("XY",origin=(xcl,w-bo,h)).circle(bs['screw_dia']/2).extrude(-1*(h-bs['opening_z']))) # screw hole
+        body = body.cut(cq.Workplane("XY",origin=(xcl,w-bo+bs['screw_y'],h)).circle(bs['screw_dia']/2).extrude(-1*(h-bs['opening_z']))) # screw hole
         pinco_w = 2.2
-        body = body.cut(cq.Workplane("XZ",origin=(xcl,0,bs['opening_z']/2)).rect(pinco_w,bs['opening_z']).extrude(-1*(w-bo+pinco_w/2)).edges(">Y").edges("|Z").fillet(pinco_w*0.45)) # slot for pin
-        if all_params[model]['bodystyle'] == "phoenixpt5":
+        if 'pinslot' in bs and bs['pinslot'] > 0:
+            FreeCAD.Console.PrintMessage('  Making pinslot...\n')
+            body = body.cut(cq.Workplane("XZ",origin=(xcl,0,bs['opening_z']/2)).rect(bs['pinslot'],bs['opening_z']).extrude(-1*(w-bo+bs['pinslot']/2)).edges(">Y").edges("|Z").fillet(bs['pinslot']*0.45)) # slot for pin
+        if 'phoenix_pt' in all_params[model]['bodystyle']:
+            FreeCAD.Console.PrintMessage('  Cleaning nub...\n')
             body = body.cut(cq.Workplane("XY",origin=(xcl,-50,0)).rect(bs['opening_w'],100).extrude(h)) # clear out nub (anything forward of front face)
             backhole_d = 2.2
             backhole_h = 5.35
+            FreeCAD.Console.PrintMessage('  Adding backhole...\n')
             body = body.cut(cq.Workplane("XZ",origin=(xcl,w,backhole_h)).circle(backhole_d/2).extrude(w))
-  
-    
+        if 'phoenix_m' in all_params[model]['bodystyle']:
+            FreeCAD.Console.PrintMessage('  Lofting entry...\n')
+            if 'mkds_3' in all_params[model]['bodystyle']:
+                loft_w = 4.00
+                loft_zu = 3.15
+                loft_zd = 2.35
+                loft_d = 2.20
+            elif 'mpt_05' in all_params[model]['bodystyle']:
+                loft_w = 2.15
+                loft_zu = 2.40
+                loft_zd = 2.05
+                loft_d = 1.15              
+            else: #mkds_15
+                loft_w = 3.60
+                loft_zu = 3.05
+                loft_zd = 2.15
+                loft_d = 0.80    
+            body = body.cut(cq.Workplane("XZ",origin=(xcl,loft_d,bs['opening_z']+bs['opening_h']/2)).rect(bs['opening_w'], bs['opening_h']).workplane(offset=loft_d).moveTo(-0.5*loft_w, -1*loft_zd).lineTo(-0.5*loft_w, loft_zu).lineTo(0.5*loft_w,loft_zu).lineTo(0.5*loft_w,-1*loft_zd).close().loft())
+        if all_params[model]['bodystyle'] == "phoenix_mpt_05_254" and n < 4:
+            FreeCAD.Console.PrintMessage('  Adding locator pin...\n')
+            body = body.union(cq.Workplane("XY",origin=(xcl, w-bo-p, 0)).circle(0.55).extrude(-1.50))
+            
     if bs['chf']: # front chamfer
-        #FreeCAD.Console.PrintMessage('Making front chamfer...\n')
+        FreeCAD.Console.PrintMessage('Making front chamfer...\n')
         if bs['chf_ins'] > 0:
-            body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y']+bs['chf_ins'], h).lineTo(bs['chf_ins'],h-bs['chf_z']).lineTo(0,h-bs['chf_z']).close().extrude(l))
+            body = body.cut(cq.Workplane("YZ", origin=(-1*ep,0,0)).moveTo(0,h).lineTo(bs['chf_y']+bs['chf_ins'], h).lineTo(bs['chf_ins'],h-bs['chf_z']).lineTo(0,h-bs['chf_z']).close().extrude(l+2*ep))
         else:
-            body = body.cut(cq.Workplane("YZ").moveTo(0,h).lineTo(bs['chf_y'], h).lineTo(0,h-bs['chf_z']).close().extrude(l))
+            body = body.cut(cq.Workplane("YZ",origin=(-1*ep,0,0)).moveTo(0,h).lineTo(bs['chf_y'], h).lineTo(0,h-bs['chf_z']).close().extrude(l+2*ep))
     if bs['chb']: # front chamfer
-        #FreeCAD.Console.PrintMessage('Making back chamfer...\n')
+        FreeCAD.Console.PrintMessage('Making back chamfer...\n')
         if bs['chb_ins'] > 0:
-            body = body.cut(cq.Workplane("YZ").moveTo(w,h).lineTo(w-bs['chb_y']-bs['chb_ins'], h).lineTo(w-bs['chb_ins'],h-bs['chb_z']).lineTo(w,h-bs['chb_z']).close().extrude(l))
+            body = body.cut(cq.Workplane("YZ",origin=(-1*ep,0,0)).moveTo(w,h).lineTo(w-bs['chb_y']-bs['chb_ins'], h).lineTo(w-bs['chb_ins'],h-bs['chb_z']).lineTo(w,h-bs['chb_z']).close().extrude(l+2*ep))
         else:
-            body = body.cut(cq.Workplane("YZ").moveTo(w,h).lineTo(w-bs['chb_y'], h).lineTo(w,h-bs['chb_z']).close().extrude(l))
+            body = body.cut(cq.Workplane("YZ",origin=(-1*ep,0,0)).moveTo(w,h).lineTo(w-bs['chb_y'], h).lineTo(w,h-bs['chb_z']).close().extrude(l+2*ep))
 
     if all_params[model]['bodystyle'] == "phoenixpt5":
+        FreeCAD.Console.PrintMessage('Making back ribs...\n')
         rib_w = 0.80
         rib_h = 9.36
         for i in range(1,n):
             xcl = p*i
             body = body.union(cq.Workplane("XZ",origin=(xcl,w,rib_h/2)).rect(rib_w,rib_h).extrude(bs['chb_y']))
-        body = body.cut(make_dovetail_r(cq.Workplane("XY", origin=(0,w/2+0.5*dt_s,h))))
-        body = body.cut(make_dovetail_r(cq.Workplane("XY", origin=(0,w/2-0.5*dt_s,h))))
-        body = body.union(make_dovetail_r(cq.Workplane("XY", origin=(l,w/2+0.5*dt_s,h))))
-        body = body.union(make_dovetail_r(cq.Workplane("XY", origin=(l,w/2-0.5*dt_s,h))))       
+
+    # add keys
+    if 'key' in bs and not bs['key'] == 'none':
+        k = 0
+        if bs['key_l']<0:
+           k = l; 
+        key_z = 0
+        klat = bs['key_lat']
+        if bs['key_vert'] == 'top':
+            key_z = h-bs['key_h']    
+        key_y = bs['key_off']
+        if bs['key'] == 'dovetail':
+            if klat == 'front' or klat == 'both':
+                FreeCAD.Console.PrintMessage('Making front dovetails...\n')
+                body = body.cut(make_dovetail(cq.Workplane("XY", origin=(0+k,(w-bo)-key_y,key_z)), bs))
+                body = body.union(make_dovetail(cq.Workplane("XY", origin=(l-k,(w-bo)-key_y,key_z)), bs))
+            if klat == 'back' or klat == 'both':
+                FreeCAD.Console.PrintMessage('Making back dovetails...\n')
+                body = body.cut(make_dovetail(cq.Workplane("XY", origin=(0+k,(w-bo)+key_y,key_z)), bs))
+                body = body.union(make_dovetail(cq.Workplane("XY", origin=(l-k,(w-bo)+key_y,key_z)), bs))         
+        elif bs['key'] == 'rect':
+            kl = bs['key_l']
+            kw = bs['key_w']
+            kh = bs['key_h']
+            if klat == 'front' or klat == 'both':
+                FreeCAD.Console.PrintMessage('Making front keys...\n')
+                body = body.cut(cq.Workplane("XY", origin=((-0.5*kl)+k,(w-bo)-key_y,key_z)).rect(kl, kw).extrude(bs['key_h']))
+                body = body.extrude(cq.Workplane("XY", origin=((0.5*kl)+l-k,(w-bo)-key_y,key_z)).rect(kl, kw).extrude(bs['key_h']))
+            if klat == 'back' or klat == 'both':
+                FreeCAD.Console.PrintMessage('Making back keys...\n')
+                body = body.cut(cq.Workplane("XY", origin=((-0.5*kl)+k,(w-bo)+key_y,key_z)).rect(kl, kw).extrude(bs['key_h']))            
+                body = body.extrude(cq.Workplane("XY", origin=((0.5*kl)+l-k,(w-bo)+key_y,key_z)).rect(kl, kw).extrude(bs['key_h']))        
+        
     
     # position body
     body = body.translate((-0.5*p,-1*(w-bo),0))
     
     #make pins
+    
+    FreeCAD.Console.PrintMessage('Making pin 1...\n')
     pins = make_pin(model, 0, bs)
     for i in range(1,n):
-        #FreeCAD.Console.PrintMessage('Making pin ' + str(i) + '...\n')
+        FreeCAD.Console.PrintMessage('Making pin ' + str(i+1) + '...\n')
         pins = pins.union(make_pin(model, i, bs))
     
     return (body, pins)
@@ -352,7 +407,7 @@ import add_license as Lic
 
 # when run from command line
 if __name__ == "__main__" or __name__ == "main_generator":
-    destination_dir = '/TerminalBlock_Phoenix.3dshapes'
+    #destination_dir = '/TerminalBlock_Phoenix.3dshapes'
     expVRML.say(expVRML.__file__)
     FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
@@ -386,8 +441,12 @@ if __name__ == "__main__" or __name__ == "main_generator":
         model_to_build = sys.argv[2]
 
     if model_to_build == "all":
-        models = all_params
+        models = list(all_params)
         save_memory=True
+    elif model_to_build == "sample": # chocolate box of all the 2-pin variants
+        for model in all_params:
+            if (not model == 'bodystyles') and all_params[model]['n'] == 2:
+                models.append(model)
     else:
         models = [model_to_build]
         save_memory=False
@@ -458,7 +517,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         script_dir=os.path.dirname(os.path.realpath(__file__))
         ## models_dir=script_dir+"/../_3Dmodels"
         expVRML.say(models_dir)
-        out_dir=models_dir+destination_dir
+        lib = 'TerminalBlock'
+        if 'lib' in all_params[model]:
+            lib = all_params[model]['lib']
+        out_dir=models_dir+'/'+lib+".3dshapes"
         #out_dir=script_dir+os.sep+destination_dir
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
