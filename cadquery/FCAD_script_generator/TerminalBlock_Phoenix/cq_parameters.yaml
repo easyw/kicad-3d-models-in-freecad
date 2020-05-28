@@ -1,0 +1,683 @@
+TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 2
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-3-5.0-H_1x03_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 3
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-4-5.0-H_1x04_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 4
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix' 
+TerminalBlock_Phoenix_PT-1,5-5-5.0-H_1x05_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 5
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix' 
+TerminalBlock_Phoenix_PT-1,5-6-5.0-H_1x06_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 6
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-7-5.0-H_1x07_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 7
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-8-5.0-H_1x08_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 8
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-9-5.0-H_1x09_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 9
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-10-5.0-H_1x10_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 10    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-11-5.0-H_1x11_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 11    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-12-5.0-H_1x12_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 12    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-13-5.0-H_1x13_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 13   
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-14-5.0-H_1x14_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 14    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-15-5.0-H_1x15_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 15    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-16-5.0-H_1x16_P5.00mm_Horizontal:
+  source: 'https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf'
+  n: 16    
+  bodystyle: 'phoenix_pt_5'
+  lib: 'TerminalBlock_Phoenix'
+  
+  
+  
+  
+TerminalBlock_Phoenix_PT-1,5-2-3.5-H_1x02_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 2
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 3
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-4-3.5-H_1x04_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 4
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-5-3.5-H_1x05_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 5
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-6-3.5-H_1x06_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 6
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-7-3.5-H_1x07_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 7
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-8-3.5-H_1x08_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 8
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-9-3.5-H_1x09_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 9
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-10-3.5-H_1x10_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 10
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-11-3.5-H_1x11_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 11
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-12-3.5-H_1x12_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 12
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-13-3.5-H_1x13_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 13
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-14-3.5-H_1x14_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 14
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-15-3.5-H_1x15_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 15
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_PT-1,5-16-3.5-H_1x16_P3.50mm_Horizontal:
+  source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+  n: 16
+  bodystyle: 'phoenix_pt_35'
+  lib: 'TerminalBlock_Phoenix'
+
+
+
+
+TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 2
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 3
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-4-5.08_1x04_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 4
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-5-5.08_1x05_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 5
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-6-5.08_1x06_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 6
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-7-5.08_1x07_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 7
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-8-5.08_1x08_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 8
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-9-5.08_1x09_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 9
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-10-5.08_1x10_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 10
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-11-5.08_1x11_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 11
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-12-5.08_1x12_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 12
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-13-5.08_1x13_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 13
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-14-5.08_1x14_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 14
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-15-5.08_1x15_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 15
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-16-5.08_1x16_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715721'
+    n: 16
+    bodystyle: 'phoenix_mkds_15_508'
+    lib: 'TerminalBlock_Phoenix'
+
+
+
+
+    
+TerminalBlock_Phoenix_MKDS-1,5-2_1x02_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 2
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-3_1x03_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 3
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-4_1x04_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 4
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-5_1x05_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 5
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-6_1x06_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 6
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-7_1x07_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 7
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-8_1x08_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 8
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-9_1x09_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 9
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-10_1x10_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 10
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-11_1x11_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 11
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-12_1x12_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 12
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-13_1x13_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 13
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-14_1x14_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 14
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-15_1x15_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 15
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-1,5-16_1x16_P5.00mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1715022'
+    n: 16
+    bodystyle: 'phoenix_mkds_15_5'
+    lib: 'TerminalBlock_Phoenix'
+
+
+
+
+
+TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 2
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-3-5.08_1x03_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 3
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-4-5.08_1x04_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 4
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-5-5.08_1x05_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 5
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-6-5.08_1x06_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 6
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-7-5.08_1x07_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 7
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-8-5.08_1x08_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 8
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-9-5.08_1x09_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 9
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-10-5.08_1x10_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 10
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-11-5.08_1x11_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 11
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-12-5.08_1x12_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 12
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-13-5.08_1x13_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 13
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-14-5.08_1x14_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 14
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-15-5.08_1x15_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 15
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MKDS-3-16-5.08_1x16_P5.08mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+    n: 16
+    bodystyle: 'phoenix_mkds_3_508'
+    lib: 'TerminalBlock_Phoenix'
+
+
+
+
+
+TerminalBlock_Phoenix_MPT-0,5-2-2.54_1x02_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 2
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 3
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'    
+TerminalBlock_Phoenix_MPT-0,5-4-2.54_1x04_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 4
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-5-2.54_1x05_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 5
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-6-2.54_1x06_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 6
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-7-2.54_1x07_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 7
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-8-2.54_1x08_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 8
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-9-2.54_1x09_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 9
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-10-2.54_1x10_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 10
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-11-2.54_1x11_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 11
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+TerminalBlock_Phoenix_MPT-0,5-12-2.54_1x12_P2.54mm_Horizontal:
+    source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+    n: 12
+    bodystyle: 'phoenix_mpt_05_254'
+    lib: 'TerminalBlock_Phoenix'
+    
+    
+    
+    
+bodystyles:       
+    phoenix_pt_5:
+        pitch: 5.0
+        height: 11.4
+        width: 8.25
+        backoffset: 4.0
+        endpadding: 0
+        color: 'green'
+        chf: true
+        chf_y: 0.53
+        chf_z: 4.30
+        chf_ins: 0.744
+        chb: True
+        chb_y: 1.03
+        chb_z: 8.40
+        chb_ins: 0.00     
+        opening_w: 4.10
+        opening_h: 5.70
+        opening_z: 0.80
+        terminal_d: 4.60
+        terminal_hole: 'rect'
+        terminal_hole_w: 2.60
+        terminal_hole_h: 2.50
+        terminal_hole_r: 0.30
+        terminal_hole_z: 3.00
+        screw_dia: 4.00
+        screw_y: 0
+        screw_cross: true
+        pin_shape: 'circle'
+        pin_size: 1.00
+        pin_l: 3.60
+        pinslot: 2.20
+        key: 'dovetail'
+        key_vert: 'top'
+        key_lat: 'both'
+        key_w: 0.71
+        key_l: 0.57
+        key_h: 4.30
+        key_off: 1.8
+    phoenix_pt_35:
+        source: 'https://www.phoenixcontact.com/online/portal/us?uri=pxc-oc-itemdetail:pid=1984617'
+        pitch: 3.5
+        height: 9.2
+        width: 7.00
+        backoffset: 3.05
+        endpadding: 0
+        color: 'green'
+        chf: true
+        chf_y: 0.62
+        chf_z: 3.50
+        chf_ins: 0.50
+        chb: false    
+        opening_w: 2.60
+        opening_h: 4.40
+        opening_z: 0.65
+        terminal_d: 4.00
+        terminal_hole: 'rect'
+        terminal_hole_w: 1.70
+        terminal_hole_h: 2.50
+        terminal_hole_r: 0.00
+        terminal_hole_z: 2.50
+        screw_dia: 2.90
+        screw_y: 0
+        screw_cross: true
+        pin_shape: 'circle'
+        pin_size: 0.90
+        pin_l: 4.50
+        pinslot: 1.10
+        key: 'dovetail'
+        key_vert: 'top'
+        key_lat: 'both'
+        key_w: 0.79
+        key_l: 0.57
+        key_h: 3.30
+        key_off: 1.90        
+    phoenix_mkds_15_508:
+        pitch: 5.08
+        height: 13.80
+        width: 9.80
+        backoffset: 5.20
+        endpadding: 0
+        color: 'green'
+        chf: true
+        chf_z: 6.40
+        chf_y: 1.50
+        chf_ins: 0.50
+        chb: true
+        chb_z: 9.23
+        chb_y: 3.00
+        chb_ins: 0.00
+        opening_w: 2.80
+        opening_h: 2.70
+        opening_z: 2.40
+        terminal_d: 4.00
+        terminal_hole: 'rect'
+        terminal_hole_h: 2.50
+        terminal_hole_w: 2.50
+        terminal_hole_z: 3.75
+        terminal_hole_r: 0
+        screw_dia: 4.00
+        screw_y: -0.20
+        screw_cross: false
+        pin_shape: 'rect'
+        pin_size: 0.90
+        pin_l: 3.50
+        pinslot: 0
+        key: 'dovetail'
+        key_vert: 'bottom'
+        key_lat: 'front'
+        key_w: 0.92
+        key_l: -0.74
+        key_h: 7.00
+        key_off: 3.6
+    phoenix_mkds_15_5:
+        pitch: 5.00
+        height: 13.80
+        width: 9.80
+        backoffset: 5.20
+        endpadding: 0
+        color: 'green'
+        chf: true
+        chf_z: 6.40
+        chf_y: 1.50
+        chf_ins: 0.50
+        chb: true
+        chb_z: 9.23
+        chb_y: 3.00
+        chb_ins: 0.00
+        opening_w: 2.80
+        opening_h: 2.70
+        opening_z: 2.40
+        terminal_d: 4.00
+        terminal_hole: 'rect'
+        terminal_hole_h: 2.50
+        terminal_hole_w: 2.50
+        terminal_hole_z: 3.75
+        terminal_hole_r: 0
+        screw_dia: 4.00
+        screw_y: -0.20
+        screw_cross: false
+        pin_shape: 'rect'
+        pin_size: 0.90
+        pin_l: 3.50
+        pinslot: 0
+        key: 'dovetail'
+        key_dir: 'left'
+        key_vert: 'bottom'
+        key_lat: 'front'
+        key_w: 0.92
+        key_l: -0.74
+        key_h: 7.00
+        key_off: 3.6
+    phoenix_mkds_3_508:
+        source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1711725'
+        pitch: 5.08
+        height: 18.00
+        width: 11.20
+        backoffset: 5.917
+        endpadding: 0
+        color: 'green'
+        chf: true
+        chf_z: 6.20
+        chf_y: 2.70
+        chf_ins: 0.30
+        chb: true
+        chb_z: 8.20
+        chb_y: 0.276
+        chb_ins: 1.997
+        opening_w: 2.80
+        opening_h: 4.70
+        opening_z: 3.30
+        terminal_d: 4.00
+        terminal_hole: 'rect'
+        terminal_hole_h: 4.50
+        terminal_hole_w: 2.50
+        terminal_hole_z: 5.65
+        terminal_hole_r: 0
+        screw_dia: 4.00
+        screw_y: 0.217
+        screw_cross: false
+        pin_shape: 'rect'
+        pin_size: 0.90
+        pin_l: 5.00
+        pinslot: 0
+        key: 'dovetail'
+        key_vert: 'bottom'
+        key_lat: 'front'
+        key_w: 0.714
+        key_l: -0.57
+        key_h: 12.00
+        key_off: 3.383       
+    phoenix_mpt_05_254:
+        source: 'https://www.phoenixcontact.com/online/portal/us/?uri=pxc-oc-itemdetail:pid=1725656'
+        pitch: 2.54
+        height: 8.500
+        width: 6.20
+        backoffset: 3.10
+        endpadding: 0.23
+        color: 'green'
+        chf: true
+        chf_z: 3.40
+        chf_y: 0.91
+        chf_ins: 0.74
+        chb: true
+        chb_z: 5.386
+        chb_y: 1.75
+        chb_ins: 0
+        opening_w: 1.40
+        opening_h: 1.80
+        opening_z: 1.30
+        terminal_d: 3.00
+        terminal_hole: 'rect'
+        terminal_hole_h: 1.40
+        terminal_hole_w: 1.00
+        terminal_hole_z: 2.20
+        terminal_hole_r: 0
+        screw_dia: 2.20
+        screw_y: 0
+        screw_cross: false
+        pin_shape: 'rect'
+        pin_sizex: 0.90
+        pin_sizey: 0.50
+        pin_l: 3.50
+        pinslot: 0
+        key: 'none'  
+        
