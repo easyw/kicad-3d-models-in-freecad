@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -48,7 +48,7 @@ class dip_switch_piano (PartBase):
     def __init__(self, params):
         PartBase.__init__(self, params)
 #        self.make_me = params.type == CaseType.THT and params.num_pins >= 2 and params.num_pins <= 24 and params.pin_rows_distance == 7.62
-        self.make_me = self.num_pins / 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        self.make_me = self.num_pins // 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 #        if self.make_me:
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
@@ -83,9 +83,9 @@ class dip_switch_piano (PartBase):
 
     def makeModelName(self, genericName):
         if self.num_pins == 2 or self.num_pins == 12 or self.num_pins == 22:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Piano_10.8x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Piano_10.8x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Piano_10.8x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Piano_10.8x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
 
     def _make_switchpockets(self):
@@ -184,7 +184,7 @@ class dip_switch_piano_cts (dip_switch_piano):
     def __init__(self, params):
         dip_switch_piano.__init__(self, params)
 
-        self.make_me = self.num_pins / 2 in [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        self.make_me = self.num_pins // 2 in [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
         self.pin_width = 0.48
         self.pin_length = 3.81
@@ -214,7 +214,7 @@ class dip_switch_piano_cts (dip_switch_piano):
 
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Piano_CTS_Series194-' + '{:d}'.format(self.num_pins / 2) + 'MSTN_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Piano_CTS_Series194-' + '{:d}'.format(self.num_pins // 2) + 'MSTN_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
 
 ### EOF ###
