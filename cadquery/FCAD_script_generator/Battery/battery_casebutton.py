@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import battery_common
 from battery_common import *
@@ -164,9 +166,9 @@ def make_case_Button2(params):
     #
     # Cut the sides
     #
-    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), (W / 2)).rect(L, W, centered=False).extrude(H + 2.0)
+    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), (W / 2.0)).rect(L, W, centered=False).extrude(H + 2.0)
     case = case.cut(case1)
-    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), 0.0 - (W / 2)).rect(L, 0.0 - W, centered=False).extrude(H + 2.0)
+    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), 0.0 - (W / 2.0)).rect(L, 0.0 - W, centered=False).extrude(H + 2.0)
     case = case.cut(case1)
     
     #
@@ -275,9 +277,9 @@ def make_case_Button3(params):
     #
     # Cut the sides
     #
-    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), (W / 2)).rect(L, W, centered=False).extrude(H + 2.0)
+    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), (W / 2.0)).rect(L, W, centered=False).extrude(H + 2.0)
     case = case.cut(case1)
-    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), 0.0 - (W / 2)).rect(L, 0.0 - W, centered=False).extrude(H + 2.0)
+    case1 = cq.Workplane("XY").workplane(offset=A1 + A11).moveTo(0.0 - (L / 2.0), 0.0 - (W / 2.0)).rect(L, 0.0 - W, centered=False).extrude(H + 2.0)
     case = case.cut(case1)
     
     case = case.faces("<Z").fillet(od / 100.0)
