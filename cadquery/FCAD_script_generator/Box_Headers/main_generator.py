@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # This is derived from a cadquery script to generate all pin header models in X3D format.
 # It takes a bit long to run! It can be run from cadquery freecad
@@ -47,7 +47,7 @@ __title__ = "make pin header 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make pin header 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.4.2 26/02/2017"
+___ver___ = "1.4.3 18/06/2020"
 
 # Licence information of the generated models.
 #################################################################################################
@@ -104,7 +104,8 @@ except: # catch *all* exceptions
 import cq_cad_tools
 
 # Reload tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
 
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
@@ -112,10 +113,7 @@ exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objec
 CutObjs_wColors, checkRequirements, multiFuseObjs_wColors, runGeometryCheck
 
 
-try:
-    close_CQ_Example(App, Gui)
-except: # catch *all* exceptions
-    print("CQ 030 doesn't open example file")
+checkRequirements(cq)
 
 
 import ImportGui
@@ -132,7 +130,7 @@ def MakeBase(pins, highDetail=True):
     #internal width
     W2 = 6.35
     #wall thickness
-    T = (W1 - W2) / 2
+    T = (W1 - W2) / 2.0
     #length of pin array
     D = (pins - 1) * 2.54
     #height of the base
@@ -158,7 +156,7 @@ def MakeBase(pins, highDetail=True):
     else:
         undercut = 0.0
 
-    cutout = cq.Workplane("XY").workplane(offset=H-undercut).rect(2*2.0,CW).extrude(H2+undercut).translate((-W1/2,0,0))
+    cutout = cq.Workplane("XY").workplane(offset=H-undercut).rect(2*2.0,CW).extrude(H2+undercut).translate((-W1/2.0,0,0))
     base = base.cut(cutout)
 
     # add visual / non-critical details
@@ -167,22 +165,22 @@ def MakeBase(pins, highDetail=True):
         # long bobbles
         bobbleR = 0.5
         bobbleH = 9.10-8.85
-        longbobble1 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, L/2-2.5).circle(bobbleR).extrude(8.5)
-        longbobble2 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, 0).circle(bobbleR).extrude(8.5)
-        longbobble3 = cq.Workplane("XY").center(W1/2-bobbleR+bobbleH, -L/2+2.5).circle(bobbleR).extrude(8.5)
+        longbobble1 = cq.Workplane("XY").center(W1/2.0-bobbleR+bobbleH, L/2.0-2.5).circle(bobbleR).extrude(8.5)
+        longbobble2 = cq.Workplane("XY").center(W1/2.0-bobbleR+bobbleH, 0).circle(bobbleR).extrude(8.5)
+        longbobble3 = cq.Workplane("XY").center(W1/2.0-bobbleR+bobbleH, -L/2.0+2.5).circle(bobbleR).extrude(8.5)
         base = base.union(longbobble1)
         base = base.union(longbobble2)
         base = base.union(longbobble3)
 
         # wee bobbles
-        weebobbles = cq.Workplane("XY").center(2.85, L/2-2.5).circle(0.5).extrude(8.85-9.10)
+        weebobbles = cq.Workplane("XY").center(2.85, L/2.0-2.5).circle(0.5).extrude(8.85-9.10)
         weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, 0).circle(0.5).extrude(8.85-9.10))
-        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, -L/2+2.5).circle(0.5).extrude(8.85-9.10))
+        weebobbles = weebobbles.union(cq.Workplane("XY").center(2.85, -L/2.0+2.5).circle(0.5).extrude(8.85-9.10))
         weebobbles = weebobbles.union(weebobbles.translate((-5.7,0,0)))
         base = base.union(weebobbles)
 
         # sidecuts
-        sidecut = cq.Workplane("XY").rect(3.5, 1.25*2).extrude(H2).translate((0,L/2,0))
+        sidecut = cq.Workplane("XY").rect(3.5, 1.25*2).extrude(H2).translate((0,L/2.0,0))
         sidecut = sidecut.union(sidecut.translate((0,-L,0)))
         base = base.cut(sidecut)
 
@@ -212,8 +210,8 @@ def MakePin(Z, H):
 def MakeAnglePin(Z, H, L, highDetail=False):
     #pin size
     size = 0.64
-    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z + size/2)
-    pin = pin.union(cq.Workplane("YZ").workplane(offset=size/2).rect(size,size).extrude(L-size/2).translate((0,0,H)))
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z + size/2.0)
+    pin = pin.union(cq.Workplane("YZ").workplane(offset=size/2.0).rect(size,size).extrude(L-size/2.0).translate((0,0,H)))
     #Chamfer C
     C = 0.2
     pin = pin.faces("<Z").chamfer(C)
