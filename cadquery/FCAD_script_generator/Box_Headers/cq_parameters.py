@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
 #

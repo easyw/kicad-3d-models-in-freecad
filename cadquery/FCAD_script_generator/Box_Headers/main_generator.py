@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # This is derived from a cadquery script to generate all pin header models in X3D format.
 # It takes a bit long to run! It can be run from cadquery freecad
 # module as well.
@@ -115,7 +115,7 @@ CutObjs_wColors, checkRequirements, multiFuseObjs_wColors, runGeometryCheck
 try:
     close_CQ_Example(App, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print("CQ 030 doesn't open example file")
 
 
 import ImportGui

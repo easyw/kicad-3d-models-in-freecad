@@ -1,5 +1,8 @@
-    # -*- coding: utf8 -*-                                                      *
-#* These are a FreeCAD & cadquery tools                                      *
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#****************************************************************************
+#*                                                                          *
+#* These are a FreeCAD & cadquery tools                                     *
 #* to export generated models in STEP & VRML format.                        *
 #*                                                                          *
 #* cad tools functions                                                      *
@@ -28,7 +31,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.5 13/13/2019"
+___ver___ = "1.2.6 18/06/2020"
 
 import FreeCAD, Draft, FreeCADGui
 from cqToolsExceptions import *
@@ -61,6 +64,14 @@ def mk_string(input):
             return input
         else:
             return input
+##
+
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
 ##
 
 def checkUnion(docu):
@@ -134,6 +145,12 @@ def getListOfNumbers(string):
 
     return numbers
 
+###################################################################
+# open_CQ_Example()  Qbort
+#   Function to open CQ Example
+###################################################################
+def open_CQ_Example(App, Gui):
+    App.newDocument("Ex000_Introduction")
 
 ###################################################################
 # close_CQ_Example()  maui
@@ -625,13 +642,23 @@ def checkRequirements(cq):
         msg = "CadQuery Module needs to be at least 0.3.0!\r\n\r\n"
         reply = QtGui.QMessageBox.information(None, "Info ...", msg)
         say("cq needs to be at least 0.3.0")
-        stop
+        raise #todo: create a suitable exception
 
     if float(cq.__version__[:-2]) < 0.3:
         msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
         msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
         msg+="actual CQ version "+cq.__version__
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+        raise #todo: create a suitable exception
+    #do a check to test all works:
+    try:
+        open_CQ_Example(FreeCAD, FreeCADGui)
+        close_CQ_Example(FreeCAD, FreeCADGui)
+    except: # catch *all* exceptions
+        msg="CadQuery 030 didn't open an example file!\r\n\r\n"
+        reply = QtGui.QMessageBox.information(None, "Error ...", msg)
+        FreeCAD.Console.PrintMessage("CQ 030 doesn't open example file")
+        raise #re-raise exception that caused the problem
 
     return 0
 

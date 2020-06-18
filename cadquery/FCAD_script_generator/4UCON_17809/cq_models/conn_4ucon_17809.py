@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # CadQuery script to generate connector models
 
@@ -50,7 +50,7 @@ __title__ = "model description for 4UCON 17809 series connectors"
 __author__ = "hackscribble"
 __Comment__ = 'model description for 4UCON 17809 series connectors using cadquery'
 
-___ver___ = "0.2 16/04/2017"
+___ver___ = "0.3 18/06/2020"
 
 
 import cadquery as cq
@@ -100,7 +100,7 @@ def generate_pins(params):
     pin_pitch=params.pin_pitch
     num_pins=params.num_pins
     pins = generate_2_pin_group(params, pin_1_side=True)
-    for i in range(1, num_pins / 2):
+    for i in range(1, num_pins // 2):
         pins = pins.union(generate_2_pin_group(params, i % 2 == 0).translate((i*pin_pitch,0,0)))
     return pins
 
@@ -133,7 +133,7 @@ def generate_contacts(params):
     pin_pitch=params.pin_pitch
     pair = generate_2_contact_group(params)
     contacts = pair
-    for i in range(0, num_pins / 2):
+    for i in range(0, num_pins // 2):
         contacts = contacts.union(pair.translate((i*pin_pitch,0,0)))
     return contacts
 
@@ -180,7 +180,7 @@ def generate_body(params, calc_dim):
     recess_small_width = seriesParams.recess_small_width
     recess_height = seriesParams.recess_height
 
-    x_offset = (((num_pins / 2) - 1)*pin_pitch)/2.0
+    x_offset = (((num_pins // 2) - 1)*pin_pitch)/2.0
     y_offset = -(1.5*pin_y_pitch)
 
     # body
@@ -223,22 +223,22 @@ def generate_body(params, calc_dim):
 
     # contact holes
     body = body.faces(">Z").workplane().center(0, hole_offset)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+        .rarray(pin_pitch, 1, (num_pins//2), 1).rect(hole_width, hole_length)\
         .center(0, -2*hole_offset)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, hole_length)\
+        .rarray(pin_pitch, 1, (num_pins//2), 1).rect(hole_width, hole_length)\
         .cutBlind(-2)
 
     # internal void
     body = body.faces(">Z").workplane(offset=-hole_depth)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, top_void_width)\
+        .rarray(pin_pitch, 1, (num_pins//2), 1).rect(hole_width, top_void_width)\
         .cutBlind(-(top_void_depth-hole_depth))
 
     body = body.faces(">Z").workplane(offset=-top_void_depth)\
-        .rarray(pin_pitch, 1, (num_pins/2), 1).rect(hole_width, bottom_void_width)\
+        .rarray(pin_pitch, 1, (num_pins//2), 1).rect(hole_width, bottom_void_width)\
         .cutBlind(-(body_height-top_void_depth))
 
     # body end recesses
-    body = body.faces(">Z").workplane().center(body_length/2-recess_depth/2, 0)\
+    body = body.faces(">Z").workplane().center(body_length/2.0-recess_depth/2.0, 0)\
         .rect(recess_depth, recess_small_width).cutBlind(-recess_height)
 
     recess = cq.Workplane("XY").workplane(offset=foot_height+body_height).center(x_offset-body_length/2.0+recess_depth/2.0, y_offset)\
