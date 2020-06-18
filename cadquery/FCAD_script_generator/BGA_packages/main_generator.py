@@ -500,7 +500,7 @@ def generateOneModel(params, log):
                 expVRML.say("ksu not present")
         else:
             kicadStepUptools.KSUWidget.close()
-            imp.reload(kicadStepUptools)
+            reload_lib(kicadStepUptools)
             kicadStepUptools.KSUWidget.close()
             #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
             #kicadStepUptools.KSUWidget.destroy()
