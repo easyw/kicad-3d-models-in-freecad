@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This was originaly derived from a cadquery script for generating PDIP models in X3D format
 # from https://bitbucket.org/hyOzd/freecad-macros
@@ -111,20 +111,14 @@ except Exception as e: # catch *all* exceptions
 from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
+ exportSTEP, checkRequirements, saveFCdoc, z_RotateObject,\
  runGeometryCheck
 
-# Gui.SendMsgToActiveView("Run")
-#Gui.activateWorkbench("CadQueryWorkbench")
-#import FreeCADGui as Gui
-
-try:
-    close_CQ_Example(App, Gui)
-except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+checkRequirements(cq)
 
 #import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -150,7 +144,7 @@ def export_one_part(module, params, configuration, log):
     FreeCAD.Console.PrintMessage('\r\n'+FileName+'\r\n')
     #FileName = modul.all_params[variant].file_name
     Newdoc = FreeCAD.newDocument(ModelName)
-    print(Newdoc.Label)
+    print((Newdoc.Label))
     App.setActiveDocument(ModelName)
     App.ActiveDocument=App.getDocument(ModelName)
     Gui.ActiveDocument=Gui.getDocument(ModelName)
@@ -272,7 +266,7 @@ class argparse():
     def __init__(self):
         self.config = '../_tools/config/capacitor_config_KLCv3.yaml'
         self.model_filter = '*'
-        self.series = all_series.values()
+        self.series = list(all_series.values())
 
     def parse_args(self, args):
         for arg in args:
