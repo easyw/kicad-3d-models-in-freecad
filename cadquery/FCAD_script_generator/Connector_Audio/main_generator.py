@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This is derived from a cadquery script for generating PDIP models in X3D format
 #
@@ -49,7 +49,7 @@ __title__ = "make Valve 3D models"
 __author__ = "Stefan, based on Valve script"
 __Comment__ = 'make varistor 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.3 14/08/2015"
+___ver___ = "1.3.4 28/06/2020"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -231,4 +231,4 @@ if __name__ == "__main__" or __name__ == "main_generator":
                     make_3D_model(models_dir, n, model_to_build)
         
         if not found_one:
-            print("Parameters for %s doesn't exist, skipping. " % model_to_build)
+            FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist, skipping. " % model_to_build)

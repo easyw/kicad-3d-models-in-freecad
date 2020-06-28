@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # This was originaly derived from a cadquery script for generating PDIP models in X3D format
