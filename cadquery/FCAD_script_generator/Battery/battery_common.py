@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
 #
@@ -28,11 +28,9 @@ from collections import namedtuple
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-try:
-    reload(cq_cad_tools)
-except:
-    import importlib
-    importlib.reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
+
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
@@ -61,12 +59,7 @@ except: # catch *all* exceptions
     # maui end
 
 #checking requirements
-
-try:
-    close_CQ_Example(FreeCAD, Gui)
-except: # catch *all* exceptions
-    print("CQ 030 doesn't open example file")
-
+checkRequirements(cq)
 
 
 def make_modelfileName_Common(params):

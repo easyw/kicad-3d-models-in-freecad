@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This is derived from a cadquery script for generating Converter_DCDC 3D format
 #
@@ -49,7 +49,7 @@ __title__ = "make Altech connector 3D models"
 __author__ = "Stefan, based on Converter_DCDC script"
 __Comment__ = 'make Altech connectors 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.3 2018-12-07"
+___ver___ = "1.3.4 18/06/2020"
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -93,7 +93,8 @@ STR_licOrg = "FreeCAD"
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
@@ -130,11 +131,6 @@ except NameError:
 #
 
 #checking requirements
-
-try:
-    close_CQ_Example(FreeCAD, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
@@ -431,5 +427,5 @@ if __name__ == "__main__" or __name__ == "main_generator":
             for p in all_params[variant].pin_number:
                 make_3D_model(models_dir, variant, p)
         else:
-            print("Parameters for %s doesn't exist in 'all_params', skipping. " % variant)
+            FreeCAD.Console.PrintMessage("\tParameters for %s doesn't exist in 'all_params', skipping. " % variant)
             continue

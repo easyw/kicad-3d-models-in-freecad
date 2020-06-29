@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This is derived from a cadquery script for generating QFP models in X3D format.
 #
@@ -48,7 +48,7 @@ __title__ = "make BGA ICs 3D models"
 __author__ = "maurice and hyOzd"
 __Comment__ = 'make BGA ICs 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.6 11/March/2018"
+___ver___ = "1.0.7 18/06/2020"
 global save_memory
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
@@ -107,10 +107,11 @@ LIST_license = ["",]
 from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
- exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
+ exportSTEP, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
  CutObjs_wColors, checkRequirements, runGeometryCheck
 
 
@@ -127,15 +128,11 @@ except Exception as e: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     reply = QtGui.QMessageBox.information(None,"Info ...",msg)
+    exit()
     # maui end
 
 #checking requirements
 checkRequirements(cq)
-
-try:
-    close_CQ_Example(App, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
@@ -208,7 +205,7 @@ def make_case(params):
         #expVRML.say(epl)
         i=0
         for i in range (0, len(epl)):
-            if isinstance(epl[i], ( int, long )):
+            if isinstance(epl[i], int): #long is not supported in python 3
                 epl[i]=str(int(epl[i]))
                 i=i+1
         excluded_pins=tuple(epl)
@@ -503,7 +500,7 @@ def generateOneModel(params, log):
                 expVRML.say("ksu not present")
         else:
             kicadStepUptools.KSUWidget.close()
-            reload(kicadStepUptools)
+            reload_lib(kicadStepUptools)
             kicadStepUptools.KSUWidget.close()
             #kicadStepUptools.KSUWidget.setWindowState(QtCore.Qt.WindowMinimized)
             #kicadStepUptools.KSUWidget.destroy()
@@ -578,7 +575,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
             except FreeCADVersionError as e:
                 FreeCAD.Console.PrintError(e)
                 break
-            else:
-                traceback.print_exc()
+            except: #previously "else" was causing exception to be raised "[No active exception to reraise]" at the end of script running
+                #traceback.print_exc()
                 raise
+                
     FreeCAD.Console.PrintMessage("\nDone\n")

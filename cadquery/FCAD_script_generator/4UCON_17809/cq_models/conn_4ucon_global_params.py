@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 
@@ -9,7 +12,7 @@ packages_3d=lib_name+".3dshapes"+os.sep
 manufacturer_tag = "4ucon "
 
 def generate_footprint_name(series_name, num_pins, pin_pitch):
-    name = '4UCON_{:s}_02x{:02d}x{:.2f}mm_Vertical'.format(series_name, num_pins / 2, pin_pitch)
+    name = '4UCON_{:s}_02x{:02d}x{:.2f}mm_Vertical'.format(series_name, num_pins // 2, pin_pitch)
     return name
 
 """

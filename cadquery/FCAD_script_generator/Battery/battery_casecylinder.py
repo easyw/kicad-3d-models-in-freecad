@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import battery_common
 from battery_common import *
@@ -143,18 +145,18 @@ def make_case_Cylinder1(params):
     #
     # Cut sidde
     #
-    ddl = (L / 10)
+    ddl = (L // 10)
     
     x5 = 0.0 - ((L / 2.0) - (ddl / 2.0) - dx3)
     case1 = cq.Workplane("XY").workplane(offset=z2).moveTo(x5, W).rect(ddl, 4.0 * W).extrude(H / 2.0)
     case = case.cut(case1)
     #
-    ddl = (L / 10)
+    ddl = (L // 10)
     x6 = (L / 2.0) - (ddl / 2.0) - dx8
     case1 = cq.Workplane("XY").workplane(offset=z2).moveTo(x6, W).rect(ddl, 4.0 * W).extrude(H / 2.0)
     case = case.cut(case1)
     #
-    ddl = (L / 2)
+    ddl = (L // 2)
     case1 = cq.Workplane("XY").workplane(offset=z2).moveTo(0.0, 0.0).rect(ddl, 4.0 * W).extrude(H / 2.0)
     case = case.cut(case1)
 

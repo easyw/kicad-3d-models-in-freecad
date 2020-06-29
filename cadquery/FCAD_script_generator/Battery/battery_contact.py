@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import battery_common
 from battery_common import *
@@ -554,7 +556,7 @@ def make_battery_contact_BC7(params):
     #
     # Front end filled
     #
-    ft1 = (W / 2) - SLW + BC[1]
+    ft1 = (W / 2.0) - SLW + BC[1]
     pint = pint.faces(">Y").edges("<X").fillet(ft1)
     pint = pint.faces(">Y").edges(">X").fillet(ft1)
 

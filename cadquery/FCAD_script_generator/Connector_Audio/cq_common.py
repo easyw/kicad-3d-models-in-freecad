@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 
 #****************************************************************************
@@ -57,7 +57,8 @@ from collections import namedtuple
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
@@ -87,10 +88,7 @@ except: # catch *all* exceptions
 
 #checking requirements
 
-try:
-    close_CQ_Example(FreeCAD, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+checkRequirements(cq)
 
 from Helpers import show
 import Part as FreeCADPart

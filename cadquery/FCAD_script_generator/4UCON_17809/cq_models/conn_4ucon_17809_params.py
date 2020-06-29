@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from collections import namedtuple
 from conn_4ucon_global_params import generate_footprint_name
 

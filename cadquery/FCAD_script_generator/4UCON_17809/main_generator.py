@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # This was originaly derived from a cadquery script for generating PDIP models in X3D format
 # from https://bitbucket.org/hyOzd/freecad-macros
@@ -48,7 +48,7 @@ __title__ = "make 3D models of 4UCON 17809 series connectors"
 __author__ = "scripts: maurice and hyOzd; models: hackscribble"
 __Comment__ = '''make 3D models of 4UCON 17809 series connectors'''
 
-___ver___ = "0.1 14/04/2017"
+___ver___ = "0.2 18/06/2020"
 
 
 import sys
@@ -106,15 +106,13 @@ import FreeCAD
 import Draft
 import ImportGui
 
-from Gui.Command import *
-
 import cq_cad_tools
-reload(cq_cad_tools)
+from cq_cad_tools import reload_lib
+reload_lib(cq_cad_tools)
+
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, multiFuseObjs_wColors, \
  checkRequirements
-
-Gui.activateWorkbench("CadQueryWorkbench")
 
 import FreeCADGui as Gui
 
@@ -125,7 +123,6 @@ if FreeCAD.GuiUp:
 
 try:
     # Gui.SendMsgToActiveView("Run")
-    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
     from Helpers import show
@@ -138,10 +135,6 @@ except: # catch *all* exceptions
 
 checkRequirements(cq)
 
-try:
-    close_CQ_Example(App, Gui)
-except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
 
 
 def export_one_part(modul, variant):
