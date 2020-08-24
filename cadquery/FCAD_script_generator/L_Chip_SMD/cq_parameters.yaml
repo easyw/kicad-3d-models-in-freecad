@@ -48,6 +48,16 @@ L_0805_2012Metric:
   rotation: 0
   source: 'http://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GC321BD72E223KX03-01.pdf'
 
+L_1008_2520Metric:
+  length: 2.5
+  width: 2.0
+  height: 1.2
+  pin_band: 0.6
+  pin_thickness: 'auto'
+  edge_fillet: 'auto'
+  rotation: 0
+  source: 'http://search.murata.co.jp/Ceramy/image/img/P02/J(E)TE243A-0024.pdf'
+
 L_1206_3216Metric:
   length: 3.2
   width: 1.6
