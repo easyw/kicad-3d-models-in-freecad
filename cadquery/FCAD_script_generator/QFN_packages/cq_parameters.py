@@ -6972,38 +6972,6 @@ kicad_naming_params_qfn = {
         dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
         ),
 
-    'UDFN-4_1x1mm_P0.65mm': Params(
-        #
-        #
-        # This model have been auto generated based on the foot print file
-        # A number of paramters have been fixed or guessed, such as A and A1
-        #
-        c = 0.2,        # pin thickness, body center part height
-#        K=0.2,         # Fillet radius for pin edges
-        L = 0.25,       # pin top flat part length (including fillet radius)
-        fp_s = True,    # True for circular pinmark, False for square pinmark (useful for diodes)
-        fp_r = 0.1,     # first pin indicator radius
-        fp_d = 0.05,     # first pin indicator distance from edge
-        fp_z = 0.1,     # first pin indicator depth
-        ef = 0.0,       # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
-        cce = 0.2,      # 0.45 chamfer of the epad 1st pin corner
-        D = 1.0,      # body overall length
-        E = 1.0,      # body overall width
-        A1 = 0.1,      # body-board separation
-        A2 = 0.3,       # body overall height
-        b = 0.2,      # pin width
-        e = 0.65,       # pin (center-to-center) distance
-        m = 0.0,        # margin between pins and body
-        ps = 'square',  # rounded, square pads
-        npx = 2,      # number of pins along X axis (width)
-        npy = 0,      # number of pins along y axis (length)
-        epad = None,    # e Pad #epad = None, # e Pad
-        excluded_pins = None, #no pin excluded
-        modelName = 'UDFN-4_1x1mm_P0.65mm',
-        rotation = -90, # rotation if required
-        dest_dir_prefix = '../Package_DFN_QFN.3dshapes/',
-        ),
-
     'UQFN-10_1.3x1.8mm_P0.4mm': Params(
         #
         # UQFN, 10 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/00001725D.pdf (Page 9)), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
