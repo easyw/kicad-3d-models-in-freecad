@@ -105,7 +105,8 @@ except Exception as e: # catch *all* exceptions
 from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+import importlib
+importlib.reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
@@ -118,7 +119,7 @@ from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_T
 try:
     close_CQ_Example(App, Gui)
 except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+    FreeCAD.Console.PrintMessage("Can't close example.\n")
 
 #import FreeCAD, Draft, FreeCADGui
 import ImportGui
