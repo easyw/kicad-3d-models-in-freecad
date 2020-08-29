@@ -136,7 +136,7 @@ def export_one_part(module, variant, pincount, configuration, log):
         LIST_license=module.LICENCE_Info.LIST_license
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
-    pins_per_row = pincount/series_definition.number_of_rows
+    pins_per_row = pincount//series_definition.number_of_rows
     mpn = variant_params['mpn_format_string'].format(pincount=pincount, pins_per_row=pins_per_row)
 
 
