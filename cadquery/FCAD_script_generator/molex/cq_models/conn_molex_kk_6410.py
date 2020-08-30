@@ -77,7 +77,7 @@ class series_params():
     pinrange = range(2, 17)
     mount_pin = ''
 
-    number_of_rows = 2
+    number_of_rows = 1
 
     body_color_key = "white body"
     pins_color_key = "metal grey pins"
