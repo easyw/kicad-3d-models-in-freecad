@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-# CadQuery script returning Molex KK 6410 Connectors
+# CadQuery script returning Molex KK 5273 Connectors
 
 ## requirements
 ## freecad (v1.5 and v1.6 have been tested)
@@ -46,16 +46,16 @@
 #*   exception statement from your version.                                 *
 #****************************************************************************
 
-__title__ = "model description for Molex KK 6410 series connectors"
-__author__ = "hackscribble"
-__Comment__ = 'model description for Molex KK 6410 series connectors using cadquery'
+__title__ = "model description for Molex KK 5273 (SPOX) series connectors"
+__author__ = "Franck78"
+__Comment__ = 'model description for Molex KK 5273 (SPOX) series connectors using cadquery'
 
-___ver___ = "0.3 04/12/2017"
+___ver___ = "1.0 08/30/2020"
 
 class LICENCE_Info():
     ############################################################################
-    STR_licAuthor = "Ray Benitez"
-    STR_licEmail = "hackscribble@outlook.com"
+    STR_licAuthor = "Franck Bourdonnec"
+    STR_licEmail = "fbourdonnec@chez.com"
     STR_licOrgSys = ""
     STR_licPreProc = ""
 
@@ -69,12 +69,13 @@ from collections import namedtuple
 import FreeCAD
 
 class series_params():
-    series = "KK-254"
+    series = "KK-396"
     manufacturer = 'Molex'
-    mpn_format_string = 'AE-6410-{pincount:02d}A'
+    mpn_format_string = '09652{pincount:02d}8'
+    #mpn_format_string = 'A-41791-{pincount:04d}'# KiCad have this footprints (ranging 2..18). Use this for testing
     orientation = 'V'
-    datasheet = 'http://www.molex.com/pdm_docs/sd/022272021_sd.pdf'
-    pinrange = range(2, 17)
+    datasheet = 'http://www.molex.com/pdm_docs/sd/009652028_sd.pdf'
+    pinrange = range(2, 13)			# Molex now sells only 2..8 channels
     mount_pin = ''
 
     number_of_rows = 1
@@ -90,51 +91,40 @@ class series_params():
         '__pins'
     ]
 
-    pitch = 2.54
+    pitch = 3.96
 
-    pin_width = 0.64
-    pin_chamfer_long = 0.25
-    pin_chamfer_short = 0.25
-    pin_height = 14.22				# DIMENSION C
-    pin_depth = 3.56				# DIMENSION F depth below bottom surface of base
-    pin_inside_distance = 1.27			# Distance between centre of end pin and end of body
+    pin_width = 1.14
+    pin_chamfer_long = 0.3
+    pin_chamfer_short = 0.1
+    pin_height = 17.45
+    pin_depth = 3.6				# Depth below bottom surface of base
+    pin_inside_distance = (7.16-3.96)/2		# Distance between centre of end pin and end of body
+    pin_xpos = 5.6                              # Pin and groove not exactly body centered
 
-    body_width = 5.8
-    body_height = 3.17
-    body_channel_depth = 0.6
-    body_channel_width = 1.5
-    body_cutout_length = 1.2
-    body_cutout_width = 0.6
-
-    ramp_split_breakpoint = 6			# Above this number of pins, the tab is split into two parts
-    ramp_chamfer_x = 0.3
-    ramp_chamfer_y = 0.7
+    body_width = 10.2
+    body_height = 3.2
+    body_channel_depth = 1/2 * pin_width
+    body_channel_width = 1.8
+    body_channel_chamfer = 0.7
 
 
-calcDim = namedtuple( 'calcDim', ['length', 'ramp_height', 'ramp_width', 'ramp_offset'])
+calcDim = namedtuple( 'calcDim', ['length'])
 
 
 def dimensions(num_pins):
     length = (num_pins-1) * series_params.pitch + 2 * series_params.pin_inside_distance
-    ramp_height = 11.7 - series_params.body_height
-    if num_pins > series_params.ramp_split_breakpoint:
-        ramp_width = series_params.pitch * 2
-        ramp_offset = series_params.pitch * (num_pins -5) / 2
-    else:
-        ramp_width = (num_pins - 1) * series_params.pitch / 2
-        ramp_offset = 0
-    return calcDim(length = length, ramp_height = ramp_height, ramp_width = ramp_width, ramp_offset = ramp_offset)
+    return calcDim(length = length)
 
 def generate_straight_pin():
     pin_width=series_params.pin_width
     pin_depth=series_params.pin_depth
     pin_height=series_params.pin_height
-    pin_inside_distance=series_params.pin_inside_distance
+    pin_xpos=series_params.pin_xpos
     chamfer_long = series_params.pin_chamfer_long
     chamfer_short = series_params.pin_chamfer_short
 
-    pin=cq.Workplane("YZ").workplane(offset=-pin_width/2.0)\
-        .moveTo(-pin_width/2.0, -pin_depth)\
+    pin=cq.Workplane("YZ").workplane(offset=series_params.pin_inside_distance - pin_width/2)\
+        .moveTo(pin_xpos-pin_width/2.0, -pin_depth)\
         .rect(pin_width, pin_height, False)\
         .extrude(pin_width)
 
@@ -159,9 +149,9 @@ def generate_pins(num_pins):
 
 
 def generate_body(num_pins ,calc_dim):
+
     pin_inside_distance = series_params.pin_inside_distance
     pin_width = series_params.pin_width
-    pitch = series_params.pitch
 
     body_len = calc_dim.length
     body_width = series_params.body_width
@@ -169,40 +159,39 @@ def generate_body(num_pins ,calc_dim):
 
     body_channel_depth = series_params.body_channel_depth
     body_channel_width = series_params.body_channel_width
-    body_cutout_length = series_params.body_cutout_length
-    body_cutout_width = series_params.body_cutout_width
+    body_channel_xpos = series_params.pin_xpos
+    body_channel_chamfer = series_params.body_channel_chamfer
 
-    # ramp_split_breakpoint = series_params.ramp_split_breakpoint
-    ramp_chamfer_x = series_params.ramp_chamfer_x
-    ramp_chamfer_y = series_params.ramp_chamfer_y
-    ramp_height = calc_dim.ramp_height
-    ramp_width = calc_dim.ramp_width
-    ramp_offset = calc_dim.ramp_offset
+    # Point's coordinates are mesured on the drawing model from Molex
+    # 0,0 is bottom left of the _| shape (side view)
+    body = cq.Workplane("YZ")\
+        .moveTo(0, 0)\
+        .vLine(body_height)\
+        .hLine(6.8)\
+        .lineTo(7.4, 2.3)\
+        .threePointArc((8.5, 2.0), (9.2, 2.9))\
+        .lineTo(9.2, 4.9)\
+        .threePointArc((9.16, 5.2), (9.02, 5.49))\
+        .lineTo(7.62, 7.5)\
+        .threePointArc((7.26, 8.64), (7.85, 10.06))\
+        .lineTo(10.06, 12.26)\
+        .lineTo(10.75, 11.56)\
+        .lineTo(8.56, 9.35)\
+        .threePointArc((8.26, 8.64), (8.45, 8.06))\
+        .lineTo(9.84, 6.08)\
+        .threePointArc((10.12, 5.51), (body_width, 4.9))\
+        .lineTo(body_width, 2.0)\
+        .threePointArc((9.68, 0.63), (8.2, 0.0))\
+        .lineTo(body_channel_xpos+body_channel_width/2+body_channel_chamfer, 0)\
+        .line(-body_channel_chamfer, body_channel_depth)\
+        .hLine(-body_channel_width)\
+        .line(-body_channel_chamfer, -body_channel_depth)\
+        .close()\
+        .extrude(body_len)
 
-    body = cq.Workplane("XY").moveTo(((num_pins-1)*pitch)/2.0, 0).rect(body_len, body_width).extrude(body_height)#.edges("|Z").fillet(0.05)
-
-    body = body.faces("<Z").workplane().rarray(pitch, 1, num_pins, 1)\
-        .rect(body_channel_width, body_width).cutBlind(-body_channel_depth)
-
-    body = body.faces(">Z").workplane().moveTo(((num_pins-1)*pitch)/2.0, 0).rarray(pitch, 1, num_pins-1, 1)\
-        .rect(body_cutout_width, body_cutout_length).cutThruAll(False)
-
-    ramp = cq.Workplane("YZ").workplane(offset=ramp_offset).moveTo(-body_width/2.0, body_height)\
-        .line(0,ramp_height)\
-        .line(1.0,0)\
-        .line(0,-3.8)\
-        .line(0.5,-0.9)\
-        .line(0,-1.0)\
-        .line(-0.5,-0.5)\
-        .line(0,-1.7)\
-        .threePointArc((-body_width/2.0 + 1 + (0.6 * (1-0.707)), body_height + (1 - 0.707)* 0.6), (-body_width/2.0 + 1 + 0.6, body_height))\
-        .close().extrude(ramp_width).faces(">X").edges(">Z").chamfer(ramp_chamfer_x, ramp_chamfer_y)
-
-    ramp_mirror = ramp.mirror("YZ")
-
-    ramp = ramp.union(ramp_mirror).translate(((num_pins - 1) * pitch / 2.0, 0, 0))
-
-    body = body.union(ramp)
+    # carve a small notch on the right side
+    notche_width=series_params.pitch-pin_width
+    body = body.faces("<Y").workplane().moveTo(body_len/2-series_params.pitch/2-pin_inside_distance , 0).rect(notche_width,body_height).cutBlind(-0.3)
 
     return body, None
 
@@ -211,6 +200,11 @@ def generate_part(num_pins):
     calc_dim = dimensions(num_pins)
     pins = generate_pins(num_pins)
     body, insert = generate_body(num_pins, calc_dim)
+
+    # adjust for matching KiCad expectation
+    body = body.rotate((0, 0, 0),(0, 0, 1), 180).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance,series_params.pin_xpos,0))
+    pins = pins.rotate((0, 0, 0),(0, 0, 1), 180).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance,series_params.pin_xpos,0))
+
     return (body, pins)
 
 

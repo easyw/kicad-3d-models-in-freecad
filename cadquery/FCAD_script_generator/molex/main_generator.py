@@ -105,7 +105,8 @@ except Exception as e: # catch *all* exceptions
 from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+import importlib
+importlib.reload(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
@@ -118,7 +119,7 @@ from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_T
 try:
     close_CQ_Example(App, Gui)
 except:
-    FreeCAD.Console.PrintMessage("can't close example.")
+    FreeCAD.Console.PrintMessage("Can't close example.\n")
 
 #import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -134,7 +135,7 @@ def export_one_part(module, pincount, configuration, log):
         LIST_license=module.LICENCE_Info.LIST_license
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + module.LICENCE_Info.STR_licAuthor
-    pins_per_row = pincount/series_definition.number_of_rows
+    pins_per_row = pincount//series_definition.number_of_rows
     mpn = series_definition.mpn_format_string.format(pincount=pincount, pins_per_row=pins_per_row)
 
 
@@ -251,6 +252,8 @@ sys.path.append("cq_models")
 import conn_molex_502250
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
+import conn_molex_kk_41791
+import conn_molex_kk_5273
 import conn_molex_kk_6410
 import conn_molex_SlimStack_54722
 import conn_molex_SlimStack_55560
@@ -261,6 +264,8 @@ all_series = {
     '502250':conn_molex_502250,
     '53261':conn_molex_picoblade_53261,
     '53398':conn_molex_picoblade_53398,
+    '41791':conn_molex_kk_41791,
+    '5273':conn_molex_kk_5273,
     '6410':conn_molex_kk_6410,
     '54722':conn_molex_SlimStack_54722,
     '55560':conn_molex_SlimStack_55560,

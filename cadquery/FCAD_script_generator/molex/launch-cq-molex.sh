@@ -6,5 +6,5 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-FreeCAD main_generator.py
-#FreeCAD main_generator.py series=6410
+#FreeCAD main_generator.py
+FreeCAD main_generator.py series=41791,5273
