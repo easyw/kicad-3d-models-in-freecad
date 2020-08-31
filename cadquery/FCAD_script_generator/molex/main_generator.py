@@ -253,6 +253,7 @@ import conn_molex_502250
 import conn_molex_picoblade_53261
 import conn_molex_picoblade_53398
 import conn_molex_kk_41791
+import conn_molex_kk_41792
 import conn_molex_kk_5273
 import conn_molex_kk_6410
 import conn_molex_SlimStack_54722
@@ -265,6 +266,7 @@ all_series = {
     '53261':conn_molex_picoblade_53261,
     '53398':conn_molex_picoblade_53398,
     '41791':conn_molex_kk_41791,
+    '41792':conn_molex_kk_41792,
     '5273':conn_molex_kk_5273,
     '6410':conn_molex_kk_6410,
     '54722':conn_molex_SlimStack_54722,
