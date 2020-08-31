@@ -123,7 +123,7 @@ def generate_straight_pin():
     chamfer_long = series_params.pin_chamfer_long
     chamfer_short = series_params.pin_chamfer_short
 
-    pin=cq.Workplane("YZ").workplane(offset=pin_width)\
+    pin=cq.Workplane("YZ").workplane(offset=series_params.pin_inside_distance - pin_width/2)\
         .moveTo(pin_xpos-pin_width/2.0, -pin_depth)\
         .rect(pin_width, pin_height, False)\
         .extrude(pin_width)
