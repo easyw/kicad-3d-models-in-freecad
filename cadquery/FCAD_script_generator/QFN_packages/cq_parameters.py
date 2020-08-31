@@ -863,7 +863,7 @@ kicad_naming_params_qfn = {
         body_color_key = 'white body',
         dest_dir_prefix = '../RF_Converter.3dshapes/'
         ),
-    'Balun_Johanson_0900PC15J0013': Params( # from https://johansontechnology.com/datasheets/highly-integrated-passive-components/0900PC15J0013.pdf
+    'Balun_Johanson_0900PC15J0013': Params( # from https://www.johansontechnology.com/datasheets/0900PC15J0013/0900PC15J0013.pdf
         c = 1,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.2,        # pin top flat part length (including fillet radius)
