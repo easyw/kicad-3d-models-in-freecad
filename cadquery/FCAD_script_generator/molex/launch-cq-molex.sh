@@ -7,4 +7,4 @@ SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
 FreeCAD main_generator.py
-#FreeCAD main_generator.py series=41792
+#FreeCAD main_generator.py series=5273
