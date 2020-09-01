@@ -74,7 +74,7 @@ class series_params():
     #mpn_format_string = '09652{pincount:02d}8'
     mpn_format_string = '5273-{pincount:02d}A'# KiCad have this footprints (ranging 2..18). Use this for testing
     orientation = 'V'
-    datasheet = 'http://www.molex.com/pdm_docs/sd/009652028_sd.pdf'
+    datasheet = 'https://www.molex.com/pdm_docs/sd/009652028_sd.pdf'
     pinrange = range(2, 13)			# Molex now sells only 2..8 channels
     mount_pin = ''
 

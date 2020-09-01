@@ -74,7 +74,7 @@ class series_params():
     #mpn_format_string = '26605{pincount:02d}0'
     mpn_format_string = 'A-41792-{pincount:04d}'# old pn-name
     orientation = 'H'
-    datasheet = 'http://www.molex.com/pdm_docs/sd/026605050_sd.pdf'
+    datasheet = 'https://www.molex.com/pdm_docs/sd/026605050_sd.pdf'
     pinrange = range(2, 19)
     mount_pin = ''
 
