@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/python
 #
-# CadQuery script returning Molex KK 41792 Connectors
+# CadQuery script returning Molex KK 41791 Connectors
 
 ## requirements
 ## freecad (v1.5 and v1.6 have been tested)
@@ -46,9 +46,9 @@
 #*   exception statement from your version.                                 *
 #****************************************************************************
 
-__title__ = "model description for Molex KK-396 41792 series connectors"
+__title__ = "model description for Molex KK-396 41791 series connectors"
 __author__ = "Franck78"
-__Comment__ = 'model description for Molex KK-396 41792 series connectors using cadquery'
+__Comment__ = 'model description for Molex KK-396 41791 series connectors using cadquery'
 
 ___ver___ = "1.0 08/30/2020"
 
@@ -71,11 +71,11 @@ import FreeCAD
 class series_params():
     series = "KK-396"
     manufacturer = 'Molex'
-    #mpn_format_string = '26605{pincount:02d}0'
-    mpn_format_string = 'A-41792-{pincount:04d}'# old pn-name
-    orientation = 'H'
-    datasheet = 'https://www.molex.com/pdm_docs/sd/026605050_sd.pdf'
-    pinrange = range(2, 19)
+    #mpn_format_string = '26604{pincount:02d}0'
+    mpn_format_string = 'A-41791-{pincount:04d}'# old pn-name
+    orientation = 'V'
+    datasheet = 'http://www.molex.com/pdm_docs/sd/009652028_sd.pdf'
+    pinrange = range(2,19)
     mount_pin = ''
 
     number_of_rows = 1
@@ -93,22 +93,19 @@ class series_params():
 
     pitch = 3.96
 
-    body_width = 6.88                          # The base
-    body_height = 3.3
-    body_channel_depth = 0.76
-    body_channel_width = 5.35
-
-    pin_M = 11.43                              # pin Mating
-    pin_Y = 5.41
     pin_width = 1.14
     pin_chamfer_long = 0.3
     pin_chamfer_short = 0.1
-    pin_height = body_height+pin_M+pin_Y+ pin_width/2     # The standart pin, other length available
-    pin_depth = pin_Y + pin_width/2                       # Depth below bottom surface of base
-    pin_inside_distance = (7.77-3.96)/2                   # Distance between centre of end pin and end of body (A-B)/2
-    pin_xpos = 5.11                                       # Pin and groove not exactly body centered
+    pin_height = 18.29                          # The standart pin, other length available
+    pin_depth = 3.6                             # Depth below bottom surface of base
+    pin_inside_distance = (7.77-3.96)/2         # Distance between centre of end pin and end of body (A-B)/2
+    pin_xpos = 5.11                             # Pin and groove not exactly body centered
 
 
+    body_width = 6.88                           # The base
+    body_height = 3.3
+    body_channel_depth = 0.76
+    body_channel_width = 5.35
 
     full_width = 10.01                          # base+ramp
     ramp_height = 11.33                         # Full height
@@ -142,8 +139,7 @@ def dimensions(num_pins):
     length = (num_pins-1) * series_params.pitch + 2 * series_params.pin_inside_distance
     return calcDim(length = length)
 
-
-def generate_bent_pin():
+def generate_straight_pin():
     pin_width=series_params.pin_width
     pin_depth=series_params.pin_depth
     pin_height=series_params.pin_height
@@ -151,34 +147,25 @@ def generate_bent_pin():
     chamfer_long = series_params.pin_chamfer_long
     chamfer_short = series_params.pin_chamfer_short
 
-    xpos = -pin_xpos+pin_width
-    ypos = -pin_depth
     pin=cq.Workplane("YZ").workplane(offset=series_params.pin_inside_distance - pin_width/2)\
-        .moveTo(xpos, ypos)\
-        .vLine(pin_width)\
-        .hLineTo(xpos+6)\
-        .threePointArc((xpos+7.94, ypos+2.01), (xpos+8.5, ypos+3.5) )\
-        .lineTo(xpos+8.5, ypos+pin_height)\
-        .hLine(pin_width)\
-        .lineTo(xpos+8.5+pin_width, ypos+3.5)\
-        .threePointArc((xpos+8.64, ypos+1.09), (xpos+6, ypos) )\
-        .close()\
+        .moveTo(pin_xpos-pin_width/2.0, -pin_depth)\
+        .rect(pin_width, pin_height, False)\
         .extrude(pin_width)
-
 
     pin = pin.faces(">Z").edges(">X").chamfer(chamfer_short,chamfer_long)
     pin = pin.faces(">Z").edges("<X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces(">Z").edges(">Y").chamfer(chamfer_short,chamfer_long)
+    pin = pin.faces(">Z").edges(">Y").chamfer(chamfer_long,chamfer_short)
     pin = pin.faces(">Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Y").edges(">Z").chamfer(chamfer_long,chamfer_short)
-    pin = pin.faces("<Y").edges("<Z").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Y").edges(">X").chamfer(chamfer_short,chamfer_long)
-    pin = pin.faces("<Y").edges("<X").chamfer(chamfer_short,chamfer_long)
+    pin = pin.faces("<Z").edges(">X").chamfer(chamfer_short,chamfer_long)
+    pin = pin.faces("<Z").edges("<X").chamfer(chamfer_short,chamfer_long)
+    pin = pin.faces("<Z").edges(">Y").chamfer(chamfer_short,chamfer_long)
+    pin = pin.faces("<Z").edges("<Y").chamfer(chamfer_short,chamfer_long)
     return pin
+
 
 def generate_pins(num_pins):
     pitch=series_params.pitch
-    pin=generate_bent_pin()
+    pin=generate_straight_pin()
     pins = pin
     for i in range(0, num_pins):
         pins = pins.union(pin.translate((i * pitch, 0, 0)))
@@ -295,8 +282,8 @@ def generate_part(num_pins):
     body, insert = generate_body(num_pins, calc_dim)
 
     # adjust for matching KiCad expectation
-    body = body.rotate((0, 0, 0),(0, 0, 1), 180).rotate((1, 0, 0),(1, 0, 0), 270).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance, series_params.pin_Y, 0))
-    pins = pins.rotate((0, 0, 0),(0, 0, 1), 180).rotate((1, 0, 0),(1, 0, 0), 270).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance, series_params.pin_Y, 0))
+    body = body.rotate((0, 0, 0),(0, 0, 1), 180).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance,series_params.pin_xpos,0))
+    pins = pins.rotate((0, 0, 0),(0, 0, 1), 180).translate(cq.Vector(calc_dim.length-series_params.pin_inside_distance,series_params.pin_xpos,0))
 
     return (body, pins)
 
