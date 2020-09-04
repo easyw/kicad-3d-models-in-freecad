@@ -57,7 +57,7 @@ ___ver___ = "2.0.0 21/11/2017"
 from math import tan, cos, sin, radians, sqrt
 from collections import namedtuple
 global save_memory
-save_memory = False #reducing memory consuming for all generation params
+save_memory = True #reducing memory consuming for all generation params
 
 #from cq_cad_tools import say, sayw, saye
 
@@ -101,16 +101,25 @@ STR_licAuthor = "kicad StepUp"
 STR_licEmail = "ksu"
 STR_licOrgSys = "kicad StepUp"
 STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
+STR_licOrg = "FreeCAD"
 
 LIST_license = ["",]
 #################################################################################################
 
 
 # Import cad_tools
+
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
+
+reload_lib(cq_cad_tools)
+
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject, Color_Objects, \
@@ -151,7 +160,7 @@ except NameError:
 try:
     close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    print ("CQ 030 doesn't open example file")
 
 
 def make_Vertical_THT_base(n, pitch, rows, base_width, base_height, base_chamfer):
@@ -259,7 +268,7 @@ def make_Vertical_SMD_pins(n, pitch, rows, pin_length_above_base, pin_length_hor
             right_pin = range(0,n, 2)
             left_pin = range(1, n, 2)
         else:
-            print 'not found'
+            print ("not found")
     else:
         right_pin = range(n)
         left_pin = range(n)
@@ -295,12 +304,12 @@ def MakeHeader(n, model, all_params):
         os.makedirs(out_dir)
 
     CheckedModelName = ModelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
-   
+
     newdoc = App.newDocument(CheckedModelName)
     App.setActiveDocument(CheckedModelName)
     App.ActiveDocument=App.getDocument(CheckedModelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
-    
+
     header_type = all_params[model]['type']
     pitch = all_params[model]['pitch']
     rows = all_params[model]['rows']
@@ -309,10 +318,10 @@ def MakeHeader(n, model, all_params):
     base_chamfer = all_params[model]['base_chamfer']
     pin_width = all_params[model]['pin_width']
     pin_length_above_base = all_params[model]['pin_length_above_base']
-    
+
     pin_end_chamfer = all_params[model]['pin_end_chamfer']
     rotation = all_params[model]['rotation']
-    
+
     if base_chamfer == 'auto':
         base_chamfer = pitch/10.
 
@@ -338,9 +347,9 @@ def MakeHeader(n, model, all_params):
         pins = make_Vertical_SMD_pins(n, pitch, rows, pin_length_above_base, pin_length_horizontal, base_height, base_width, pin_width, pin_end_chamfer, base_z_offset, pin_1_start)
         base = make_Vertical_SMD_base(n, pitch, base_width, base_height, base_chamfer, base_z_offset)
     else:
-        print 'Header type: '
-        print header_type
-        print ' is not recognized, please check parameters'
+        print ("Header type: ")
+        print (header_type)
+        print (" is not recognized, please check parameters")
         stop
 
     show(base)
@@ -348,7 +357,7 @@ def MakeHeader(n, model, all_params):
 
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)
-    
+
     Color_Objects(Gui,objs[0],body_color)
     Color_Objects(Gui,objs[1],pins_color)
     #Color_Objects(Gui,objs[2],marking_color)
@@ -373,11 +382,9 @@ def MakeHeader(n, model, all_params):
 
     if (rotation !=0):
         z_RotateObject(doc, rotation)
-    
-    #out_dir = models_dir+"/generated_pinheaders"
-    
+
     doc.Label = CheckedModelName
-    
+
     #save the STEP file
     exportSTEP(doc, ModelName, out_dir)
     if LIST_license[0]=="":
@@ -385,7 +392,7 @@ def MakeHeader(n, model, all_params):
         LIST_license.append("")
     Lic.addLicenseToStep(out_dir+'/', ModelName+".step", LIST_license,\
                        STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-    
+
     # scale and export Vrml model
     scale=1/2.54
     #exportVRML(doc,ModelName,scale,out_dir)
@@ -401,14 +408,14 @@ def MakeHeader(n, model, all_params):
     #save the VRML file
     #scale=0.3937001
     #exportVRML(doc,name,scale,out_dir)
-    
+
     if save_memory == False:
         Gui.SendMsgToActiveView("ViewFit")
         Gui.activeDocument().activeView().viewAxometric()
 
     # Save the doc in Native FC format 
     saveFCdoc(App, Gui, doc, ModelName, out_dir, False) 
-    
+
     check_Model=True
     if save_memory == True or check_Model==True:
         doc=FreeCAD.ActiveDocument
@@ -421,23 +428,26 @@ def MakeHeader(n, model, all_params):
         if cq_cad_tools.checkUnion(docu) == True:
             FreeCAD.Console.PrintMessage('step file is correctly Unioned\n')
         else:
-            FreeCAD.Console.PrintError('step file is NOT Unioned\n')
-            stop
+            FreeCAD.Console.PrintError('step file is not Unioned\n')
+            FreeCAD.closeDocument(docu.Name)
+            return 1
+            #stop
         FC_majorV=int(FreeCAD.Version()[0])
         FC_minorV=int(FreeCAD.Version()[1])
         if FC_majorV == 0 and FC_minorV >= 17:
             for o in docu.Objects:
                 if hasattr(o,'Shape'):
                     chks=cq_cad_tools.checkBOP(o.Shape)
-                    print 'chks ',chks
-                    print cq_cad_tools.mk_string(o.Label)
+                    print (cq_cad_tools.mk_string(o.Label))
                     if chks != True:
-                        msg='shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' is INVALID!\n'
+                        msg='Checking shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' failed.\n'
                         FreeCAD.Console.PrintError(msg)
                         FreeCAD.Console.PrintWarning(chks[0])
-                        stop
+                        FreeCAD.closeDocument(docu.Name)
+                        return 1
+                        #stop
                     else:
-                        msg='shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' is valid\n'
+                        msg='Checking shape \''+o.Name+'\' \''+cq_cad_tools.mk_string(o.Label)+'\' passed.\n'
                         FreeCAD.Console.PrintMessage(msg)
         else:
             FreeCAD.Console.PrintError('BOP check requires FC 0.17+\n')
@@ -445,9 +455,9 @@ def MakeHeader(n, model, all_params):
         saveFCdoc(App, Gui, docu, ModelName,out_dir, False)
         doc=FreeCAD.ActiveDocument
         FreeCAD.closeDocument(doc.Name)
-        
+
     return 0
-    
+
 #import step_license as L
 import add_license as Lic
 
@@ -468,7 +478,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     if len(sys.argv) < 3:
         FreeCAD.Console.PrintMessage('No variant name is given! building:\n')
-        model_to_build = all_params.keys()[0]
+        model_to_build = list(all_params.keys())[0]
     else:
         model_to_build = sys.argv[2]
     if len(sys.argv) > 3:
@@ -476,15 +486,15 @@ if __name__ == "__main__" or __name__ == "main_generator":
         #comma separarated pin numberings
         if ',' in p:
             try:
-                pinrange = map(int,p.split(','))
+                pinrange = list(map(int,p.split(',')))
             except:
                 FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid ,")
                 pinrange = []
-        
+
         #range of pins x-y
         elif '-' in p and len(p.split('-')) == 2:
             ps = p.split('-')
-            
+
             try:
                 p1, p2 = int(ps[0]),int(ps[1])
                 pinrange = range(p1,p2+1)
@@ -492,7 +502,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
                 FreeCAD.Console.PrintMessage("Pin argument '",p,"' is invalid -")
                 pinrange = []
             save_memory = True
-            
+
         #otherwise try for a single pin
         else:
             try:
@@ -514,15 +524,17 @@ if __name__ == "__main__" or __name__ == "main_generator":
     for model in models:
         if updatepinrange == True:
            pinrange = range(all_params[model]['pins']['from'],all_params[model]['pins']['to']+1)
-        
+
         if len(pinrange) > 2:
             save_memory=True
-        print model
-        print "\n"
-        print 'pins:'
-        print pinrange
+        print (model)
+        print ("\npins:" + str(pinrange))
+        errors = 0
         for pins in pinrange:
-            MakeHeader(pins, model, all_params)
+            errors += MakeHeader(pins, model, all_params)
+
+        if errors:
+            print ("Job completed with " + str(errors)+ " error(s)\n")
 
 # when run from freecad-cadquery
 if __name__ == "temp.module":
@@ -536,5 +548,6 @@ if __name__ == "temp.module":
     ##
     ## show(case, (60,60,60,0))
     ## show(pins)
+
 
 
