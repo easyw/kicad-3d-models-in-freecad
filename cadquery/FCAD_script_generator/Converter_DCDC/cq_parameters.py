@@ -1,5 +1,6 @@
-#!/usr/bin/python
+
 # -*- coding: utf8 -*-
+#!/usr/bin/python
 #
 # This is derived from a cadquery script for generating QFP/GullWings models in X3D format.
 #
@@ -10,14 +11,20 @@
 
 ## file of parametric definitions
 
+class LICENCE_Info():
+
+    ############################################################################
+    # Licence information of the generated models.
+    #################################################################################################
+    STR_licAuthor = "kicad StepUp"
+    STR_licEmail = "ksu"
+    STR_licOrgSys = "kicad StepUp"
+    STR_licPreProc = "OCC"
+    STR_licOrg = "FreeCAD"
+    LIST_license = ["",]
+
 import collections
 from collections import namedtuple
-
-destination_dir="/Converter_DCDC.3dshapes"
-# destination_dir="./"
-old_footprints_dir="Converter_DCDC.pretty"
-footprints_dir="Converter_DCDC.pretty"
-##footprints_dir=None #to exclude importing of footprints
 
 ##enabling optional/default values to None
 def namedtuple_with_defaults(typename, field_names, default_values=()):
@@ -54,6 +61,348 @@ Params = namedtuple_with_defaults("Params", [
 ])
 
 all_params = {
+
+
+
+    'test': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'test',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 20.0,  # Package length
+        W  = 40.0,  # Package width
+        H  = 6,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = (4,2,2), # No rim
+        pin = (
+               ('smd',45, 45.0, 1.0, 1),
+               ('smd',0.0, 0.0, 1.0, 1)),  # Pin placement
+        pin1corner = (0, 0),  # Left upp corner relationsship to pin 1
+        show_top   = True,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'orange body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'test.3dshapes'  # Destination directory
+        ),
+
+    'Converter_ACDC_Hahn_HS-400xx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_Hahn_HS-400xx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 32.8,  # Package length
+        W  = 27.8,  # Package width
+        H  = 25.8,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',20.0, 0.0, 1.0, 3.5), ('round',15.0, 20.0, 1.0, 3.5), ('round',5.0, 20.0,  1.0, 3.5)),  # Pin placement
+        pin1corner = (-6.4, -3.9),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_MeanWell_IRM-02-xx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_MeanWell_IRM-02-xx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 33.7,  # Package length
+        W  = 22.2,  # Package width
+        H  = 15.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0.0, 15.2, 1.0, 3.5), ('round',28.0, 0.0, 1.0, 3.5), ('round',28.0, 7.6, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-2.85, -3.5),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_MeanWell_IRM-02-xx_SMD': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_MeanWell_IRM-02-xx_SMD',  # Model name
+        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 22.2,  # Package length
+        W  = 33.7,  # Package width
+        H  = 16.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('smd',-13.2, -13.97, 1.0, 0.4), ('smd',-13.2, -8.89, 1.0, 0.4), ('smd',-13.2, -3.81, 1.0, 0.4), ('smd',-13.2, 6.35, 1.0, 0.4), ('smd',-13.2, 8.89, 1.0, 0.4),\
+               ('smd',-13.2, 11.43, 1.0, 0.4), ('smd',-13.2, 13.97, 1.0, 0.4), ('smd',13.2, -13.97, 1.0, 0.4), ('smd',13.2, -8.89, 1.0, 0.4), ('smd',13.2, -3.81, 1.0, 0.4),\
+               ('smd',13.2, 6.35, 1.0, 0.4), ('smd',13.2, 8.89, 1.0, 0.4), ('smd',13.2, 11.43, 1.0, 0.4), ('smd',13.2, 13.97, 1.0, 0.4)),  # Pin placement
+        pin1corner = (1.0, 3.5),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_MeanWell_IRM-03-xx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_MeanWell_IRM-03-xx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 24.0,  # Package length
+        W  = 37.0,  # Package width
+        H  = 15.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round', 0.0, 0.0, 1.0, 3.5), ('round', 0.0, 5.08, 1.0, 3.5), ('round', 0.0, 30.48, 1.0, 3.5), ('round', 17.78, 30.48, 1.0, 3.5), ('round', 17.78, 25.4, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-3.11, -3.26),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_MeanWell_IRM-03-xx_SMD': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_MeanWell_IRM-03-xx_SMD',  # Model name
+        pintype   = 'smd',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 24.0,  # Package length
+        W  = 37.0,  # Package width
+        H  = 16.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('smd',-14.45, -15.24, 1.0, 0.4), ('smd',-14.45, -10.16, 1.0, 0.4), ('smd',-14.45, -5.08, 1.0, 0.4), ('smd',-14.45, 7.62, 1.0, 0.4), ('smd',-14.45, 10.16, 1.0, 0.4),
+               ('smd',-14.45, 12.7, 1.0, 0.4), ('smd',-14.45, 15.24, 1.0, 0.4), ('smd',14.45, -15.24, 1.0, 0.4), ('smd',14.45, -10.16, 1.0, 0.4), ('smd',14.45, -5.08, 1.0, 0.4),
+               ('smd',14.45, 7.62, 1.0, 0.4), ('smd',14.45, 10.16, 1.0, 0.4), ('smd',14.45, 12.7, 1.0, 0.4), ('smd',14.45, 15.24, 1.0, 0.4)),  # Pin placement
+        pin1corner = (1.0, 3.5),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0.0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_MeanWell_IRM-20-xx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_MeanWell_IRM-20-xx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 52.4,  # Package length
+        W  = 27.2,  # Package width
+        H  = 24.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0.0, 20.8, 1.0, 3.5), ('round',45.0, 20.8, 1.0, 3.5), ('round',45.0, 12.8, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-3.4, -3.2),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_Vigortronix_VTX-214-010-xxx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_Vigortronix_VTX-214-010-xxx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 36.0,  # Package length
+        W  = 56.0,  # Package width
+        H  = 25.5,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',12.0, 0.0, 1.0, 3.5), ('round',0.0, 48.0, 1.0, 3.5), ('round',5.0, 48.0, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-12.0, -4.0),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'orange body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_Vigortronix_VTX-214-015-1xx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_Vigortronix_VTX-214-015-1xx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 55.0,  # Package length
+        W  = 45.0,  # Package width
+        H  = 24.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0.0, 17.5, 1.0, 3.5), ('round',0.0, 35.0, 1.0, 3.5), ('round',47.0, 27.5, 1.0, 3.5), ('round',47.0, 7.5, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-4.0, -4.0),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'orange body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_TRACO_TMLM-04_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_TRACO_TMLM-04_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 36.5,  # Package length
+        W  = 27.0,  # Package width
+        H  = 17.1,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',21.5, 0.0, 1.0, 3.5), ('round',25.25, 0.0, 1.0, 3.5), ('round',29.0, 0.0, 1.0, 3.5), ('round',29.0, 21.0, 1.0, 3.5), ('round',21.5, 21.0, 1.0, 3.5), ('round',0.0, 21.0, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-3.75, -3.0),  # Left upp corner relationsship to pin 1
+        show_top   = 1,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'red body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_TRACO_TMLM-05_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_TRACO_TMLM-05_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 50.08, # Package length
+        W  = 25.4,  # Package width
+        H  = 15.16, # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0.0, 10.16, 1.0, 3.5), ('round',45.72, 10.16, 1.0, 3.5), ('round',45.72, -10.16, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-2.54, -12.26),  # Left upp corner relationsship to pin 1
+        show_top   = 1,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'red body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_TRACO_TMLM-10-20_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_TRACO_TMLM-10-20_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 52.4,  # Package length
+        W  = 27.2,  # Package width
+        H  = 23.5,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0.0, 10.16, 1.0, 3.5), ('round',45.72, 10.16, 1.0, 3.5), ('round',45.72, -10.16, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-2.54, -12.26),  # Left upp corner relationsship to pin 1
+        show_top   = 1,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'red body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_ACDC_RECOM_RAC04-xxSGx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_RECOM_RAC04-xxSGx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 24.0,  # Package length
+        W  = 37.0,  # Package width
+        H  = 15.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round', 0.0, 0.0, 1.0, 3.5), ('round', 0, 5.08, 1.0, 3.5), ('round', 0, 30.48, 1.0, 3.5), ('round', 17.78, 30.48, 1.0, 3.5), ('round', 17.78, 25.4, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-3.11, -3.26),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 1,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_ACDC_HiLink_HLK-PMxx': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_ACDC_HiLink_HLK-PMxx',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd', 'thtsmd' or 'tht_n'
+        L  = 34.0,  # Package length
+        W  = 20.2,  # Package width
+        H  = 15.0,  # Package height
+        A1 = 0.1,   # Package board seperation
+        rim = None, # No rim
+        pin = (('round',0.0, 0.0, 1.0, 3.5), ('round',0, -5.0, 1.0, 3.5), ('round',29.4, -10.2, 1.0, 3.5), ('round',29.4, 5.2, 1.0, 3.5)),  # Pin placement
+        pin1corner = (-2.3, -12.6),  # Left upp corner relationsship to pin 1
+        show_top   = 0,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
+        ),
+
     'Converter_DCDC_Cincon_EC5BExx_Single_THT': Params(   # ModelName
         #
         #
@@ -74,8 +423,9 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
+
 
     'Converter_DCDC_Cincon_EC5BExx_Dual_THT': Params(   # ModelName
         #
@@ -97,7 +447,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Cincon_EC6Cxx_Single_THT': Params(   # ModelName
@@ -119,7 +469,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Cincon_EC6Cxx_Dual-Triple_THT': Params(   # ModelName
@@ -142,7 +492,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Bothhand_CFUSxxxx_THT': Params(   # ModelName
@@ -165,7 +515,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Bothhand_CFUSxxxxEH_THT': Params(   # ModelName
@@ -188,7 +538,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Bothhand_CFUDxxxx_THT': Params(   # ModelName
@@ -211,7 +561,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_MeanWell_NID30_THT': Params(   # ModelName
@@ -234,7 +584,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_MeanWell_NID60_THT': Params(   # ModelName
@@ -257,7 +607,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_MEE1SxxxxSC_THT': Params(   # ModelName
@@ -280,7 +630,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_MEE3SxxxxSC_THT': Params(   # ModelName
@@ -303,7 +653,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_NCS1SxxxxSC_THT': Params(   # ModelName
@@ -326,7 +676,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_CRE1xxxxxx3C_THT': Params(   # ModelName
@@ -349,7 +699,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_CRE1xxxxxxDC_THT': Params(   # ModelName
@@ -372,7 +722,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_CRE1xxxxxxSC_THT': Params(   # ModelName
@@ -395,7 +745,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_NMAxxxxDC_THT': Params(   # ModelName
@@ -418,7 +768,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_NMAxxxxSC_THT': Params(   # ModelName
@@ -440,7 +790,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_NXE2SxxxxMC_THT': Params(   # ModelName
@@ -463,7 +813,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R-78B-2.0_THT': Params(   # ModelName
@@ -486,7 +836,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R-78E-0.5_THT': Params(   # ModelName
@@ -509,7 +859,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R-78HB-0.5_THT': Params(   # ModelName
@@ -532,7 +882,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R-78S-0.1_THT': Params(   # ModelName
@@ -555,7 +905,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R-78HB-0.5L_THT': Params(   # ModelName
@@ -578,7 +928,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R5xxxDA_THT': Params(   # ModelName
@@ -601,7 +951,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_RECOM_R5xxxPA_THT': Params(   # ModelName
@@ -624,7 +974,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TMR-1SM_SMD': Params(   # ModelName
@@ -647,7 +997,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TMR-1-xxxx_Single_THT': Params(   # ModelName
@@ -670,7 +1020,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TMR-1-xxxx_Dual_THT': Params(   # ModelName
@@ -693,7 +1043,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TMR-xxxx_THT': Params(   # ModelName
@@ -716,7 +1066,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TSR-1_THT': Params(   # ModelName
@@ -739,7 +1089,7 @@ all_params = {
         body_color_key     = 'red body',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN10-xxxx_THT': Params(   # ModelName
@@ -762,7 +1112,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN10-xxxx_Single_THT': Params(   # ModelName
@@ -785,7 +1135,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN10-xxxx_Dual_THT': Params(   # ModelName
@@ -808,7 +1158,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN20-xxxx_THT': Params(   # ModelName
@@ -831,7 +1181,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN20-xxxx-N4_THT': Params(   # ModelName
@@ -854,7 +1204,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN20-xxxx_Single_THT': Params(   # ModelName
@@ -877,7 +1227,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_TRACO_TEN20-xxxx_Dual_THT': Params(   # ModelName
@@ -900,7 +1250,7 @@ all_params = {
         body_color_key     = 'metal grey pins',  # Body color
         body_top_color_key = 'red body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER_JTExxxxDxx_THT': Params(   # ModelName
@@ -923,7 +1273,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER_ISU02-Series_SMD': Params(   # ModelName
@@ -946,7 +1296,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Artesyn_ATA-Series_SMD': Params(   # ModelName
@@ -969,7 +1319,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IA48xxS_THT': Params(   # ModelName
@@ -994,7 +1344,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IAxxxxS_THT': Params(   # ModelName
@@ -1017,7 +1367,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IAxxxxD_THT': Params(   # ModelName
@@ -1040,7 +1390,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IA48xxD_THT': Params(   # ModelName
@@ -1063,7 +1413,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IHxxxxS_THT': Params(   # ModelName
@@ -1086,7 +1436,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IHxxxxSH_THT': Params(   # ModelName
@@ -1109,7 +1459,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IHxxxxD_THT': Params(   # ModelName
@@ -1132,7 +1482,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-IHxxxxDH_THT': Params(   # ModelName
@@ -1155,7 +1505,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-ITQxxxxS-H_THT': Params(   # ModelName
@@ -1178,7 +1528,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-ITxxxxxS_THT': Params(   # ModelName
@@ -1201,7 +1551,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_XP_POWER-ITXxxxxSA_THT': Params(   # ModelName
@@ -1224,7 +1574,7 @@ all_params = {
         body_color_key     = 'black body',  # Body color
         body_top_color_key = 'black body',  # Body top color
         pin_color_key      = 'metal grey pins',  # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
     'Converter_DCDC_Murata_MGJ2DxxxxxxSC_THT': Params(   # ModelName
@@ -1247,6 +1597,7 @@ all_params = {
         body_color_key     = 'black body',      # Body color
         body_top_color_key = 'black body',      # Body top color
         pin_color_key      = 'metal grey pins', # Pin color
-        dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
+
 }

@@ -45,11 +45,17 @@
 #*                                                                          *
 #****************************************************************************
 
-__title__ = "make DC to DC converter 3D models"
+__title__ = "make AC to DC  & DC to DC converter 3D models"
 __author__ = "Stefan, based on DIP script"
-__Comment__ = 'make DC to DC converter 3D models exported to STEP and VRML for Kicad StepUP script'
+__Comment__ = 'make AC to DC  & DC to DC converter 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.3.3 14/08/2015"
+___ver___ = "1.4.0/09/2020"
+
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+stop_on_first_error = True
+check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
 
 # maui import cadquery as cq
 # maui from Helpers import show
@@ -71,20 +77,8 @@ import FreeCADGui as Gui
 #from Gui.Command import *
 
 
-outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
-scriptdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
-sys.path.append(scriptdir)
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
-
-# Licence information of the generated models.
-#################################################################################################
-STR_licAuthor = "kicad StepUp"
-STR_licEmail = "ksu"
-STR_licOrgSys = "kicad StepUp"
-STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"
 
 
 #################################################################################################
@@ -92,15 +86,20 @@ STR_licOrg = "FreeCAD"
 # Import cad_tools
 import cq_cad_tools
 # Reload tools
-try:
-    reload(cq_cad_tools)
-except NameError:
-    import importlib
-    importlib.reload(cq_cad_tools)
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
+
+reload_lib(cq_cad_tools)
+
+
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements,  runGeometryCheck
 
 # Sphinx workaround #1
 try:
@@ -118,7 +117,7 @@ try:
     from Helpers import show
     # CadQuery Gui
 except: # catch *all* exceptions
-    msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
+    msg = "missing CadQuery 0.5.2 or later Module!\r\n\r\n"
     msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
     if QtGui is not None:
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
@@ -139,8 +138,6 @@ try:
 except: # catch *all* exceptions
     FreeCAD.Console.PrintMessage("CQ 030 doesn't open example file")
 
-destination_dir="/Converter_DCDC"
-# rotation = 0
 
 import cq_parameters  # modules parameters
 from cq_parameters import *
@@ -295,7 +292,7 @@ def make_pins(params):
     rim = params.rim                # Rim underneath
 
     pins = None
-    
+
     pinss = 0.1
     if rim != None:
         if len(rim) == 3:
@@ -309,9 +306,6 @@ def make_pins(params):
     pins=cq.Workplane("XY").workplane(offset=0).moveTo(0, 0).rect(0.1, 0.1).extrude(0.1)
     pint=cq.Workplane("XY").workplane(offset=0).moveTo(0, 0).rect(0.1, 0.1).extrude(0.1)
     #
-
-    FreeCAD.Console.PrintMessage('make_pins 1\r\n')
-
 
     for i in range(0, len(pin)):
         p = pin[i]
@@ -329,14 +323,14 @@ def make_pins(params):
             pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(px, -py).rect(pl, pw).extrude(0 - (ph + pinss))
 
         elif pt == 'round':
-            FreeCAD.Console.PrintMessage('make_pins 1.2 i ' + str(i) + '\r\n')
-            FreeCAD.Console.PrintMessage('make_pins 1.2 pt ' + str(pt) + '\r\n')
-            FreeCAD.Console.PrintMessage('make_pins 1.2 px ' + str(px) + '\r\n')
-            FreeCAD.Console.PrintMessage('make_pins 1.2 py ' + str(py) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 i ' + str(i) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 pt ' + str(pt) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 px ' + str(px) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 py ' + str(py) + '\r\n')
             pd = p[3]
             ph = p[4]
-            FreeCAD.Console.PrintMessage('make_pins 1.2 pd ' + str(pd) + '\r\n')
-            FreeCAD.Console.PrintMessage('make_pins 1.2 ph ' + str(ph) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 pd ' + str(pd) + '\r\n')
+            # FreeCAD.Console.PrintMessage('make_pins 1.2 ph ' + str(ph) + '\r\n')
 
             pint=cq.Workplane("XY").workplane(offset=A1 + pinss).moveTo(px, -py).circle(pd / 2.0, False).extrude(0 - (ph + pinss))
             pint = pint.faces("<Z").fillet(pd / 5.0)
@@ -367,7 +361,6 @@ def make_pins(params):
                     yD = pd
                     pint=cq.Workplane("ZY").workplane(offset=(L / 2.0) - (ph / 2.0)).moveTo(myZ1, myY1).rect(xD, yD).extrude(ph)
 
-            #
             elif px >= 0 and (py > (0 - (W / 2.0)) and py < ((W / 2.0))):
                 # Right side
                 if px > (L / 2.0):
@@ -429,7 +422,7 @@ def make_pins(params):
             pind= cq.Workplane("XZ").workplane(offset= 0 -py + (pd / 2.0)).moveTo(px, A1 + 2.0).circle(pd / 2.0, False).extrude( 0 - (W / 2.0))
             pind = pind.faces("<Y").fillet(pd / 2.0)
             pint = pint.union(pind)
-        
+
         if i == 0:
             pins = pint
         else:
@@ -446,21 +439,14 @@ def make_3D_model(models_dir, variant):
     LIST_license = ["",]
     modelName = all_params[variant].modelName
 
-    FreeCAD.Console.PrintMessage('make_3D_model 1\r\n')
-
     CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
     Newdoc = App.newDocument(CheckedmodelName)
-    FreeCAD.Console.PrintMessage('make_3D_model 1.2\r\n')
     App.setActiveDocument(CheckedmodelName)
     Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
-    FreeCAD.Console.PrintMessage('make_3D_model 1.4\r\n')
 
     case = make_case(all_params[variant])
-    FreeCAD.Console.PrintMessage('make_3D_model 2\r\n')
     casetop = make_case_top(all_params[variant])
-    FreeCAD.Console.PrintMessage('make_3D_model 3\r\n')
     pins = make_pins(all_params[variant])
-    FreeCAD.Console.PrintMessage('make_3D_model 4\r\n')
 
     show(case)
     show(casetop)
@@ -507,16 +493,25 @@ def make_3D_model(models_dir, variant):
 
     script_dir=os.path.dirname(os.path.realpath(__file__))
     expVRML.say(models_dir)
-    out_dir=models_dir+destination_dir
+    out_dir=models_dir+os.sep+all_params[variant].dest_dir_prefix
+
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=modelName)
     exportSTEP(doc, modelName, out_dir)
+
+
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
         LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', modelName+".step", LIST_license,\
-                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
+
+    Lic.addLicenseToStep(out_dir, '{:s}.step'.format(modelName),
+            LIST_license,
+            cq_parameters.LICENCE_Info.STR_licAuthor,
+            cq_parameters.LICENCE_Info.STR_licEmail,
+            cq_parameters.LICENCE_Info.STR_licOrgSys,
+            cq_parameters.LICENCE_Info.STR_licPreProc)
 
     # scale and export Vrml model
     scale=1/2.54
@@ -529,17 +524,28 @@ def make_3D_model(models_dir, variant):
     export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
     export_file_name=out_dir+os.sep+modelName+'.wrl'
     colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-    #expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
+    # expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
     expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-    #scale=0.3937001
-    #exportVRML(doc,modelName,scale,out_dir)
+
     # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, modelName,out_dir)
-    #display BBox
-    Gui.activateWorkbench("PartWorkbench")
-    Gui.SendMsgToActiveView("ViewFit")
-    Gui.activeDocument().activeView().viewAxometric()
-    #FreeCADGui.ActiveDocument.activeObject.BoundingBox = True
+    doc.recompute()
+    saveFCdoc(App, Gui, doc, modelName, out_dir)
+
+
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
+
+    if save_memory == True or check_Model==True:
+        FreeCAD.closeDocument(doc.Name)
+        os.remove (out_dir+os.sep+modelName+'.FCStd')
+
+    if check_Model==True:
+        with open(out_dir+os.sep+check_log_file, 'a+') as log:
+            log.write('# Check report for Molex 3d model genration\n')
+            runGeometryCheck(App, Gui, step_path, log, modelName, save_memory=save_memory)
+            log.close()
 
 
 def run():
@@ -568,8 +574,8 @@ if __name__ == "__main__" or __name__ == "main_generator":
     models_dir=sub_path+"_3Dmodels"
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building Converter_DCDC_XP_POWER-IAxxxxS_THT\r\n')
-        model_to_build='Converter_DCDC_XP_POWER-IAxxxxS_THT'
+        FreeCAD.Console.PrintMessage('No variant name is given! building Converter_ACDC_Hahn-HS-400xx\r\n')
+        model_to_build='Converter_ACDC_Hahn_HS-400xx_THT'
     else:
         model_to_build=sys.argv[2]
 
