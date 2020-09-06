@@ -219,7 +219,8 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
     from cqToolsExceptions import *
     import cq_cad_tools
     # Reload tools
-    reload(cq_cad_tools)
+    import importlib
+    importlib.reload(cq_cad_tools)
     # Explicitly load all needed functions
     from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
      exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
