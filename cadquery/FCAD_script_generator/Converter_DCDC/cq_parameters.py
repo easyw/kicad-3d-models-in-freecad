@@ -982,11 +982,11 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMR-1-xxxx_Single_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMR1-xx1x_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMR-1-xxxx_Single_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMR1-xx1x_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 17.0,  # Package length
         W  = 7.62,  # Package width
@@ -996,7 +996,6 @@ all_params = {
         pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.2),
                ('rect', 1*p, 0.0, 0.5, 0.25, 3.2),
                ('rect', 3*p, 0.0, 0.5, 0.25, 3.2),
-               ('rect', 4*p, 0.0, 0.5, 0.25, 3.2),
                ('rect', 5*p, 0.0, 0.5, 0.25, 3.2)),  # Pin placement
         pin1corner = (-2.15, -2.5+0.25/2),  # Left upp corner relationsship to pin 1
         show_top   = False,  # If top should be visible or not
@@ -1009,11 +1008,11 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMR-1-xxxx_Dual_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMR1-xx2x_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMR-1-xxxx_Dual_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMR1-xx2x_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 17.0,  # Package length
         W  = 7.62,  # Package width
@@ -1036,7 +1035,7 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMR-xxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMR-xxxx_THT': Params(   # ModelName   TRACO TMR 2
         #
         #  footprint silk with Y error size
         #
@@ -2010,11 +2009,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TBA1-xxxxE_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TBA1-xx1xE_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TBA1-xxxxE_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TBA1-xx1xE_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.50,  # Package length
+        W  = 6.0,    # Package width
+        H  = 9.5+0.5,# Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 2.999, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.40, -1.35),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TBA1-xx2xE_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TBA1-xx2xE_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.50,  # Package length
         W  = 6.0,    # Package width
@@ -2037,11 +2062,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TBA1-xxxxHI_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TBA1-xx1xHI_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TBA1-xxxxHI_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TBA1-xxxxHI_Single_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.50,  # Package length
+        W  = 6.0,    # Package width
+        H  = 9.5+0.5,# Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 2.999, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 4*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 6*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.40, -1.35),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TBA1-xx2xHI_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TBA1-xx2xHI_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.50,  # Package length
         W  = 6.0,    # Package width
@@ -2064,11 +2115,39 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TBA2-xxxx_THT': Params(   # ModelName
+
+    'Converter_DCDC_TRACO_TBA2-xx1x_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TBA2-xxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TBA2-xx1x_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.55,  # Package length
+        W  = 7.6,    # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.45, 3.78, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.40, -1.35),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_DCDC_TRACO_TBA2-xx2x_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TBA2-xx2x_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.55,  # Package length
         W  = 7.6,    # Package width
@@ -2091,11 +2170,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMA05xxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMA05xxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMA05xxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMA05xxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 6.10,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.049, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.10, -1.3+0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMA05xxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMA05xxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 6.10,   # Package width
@@ -2118,11 +2223,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMA12xxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMA12xSx_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMA12xxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMA12xSx_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 6.10,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.049, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.10, -1.3+0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMA12xDx_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMA12xDx_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 6.10,   # Package width
@@ -2145,11 +2276,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMA15xxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMA15xxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMA15xxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMA15xxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.10,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.549, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.10, -1.3+0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMA15xxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMA15xxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.10,   # Package width
@@ -2172,11 +2329,38 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMA24xxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMA24xxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMA24xxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMA24xxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.10,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.549, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.10, -1.3+0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_DCDC_TRACO_TMA24xxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMA24xxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.10,   # Package width
@@ -2199,11 +2383,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMAPxxxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMAPxxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMAPxxxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMAPxxxxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.10,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.549, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.10, -1.8-0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMAPxxxxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMAPxxxxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.10,   # Package width
@@ -2282,11 +2492,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMHxxxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMHxxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMHxxxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMHxxxxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.50,   # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 3.749, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 3*p, 0.0, 0.5, 0.25, 3.0),
+               ('rect', 5*p, 0.0, 0.5, 0.25, 3.0)),  # Pin placement
+        pin1corner = (-2.30, -1.25-0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMHxxxxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMHxxxxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.50,   # Package width
@@ -2570,11 +2806,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMV-xxxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMV-xxxxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMV-xxxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMV-xxxxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 6.1,    # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 6.1/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 4*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 6*p, 0.0, 0.5, 0.25, 3.2)),  # Pin placement
+        pin1corner = (-2.3, +4.75 -6.1 -0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMV-xxxxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMV-xxxxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 6.1,    # Package width
@@ -2597,11 +2859,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TMV-xx24_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMV-24xxS_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMV-24xxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMV-24xxS_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.1,    # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 7.1/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 4*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 6*p, 0.0, 0.5, 0.25, 3.2)),  # Pin placement
+        pin1corner = (-2.3, +4.75 -7.1 -0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMV-24xxD_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMV-24xxD_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.1,    # Package width
@@ -2625,11 +2913,37 @@ all_params = {
         ),
 
 
-    'Converter_DCDC_TRACO_TMV2-xxxxHI_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TMV2-xxxxSHI_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMV2-xxxxHI_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMV2-xxxxSHI_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.5,   # Package length
+        W  = 7.1,    # Package width
+        H  = 10.2,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 7.1/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 4*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 6*p, 0.0, 0.5, 0.25, 3.2)),  # Pin placement
+        pin1corner = (-2.3, -1.55 -0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TMV2-xxxxDHI_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMV2-xxxxDHI_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.5,   # Package length
         W  = 7.1,    # Package width
@@ -2657,7 +2971,34 @@ all_params = {
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TMV-xxxxxEN_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TMV-xxxxEN_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 22.0,   # Package length
+        W  = 7.5,    # Package width
+        H  = 12.5,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 7.5/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 1*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 4*p, 0.0, 0.5, 0.25, 3.2),
+               ('rect', 6*p, 0.0, 0.5, 0.25, 3.2)),  # Pin placement
+        pin1corner = (-3.5, -2 +0.25/2),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_DCDC_TRACO_TMV-xxxxDEN_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TMV-xxxxDEN_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 22.0,   # Package length
         W  = 7.5,    # Package width
@@ -2760,11 +3101,38 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TRV1-xxxxM_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TRV1-xx1xM_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TRV1-xxxxM_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TRV1-xx1xM_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 19.6,   # Package length
+        W  = 9.9,    # Package width
+        H  = 12.5,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 9.9/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 1*pm, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 6*pm, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 8*pm, 0.0, 0.5, 0.25, 4.1)),  # Pin placement
+        pin1corner = (16.0+1.8-19.6, -2.3),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_DCDC_TRACO_TRV1-xx2xM_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TRV1-xx2xM_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 19.6,   # Package length
         W  = 9.9,    # Package width
@@ -2815,6 +3183,7 @@ all_params = {
         pin_color_key      = 'metal grey pins',  # Pin color
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
+
 
     'Converter_DCDC_TRACO_TEC2-xxxxWI_THT': Params(   # ModelName
         #
@@ -2983,11 +3352,37 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TRN1-xxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TRN1-xx1x_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TRN1-xxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TRN1-xx1x_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 11.9,   # Package length
+        W  = 7.7,    # Package width
+        H  = 11.0,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 7.7/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 1*pm, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 2*pm+0.8, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 4*pm+0.8, 0.0, 0.5, 0.25, 4.1)),  # Pin placement
+        pin1corner = (8.8+1.6-11.9,3.7-7.7),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+    'Converter_DCDC_TRACO_TRN1-xx2x_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TRN1-xx2x_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.9,   # Package length
         W  = 7.7,    # Package width
@@ -3010,11 +3405,38 @@ all_params = {
         dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_TRACO_TRN3-xxxx_THT': Params(   # ModelName
+    'Converter_DCDC_TRACO_TRN3-xx1x_THT': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_TRACO_TRN3-xxxx_THT',  # Model name
+        modelName = 'Converter_DCDC_TRACO_TRN3-xx1x_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 11.9,   # Package length
+        W  = 7.7,    # Package width
+        H  = 11.0,   # Package height
+        A1 = 0.1,    # Package board separation
+        rim = (0.5, 7.7/2 -0.001, 0.5),
+        pin = (('rect', 0.0, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 1*pm, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 2*pm+0.8, 0.0, 0.5, 0.25, 4.1),
+               ('rect', 4*pm+0.8, 0.0, 0.5, 0.25, 4.1)),  # Pin placement
+        pin1corner = (8.8+1.6-11.9,3.7-7.7),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
+
+    'Converter_DCDC_TRACO_TRN3-xx2x_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_TRACO_TRN3-xx2x_THT',  # Model name
         pintype   = 'tht',  # Pin type, 'tht', 'smd'
         L  = 11.9,   # Package length
         W  = 7.7,    # Package width
