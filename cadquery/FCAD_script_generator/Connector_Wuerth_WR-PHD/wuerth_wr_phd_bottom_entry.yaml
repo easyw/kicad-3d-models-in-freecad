@@ -1,0 +1,195 @@
+standard:
+  series_prefix: WR-PHD
+  type: Standard
+  orientation: Vertical
+  pitch: 2.54
+  width: 5.08
+  height: 5.0
+  top: 1.52
+  pads:
+    diameter: 1.3
+    drill: 1
+  holes:
+    offset: 1.27
+    drill: 1.2
+  parts:
+    61300425721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61300425721.pdf
+      rows: 2
+      pins: 4
+    61300625721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61300625721.pdf
+      rows: 2
+      pins: 6
+    61300825721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61300825721.pdf
+      rows: 2
+      pins: 8
+    61301025721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61301025721.pdf
+      rows: 2
+      pins: 10
+    61301225721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61301225721.pdf
+      rows: 2
+      pins: 12
+    61301625721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61301625721.pdf
+      rows: 2
+      pins: 16
+    61302025721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61302025721.pdf
+      rows: 2
+      pins: 20
+    61302425721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61302425721.pdf
+      rows: 2
+      pins: 24
+    61302625721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61302625721.pdf
+      rows: 2
+      pins: 26
+    61303225721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61303225721.pdf
+      rows: 2
+      pins: 32
+    61303425721:
+      datasheet: https://katalog.we-online.de/em/datasheet/61303425721.pdf
+      rows: 2
+      pins: 34
+      
+large:
+  series_prefix: WR-PHD
+  type: Large
+  orientation: Vertical
+  pitch: 2.54
+  width: 5.08
+  height: 5.0
+  top: 1.52
+  pads:
+    diameter: 1.7
+    drill: 1
+  holes:
+    offset: 2.54
+    drill: 1.2
+  parts:
+    613004216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613004216921.pdf
+      rows: 2
+      pins: 4
+    613006216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613006216921.pdf
+      rows: 2
+      pins: 6
+    613008216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613008216921.pdf
+      rows: 2
+      pins: 8
+    613010216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613010216921.pdf
+      rows: 2
+      pins: 10
+    613012216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613012216921.pdf
+      rows: 2
+      pins: 12
+    613016216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613016216921.pdf
+      rows: 2
+      pins: 16
+    613018216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613018216921.pdf
+      rows: 2
+      pins: 18
+    613020216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613020216921.pdf
+      rows: 2
+      pins: 20
+    613022216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613022216921.pdf
+      rows: 2
+      pins: 22
+    613024216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613024216921.pdf
+      rows: 2
+      pins: 24
+    613026216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613026216921.pdf
+      rows: 2
+      pins: 26
+    613032216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613032216921.pdf
+      rows: 2
+      pins: 32
+    613034216921:
+      datasheet: https://katalog.we-online.de/em/datasheet/613034216921.pdf
+      rows: 2
+      pins: 34
+      
+smd:
+  series_prefix: WR-PHD
+  type: SMD
+  orientation: Vertical
+  pitch: 2.54
+  width: 5.0
+  height: 3.7
+  top: 1.27
+  pads:
+    x: 1.8
+    y: 0.9
+  holes:
+    offset: 1.93
+    drill: 1.1
+  parts:
+    610004243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610004243021.pdf
+      rows: 2
+      pins: 4
+    610006243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610006243021.pdf
+      rows: 2
+      pins: 6
+    610008243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610008243021.pdf
+      rows: 2
+      pins: 8
+    610010243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610010243021.pdf
+      rows: 2
+      pins: 10
+    610012243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610012243021.pdf
+      rows: 2
+      pins: 12
+    610016243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610016243021.pdf
+      rows: 2
+      pins: 16
+    610018243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610018243021.pdf
+      rows: 2
+      pins: 18
+    610020243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610020243021.pdf
+      rows: 2
+      pins: 20
+    610022243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610022243021.pdf
+      rows: 2
+      pins: 22
+    610024243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610024243021.pdf
+      rows: 2
+      pins: 24
+    610026243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610026243021.pdf
+      rows: 2
+      pins: 26
+    610032243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610032243021.pdf
+      rows: 2
+      pins: 32
+    610034243021:
+      datasheet: https://katalog.we-online.de/em/datasheet/610034243021.pdf
+      rows: 2
+      pins: 34
