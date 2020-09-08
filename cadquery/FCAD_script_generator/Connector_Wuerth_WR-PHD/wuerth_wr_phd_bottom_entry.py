@@ -203,7 +203,7 @@ def generate_package3d(params, part_params, mpn):
     show(body, body_color + (0,))
     
     # Generate pins
-    pins_color_key = "metal grey pins"
+    pins_color_key = "gold pins"
     pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
     pins = generate_pins(params, part_params)
     show(pins, pins_color + (0,))
