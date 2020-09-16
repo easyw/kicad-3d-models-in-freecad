@@ -443,11 +443,11 @@ all_params = {
         dest_dir_prefix    = '../Converter_DCDC.3dshapes'  # Destination directory
         ),
 
-    'Converter_DCDC_Murata_NXE2SxxxxMC_THT': Params(   # ModelName
+    'Converter_DCDC_Murata_NXE2SxxxxMC_SMD': Params(   # ModelName
         #
         #
         #
-        modelName = 'Converter_DCDC_Murata_NXE2SxxxxMC_THT',  # Model name
+        modelName = 'Converter_DCDC_Murata_NXE2SxxxxMC_SMD',  # Model name
         pintype   = 'smd',  # Pin type, 'tht', 'smd'
         L  = 10.41,  # Package length
         W  = 12.7,  # Package width
