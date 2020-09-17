@@ -5,9 +5,6 @@
 #
 # from https://bitbucket.org/hyOzd/freecad-macros
 # author hyOzd
-# This is a
-# Dimensions are from Microchips Packaging Specification document:
-# DS00000049BY. Body drawing is the same as QFP generator#
 
 ## requirements
 ## cadquery FreeCAD plugin
@@ -134,7 +131,7 @@ class cq_parameters_PUI_AI_1440_TWT_24V_2_R():
         #
         x = center[0]
         y = center[1]
-        case = cq.Workplane("XY").workplane(offset=A1 + (H / 5.0)).moveTo(x, y).circle(0.95, False).extrude(H - (H / 5.0) - 0.2)
+        case = cq.Workplane("XY").workplane(offset=A1 + (H / 5.0)).moveTo(x, y).circle(0.7, False).extrude(H - (H / 5.0) - 0.2)
 #        case = case.faces("<Z").shell(0.3)
 
         if (rotation != 0):
@@ -163,7 +160,7 @@ class cq_parameters_PUI_AI_1440_TWT_24V_2_R():
         case = case.faces(">Z").edges(">Y").fillet(D / 40.0)
         case = case.faces("<Z").edges(">Y").fillet(D / 40.0)
 
-        case1 = cq.Workplane("XY").workplane(offset=A1 + (H / 5.0)).moveTo(x, y).circle(1.0, False).extrude(H + (3.0 * (H / 5.0)))
+        case1 = cq.Workplane("XY").workplane(offset=A1 + (H / 5.0)).moveTo(x, y).circle(0.7, False).extrude(H + (3.0 * (H / 5.0)))
         case = case.cut(case1)
 #        case = case.faces("<Z").shell(0.3)
 
@@ -179,18 +176,19 @@ class cq_parameters_PUI_AI_1440_TWT_24V_2_R():
         H = params.H                # body overall height
         A1 = params.A1              # Body seperation height
         b = params.b                # pin diameter or pad size
+        p1h = params.p1h            # pin 1 length
         ph = params.ph              # pin length
         rotation = params.rotation  # rotation if required
         pin = params.pin            # pin/pad cordinates
         center = params.center      # Body center
 
         p = pin[0]
-        pins = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0))
+        pins = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (p1h + 1.0))
         pins = pins.faces("<Z").fillet(b / 5.0)
 
         for i in range(1, len(pin)):
             p = pin[i]
-            pint = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + A1 + 1.0))
+            pint = cq.Workplane("XY").workplane(offset=A1 + 1.0).moveTo(p[0], -p[1]).circle(b / 2.0, False).extrude(0 - (ph + 1.0))
             pint = pint.faces("<Z").fillet(b / 5.0)
             pins = pins.union(pint)
 
@@ -221,6 +219,7 @@ class cq_parameters_PUI_AI_1440_TWT_24V_2_R():
         'A1',				    # Body PCB seperation
         'b',				    # pin width
         'center',               # Body center
+        'p1h',                  # Pin 1 length
         'ph',                   # Pin length
         'pin',		            # Pins
         'serie',			    # The component serie
@@ -234,20 +233,14 @@ class cq_parameters_PUI_AI_1440_TWT_24V_2_R():
     all_params = {
 
         'Indicator_PUI_AI-1440-TWT-24V-2-R': Params(
-            #
-            # Valve
-            # This model have been auto generated based on the foot print file
-            # A number of parameters have been fixed or guessed, such as A2
-            # 
-            # The foot print that uses this 3D model is MagneticBuzzer_Kingstate_KCG0601.kicad_mod
-            # 
             modelName = 'Indicator_PUI_AI-1440-TWT-24V-2-R',   # modelName
             D = 13.80,                  # Body width/diameter
             H = 07.50,                  # Body height
             A1 = 0.03,                  # Body-board separation
             b = 0.70,                   # Pin diameter
             center = (3.80, 0.00),      # Body center
-            ph = 5.50,                  # Pin length
+            p1h = 5.50,                 # Pin 1 length
+            ph = 4.00,                  # Pin length
             pin = [(0.00, 0.00), (7.60, 0.00)],   # Pins
             body_top_color_key = 'orange body', # Top color
             body_color_key = 'black body',      # Body color
