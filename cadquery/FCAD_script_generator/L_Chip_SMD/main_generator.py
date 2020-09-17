@@ -108,9 +108,15 @@ LIST_license = ["",]
 
 # Import cad_tools
 import cq_cad_tools
+
 # Reload tools
-import importlib
-importlib.reload(cq_cad_tools)
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
+reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
