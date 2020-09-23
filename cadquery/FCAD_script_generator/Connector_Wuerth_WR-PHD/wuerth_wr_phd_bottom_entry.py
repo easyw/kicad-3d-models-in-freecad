@@ -133,7 +133,8 @@ def generate_body(params, part_params):
         body = body.faces("<Z").rect(params['width']-2*0.58, 2*params['top']+params['pitch']*(part_params['pins']//2-1)).cutBlind(0.2)
         
     # Translate to the right position
-    body = body.translate((-params['holes']['offset']-params['pitch'] / 2.0, -(params['pitch']*(part_params['pins']//2-1))/2, 0))
+    if params['type'] is not 'SMD':
+        body = body.translate((-params['holes']['offset']-params['pitch'] / 2.0, -(params['pitch']*(part_params['pins']//2-1))/2, 0))
     
     return body
 
@@ -171,7 +172,8 @@ def generate_pins(params, part_params):
     pins = pins.union(pins.rotate((0,0,0), (0,0,1), 180))
     
     # Translate to the right position
-    pins = pins.translate((-params['holes']['offset']-params['pitch'] / 2.0, -(params['pitch']*(part_params['pins']//2-1))/2, 0))
+    if params['type'] is not 'SMD':
+        pins = pins.translate((-params['holes']['offset']-params['pitch'] / 2.0, -(params['pitch']*(part_params['pins']//2-1))/2, 0))
     
     return pins
     
