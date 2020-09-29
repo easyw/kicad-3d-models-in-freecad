@@ -1127,9 +1127,9 @@ all_params = {
         shape = 'box',
         orient = 'h'
     ),
-    # doc: http://www.vishay.com/docs/30116/cpcc.pdf
+    # doc: http://www.vishay.com/docs/30218/cpcx.pdf
     'R_Radial_Power_L11.0mm_W7.0mm_P5.00mm': Params(
-        body_color_key = 'light brown body',
+        body_color_key = 'white body',
         pin_color_key = 'metal grey pins',
         l = 11.0,
         d = 22.0, #height
@@ -1141,7 +1141,7 @@ all_params = {
         orient = 'h'
     ),
     'R_Radial_Power_L12.0mm_W8.0mm_P5.00mm': Params(
-        body_color_key = 'light brown body',
+        body_color_key = 'white body',
         pin_color_key = 'metal grey pins',
         l = 12.0,
         d = 24.0, #height
@@ -1153,7 +1153,7 @@ all_params = {
         orient = 'h'
     ),
     'R_Radial_Power_L13.0mm_W9.0mm_P5.00mm': Params(
-        body_color_key = 'light brown body',
+        body_color_key = 'white body',
         pin_color_key = 'metal grey pins',
         l = 13.0,
         d = 26.0, #height
@@ -1165,37 +1165,13 @@ all_params = {
         orient = 'h'
     ),
     'R_Radial_Power_L16.1mm_W9.0mm_P7.37mm': Params(
-        body_color_key = 'light brown body',
+        body_color_key = 'white body',
         pin_color_key = 'metal grey pins',
         l = 16.1,
         d = 32.2, #height
         w = 9.0,
         pd = 0.8,
         px = 7.37,
-        py = 0.0,
-        shape = 'radial',
-        orient = 'h'
-    ),
-    'R_Radial_Power_L16.0mm_W9.0mm_P7.50mm': Params(
-        body_color_key = 'light brown body',
-        pin_color_key = 'metal grey pins',
-        l = 16.0,
-        d = 35.0, #height
-        w = 12.0,
-        pd = 0.8,
-        px = 7.50,
-        py = 0.0,
-        shape = 'radial',
-        orient = 'h'
-    ),
-    'R_Radial_Power_L13.0mm_W10.0mm_P5.00mm': Params(
-        body_color_key = 'light brown body',
-        pin_color_key = 'metal grey pins',
-        l = 13.0,
-        d = 51.0, #height
-        w = 10.0,
-        pd = 0.75,
-        px = 7.50,
         py = 0.0,
         shape = 'radial',
         orient = 'h'
@@ -1236,6 +1212,85 @@ all_params = {
         px = 2.54,
         py = 0.0,
         shape = 'array',
+        orient = 'h'
+    ),
+    # doc: http://www.vishay.com/docs/30116/cpcc.pdf
+    'R_Radial_Power_L11.0mm_W3.5mm_P5.00mm': Params(
+        #cpcpc02
+        body_color_key = 'white body',
+        pin_color_key = 'metal grey pins',
+        l = 11.0,
+        d = 20.0, #height
+        w = 3.5,
+        pd = 0.8,
+        px = 5.00,
+        py = 0.0,
+        shape = 'radial',
+        orient = 'h'
+    ),
+    #'R_Radial_Power_L12.0mm_W8.0mm_P5.00mm': Params(
+    #    #cpcc03, equiv cpcx
+    #    body_color_key = 'white body',
+    #    pin_color_key = 'metal grey pins',
+    #    l = 12.0,
+    #    d = 25.0, #height
+    #    w = 8.0,
+    #    pd = 0.8,
+    #    px = 5.00,
+    #    py = 0.0,
+    #    shape = 'radial',
+    #    orient = 'h'
+    #),
+    #'R_Radial_Power_L13.0mm_W9.0mm_P5.00mm': Params(
+    #    #cpcc05, equiv cpcx
+    #    body_color_key = 'white body',
+    #    pin_color_key = 'metal grey pins',
+    #    l = 13.0,
+    #    d = 25.0, #height
+    #    w = 9.0,
+    #    pd = 0.8,
+    #    px = 5.00,
+    #    py = 0.0,
+    #    shape = 'radial',
+    #    orient = 'h'
+    #),
+    'R_Radial_Power_L13.0mm_W9.0mm_P5.0mm': Params(
+        #cpcc07
+        body_color_key = 'white body',
+        pin_color_key = 'metal grey pins',
+        l = 13.0,
+        d = 39.0, #height
+        w = 9.0,
+        pd = 0.8,
+        px = 5.0,
+        py = 0.0,
+        shape = 'radial',
+        orient = 'h'
+    ),
+    'R_Radial_Power_L16.0mm_W12.0mm_P7.50mm': Params(
+        #cpcc10
+        body_color_key = 'white body',
+        pin_color_key = 'metal grey pins',
+        l = 16.0,
+        d = 35.0, #height
+        w = 12.0,
+        pd = 0.8,
+        px = 7.50,
+        py = 0.0,
+        shape = 'radial',
+        orient = 'h'
+    ),
+    'R_Radial_Power_L13.0mm_W10.0mm_P5.00mm': Params(
+        #cpcc1A
+        body_color_key = 'white body',
+        pin_color_key = 'metal grey pins',
+        l = 13.0,
+        d = 51.0, #height
+        w = 10.0,
+        pd = 0.75,
+        px = 5.0,
+        py = 0.0,
+        shape = 'radial',
         orient = 'h'
     ),
 }
