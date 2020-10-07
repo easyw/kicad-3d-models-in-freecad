@@ -551,7 +551,7 @@ class cq_audio_jack_qingpu():
 
             A1 = 0.01,                                      # Body-board separation
 
-            pin = [['smd', -3.175, 3.25, 1.2, 2.5, 0.2], ['smd', -0.175, 3.25, 1.2, 2.5, 0.2], ['smd', 3.825, 3.25, 1.2, 2.5, 0.2], ['smd', 4.925, -3.25, 1.2, 2.5, 0.2]],
+            pin = [['smd', -3.175, -3.25, 1.2, 2.5, 0.2], ['smd', -0.175, -3.25, 1.2, 2.5, 0.2], ['smd', 3.825, -3.25, 1.2, 2.5, 0.2], ['smd', 4.925, 3.25, 1.2, 2.5, 0.2]],
             npthpin = [['pin', -4.775, 0.0, 1.5, 2.0], ['pin', 2.225, 0.0, 1.5, 2.0]],
             body_top_color_key  = 'metal aluminum',         # Top color
             body_color_key      = 'red body',               # Body color
