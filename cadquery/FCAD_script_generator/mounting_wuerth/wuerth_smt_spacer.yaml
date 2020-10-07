@@ -446,6 +446,84 @@ M2:
       datasheet: https://katalog.we-online.de/em/datasheet/9774080243.pdf
       h: 8
 
+M2.5:
+  series_prefix: WA-SMSI
+  footprint:
+    ring:
+      id: 3.7
+      od: 6.0
+      paste:
+        clearance: 0.65
+        id: 3.8
+        od: 5.84
+    npth: 3.7
+  mechanical:
+    id: M2.5
+    od: 5.1
+    od1: 3.5
+    h1: 1.4
+  parts:
+    9774010151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774010151.pdf
+      h: 1
+    9774015151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774015151.pdf
+      h: 1.5
+    9774020151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774020151.pdf
+      h: 2
+    9774025151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774025151.pdf
+      h: 2.5
+    9774027151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774027151.pdf
+      h: 2.7
+    9774030151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774030151.pdf
+      h: 3
+    9774035151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774035151.pdf
+      h: 3.5
+    9774040151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774040151.pdf
+      h: 4
+    9774045151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774045151.pdf
+      h: 4.5
+    9774050151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774050151.pdf
+      h: 5
+    9774055151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774055151.pdf
+      h: 5.5
+    9774060151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774060151.pdf
+      h: 6
+    9774065151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774065151.pdf
+      h: 6.5
+    9774070151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774070151.pdf
+      h: 7
+    9774075151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774075151.pdf
+      h: 7.5
+    9774080151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774080151.pdf
+      h: 8
+    9774085151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774085151.pdf
+      h: 8.5
+    9774090151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774090151.pdf
+      h: 9
+    9774095151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774095151.pdf
+      h: 9.5
+    9774100151:
+      datasheet: https://katalog.we-online.de/em/datasheet/9774100151.pdf
+      h: 10
+
 M3:
   series_prefix: WA-SMSI
   footprint:

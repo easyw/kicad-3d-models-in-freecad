@@ -1126,6 +1126,26 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '',
         ),
+    'TFBGA-636_19.0x19.0mm_Layout28x28_P0.65mm': Params( # from
+        fp_r = 0.3,     # first pin indicator radius
+        fp_d = 0.01,    # first pin indicator distance from edge
+        fp_z = 0.01,    # first pin indicator depth
+        ef = 0.0, 		# 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        D = 19.00,      # body overall length
+        E = 19.00,      # body overall width
+        A1 = 0.15,  	# body-board separation
+        A = 1.10,  		# body  overall height
+        b = 0.40,  		# ball pin width diameter with a small extra to obtain a union of balls and case
+        e = 0.65,  		# pin (center-to-center) distance
+        sp = 0.0, 		# seating plane (pcb penetration)
+        npx = 28,  		# number of pins along X axis (width)
+        npy = 28,  		# number of pins along y axis (length)
+        excluded_pins = ("internals",), #pins to exclude -> None or "internals"
+        old_modelName = 'TFBGA-636_19.0x19.0mm_Layout28x28_P0.65mm', #old_modelName
+        modelName = 'TFBGA-636_19.0x19.0mm_Layout28x28_P0.65mm', #old_modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '',
+        ),
     'FBGA-78_7.5x11mm_Layout2x3x13_P0.8mm': Params( # from https://www.skhynix.com/product/filedata/fileDownload.do?seq=7687
         fp_r = 0.4,     # first pin indicator radius
         fp_d = 0.08,     # first pin indicator distance from edge

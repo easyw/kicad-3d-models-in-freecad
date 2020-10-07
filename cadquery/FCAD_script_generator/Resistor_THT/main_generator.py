@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
 # This is derived from a cadquery script to generate all pin header models in X3D format.
 # It takes a bit long to run! It can be run from cadquery freecad
@@ -11,8 +10,8 @@
 ## cadquery FreeCAD plugin
 ##   https://github.com/jmwright/cadquery-freecad-module
 
-## to run the script just do: freecad make_gwexport_fc.py modelName
-## e.g. c:\freecad\bin\freecad make_gw_export_fc.py SOIC_8
+## to run the script just do: FreeCAD main_generator.py modelName (or all)
+## e.g. c:\freecad\bin\freecad main_generator.py DIP8
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -47,108 +46,104 @@ __title__ = "make THT resistor 3D models"
 __author__ = "maurice, hyOzd and grob"
 __Comment__ = 'make THT resistor 3D models exported to STEP and VRML for Kicad StepUP script'
 
-___ver___ = "1.0.0 2017-10-30"
+___ver___ = "2.0.0 2020-09-30"
 
-# reducing memory consuming for all generation params
-global save_memory
-save_memory = False
 
-# general imports
-from math import tan, cos, sin, radians, sqrt
+save_memory = True #reducing memory consuming for all generation params
+check_Model = True
+stop_on_first_error = True
+check_log_file = 'check-log.md'
+global_3dpath = '../_3Dmodels/'
+
+# maui import cadquery as cq
+# maui from Helpers import show
+from math import tan, radians, sqrt
 from collections import namedtuple
+
 import sys, os
-from sys import argv
 import datetime
 from datetime import datetime
 sys.path.append("../_tools")
 import exportPartToVRML as expVRML
 import shaderColors
 
-body_color_key = "light brown body"
-body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
-pins_color_key = "metal grey pins"
-pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
-ceramic_color_key = "white body"
-ceramic_color = shaderColors.named_colors[ceramic_color_key].getDiffuseFloat()
-marking_color_key = "black body"
-marking_color = shaderColors.named_colors[marking_color_key].getDiffuseFloat()
 
 # maui start
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
 import FreeCADGui as Gui
+#from Gui.Command import *
 
-import logging
-logging.getLogger('builder').addHandler(logging.NullHandler())
-
-outdir=os.path.dirname(os.path.realpath(__file__)+"/../_3Dmodels")
-scriptdir=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(outdir)
-sys.path.append(scriptdir)
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
-# Licence information of the generated models.
-#################################################################################################
-STR_licAuthor = "kicad StepUp"
-STR_licEmail = "ksu"
-STR_licOrgSys = "kicad StepUp"
-STR_licPreProc = "OCC"
-STR_licOrg = "FreeCAD"   
 
-LIST_license = ["",]
 #################################################################################################
-
 
 # Import cad_tools
 import cq_cad_tools
-
 # Reload tools
-reload(cq_cad_tools)
+def reload_lib(lib):
+    if (sys.version_info > (3, 0)):
+        import importlib
+        importlib.reload(lib)
+    else:
+        reload (lib)
+
+reload_lib(cq_cad_tools)
+
 
 # Explicitly load all needed functions
 from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, exportVRML, saveFCdoc, z_RotateObject, Color_Objects, \
- CutObjs_wColors, checkRequirements
+ CutObjs_wColors, checkRequirements,  runGeometryCheck
 
+# Sphinx workaround #1
+try:
+    QtGui
+except NameError:
+    QtGui = None
+#
 
-# from export_x3d import exportX3D, Mesh
 try:
     # Gui.SendMsgToActiveView("Run")
-    # cq Gui
-    from Gui.Command import *
+#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
-    import cadquery as cq
+    import cadquery
+    cq = cadquery
     from Helpers import show
     # CadQuery Gui
-except:
-    try:
-        from CadQuery.Gui.Command import *
-        Gui.activateWorkbench("CadQueryWorkbench")
-        import cadquery as cq
-        from Helpers import show
-    except: # catch *all* exceptions
-        msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-        msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+except: # catch *all* exceptions
+    msg = "missing CadQuery 0.5.2 or later Module!\r\n\r\n"
+    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    if QtGui is not None:
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
-        # maui end
+    # maui end
+
+
+# Sphinx workaround #2
+try:
+    cq
+    checkRequirements(cq)
+except NameError:
+    cq = None
+#
 
 #checking requirements
-checkRequirements(cq)
 
 try:
-    close_CQ_Example(App, Gui)
+    close_CQ_Example(FreeCAD, Gui)
 except: # catch *all* exceptions
-    print "CQ 030 doesn't open example file"
+    FreeCAD.Console.PrintMessage("CQ 030 doesn't open example file")
+
 
 import cq_parameters  # modules parameters
-from cq_parameters import *
+from cq_parameters import all_params, dest_dir_prefix
 
-all_params = kicad_naming_params_resistors_tht
 
 # Make marking (only applies to array at this point)
-def MakeMarking(params, n=1):
+def make_marking(params, n=1):
     if (params.shape == 'array'):
         mr = 0.5 # radius of dot
         mt = 0.01 # thickness of marking
@@ -156,11 +151,11 @@ def MakeMarking(params, n=1):
         c = 0.3 # height of body off board
         marking = cq.Workplane("XZ").circle(mr).extrude(mt).translate((moff-params.px/2,-params.w/2,c+params.d-moff))
     else:
-        marking = 0
+        marking = None
     return marking
 
     # make a resistor body based on input parameters
-def MakeResistor(params, n=1):
+def make_body(params, n=1):
 
     if (params.shape == 'array'):
         # resistor array body: rectangle with rounded corners
@@ -222,7 +217,7 @@ def MakeResistor(params, n=1):
                     .extrude(params.w)
                 )
                 body = body.cut(cutbody) # cut!
-            if (params.shape == 'radial') and (params.py <> 0.0):
+            if (params.shape == "radial") and (params.py != 0.0):
                 # center on pin 1 http://www.vitrohm.com/content/files/vitrohm_series_kvs_-_201702.pdf
                 body = body.translate((-params.l/2,0,params.d/2))
             else:
@@ -237,13 +232,13 @@ def MakeSingleArrayPin(c, zbelow):
     pin = cq.Workplane("XY").rect(0.5,0.3).extrude(c-zbelow).translate((0,0,zbelow))
     pin = pin.union(cq.Workplane("XY").rect(1.14,0.5).extrude(c))
     return pin
-    
+
 # make a bent resistor pin - suitable for din and power resistors, horiz or vert
-def MakeResistorPin(params, n=1):
-    
+def make_pins(params, n=1):
+
     zbelow = -3.0 # negative value, length of pins below board level
     minimumstraight = 1.0 # short straight section of pins next to bends, body
-    
+
     # bent pin - upside down u shape
     if (params.shape == "din") or (params.shape=="power") or (params.shape=="shunt"):
         r = params.pd*1.5 # radius of pin bends
@@ -278,7 +273,7 @@ def MakeResistorPin(params, n=1):
         pin = MakeSingleArrayPin(c, zbelow)
         for i in range(1,n):
             pin = pin.union(MakeSingleArrayPin(c, zbelow).translate((i*params.px,0,0)))
-        
+
     # add extra pins for shunt package using py as pitch
     if (params.shape == "shunt"):
         pin = pin.union(cq.Workplane("XY").circle(params.pd/2).extrude(zbelow).translate(((params.px-params.py)/2,0,0)))
@@ -286,69 +281,132 @@ def MakeResistorPin(params, n=1):
 
     return pin
 
-# generate a name for the part - deprecated in favour of using the key from params as filename (should match module)
-# kept here to show algorithm for determining names... shows there may be room for improvement in modules
-# def PartName(params, n=1):
-    # # even though we use the names as keys, this re-generates the name programatically from params
-    # fstring = "R_Axial_"
-    # if (params.shape == 'din'):
-        # if (params.d == 1.6):
-            # fstring += "DIN0204_"
-        # elif (params.d == 2.5):
-            # fstring += "DIN0207_"
-        # elif (params.d == 3.2):
-            # fstring += "DIN0309_"
-        # elif (params.d == 3.6):
-            # fstring += "DIN0411_"
-        # elif (params.d == 4.5):
-            # fstring += "DIN0414_"
-        # elif (params.d == 5.0):
-            # fstring += "DIN0516_"
-        # elif (params.d == 5.7):
-            # fstring += "DIN0614_"            
-        # elif (params.d == 6.0):
-            # fstring += "DIN0617_"
-        # elif (params.d == 9.0) and (params.l == 18.00):
-            # fstring += "DIN0918_"
-        # elif (params.d == 9.0) and (params.l == 20.00):    
-            # fstring += "DIN0922_"
-        # fstring += "L{0:.1f}mm_D{1:.1f}mm_P{2:.2f}mm_"
-        # if (params.orient == 'v'):
-            # fstring += "Vertical"
-        # else:
-            # fstring += "Horizontal"
-    # elif (params.shape == 'power'):
-        # fstring += "Power_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"
-        # if (params.orient == 'v'):
-            # fstring += "_Vertical"
-    # elif (params.shape == 'shunt'):
-        # fstring += "Shunt_L{0:.1f}mm_W{5:.1f}mm_PS{3:.2f}mm_P{2:.2f}mm"  
-    # elif (params.shape == 'box'):
-        # fstring = "R_Box_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"    
-    # elif (params.shape == 'bare'):
-        # fstring = "R_Bare_Metal_Element_L{0:.1f}mm_W{5:.1f}mm_P{2:.2f}mm"  
-    # elif (params.shape == 'radial'):
-        # fstring = "R_Radial_Power_L{0:.1f}mm_W{5:.1f}mm"
-        # if (params.py == 0.0):
-            # fstring += "_P{2:.2f}mm"
-        # else:
-            # fstring += "_Px{2:.2f}mm_Py{3:.2f}mm"
-    # elif (params.shape == 'array'):
-        # fstring = "R_Array_SIP{4}"
-    
-    # outstring = fstring.format(params.l, params.d, params.px, params.py, n, params.w)
-    # print(outstring)
-    # return outstring
 
-    
-# make a part using supplied parameters
-# params = parameters
-# name = filename to save as
-# n = number of pins (array type only)
-def MakePart(params, name, n=1):
-    global formerDOC
-    global LIST_license
-    #name = PartName(params, n)
+def make_3D_model(models_dir, variant, n=1):
+
+    LIST_license = ["",]
+
+    if n == 1:
+        modelName = variant    # the key is the model name
+    else:
+        modelName = variant + "{0}".format(n) # except for arrays
+
+    CheckedmodelName = modelName.replace('.', '').replace('-', '_').replace('(', '').replace(')', '')
+    Newdoc = App.newDocument(CheckedmodelName)
+    App.setActiveDocument(CheckedmodelName)
+    Gui.ActiveDocument=Gui.getDocument(CheckedmodelName)
+
+    body = make_body(all_params[variant], n)
+    pins = make_pins(all_params[variant], n)
+    marking = make_marking(all_params[variant], n)
+
+    show(body)
+    show(pins)
+    if marking != None:
+        show(marking)
+
+
+    doc = FreeCAD.ActiveDocument
+    objs=GetListOfObjects(FreeCAD, doc)
+
+    body_color_key = all_params[variant].body_color_key
+    pin_color_key = all_params[variant].pin_color_key
+
+    body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
+    pin_color = shaderColors.named_colors[pin_color_key].getDiffuseFloat()
+
+    Color_Objects(Gui,objs[0],body_color)
+    Color_Objects(Gui,objs[1],pin_color)
+
+    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
+    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
+
+    material_substitutions={
+        col_body[:-1]:body_color_key,
+        col_pin[:-1]:pin_color_key
+    }
+
+    # white dot marking (for array pin1)
+    if n>1:
+        Color_Objects(Gui,objs[2], shaderColors.named_colors['white body'].getDiffuseFloat())
+        col_marking=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
+        material_substitutions[col_marking[:-1]] = 'white body'
+
+    expVRML.say(material_substitutions)
+    while len(objs) > 1:
+            FuseObjs_wColors(FreeCAD, FreeCADGui, doc.Name, objs[0].Name, objs[1].Name)
+            del objs
+            objs = GetListOfObjects(FreeCAD, doc)
+    doc.Label = CheckedmodelName
+
+    del objs
+    objs=GetListOfObjects(FreeCAD, doc)
+    objs[0].Label = CheckedmodelName
+    restore_Main_Tools()
+
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    expVRML.say(models_dir)
+    out_dir=models_dir+os.sep+dest_dir_prefix
+
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    step_path = '{dir:s}/{name:s}.step'.format(dir=out_dir, name=modelName)
+    exportSTEP(doc, modelName, out_dir)
+
+
+    if LIST_license[0]=="":
+        LIST_license=Lic.LIST_int_license
+        LIST_license.append("")
+
+    Lic.addLicenseToStep(out_dir, '{:s}.step'.format(modelName),
+            LIST_license,
+            cq_parameters.LICENCE_Info.STR_licAuthor,
+            cq_parameters.LICENCE_Info.STR_licEmail,
+            cq_parameters.LICENCE_Info.STR_licOrgSys,
+            cq_parameters.LICENCE_Info.STR_licPreProc)
+
+    # scale and export Vrml model
+    scale=1/2.54
+    #exportVRML(doc,modelName,scale,out_dir)
+    del objs
+    objs=GetListOfObjects(FreeCAD, doc)
+    expVRML.say("######################################################################")
+    expVRML.say(objs)
+    expVRML.say("######################################################################")
+    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
+    export_file_name=out_dir+os.sep+modelName+'.wrl'
+    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
+    # expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys)# , LIST_license
+    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
+
+    # Save the doc in Native FC format
+    doc.recompute()
+    saveFCdoc(App, Gui, doc, modelName, out_dir)
+
+
+    #FreeCADGui.activateWorkbench("PartWorkbench")
+    if save_memory == False and check_Model==False:
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxometric()
+
+    if save_memory == True or check_Model==True:
+        FreeCAD.closeDocument(doc.Name)
+        os.remove (out_dir+os.sep+modelName+'.FCStd')
+
+    if check_Model==True:
+        with open(out_dir+os.sep+check_log_file, 'a+') as log:
+            log.write('# Check report for THT resistors model generator\n')
+            runGeometryCheck(App, Gui, step_path, log, modelName, save_memory=save_memory)
+            log.close()
+
+
+import add_license as Lic
+
+# when run from command line
+if __name__ == "__main__" or __name__ == "main_generator":
+
+    FreeCAD.Console.PrintMessage('\r\nRunning...\r\n')
 
     full_path=os.path.realpath(__file__)
     expVRML.say(full_path)
@@ -361,150 +419,30 @@ def MakePart(params, name, n=1):
     sub_path = full_path.split(sub_dir_name)[0]
     expVRML.say(sub_path)
     models_dir=sub_path+"_3Dmodels"
-    script_dir=os.path.dirname(os.path.realpath(__file__))
-    expVRML.say(models_dir)
-    out_dir=models_dir+destination_dir
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-
-    #having a period '.' character in the model name REALLY messes with things. also '-'
-    docname = name.replace(".","").replace("-","_")
-   
-    newdoc = App.newDocument(docname)
-    App.setActiveDocument(docname)
-    App.ActiveDocument=App.getDocument(docname)
-    Gui.ActiveDocument=Gui.getDocument(docname)
-    
-    FreeCAD.Console.PrintMessage(params)
-    pins_output = MakeResistorPin(params, n)
-    base_output = MakeResistor(params, n)
-    marking_output = MakeMarking(params, n)
-    
-    show(base_output)
-    show(pins_output)
-    if not (marking_output == 0):
-        show(marking_output)
-
-    doc = FreeCAD.ActiveDocument
-    objs=GetListOfObjects(FreeCAD, doc)
-    
-    # select the color based on shape
-    if (params.shape == "power") or (params.shape == "radial") or (params.shape == "shunt"):
-        # white colour for power resistors
-        chosen_body_color = ceramic_color
-        chosen_body_color_key = ceramic_color_key
-    elif (params.shape == "bare"):
-        # metal/pin colour for bare resistors
-        chosen_body_color = pins_color
-        chosen_body_color_key = pins_color_key   
-    else:
-        # light brown colour for din/axial/arrays/etc.
-        chosen_body_color = body_color
-        chosen_body_color_key = body_color_key  
-    
-    # body and pin colours
-    Color_Objects(Gui,objs[0],chosen_body_color)
-    Color_Objects(Gui,objs[1],pins_color)
-    col_body=Gui.ActiveDocument.getObject(objs[0].Name).DiffuseColor[0]
-    col_pin=Gui.ActiveDocument.getObject(objs[1].Name).DiffuseColor[0]
-    material_substitutions={
-        col_body[:-1]:chosen_body_color_key,
-        col_pin[:-1]:pins_color_key
-    }
-    
-    # optional marking bodies
-    if (len(objs) >= 3):
-        Color_Objects(Gui,objs[2],marking_color)
-        col_marking=Gui.ActiveDocument.getObject(objs[2].Name).DiffuseColor[0]
-        material_substitutions[col_marking[:-1]] = marking_color_key
-        
-    expVRML.say(material_substitutions)
-
-    # fuse everything
-    while len(objs) > 1:
-        FreeCAD.Console.PrintMessage(len(objs))
-        FuseObjs_wColors(FreeCAD, FreeCADGui,
-                   doc.Name, objs[0].Name, objs[1].Name)
-        objs = GetListOfObjects(FreeCAD, doc)
-
-    doc.Label=docname
-    #objs=GetListOfObjects(FreeCAD, doc)
-    objs[0].Label=docname
-    restore_Main_Tools()
-
-    doc.Label = docname
-    
-    #save the STEP file
-    exportSTEP(doc, name, out_dir)
-    if LIST_license[0]=="":
-        LIST_license=Lic.LIST_int_license
-        LIST_license.append("")
-    Lic.addLicenseToStep(out_dir+'/', name+".step", LIST_license,\
-                       STR_licAuthor, STR_licEmail, STR_licOrgSys, STR_licOrg, STR_licPreProc)
-    
-    # scale and export Vrml model
-    scale=1/2.54
-    objs=GetListOfObjects(FreeCAD, doc)
-    expVRML.say("######################################################################")
-    expVRML.say(objs)
-    expVRML.say("######################################################################")
-    export_objects, used_color_keys = expVRML.determineColors(Gui, objs, material_substitutions)
-    export_file_name=out_dir+os.sep+name+'.wrl'
-    colored_meshes = expVRML.getColoredMesh(Gui, export_objects , scale)
-    expVRML.writeVRMLFile(colored_meshes, export_file_name, used_color_keys, LIST_license)
-    
-    if save_memory == False:
-        Gui.SendMsgToActiveView("ViewFit")
-        Gui.activeDocument().activeView().viewAxometric()
-    
-    # Save the doc in Native FC format
-    saveFCdoc(App, Gui, doc, name,out_dir)
-    if save_memory == True:
-        doc=FreeCAD.ActiveDocument
-        FreeCAD.closeDocument(doc.Name)
-
-    return 0
-    
-#import step_license as L
-import add_license as Lic
-
-if __name__ == "__main__" or __name__ == "main_generator":
-    
-    from sys import argv
-    modelnames = [] # this will now be a list of string keys instead of Params
-    pinrange = range(4,14+1) # 4 to 14 (i know why python does this but it's still weird)
 
     if len(sys.argv) < 3:
-        FreeCAD.Console.PrintMessage('No variant name is given! building example')
-        modelnames = ["R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"]
+        FreeCAD.Console.PrintMessage('No variant name is given! building R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal\r\n')
+        model_to_build="R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
     else:
-        if (sys.argv[2] == 'all'):
-            modelnames = all_params.keys()
-            save_memory = True
+        model_to_build=sys.argv[2]
+
+    if model_to_build == "all":
+        variants = all_params.keys()
+    else:
+        variants = [model_to_build]
+
+
+    for variant in variants:
+        FreeCAD.Console.PrintMessage('\r\n' + variant + '\r\n\r\n')
+        if not variant in all_params:
+            FreeCAD.Console.PrintMessage("Parameters for %s doesn't exist in 'all_params', skipping. " % variant)
+            continue
+
+        # pinrange should be extracted from 'variant' !
+        if (all_params[variant].shape == "array"):
+            pinrange = range (4, 15)
         else:
-            modelnames = sys.argv[2].split(',')
-    
-    FreeCAD.Console.PrintMessage(modelnames)
-    
-    #make all the seleted models
-    pincount = 0
-    basecount = 0
+            pinrange = range (1,2)
 
-    print "\n m"
-    print modelnames
-    print pinrange
-    # slight change - use input name (params key) as filename'
-    for modelname in modelnames:
-        # only arrays will pay attention to n
-        params = all_params[modelname]
-        if (params.shape == "array"):
-            for pin_number in pinrange:
-                MakePart(params, modelname + "{0}".format(pin_number), pin_number)
-        else:
-            MakePart(params, modelname)
-
-# when run from freecad-cadquery
-if __name__ == "temp.module":
-    pass
-
-
+        for pin_number in pinrange:
+            make_3D_model(models_dir, variant, pin_number)

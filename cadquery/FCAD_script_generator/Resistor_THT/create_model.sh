@@ -6,6 +6,6 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 echo $SCRIPTPATH
 cd $SCRIPTPATH
-echo Best using FC 0.15
+echo Best using FC 0.18
 #freecad  main_generator.py  R_Axial_Power_L60.0mm_W14.0mm_P66.04mm
-freecad  main_generator.py $1
+FreeCAD  main_generator.py $1
