@@ -5,16 +5,15 @@
 #
 # from https://bitbucket.org/hyOzd/freecad-macros
 # author hyOzd
-# This is a
-# Dimensions are from Microchips Packaging Specification document:
-# DS00000049BY. Body drawing is the same as QFP generator#
 
 ## requirements
 ## cadquery FreeCAD plugin
 ##   https://github.com/jmwright/cadquery-freecad-module
 
-## to run the script just do: freecad main_generator.py modelName
+## to run the script just do: FreeCAD main_generator.py modelName (or all)
 ## e.g. c:\freecad\bin\freecad main_generator.py DIP8
+
+## Some linux distro use 'freecad' instead of 'FreeCad'
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -76,6 +75,9 @@ import ImportGui
 import FreeCADGui as Gui
 #from Gui.Command import *
 
+# For some version of Python3
+scriptdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(scriptdir)
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui

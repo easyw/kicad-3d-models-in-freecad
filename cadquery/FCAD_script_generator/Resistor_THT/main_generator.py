@@ -1,7 +1,7 @@
 #!/usr/bin/python
-# This is derived from a cadquery script to generate all pin header models in X3D format.
-# It takes a bit long to run! It can be run from cadquery freecad
-# module as well.
+# -*- coding: utf-8 -*-
+#
+# This is derived from a cadquery script for generating PDIP models in X3D format
 #
 # from https://bitbucket.org/hyOzd/freecad-macros
 # author hyOzd
@@ -12,6 +12,8 @@
 
 ## to run the script just do: FreeCAD main_generator.py modelName (or all)
 ## e.g. c:\freecad\bin\freecad main_generator.py DIP8
+
+## Some linux distro use 'freecad' instead of 'FreeCad'
 
 ## the script will generate STEP and VRML parametric models
 ## to be used with kicad StepUp script
@@ -48,7 +50,6 @@ __Comment__ = 'make THT resistor 3D models exported to STEP and VRML for Kicad S
 
 ___ver___ = "2.0.0 2020-09-30"
 
-
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 stop_on_first_error = True
@@ -74,6 +75,9 @@ import ImportGui
 import FreeCADGui as Gui
 #from Gui.Command import *
 
+# For some version of Python3
+scriptdir=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(scriptdir)
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -120,7 +124,6 @@ except: # catch *all* exceptions
     if QtGui is not None:
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
     # maui end
-
 
 # Sphinx workaround #2
 try:
