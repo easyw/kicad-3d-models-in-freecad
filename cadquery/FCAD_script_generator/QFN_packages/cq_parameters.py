@@ -3894,7 +3894,7 @@ kicad_naming_params_qfn = {
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_DFN_QFN.3dshapes/'
         ),
-        'USON-10_2.5x1.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
+    'USON-10_2.5x1.0mm_Pitch0.5mm': Params( # from http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
         c = 0.13,        # pin thickness, body center part height
 #        K=0.2,          # Fillet radius for pin edges
         L = 0.36,        # pin top flat part length (including fillet radius)
@@ -3917,6 +3917,32 @@ kicad_naming_params_qfn = {
         epad = None, # e Pad #epad = None, # e Pad
         excluded_pins = None, #no pin excluded
         modelName = 'USON-10_2.5x1.0mm_Pitch0.5mm', #modelName
+        rotation = -90, # rotation if required
+        dest_dir_prefix = '../Housings_SON.3dshapes/'
+        ),
+    'USON-14_3.5x1.35mm_Pitch0.5mm': Params( # from https://www.ti.com/lit/ds/symlink/tpd1e05u06.pdf
+        c = 0.10,        # pin thickness, body center part height
+#        K=0.2,          # Fillet radius for pin edges
+        L = 0.30,        # pin top flat part length (including fillet radius)
+        fp_s = True,     # True for circular pinmark, False for square pinmark (useful for diodes)
+        fp_r = 0.2,     # first pin indicator radius
+        fp_d = 0.1,     # first pin indicator distance from edge
+        fp_z = 0.01,     # first pin indicator depth
+        ef = 0.0, # 0.05,      # fillet of edges  Note: bigger bytes model with fillet
+        cce = 0.01,      #0.45 chamfer of the epad 1st pin corner
+        D = 3.5,       # body overall length
+        E = 1.35,       # body overall width
+        A1 = 0.025,  # body-board separation  maui to check
+        A2 = 0.5,  # body height
+        b = 0.2,  # pin width
+        e = 0.5,  # pin (center-to-center) distance
+        m = 0.0,  # margin between pins and body
+        ps = 'rounded',   # rounded pads
+        npx = 7,  # number of pins along X axis (width)
+        npy = 0,  # number of pins along y axis (length)
+        epad = None, # e Pad #epad = None, # e Pad
+        excluded_pins = None, #no pin excluded
+        modelName = 'USON-14_3.5x1.35mm_Pitch0.5mm', #modelName
         rotation = -90, # rotation if required
         dest_dir_prefix = '../Housings_SON.3dshapes/'
         ),

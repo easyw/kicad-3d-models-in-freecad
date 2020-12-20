@@ -92,7 +92,7 @@ Gui.ActiveDocument.ActiveObject.DiffuseColor=Gui.getDocument(doc.Name).getObject
 App.ActiveDocument.recompute()
 newObj=FreeCAD.getDocument(doc.Name).getObject('Vrml_model')
 #scale to export vrml  start
-Draft.scale(newObj,delta=App.Vector(0.3937001,0.3937001,0.3937001),center=App.Vector(0,0,0),legacy=True)
+Draft.scale(newObj, App.Vector(0.3937001,0.3937001,0.3937001),center=App.Vector(0,0,0))
 
 App.activeDocument().recompute()
 #we need to remove object to export only scaled model

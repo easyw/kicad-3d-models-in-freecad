@@ -32,8 +32,8 @@ def clear_console():
     r=mw.findChild(QtGui.QTextEdit, "Report view")
     r.clear()
 
-PATH_FREECADBIN = "C:\FreeCAD\bin"
-sys.path.append(PATH_FREECADBIN)
+sys.path.append("C:\FreeCAD\bin")
+sys.path.append("/usr/lib/freecad/lib")
 # fp = (os.path.realpath(__file__)) #workaround to include step_license.py
 # say("full path " + fp)
 # dn = os.path.dirname(fp)
