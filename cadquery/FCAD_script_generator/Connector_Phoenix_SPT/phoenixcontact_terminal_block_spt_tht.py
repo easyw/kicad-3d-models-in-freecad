@@ -208,7 +208,7 @@ def generate_package3d(params, part_params, mpn):
     LIST_license[0] = "Copyright (C) " + datetime.datetime.now().strftime("%Y") + ", " + LICENCE_Info.STR_licAuthor
     
     # Build model name
-    model_name = "PhoenixContact_{series_prefix}{pins}-{orientation_short}-{pitch}{series_sufix}_{rows}x{pins:02d}_P{pitch}_{orientation}_{mpn}".format(
+    model_name = "PhoenixContact_{series_prefix}{pins}-{orientation_short}-{pitch}{series_sufix}_{rows}x{pins:02d}_P{pitch}mm_{orientation}".format(
         series_prefix=params['series_prefix'].replace(' ', '_').replace('/', '_'), series_sufix=(params['series_sufix'] if params['series_sufix'] is not None else ''), rows=part_params['rows'], pins=part_params['pins'], pitch=params['pitch']['x'], orientation=params['orientation'], orientation_short=params['orientation'][:1], mpn=mpn)
     FreeCAD.Console.PrintMessage('\r\nGenerate: ' + model_name + '\r\n')
     
