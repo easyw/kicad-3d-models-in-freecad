@@ -816,6 +816,36 @@ kicad_naming_params_radial_th_cap = {
         rotation  = 180, # rotation if required
         dest_dir_prefix = '../Capacitors_THT.3dshapes/'
     ),
+    "CP_Radial_D12.5mm_L20.0mm_P5.0mm" : Params(# Nichicon UVZ 12.5x20 https://www.nichicon.co.jp/english/products/pdfs/e-uvz.pdf
+        L = 20.,
+        D = 12.5,
+        d = 0.6,
+        F = 5.,
+        ll = 2.0,
+        la = 0.0,
+        bs = 0.,
+        pol = True,
+        pin3 = None,
+        xoffset = None, 
+        modelName = 'CP_Radial_D12.5mm_L20.0mm_P5.0mm', #modelName
+        rotation  = 180, # rotation if required
+        dest_dir_prefix = '../Capacitors_THT.3dshapes/'
+    ),
+    "CP_Radial_D12.5mm_L25.0mm_P5.0mm" : Params(# Nichicon UVZ 12.5x20 https://www.nichicon.co.jp/english/products/pdfs/e-uvz.pdf
+        L = 25.,
+        D = 12.5,
+        d = 0.6,
+        F = 5.,
+        ll = 2.0,
+        la = 0.0,
+        bs = 0.,
+        pol = True,
+        pin3 = None,
+        xoffset = None, 
+        modelName = 'CP_Radial_D12.5mm_L25.0mm_P5.0mm', #modelName
+        rotation  = 180, # rotation if required
+        dest_dir_prefix = '../Capacitors_THT.3dshapes/'
+    ),
     "CP_Radial_D12.5mm_P7.50mm" : Params(# from Jan Kriege's 3d models
         L = 12.5,
         D = 12.5,
