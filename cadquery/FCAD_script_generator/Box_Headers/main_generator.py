@@ -62,6 +62,8 @@ LIST_license = ["",]
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
+save_memory = False #reducing memory consuming for all generation params
+check_Model = False
 check_log_file = 'check-log.md'
 
 body_color_key = "black body"
@@ -206,6 +208,37 @@ def MakePin(Z, H):
 
     return pin
 
+# make a single SMT pin
+def MakeSMTPin(Z, H, L, Rotation=0, highDetail=False):
+    #H = pin height (above board)
+    #L = length of solder part flat on board
+    #Rotation is vertical rotation of pin, 0 or 180°
+
+    #pin size
+    size = 0.64
+    #no underboard stuff
+    Z=0
+
+    pin = cq.Workplane("XY").workplane(offset=Z).rect(size,size).extrude(H - Z)
+
+    pin = pin.union(cq.Workplane("YZ").workplane(offset=-(size/2.0)).rect(size,size).extrude(-(L-size/2.0)).translate((0,0,size/2.0)))
+
+    #Chamfer C
+    C = 0.2
+    #top
+    pin = pin.faces(">Z").chamfer(C)
+    #left
+    pin = pin.faces("<X").chamfer(C)
+
+    # fillet on back of pin
+    if (highDetail):
+        R = size
+        pin = pin.faces("<Z").edges(">X").fillet(R)
+
+    pin = pin.rotate((0,0,0),(0,0,1),Rotation)
+
+    return pin
+
 # make a single angle pin
 def MakeAnglePin(Z, H, L, highDetail=False):
     #pin size
@@ -235,6 +268,16 @@ def MakePinRow(n, Z, H):
 
     return pin
 
+# make a row of SMT (bent) pins
+def MakeSMTPinRow(n, Z, H, L, Rotation=0, highDetail=False):
+
+    pin = MakeSMTPin(Z, H, L, Rotation, highDetail)
+
+    for i in range(1,n):
+        pin = pin.union(MakeSMTPin(Z, H, L, Rotation, highDetail).translate((0,-2.54 * i,0)))
+
+    return pin
+
 # make a row of angled (bent) pins
 def MakeAnglePinRow(n, Z, H, L, highDetail=False):
 
@@ -246,15 +289,17 @@ def MakeAnglePinRow(n, Z, H, L, highDetail=False):
     return pin
 
 # generate a name for the pin header
-def HeaderName(n, isAngled):
+def HeaderName(n, isAngled, isSMT):
     if (isAngled):
         return "IDC-Header_2x{n:02}_P2.54mm_Horizontal".format(n=n)
+    elif (isSMT):
+        return "IDC-Header_2x{n:02}_P2.54mm_Vertical_SMT".format(n=n)
     else:
         return "IDC-Header_2x{n:02}_P2.54mm_Vertical".format(n=n)
 
 # make a pin header using supplied parameters, n pins in each row
 
-def MakeHeader(n, isAngled, log, highDetail=False):
+def MakeHeader(n, isAngled, isSMT, log, highDetail=False):
     global LIST_license
     if LIST_license[0]=="":
         LIST_license=Lic.LIST_int_license
@@ -262,7 +307,7 @@ def MakeHeader(n, isAngled, log, highDetail=False):
 
     LIST_license[0] = "Copyright (C) "+datetime.now().strftime("%Y")+", " + STR_licAuthor
 
-    name = HeaderName(n, isAngled)
+    name = HeaderName(n, isAngled, isSMT)
     print('\n############ ' + name + ' #############\n')
 
     lib_name='Connector_IDC'
@@ -289,10 +334,19 @@ def MakeHeader(n, isAngled, log, highDetail=False):
     base = MakeBase(n, highDetail)
 
     if (isAngled):
+        #pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
         pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
+        #pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
+        #                                 n,  Z,    H,    L
         pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
         # rotate the base into the angled position
         base = base.rotate((0,0,0),(0,1,0),90).translate((4.13,0,5.94))
+        #pins = pins.rotate((0,0,0),(0,1,0),270)
+    elif (isSMT):
+	#pad length: (9.5mm/2) - 1.27mm = 
+        pins = MakeSMTPinRow(n, -3, 9.5, 3.48, 0, highDetail)
+        pins = pins.union(MakeSMTPinRow(n, -3, 9.5, 3.48, 180, highDetail).translate((2.54,0,0)))
+        base = base.translate((0,0,1.5))
     else:
         pins = MakePinRow(n, -3.0, 8.0)
         pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54,0,0)))
@@ -362,6 +416,7 @@ def MakeHeader(n, isAngled, log, highDetail=False):
         runGeometryCheck(App, Gui, step_path,
             log, name, save_memory=save_memory)
 
+
 if __name__ == "__main__" or __name__ == "main_generator":
     pins = []
     # select whether to include visual detail features
@@ -384,7 +439,13 @@ if __name__ == "__main__" or __name__ == "main_generator":
         for pin in pins:
             # make an angled and a straight version
             for isAngled in (True, False):
-                out_dir = MakeHeader(pin, isAngled, log, highDetail)
+                if isAngled == False:
+                    # SMT or not
+                    for isSMT in (True, False):
+                        out_dir = MakeHeader(pin, isAngled, isSMT, log, highDetail)
+                else:
+                    # No SMT for Horizontal (yet)
+                    out_dir = MakeHeader(pin, isAngled, False, log, highDetail)
 
 
 # when run from freecad-cadquery
