@@ -62,8 +62,6 @@ LIST_license = ["",]
 
 save_memory = True #reducing memory consuming for all generation params
 check_Model = True
-save_memory = False #reducing memory consuming for all generation params
-check_Model = False
 check_log_file = 'check-log.md'
 
 body_color_key = "black body"
@@ -334,16 +332,14 @@ def MakeHeader(n, isAngled, isSMT, log, highDetail=False):
     base = MakeBase(n, highDetail)
 
     if (isAngled):
-        #pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
         pins = MakeAnglePinRow(n, -3, 5.94, 12.38, highDetail)
-        #pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
-        #                                 n,  Z,    H,    L
         pins = pins.union(MakeAnglePinRow(n, -3, 3.40, 9.84, highDetail).translate((2.54,0,0)))
+        #                                 n,  Z,    H,    L
+
         # rotate the base into the angled position
         base = base.rotate((0,0,0),(0,1,0),90).translate((4.13,0,5.94))
-        #pins = pins.rotate((0,0,0),(0,1,0),270)
     elif (isSMT):
-	#pad length: (9.5mm/2) - 1.27mm = 
+	#pad length: (9.5mm/2) - 1.27mm = 3.48mm
         pins = MakeSMTPinRow(n, -3, 9.5, 3.48, 0, highDetail)
         pins = pins.union(MakeSMTPinRow(n, -3, 9.5, 3.48, 180, highDetail).translate((2.54,0,0)))
         base = base.translate((0,0,1.5))
@@ -415,7 +411,6 @@ def MakeHeader(n, isAngled, isSMT, log, highDetail=False):
     if check_Model==True:
         runGeometryCheck(App, Gui, step_path,
             log, name, save_memory=save_memory)
-
 
 if __name__ == "__main__" or __name__ == "main_generator":
     pins = []
