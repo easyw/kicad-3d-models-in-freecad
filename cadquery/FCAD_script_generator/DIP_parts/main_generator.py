@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 
 ## requirements
 ## cadquery FreeCAD plugin
@@ -43,6 +43,7 @@ __Comment__ = 'make make assorted DIP part 3D models exported to STEP and VRML'
 ___ver___ = "1.0.0 27/11/2017"
 
 import sys, os
+import importlib
 
 script_dir  = os.path.dirname(os.path.realpath(__file__))
 scripts_root = script_dir.split(script_dir.split(os.sep)[-1])[0]
@@ -52,8 +53,15 @@ sys.path.append(scripts_root + "/_tools")
 
 from cq_model_generator import All, ModelGenerator
 
+# def reload_lib(lib):
+#     if (sys.version_info > (3, 0)):
+#         import importlib
+#         importlib.reload(lib)
+#     else:
+#         importlib.reload (lib)
+
 import cq_parameters
-reload(cq_parameters)
+importlib.reload(cq_parameters)
 
 import cq_model_socket_turned_pin
 import cq_model_pin_switch
@@ -62,13 +70,13 @@ import cq_model_smd_switch
 import cq_model_smd_switch_copal
 import cq_model_smd_switch_omron
 import cq_model_smd_switch_kingtek
-reload(cq_model_socket_turned_pin)
-reload(cq_model_pin_switch)
-reload(cq_model_piano_switch)
-reload(cq_model_smd_switch)
-reload(cq_model_smd_switch_copal)
-reload(cq_model_smd_switch_omron)
-reload(cq_model_smd_switch_kingtek)
+importlib.reload(cq_model_socket_turned_pin)
+importlib.reload(cq_model_pin_switch)
+importlib.reload(cq_model_piano_switch)
+importlib.reload(cq_model_smd_switch)
+importlib.reload(cq_model_smd_switch_copal)
+importlib.reload(cq_model_smd_switch_omron)
+importlib.reload(cq_model_smd_switch_kingtek)
 
 series = [
  cq_model_socket_turned_pin.dip_socket_turned_pin,

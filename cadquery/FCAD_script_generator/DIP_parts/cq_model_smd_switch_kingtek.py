@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -43,7 +43,7 @@ class dip_switch_kingtek_dshp04tj (dip_smd_switch_lowprofile):
 
     def __init__(self, params):
         dip_smd_switch_lowprofile.__init__(self, params)
-        self.make_me = self.make_me and self.num_pins / 2 in [2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.make_me = self.make_me and self.num_pins // 2 in [2, 3, 4, 5, 6, 7, 8, 9, 10]
         self.rotation = 90
 
         self.pin_pitch  = 1.27
@@ -67,7 +67,7 @@ class dip_switch_kingtek_dshp04tj (dip_smd_switch_lowprofile):
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_KingTek_DSHP' + '{:02d}'.format(self.num_pins / 2) + 'TJ_W5.25mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_JPin'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_KingTek_DSHP' + '{:02d}'.format(self.num_pins // 2) + 'TJ_W5.25mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_JPin'
 
 
     def _make_switchpockets(self):
@@ -126,7 +126,7 @@ class dip_switch_kingtek_dshp06ts (dip_switch_kingtek_dshp04tj):
         self.offsets = (0.0, 0.0, self.body_board_distance)
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_KingTek_DSHP' + '{:02d}'.format(self.num_pins / 2) + 'TS_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_KingTek_DSHP' + '{:02d}'.format(self.num_pins // 2) + 'TS_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
     def make_pins(self):
 

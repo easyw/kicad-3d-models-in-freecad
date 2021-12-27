@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -47,7 +47,7 @@ class dip_switch (PartBase):
 
     def __init__(self, params):
         PartBase.__init__(self, params)
-        self.make_me = self.num_pins / 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        self.make_me = self.num_pins // 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 #        if self.make_me:
         self.licAuthor = "Terje Io"
         self.licEmail = "https://github.com/terjeio"
@@ -84,9 +84,9 @@ class dip_switch (PartBase):
 
     def makeModelName(self, genericName):
         if self.num_pins == 6 or self.num_pins == 16:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_9.78x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_9.78x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_9.78x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_9.78x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
     def _make_switchpockets(self):
 
@@ -176,8 +176,8 @@ class dip_switch_low_profile (dip_switch):
     def __init__(self, params):
         dip_switch.__init__(self, params)
 
-        self.make_me = self.num_pins / 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        
+        self.make_me = self.num_pins // 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
         self.rotation = 180
         self.pin_rows_distance = 7.62
         self.pin_pitch = 2.54
@@ -194,7 +194,7 @@ class dip_switch_low_profile (dip_switch):
         self.color_keys[0] = "black body" #body
         self.color_keys.append("white body") #buttons
         self.color_keys.append("white body") #buttons
-        
+
 #        self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), (self.pin_rows_distance / 2.0) - self.pin_thickness)
 #        self.offsets =  ((self.first_pin_pos[1], -self.first_pin_pos[0], self.body_board_distance))
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), (self.pin_rows_distance / 2.0) - self.pin_thickness)
@@ -228,8 +228,8 @@ class dip_switch_low_profile (dip_switch):
 
     def makeModelName(self, genericName):
         if self.num_pins == 2 or self.num_pins == 12 or self.num_pins == 22:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_6.7x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_6.7x' + '{:.1f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_6.7x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_6.7x' + '{:.2f}'.format(self.body_length) + 'mm_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
 
 ### EOF ###

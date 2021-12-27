@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -57,8 +57,8 @@ class Polyline:
         self.commands = []
         self.plane = plane
         self.origin = origin
-        self.x = 0
-        self.y = 0
+        self.x = 0.0
+        self.y = 0.0
         self.addMoveTo(origin[0], origin[1])
 
     def getCurrentPosition(self):
@@ -409,7 +409,7 @@ class PartBase (object):
     def _mirror(self, obj, pins=None, pitch=None):
 
         if pins is None:
-            pins = self.num_pins / 2
+            pins = self.num_pins // 2
 
         if pitch is None:
             pitch = self.pin_pitch

@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -43,7 +43,7 @@ class dip_switch_omron_a6h (dip_smd_switch_lowprofile):
 
     def __init__(self, params):
         dip_smd_switch_lowprofile.__init__(self, params)
-        self.make_me = self.num_pins / 2 in [2, 4, 6, 8, 10]
+        self.make_me = self.num_pins // 2 in [2, 4, 6, 8, 10]
         self.rotation = 90
 
         self.pin_pitch  = 1.27
@@ -68,9 +68,9 @@ class dip_switch_omron_a6h (dip_smd_switch_lowprofile):
 
     def makeModelName(self, genericName):
         if self.num_pins == 10:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Omron_A6H-0101_W6.15mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Omron_A6H-0101_W6.15mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Omron_A6H-' + '{:01d}'.format(self.num_pins / 2) + '101_W6.15mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Omron_A6H-' + '{:01d}'.format(self.num_pins // 2) + '101_W6.15mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
     def _make_switchpockets(self):
 
@@ -143,12 +143,12 @@ class dip_switch_omron_a6s (dip_switch_omron_a6h):
     def __init__(self, params):
         dip_switch_omron_a6h.__init__(self, params)
 
-        self.make_me = self.num_pins / 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.make_me = self.num_pins // 2 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         self.pin_pitch  = 2.54
         self.pin_length = 1.8
         self.pin_width = 0.5
         self.pin_bottom_length = 0.7
-        
+
         self.body_width = 6.2
         self.body_overall_width = 9.8
         self.body_height = 3.0
@@ -158,9 +158,9 @@ class dip_switch_omron_a6s (dip_switch_omron_a6h):
         self.color_keys[1] = "gold pins"
 
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
-        
+
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Omron_A6S-' + '{:d}'.format(self.num_pins / 2) + '10x_W8.9mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
-        
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Omron_A6S-' + '{:d}'.format(self.num_pins // 2) + '10x_W8.9mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+
 ### EOF ###

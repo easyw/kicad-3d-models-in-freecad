@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -156,7 +156,7 @@ class PartParametersBase:
 
         # instantiate generator classes in order to make a dictionary of all model names
         for i in range(0, len(model_classes)):
-            for variant in self.base_params.keys():
+            for variant in list(self.base_params.keys()):
                 params = self.base_params[variant]
                 model = model_classes[i](params)
                 if model.make_me:
@@ -211,7 +211,7 @@ class PartParametersBase:
         :rtype: ```tuple````
         """
 
-        model = self.base_params.has_key(variant)
+        model = variant in self.base_params
 
         # instantiate generator class in order to make a dictionary entry for a single variant
         if model:

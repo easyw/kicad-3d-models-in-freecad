@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 #
 
 #****************************************************************************
@@ -43,7 +43,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch_lowprofile):
 
     def __init__(self, params):
         dip_smd_switch_lowprofile.__init__(self, params)
-        self.make_me = self.make_me and self.num_pins / 2 in [1, 2, 4, 6, 8, 10]
+        self.make_me = self.make_me and self.num_pins // 2 in [1, 2, 4, 6, 8, 10]
         self.rotation = 90
 
         self.pin_pitch  = 1.27
@@ -67,7 +67,7 @@ class dip_switch_copal_CHS_B (dip_smd_switch_lowprofile):
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.pin_rows_distance / 2.0)
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Copal_CHS-' + '{:02d}'.format(self.num_pins / 2) + 'B_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Copal_CHS-' + '{:02d}'.format(self.num_pins // 2) + 'B_W7.62mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
     def _make_switchpockets(self):
 
@@ -125,7 +125,7 @@ class dip_switch_copal_CHS_A (dip_switch_copal_CHS_B):
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.body_width / 2.0)
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Copal_CHS-' + '{:02d}'.format(self.num_pins / 2) + 'A_W5.08mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_JPin'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Copal_CHS-' + '{:02d}'.format(self.num_pins // 2) + 'A_W5.08mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_JPin'
 
     def make_pins(self):
 
@@ -144,7 +144,7 @@ class dip_switch_copal_CVS (dip_switch_copal_CHS_B):
     def __init__(self, params):
         dip_switch_copal_CHS_B.__init__(self, params)
 
-        self.make_me = self.num_pins / 2 in [1, 2, 3, 4, 8]
+        self.make_me = self.num_pins // 2 in [1, 2, 3, 4, 8]
         self.pin_pitch  = 1.00
         self.pin_length = 1.0
         self.pin_thickness = 0.15
@@ -170,7 +170,7 @@ class dip_switch_copal_CVS (dip_switch_copal_CHS_B):
         self.first_pin_pos = (self.pin_pitch * (self.num_pins / 4.0 - 0.5), self.body_width / 2.0)
 
     def makeModelName(self, genericName):
-        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_Copal_CVS-' + '{:02d}'.format(self.num_pins / 2) + 'xB_W5.9mm_P1mm'
+        return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_Copal_CVS-' + '{:02d}'.format(self.num_pins // 2) + 'xB_W5.9mm_P1mm'
 
         # create other side of the pins
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))

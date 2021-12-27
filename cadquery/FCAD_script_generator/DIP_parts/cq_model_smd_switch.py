@@ -85,9 +85,9 @@ class dip_smd_switch_lowprofile (PartBase):
         # can not be changed 
         #
         if self.num_pins == 2 or self.num_pins == 12 or self.num_pins == 22:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile'
 
     def _make_switchpockets(self):
 
@@ -185,9 +185,9 @@ class dip_smd_switch_lowprofile_jpin (dip_smd_switch_lowprofile):
         # can not be changed 
         #
         if self.num_pins == 2 or self.num_pins == 12 or self.num_pins == 22:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W6.73mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile_JPin'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W6.73mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile_JPin'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W6.73mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile_JPin'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.1f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W6.73mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm_LowProfile_JPin'
 
 class dip_smd_switch (dip_smd_switch_lowprofile):
 
@@ -232,9 +232,9 @@ class dip_smd_switch (dip_smd_switch_lowprofile):
         # can not be changed 
         #
         if self.num_pins == 6 or self.num_pins == 16:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.2f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.2f}'.format(self.body_width) + 'x' + '{:.1f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
         else:
-            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins / 2) + '_Slide_' + '{:.2f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
+            return 'SW_DIP_SPSTx' + '{:02d}'.format(self.num_pins // 2) + '_Slide_' + '{:.2f}'.format(self.body_width) + 'x' + '{:.2f}'.format(self.body_length) + 'mm_W8.61mm_P' + '{:.2f}'.format(self.pin_pitch) + 'mm'
 
     def _make_switchpockets(self):
 
