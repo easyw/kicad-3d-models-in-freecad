@@ -379,6 +379,28 @@ all_params = {
         dest_dir_prefix    = 'Converter_ACDC.3dshapes'  # Destination directory
         ),
 
+    'Converter_DCDC_Aimtec_AM2DSxxxxSJZ_Single_THT': Params(   # ModelName
+        #
+        #
+        #
+        modelName = 'Converter_DCDC_Aimtec_AM2DSxxxxSJZ_Single_THT',  # Model name
+        pintype   = 'tht',  # Pin type, 'tht', 'smd'
+        L  = 7.0,   # Package length
+        W  = 19.5,  # Package width
+        H  = 10.0,  # Package height
+        A1 = 0.1,   # Package board separation
+        pin = (('round', 0.0, 0.0, 0.5, 4.1), ('round', 0.0, 2.54, 0.5, 4.1), ('round', 0.0, 7.62, 0.5, 4.1), ('round', 0.0, 12.7, 0.5, 4.1)),  # Pin placement
+        pin1corner = (-6.1, -2.21),  # Left upp corner relationsship to pin 1
+        show_top   = False,  # If top should be visible or not
+        corner     = 'none',  # If top should be cut, 'none', 'chamfer' or 'fillet'
+        roundbelly = 0,  # If belly of caseing should be round (or flat)
+        rotation   = 0,  # If belly of caseing should be round (or flat)
+        body_color_key     = 'black body',  # Body color
+        body_top_color_key = 'black body',  # Body top color
+        pin_color_key      = 'metal grey pins',  # Pin color
+        dest_dir_prefix    = 'Converter_DCDC.3dshapes'  # Destination directory
+        ),
+
     'Converter_DCDC_Cincon_EC5BExx_Single_THT': Params(   # ModelName
         #
         #
