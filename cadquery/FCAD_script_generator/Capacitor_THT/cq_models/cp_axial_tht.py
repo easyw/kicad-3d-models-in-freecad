@@ -65,12 +65,12 @@ class LICENCE_Info():
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 
 from cp_axial_tht_param import *
@@ -186,8 +186,8 @@ def generate_part(params):
     body = bodyp().revolve(360-ciba, (0,0,0), (0,1,0))
     bar = bodyp(0.01).revolve(ciba, (0,0,0), (0,1,0))
 
-    #show(body)
-    #show(bar)
+    #show_object(body)
+    #show_object(bar)
     # # fillet the belt edges
     BS = cq.selectors.BoxSelector
     # note that edges are selected from their centers
@@ -203,8 +203,8 @@ def generate_part(params):
         #stop
         print("")
         print("not filleting")
-        #show(body)
-        #show(bar)
+        #show_object(body)
+        #show_object(bar)
         #raise
         pass
 
@@ -274,11 +274,11 @@ def generate_part(params):
     top = top.rotate((0,0,0), (0,0,1), angle)
     leads = leads.rotate((0,0,0), (0,0,1), angle)
 
-    #show(body)
-    #show(mmb)
-    #show(bar)
-    #show(leads)
-    #show(top)
+    #show_object(body)
+    #show_object(mmb)
+    #show_object(bar)
+    #show_object(leads)
+    #show_object(top)
     #stop
     return (body, mmb, bar, leads, top) #body, base, mark, pins, top
 
@@ -287,8 +287,8 @@ if "module" in __name__:
     variant = "CP_Axial_L10.0mm_D6.0mm_P15.00mm_Horizontal"
     body, mmb, bar, leads, top= generate_part(all_params[variant]) #body, base, mark, pins, top
 
-    show(body)
-    show(mmb)
-    show(bar)
-    show(leads)
-    show(top)
+    show_object(body)
+    show_object(mmb)
+    show_object(bar)
+    show_object(leads)
+    show_object(top)

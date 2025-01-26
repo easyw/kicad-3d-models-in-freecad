@@ -54,7 +54,7 @@ ___ver___ = "1.3.2 10/02/2017"
 # thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 global save_memory
@@ -124,7 +124,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -242,9 +242,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
         body, pins, top = make_chip(model, all_params)
 
-        show(body)
-        show(pins)
-        show(top)
+        show_object(body)
+        show_object(pins)
+        show_object(top)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)

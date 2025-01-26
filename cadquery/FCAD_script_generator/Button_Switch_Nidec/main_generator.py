@@ -1,5 +1,5 @@
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 
 __title__ = "make assorted rotary coded switches (type Nidec SH70xx) 3D models"

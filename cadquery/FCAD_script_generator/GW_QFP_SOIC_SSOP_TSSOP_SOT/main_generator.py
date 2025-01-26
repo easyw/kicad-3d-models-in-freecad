@@ -102,7 +102,7 @@ try:
     #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
@@ -245,23 +245,23 @@ def make_gw(params):
     if cc1!=0:
         case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).moveTo(-D1_b/2., -E1_b/2.+(cc1-(D1-D1_b)/4.))
         case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
-        #show(case)
+        #show_object(case)
         case = case.pushPoints([(0,0)]).workplane(offset=A2_b).moveTo(-D1/2, -E1/2+cc1)
         case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
-        #show(case)
+        #show_object(case)
         case = case.pushPoints([(0,0)]).workplane(offset=c).moveTo(-D1/2,-E1/2+cc1)
         case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
-        #show(case)
+        #show_object(case)
         #case=cq.Workplane(cq.Plane.XY()).workplane(offset=c).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
         case=case.pushPoints([(0,0)]).workplane(offset=0).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
         case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
-        #show(case)
+        #show_object(case)
         #stop
         cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = case.pushPoints([(0,0)]).workplane(offset=A2_t).moveTo(-D1_t2/2,-E1_t2/2+cc1_t)
         #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
-        #show(case)
+        #show_object(case)
         case = case.loft(ruled=True)
         if ef!=0:
             try:
@@ -432,9 +432,9 @@ def export_one_part(params, series_definition, log):
 
     body, pins, mark = make_gw(params)
 
-    show(body, colors[0]+(0,))
-    show(pins, colors[1]+(0,))
-    show(mark, colors[2]+(0,))
+    show_object(body, colors[0]+(0,))
+    show_object(pins, colors[1]+(0,))
+    show_object(mark, colors[2]+(0,))
 
     doc = FreeCAD.ActiveDocument
     objs = GetListOfObjects(FreeCAD, doc)

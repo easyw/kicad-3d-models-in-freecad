@@ -47,7 +47,7 @@
 import operator
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -1015,10 +1015,10 @@ class cqMakerTactSwitch (PartBase, partParamsTactSwitches):
         cover = self.makeCoverPlate ().translate((0.0, 0.0, self.body_board_distance))
         button = self.makeButton ().translate((0.0, 0.0, self.body_board_distance))
         pins = self.make_pins()
-        show(case)
-        show(cover)
-        show(button)
-        show(pins)
+        show_object(case)
+        show_object(cover)
+        show_object(button)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
@@ -1029,7 +1029,7 @@ class cqMakerTactSwitch (PartBase, partParamsTactSwitches):
         button_color = shaderColors.named_colors[self.button_color_key].getDiffuseFloat()
         pin_color = shaderColors.named_colors[self.pin_color_key].getDiffuseFloat()
 
-        # must be the same order of the above show(..) calls
+        # must be the same order of the above show_object(..) calls
         Color_Objects(Gui, objs[0], body_color)
         Color_Objects(Gui, objs[1], cover_color)
         Color_Objects(Gui, objs[2], button_color)

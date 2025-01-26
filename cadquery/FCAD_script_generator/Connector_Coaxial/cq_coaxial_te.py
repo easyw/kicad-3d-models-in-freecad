@@ -96,9 +96,9 @@ class cq_coaxial_te():
         
         if modelID == 'BNC_TEConnectivity_1478204':
             case_top = self.make_top_BNC_TEConnectivity_1478204(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_BNC_TEConnectivity_1478204(params)
-            show(case)
+            show_object(case)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -106,7 +106,7 @@ class cq_coaxial_te():
             sys.exit()
             
         pins = self.make_pin(params)
-        show(pins)
+        show_object(pins)
             
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

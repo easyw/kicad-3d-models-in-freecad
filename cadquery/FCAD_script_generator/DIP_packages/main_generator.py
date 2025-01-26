@@ -52,7 +52,7 @@ __Comment__ = 'make DIP ICs 3D models exported to STEP and VRML for Kicad StepUP
 ___ver___ = "1.3.3 14/08/2015"
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -111,7 +111,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -624,17 +624,17 @@ def make_3D_model(models_dir, variant):
 
 
         # color_attr=case_color+(0,)
-    # show(case, color_attr)
+    # show_object(case, color_attr)
     # #FreeCAD.Console.PrintMessage(pins_color)
     # color_attr=pins_color+(0,)
     # #FreeCAD.Console.PrintMessage(color_attr)
-    # show(pins, color_attr)
+    # show_object(pins, color_attr)
     #doc = FreeCAD.ActiveDocument
     #objs=GetListOfObjects(FreeCAD, doc)
 
-    show(case)
-    show(pins)
-    #show(pinmark)
+    show_object(case)
+    show_object(pins)
+    #show_object(pinmark)
     #stop
 
     doc = FreeCAD.ActiveDocument
@@ -763,14 +763,14 @@ if __name__ == "temp.module":
     ## Gui.ActiveDocument=Gui.getDocument(modelName)
     ## case, pins = make_dip(all_params["DIP08"])
     ## color_attr=case_color+(0,)
-    ## show(case, color_attr)
+    ## show_object(case, color_attr)
     ## #FreeCAD.Console.PrintMessage(pins_color)
     ## color_attr=pins_color+(0,)
     ## #FreeCAD.Console.PrintMessage(color_attr)
-    ## show(pins, color_attr)
+    ## show_object(pins, color_attr)
     ##
-    ## show(case, (80, 80, 80, 0))
-    ## show(pins)
+    ## show_object(case, (80, 80, 80, 0))
+    ## show_object(pins)
 
 #import step_license as L
 import add_license as Lic

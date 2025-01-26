@@ -90,7 +90,7 @@ try:
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -306,7 +306,7 @@ def MakeHeader(n, isAngled, log, highDetail=False):
 
     for i in range(len(cq_obj_data)):
         color_i = colors[i] + (0,)
-        show(cq_obj_data[i], color_i)
+        show_object(cq_obj_data[i], color_i)
 
 
     doc = FreeCAD.ActiveDocument
@@ -397,5 +397,5 @@ if __name__ == "temp.module":
     ##
     ## case, pins = make_pinheader(5)
     ##
-    ## show(case, (60,60,60,0))
-    ## show(pins)
+    ## show_object(case, (60,60,60,0))
+    ## show_object(pins)

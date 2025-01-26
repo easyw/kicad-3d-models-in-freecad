@@ -82,8 +82,8 @@ class cq_parameters_StarMicronics_HMB_06_HMB_12():
         
         case = self.make_case(self.all_params[modelName])
         pins = self.make_pins(self.all_params[modelName])
-        show(case)
-        show(pins)
+        show_object(case)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

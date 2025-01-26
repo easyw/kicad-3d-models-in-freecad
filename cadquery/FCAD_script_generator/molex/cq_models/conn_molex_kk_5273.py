@@ -64,7 +64,7 @@ class LICENCE_Info():
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
@@ -216,5 +216,5 @@ if "module" in __name__:
                                  str(part_to_build) + "pin variant\n")
     (body, pins) = generate_part(part_to_build)
 
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)

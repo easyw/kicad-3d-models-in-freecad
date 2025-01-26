@@ -82,8 +82,8 @@ class cq_parameters_EMB84Q_RO_SMT_0825_S_4_R():
         
         case = self.make_case(self.all_params[modelName])
         pins = self.make_pins(self.all_params[modelName])
-        show(case)
-        show(pins)
+        show_object(case)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

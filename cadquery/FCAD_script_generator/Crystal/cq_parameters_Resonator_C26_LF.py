@@ -94,9 +94,9 @@ class cq_parameters_Resonator_C26_LF():
         case_top = self.make_top(self.all_params[modelName])
         case = self.make_case(self.all_params[modelName])
         pins = self.make_pins(case, self.all_params[modelName])
-        show(case_top)
-        show(case)
-        show(pins)
+        show_object(case_top)
+        show_object(case)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

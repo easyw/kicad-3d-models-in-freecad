@@ -88,23 +88,23 @@ class cq_Sanyo_STK4xx():
 
         if modelName == 'Sanyo_STK4xx_59_2':
             case_top = self.make_top_Sanyo_STK4xx_59_2(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Sanyo_STK4xx_59_2(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_Sanyo_STK4xx_59_2(params)
-            show(pins)
+            show_object(pins)
 
             
         elif modelName == 'Sanyo_STK4xx_78_0':
             case_top = self.make_top_Sanyo_STK4xx_78_0(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Sanyo_STK4xx_78_0(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_Sanyo_STK4xx_78_0(params)
-            show(pins)
+            show_object(pins)
             
         npth_pins = self.make_npth_pins(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

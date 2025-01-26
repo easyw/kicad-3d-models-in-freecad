@@ -95,14 +95,14 @@ class cq_sprague_goodman():
         
         if modelID == 'Sprague_Goodman_SGC3':
             case_top = self.make_top_Sprague_Goodman_SGC3(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Sprague_Goodman_SGC3(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Sprague_Goodman_SGC3(params)
-            show(pins)
+            show_object(pins)
             
         npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

@@ -89,7 +89,7 @@ try:
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
@@ -181,7 +181,7 @@ def export_one_part(module, pincount, configuration, log):
 
     for i in range(len(cq_obj_data)):
         color_i = colors[i] + (0,)
-        show(cq_obj_data[i], color_i)
+        show_object(cq_obj_data[i], color_i)
 
 
     doc = FreeCAD.ActiveDocument

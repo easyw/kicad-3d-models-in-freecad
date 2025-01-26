@@ -79,9 +79,7 @@ else:
 from cq_helpers import *
 
 import cadquery as cq
-from Helpers import show
 from collections import namedtuple
-import FreeCAD
 from conn_jst_gh_params import *
 
 
@@ -92,7 +90,6 @@ def generate_pins(params):
 
 def generate_straight_pins(params):
     num_pins = params.num_pins
-    body_width = params.body_width
     pin_distance = (num_pins-1)*pin_pitch
     mount_pin = cq.Workplane("YZ").workplane(-pin_width/2)\
     	.move(2.475,0).vLine(2.05).hLine(-2.2).vLine(-0.54).hLine(1.55)\
@@ -115,7 +112,6 @@ def generate_straight_pins(params):
 
 def generate_angled_pins(params):
     num_pins = params.num_pins
-    body_width = params.body_width
     pin_distance = (num_pins-1)*pin_pitch
     mount_pin = cq.Workplane("YZ").workplane(-pin_width/2)\
         .move(-2.475,0).vLine(2.05).hLine(2.2).vLine(-0.54).hLine(-1.55)\
@@ -137,12 +133,7 @@ def generate_angled_pins(params):
     return pins
 
 def generate_angled_body(params):
-    num_pins = params.num_pins
-    body_width = params.body_width
-    body_height = params.body_height
-    body_length = params.body_length
     body_off_center_y = 0.0
-    d = params.pin_angle_distance
     body = generate_straight_body(params)
     body = body.rotate((0,0,0),(1,0,0),90)
     body = body.translate((0,body_off_center_y+1.58,1.62))
@@ -189,15 +180,6 @@ def generate_straight_body(params):
     lock_tab_height = 1
     lock_tab_z_offset = 2.25
 
-    body_front_width = 0.85
-    body_side_width = 0.85
-    body_back_width = 0.75
-
-    body_cutout_radius = 0.5
-    body_side_cutout_depth = 3.35
-    body_side_cutout_width = 1
-    body_front_cutout_depth = 3.9
-
     body_off_center_y = 0.35
 
     body_top_square_hole_width = 1.1
@@ -205,10 +187,6 @@ def generate_straight_body(params):
     body_top_square_hole_depth = 1
     body_top_square_hole_x_offset = 0.35
     body_top_square_hole_y_offset = 0.35
-    
-    body_top_L_hole_width = 0.8
-    body_top_L_hole_height = 0.9
-    body_top_L_hole_depth = 1
 
     body = cq.Workplane("XY").workplane()\
         .box(body_length, body_width, body_height,centered=(True, True, False))
@@ -285,12 +263,7 @@ def generate_straight_body(params):
 def generate_part(params):
     pins = generate_pins(params)
     body = generate_body(params)
-    body_length=params.body_length
     body = body.translate((0,0,body_off_center_z))
-    #made an error, need to rotate it by 180 degree
-    center_x=body_corner_x+body_length/2
-    # pins = pins.rotate((center_x,0,0),(0,0,1),180)
-    # body = body.rotate((center_x,0,0),(0,0,1),180)
     return (body, pins)
 
 
@@ -301,5 +274,5 @@ if "module" in __name__ :
 
     (body, pins) = generate_part(params)
     body = body.translate((0,0,body_off_center_z))
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)

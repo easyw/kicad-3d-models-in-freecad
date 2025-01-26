@@ -32,7 +32,7 @@
 #****************************************************************************
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 ## base parametes & model
 
@@ -173,10 +173,10 @@ class dip_switch_piano (PartBase):
                  .close().extrude(h)
 
     def make(self):
-        show(self.make_body())
-        show(self.make_pins())
-        show(self.make_buttons())
-        show(self.make_pinmark(self.button_width + 0.2))
+        show_object(self.make_body())
+        show_object(self.make_pins())
+        show_object(self.make_buttons())
+        show_object(self.make_pinmark(self.button_width + 0.2))
 
 
 class dip_switch_piano_cts (dip_switch_piano):

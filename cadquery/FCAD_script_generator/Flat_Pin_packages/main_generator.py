@@ -125,7 +125,7 @@ try:
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -269,11 +269,11 @@ def make_gw(params):
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5),(-5,5), False)
     
     ## color_attr=(255,255,255,0)
-    ## show(pinmark, color_attr)
+    ## show_object(pinmark, color_attr)
     ##sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
     ##         sphere(sphere_r)
     # color_attr=(255,255,255,0)
-    # show(sphere, color_attr)
+    # show_object(sphere, color_attr)
     #case = case.cut(sphere)
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
@@ -331,9 +331,9 @@ def make_gw(params):
 
     # extract pins from case
     case = case.cut(pins)
-    #show(case)
-    #show(pinmark)
-    #show(pins)
+    #show_object(case)
+    #show_object(pinmark)
+    #show_object(pins)
     #stop
     return (case, pins, pinmark)
 
@@ -398,9 +398,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         body, pins, mark = make_gw(all_params[variant])
 
-        show(body)
-        show(pins)
-        show(mark)
+        show_object(body)
+        show_object(pins)
+        show_object(mark)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)

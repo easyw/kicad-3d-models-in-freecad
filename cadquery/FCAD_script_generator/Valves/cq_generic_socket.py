@@ -85,30 +85,30 @@ class cq_belton_socket():
         
         if params.serie == 'VT8-PT':
             case_top = self.make_case_top_VT8_PT(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_VT8_PT(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_VT8_PT(params)
-            show(pins)
+            show_object(pins)
         
         if params.serie == 'VT9-PT':
             case_top = self.make_case_top(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_VT9_PT(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_VT9_PT(params)
-            show(pins)
+            show_object(pins)
         
         if params.serie == 'VT9-PT-C':
             case_top = self.make_case_top_VT9_PT_C(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_VT9_PT(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_VT9_PT(params)
-            show(pins)
+            show_object(pins)
             
         npth_pins = self.make_npth_pins(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

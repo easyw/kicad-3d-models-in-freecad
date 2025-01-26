@@ -96,9 +96,9 @@ class cq_coaxial_samtec():
         
         if modelID == 'SMA_Samtec_SMA':
             case_top = self.make_top_SMA_Samtec_SMA(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Samtec_SMA(params)
-            show(case)
+            show_object(case)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -106,7 +106,7 @@ class cq_coaxial_samtec():
             sys.exit()
             
         pins = self.make_pin(params)
-        show(pins)
+        show_object(pins)
             
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

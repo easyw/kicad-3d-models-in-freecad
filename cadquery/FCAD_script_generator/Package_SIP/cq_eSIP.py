@@ -88,22 +88,22 @@ class cq_eSIP():
 
         if params.modelName == 'PowerIntegrations_eSIP-7C':
             case_top = self.make_top_eSIP_7C(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_eSIP_7C(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_eSIP_7C(params)
-            show(pins)
+            show_object(pins)
 
         elif params.modelName == 'PowerIntegrations_eSIP-7F':
             case_top = self.make_top_eSIP_7F(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_eSIP_7F(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_eSIP_7F(params)
-            show(pins)
+            show_object(pins)
 
         npth_pins = self.make_npth_pins(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

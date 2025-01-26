@@ -96,46 +96,46 @@ class cq_murata():
         
         if modelID == 'Murata_TZB4_A':
             case_top = self.make_top_Murata_TZB4_A(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZB4_A(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZB4_A(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Murata_TZB4_B':
             case_top = self.make_top_Murata_TZB4_B(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZB4_B(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZB4_B(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Murata_TZC3':
             case_top = self.make_top_Murata_TZC3(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZC3(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZC3(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Murata_TZR1':
             case_top = self.make_top_Murata_TZR1(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZR1(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZR1(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Murata_TZW4':
             case_top = self.make_top_Murata_TZW4(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZW4(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZW4(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Murata_TZY2':
             case_top = self.make_top_Murata_TZY2(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Murata_TZY2(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Murata_TZY2(params)
-            show(pins)
+            show_object(pins)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -144,7 +144,7 @@ class cq_murata():
             
             
         npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

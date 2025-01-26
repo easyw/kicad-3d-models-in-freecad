@@ -95,10 +95,10 @@ class cq_parameters_Resonator_smd_type_2():
         case = self.make_case(self.all_params[modelName])
         bottom = self.make_bottom(case, self.all_params[modelName])
         pins = self.make_pins(self.all_params[modelName])
-        show(top)
-        show(case)
-        show(bottom)
-        show(pins)
+        show_object(top)
+        show_object(case)
+        show_object(bottom)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

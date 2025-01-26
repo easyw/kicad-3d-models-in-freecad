@@ -96,39 +96,39 @@ class cq_coaxial_amphenol():
         
         if modelID == 'SMA_Amphenol_132134':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_901_144':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_132134_11':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_132134_14':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_132134_16':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_132289':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         elif modelID == 'SMA_Amphenol_132134_10':
             case_top = self.make_top_SMA_Amphenol_132134(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_SMA_Amphenol_132134(params)
-            show(case)
+            show_object(case)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -136,7 +136,7 @@ class cq_coaxial_amphenol():
             sys.exit()
             
         pins = self.make_pin(params)
-        show(pins)
+        show_object(pins)
             
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

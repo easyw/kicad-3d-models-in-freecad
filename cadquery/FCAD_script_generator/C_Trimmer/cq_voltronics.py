@@ -96,39 +96,39 @@ class cq_voltronics():
         
         if modelID == 'Voltronics_JN':
             case_top = self.make_top_Voltronics_JN(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Voltronics_JN_JQ(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Voltronics_JN_JQ(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Voltronics_JQ':
             case_top = self.make_top_Voltronics_JQ(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Voltronics_JN_JQ(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Voltronics_JN_JQ(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Voltronics_JR':
             case_top = self.make_top_Voltronics_JR(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Voltronics_JR(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Voltronics_JR(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Voltronics_JV':
             case_top = self.make_top_Voltronics_JV(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Voltronics_JV(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Voltronics_JV(params)
-            show(pins)
+            show_object(pins)
         elif modelID == 'Voltronics_JZ':
             case_top = self.make_top_Voltronics_JZ(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Voltronics_JZ(params)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Voltronics_JZ(params)
-            show(pins)
+            show_object(pins)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -137,7 +137,7 @@ class cq_voltronics():
             
             
         npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

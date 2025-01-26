@@ -63,12 +63,12 @@ class LICENCE_Info():
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt, sin
 
 from c_disc_tht_param import *
@@ -132,7 +132,7 @@ def generate_part(params):
     #draw the body0
     body = cq.Workplane("XY").workplane(offset=L/2+bs).moveTo(0, W/2).threePointArc((-L/4, point2),(-L/2, 0),forConstruction=False).threePointArc((-L/4, -point2),(0, -W/2),forConstruction=False).close().revolve()
     leads = leads.cut(body)
-    #show(leads)
+    #show_object(leads)
 
     if series_params.pin_1_on_origin:
         body = body.translate((F/2,0,0))
@@ -146,5 +146,5 @@ if "module" in __name__:
     body, pins= generate_part(all_params[variant]) #body, base, mark, pins, top
 
 
-    show(body)
-    show(pins)
+    show_object(body)
+    show_object(pins)

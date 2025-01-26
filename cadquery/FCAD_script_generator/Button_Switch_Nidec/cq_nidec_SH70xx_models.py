@@ -34,7 +34,7 @@
 #****************************************************************************
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 import ImportGui
 import FreeCAD #, Draft, FreeCADGui
@@ -326,7 +326,7 @@ class buttonSwitchBody (partParams):
         body = cq.Workplane("XY")\
             .text("0", self.number_font_size, 1.0)
 
-        show(body)
+        show_object(body)
         return body
 
     def importNumberRing10(self, modelName):
@@ -459,7 +459,7 @@ class switchNidecSH70x0x (PartBaseExt, partParams):
 	    # Each show creates a part in FreeCAD and this part will be given a material color, within the method cq_model_generator.makeModel(...). 
 		# For this reason there must be a list called color_keys[]. This list is defined in cq_base_model, with two entries, 
 		#   one for the body material, one for the pin material. If this is not sufficiant this list must be overridden by all classes 
-		#   derived from cq_base_model. The number of entries must match the number of calling show()!!
+		#   derived from cq_base_model. The number of entries must match the number of calling show_object()!!
         show (self.modelBody.makePlasticBody())
         show (self.modelBody.makeTurnInset())
         show (self.modelBody.makeCoverPlate())

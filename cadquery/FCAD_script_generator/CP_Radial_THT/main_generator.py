@@ -53,7 +53,7 @@ ___ver___ = "1.3.2 10/02/2017"
 # thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -117,7 +117,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -235,8 +235,8 @@ def make_radial_th(params):
         # Hide bar inside the cap
         bar = cq.Workplane("XY").workplane(offset=bs + 1.0).moveTo(0.0, 0.0).rect(0.001, 0.001).extrude(0.001)
 
-    #show(body)
-    #show(bar)
+    #show_object(body)
+    #show_object(bar)
     # # fillet the belt edges
     BS = cq.selectors.BoxSelector
     # note that edges are selected from their centers
@@ -252,8 +252,8 @@ def make_radial_th(params):
         #stop
         expVRML.sayerr("")
         expVRML.sayerr("not filleting")
-        #show(body)
-        #show(bar)
+        #show_object(body)
+        #show_object(bar)
         #raise
         pass
 
@@ -307,11 +307,11 @@ def make_radial_th(params):
             circle(pin3_width/2).extrude(-(ll+tc+la+0.1)).translate((pin3_x,pin3_y,0.1))) #need overlap for fusion)
 
     
-    #show(body)
-    #show(mmb)
-    #show(bar)
-    #show(leads)
-    #show(top)
+    #show_object(body)
+    #show_object(mmb)
+    #show_object(bar)
+    #show_object(leads)
+    #show_object(top)
     #stop
     return (body, mmb, bar, leads, top) #body, base, mark, pins, top
 
@@ -369,11 +369,11 @@ if __name__ == "__main__" or __name__ == "main_generator":
         body, base, mark, pins, top = make_radial_th(all_params[variant]) #body, base, mark, pins, top
         
         
-        show(body)
-        show(base)
-        show(pins)
-        show(mark)
-        show(top)
+        show_object(body)
+        show_object(base)
+        show_object(pins)
+        show_object(mark)
+        show_object(top)
         
         
         doc = FreeCAD.ActiveDocument

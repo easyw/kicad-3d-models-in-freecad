@@ -87,66 +87,66 @@ class cq_SIP_3():
         params = self.all_params[modelName]
 
 #        case_top = self.make_top_dummy(params)
-#        show(case_top)
+#        show_object(case_top)
         
         if modelName == 'SIP4_Sharp_Angled':
             case = self.make_case_SIP4_Sharp_Angled(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP4_Sharp_Angled(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SIP4_Sharp_Straight':
             case = self.make_case_SIP4_Sharp_Straight(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP4_Sharp_Straight(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SIP-3_P1.30mm':
             case = self.make_case_SIP_3_P1_30mm(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP_3_P1_30mm(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SIP-3_P2.90mm':
             case = self.make_case_SIP_3_P2_90mm(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP_3_P2_90mm(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SIP-8':
             case = self.make_case_SIP_8(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP_8(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SIP-9':
             case = self.make_case_SIP_9(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SIP_9(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'SLA704XM':
             case = self.make_case_SLA704XM(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_SLA704XM(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'STK672-040-E':
             case = self.make_case_STK672_040_E(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_STK672_040_E(params)
-            show(pins)
+            show_object(pins)
 
         elif modelName == 'STK672-080-E':
             case = self.make_case_STK672_080_E(params)
-            show(case)
+            show_object(case)
             pins = self.make_pins_STK672_080_E(params)
-            show(pins)
+            show_object(pins)
 
             
             
 #        npth_pins = self.make_npth_pins_dummy(params)
-#        show(npth_pins)
+#        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

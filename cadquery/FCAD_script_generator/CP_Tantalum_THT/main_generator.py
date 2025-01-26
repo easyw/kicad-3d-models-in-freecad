@@ -52,7 +52,7 @@ ___ver___ = "1.3.2 10/02/2017"
 
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt, sin, degrees
 from collections import namedtuple
 
@@ -124,7 +124,7 @@ try:
     #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
@@ -198,7 +198,7 @@ def make_tantalum_th(params):
     pinmark = pinmark.cut(subtract_part)
     #draw the body
     leads = leads.cut(body)
-    #show(leads)
+    #show_object(leads)
     return (body, leads, pinmark) #body, pins
 
 
@@ -218,9 +218,9 @@ def generateOneModel(params, log):
     #body, base, mark, pins = make_tantalum_th(params)
     body, pins, pinmark= make_tantalum_th(params) #body, base, mark, pins, top
 
-    show(body)
-    show(pins)
-    show(pinmark)
+    show_object(body)
+    show_object(pins)
+    show_object(pinmark)
 
     doc = FreeCAD.ActiveDocument
     print(GetListOfObjects(FreeCAD, doc))

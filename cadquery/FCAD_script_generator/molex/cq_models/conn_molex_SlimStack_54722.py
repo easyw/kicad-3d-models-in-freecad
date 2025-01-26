@@ -77,7 +77,7 @@ from ribbon import Ribbon
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
@@ -403,5 +403,5 @@ if "module" in __name__:
                                  str(num_pins) + "pins variant\n")
     (body, contacts) = generate_part(num_pins)
 
-    show(body)
-    show(contacts)
+    show_object(body)
+    show_object(contacts)

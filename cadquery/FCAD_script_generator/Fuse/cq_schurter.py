@@ -136,29 +136,29 @@ class cq_schurter():
         self.set_translate(modelID)
         self.set_rotation(modelID)
         case_top = self.make_top(modelID)
-        show(case_top)
+        show_object(case_top)
         #
         if modelID == 'Schurter_0031-8002':
             case = self.make_body_Schurter_0031_8002(modelID)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Schurter_0031_8002(modelID)
-            show(pins)
+            show_object(pins)
 
         if modelID == 'Schurter_0031_8201':
             case = self.make_body_Schurter_0031_8201(modelID)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Schurter_0031_8201(modelID)
-            show(pins)
+            show_object(pins)
 
         if modelID == 'Schurter_FAB_0031_355x':
             case = self.make_body_Schurter_FAB_0031_355x(modelID)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Schurter_FAB_0031_355x(modelID)
-            show(pins)
+            show_object(pins)
 
 
         npth_pins = self.make_npth_pin(modelID)
-        show(npth_pins)
+        show_object(npth_pins)
 
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

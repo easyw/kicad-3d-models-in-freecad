@@ -116,7 +116,7 @@ try:
     from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
     msg+="https://github.com/jmwright/cadquery-freecad-module/wiki\n"
@@ -150,7 +150,7 @@ def export_model(model):
         used_colour_keys.append(colour_key)
         colour = shaderColors.named_colors[colour_key].getDiffuseInt()
         colour_attr = colour + (0,)
-        show(parts[part]['name'], colour_attr)
+        show_object(parts[part]['name'], colour_attr)
 
     # label model and parts
     doc = FreeCAD.ActiveDocument

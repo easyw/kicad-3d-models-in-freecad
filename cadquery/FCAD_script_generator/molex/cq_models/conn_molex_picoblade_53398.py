@@ -78,7 +78,7 @@ from cq_helpers import *
 
 import cadquery as cq
 from math import sqrt
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
@@ -398,5 +398,5 @@ if "module" in __name__ :
     part_to_build = 4
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +str(part_to_build)+"\n")
     (pins, body) = generate_part(part_to_build)
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)

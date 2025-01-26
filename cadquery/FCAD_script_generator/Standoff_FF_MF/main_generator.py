@@ -51,7 +51,7 @@ __Comment__ = 'make Standoff Caps 3D models exported to STEP and VRML for Kicad 
 ___ver___ = "1.3.3 23/01/2020"
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -111,7 +111,7 @@ try:
     #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -153,8 +153,8 @@ def make_standoff(params):
         body = body.union(cq.Workplane("XY").circle(ID/2).extrude(-params.stud_H-0.5).translate((0.0,0.0,0.5)))
         body = body.edges("<Z").fillet(a/20)
 
-    #show(body)
-    #show(leads)
+    #show_object(body)
+    #show_object(leads)
     #stop
     return (body) #body, pins
 
@@ -213,7 +213,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
         body= make_standoff(all_params[variant]) #body, base, mark, pins, top
         
         
-        show(body)
+        show_object(body)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)

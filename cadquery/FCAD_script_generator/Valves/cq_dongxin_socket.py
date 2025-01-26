@@ -85,29 +85,29 @@ class cq_dongxin_socket():
         if params.serie == 'GZC8-Y-5':
 #            case_top = self.make_case_top_dummy(params)
             case_top = self.make_case_top_GZC8_Y_5(params)
-            show(case_top)
+            show_object(case_top)
         else:
             case_top = self.make_case_top_dummy(params)
-            show(case_top)
+            show_object(case_top)
         
 
         if params.serie == 'GZC9-A' or params.serie == 'GZS9-Y' or params.serie == 'GZC7-Y-B':
             case = self.make_case_top_straight_round(params)
-            show(case)
+            show_object(case)
         
         if params.serie == 'GZC9-B' or params.serie == 'GZC9-Y-2' or params.serie == 'GZC8-Y' or params.serie == 'GZC8-Y-2':
             case = self.make_case_body_with_ring(params)
-            show(case)
+            show_object(case)
         
         if params.serie == 'GZC8-Y-5':
             case = self.make_case_top_straight_round(params)
-            show(case)
+            show_object(case)
             
         pins = self.make_pins(params)
-        show(pins)
+        show_object(pins)
         
         npth_pins = self.make_npth_pins(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

@@ -53,7 +53,7 @@ ___ver___ = "1.0.5 25/Feb/2017"
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -104,7 +104,7 @@ try:
     from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -246,9 +246,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case_top, case, pins = make_transformer(all_params[variant])
 
-        show(case_top)
-        show(case)
-        show(pins)
+        show_object(case_top)
+        show_object(case)
+        show_object(pins)
         #stop
         
         doc = FreeCAD.ActiveDocument

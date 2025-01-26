@@ -136,17 +136,17 @@ class cq_tme():
         self.set_translate(modelID)
         self.set_rotation(modelID)
         case_top = self.make_top(modelID)
-        show(case_top)
+        show_object(case_top)
         #
         if modelID == 'Stelvio_Kontek_PTF78':
             case = self.make_body_Stelvio_Kontek_PTF78(modelID)
-            show(case)
+            show_object(case)
             pins = self.make_pin_Stelvio_Kontek_PTF78(modelID)
-            show(pins)
+            show_object(pins)
 
 
         npth_pins = self.make_npth_pin(modelID)
-        show(npth_pins)
+        show_object(npth_pins)
 
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

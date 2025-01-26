@@ -78,7 +78,6 @@ from cq_helpers import *
 
 
 import cadquery as cq
-from Helpers import show
 from collections import namedtuple
 import FreeCAD
 from conn_jst_ph_params import *
@@ -347,5 +346,5 @@ if "module" in __name__ :
     params=series_params.variant_params['side_entry']['param_generator'](3)
 
     (body, pins) = generate_part(params)
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)

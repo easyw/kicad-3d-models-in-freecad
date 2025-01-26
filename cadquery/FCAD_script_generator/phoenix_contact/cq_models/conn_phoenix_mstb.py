@@ -54,7 +54,7 @@ ___ver___ = "1.2 03/12/2017"
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 from cq_helpers import *
@@ -476,13 +476,13 @@ if "module" in __name__ :
 
     FreeCAD.Console.PrintMessage("Started from cadquery: Building " +part_to_build+"\n")
     (pins, body, insert, mount_screw, plug, plug_screws) = generate_part(part_to_build, With_plug)
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)
     if insert is not None:
-        show(insert)
+        show_object(insert)
     if mount_screw is not None:
-        show(mount_screw)
+        show_object(mount_screw)
     if plug is not None:
-        show(plug)
+        show_object(plug)
     if plug_screws is not None:
-        show(plug_screws)
+        show_object(plug_screws)

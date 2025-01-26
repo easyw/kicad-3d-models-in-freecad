@@ -56,7 +56,7 @@ stop_on_first_error = True
 check_log_file = 'check-log.md'
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 import argparse
 
 from math import tan, radians, sqrt
@@ -121,7 +121,7 @@ try:
     #from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
@@ -266,7 +266,7 @@ def make_case(params):
         case_bot= make_plg(case_bot, cw, cl, cff, cf)
         case_bot = case_bot.extrude(A2-0.01)
         case_bot = case_bot.translate((0,0,A1))
-        #show(case_bot)
+        #show_object(case_bot)
 
         case = cq.Workplane("XY").workplane(offset=A1)
         #case = make_plg(case, cw, cl, cce, cce)
@@ -287,7 +287,7 @@ def make_case(params):
             case = case.edges(BS((-D1/2, -E1/2, A2+0.001), (D1/2, E1/2, A+0.001))).fillet(ef)
             #case = case.edges(BS((-D1/2, -E1/2, c+0.001), (D1/2, E1/2, A+0.001+A1/2))).fillet(ef)
         case = case.translate((0,0,A2-0.01))
-        #show(case)
+        #show_object(case)
         #stop
         pinmark=cq.Workplane("XZ", (-D/2+fp_d+fp_r, -E/2+fp_d+fp_r, fp_z)).rect(fp_r/2, -2*fp_z, False).revolve().translate((0,0,A))#+fp_z))
         pinmark=pinmark.translate(((D-D1_t)/2+fp_d+cff,(E-E1_t)/2+fp_d+cff,-sp))
@@ -322,14 +322,14 @@ def make_case(params):
         # extract pins from case
         case = case.cut(pins)
         case_bot = None
-        #show(pins)
-        #show(pinmark)
-        #show(case)
+        #show_object(pins)
+        #show_object(pinmark)
+        #show_object(case)
         #stop
 
 
-    #show(pins)
-    #show(case)
+    #show_object(pins)
+    #show_object(case)
     #Gui.SendMsgToActiveView("ViewFit")
     #Gui.activeDocument().activeView().viewBottom()
     #stop
@@ -361,10 +361,10 @@ def generateOneModel(params, log):
     case_bot, case, pins, pinmark = make_case(params)
 
     if case_bot is not None:
-        show(case_bot)
-    show(case)
-    show(pins)
-    show(pinmark)
+        show_object(case_bot)
+    show_object(case)
+    show_object(pins)
+    show_object(pinmark)
     #stop
 
     doc = FreeCAD.ActiveDocument

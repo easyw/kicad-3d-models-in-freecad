@@ -31,7 +31,7 @@ __title__ = "CadQuery exporting and fusion libs"
 __author__ = "maurice"
 __Comment__ = 'CadQuery exporting and fusion libs to generate STEP and VRML models with colors'
 
-___ver___ = "1.2.6 18/06/2020"
+___ver___ = "1.3 1/03/2025"
 
 import FreeCAD, Draft, FreeCADGui
 from cqToolsExceptions import *
@@ -39,7 +39,7 @@ import ImportGui
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 #from Gui.Command import *
-import os, sys
+import os, sys, glob
 
 #helper funcs for displaying messages in FreeCAD
 def say(*arg):
@@ -580,7 +580,7 @@ def exportVRML(doc,modelName,scale,dir):
 #   Function to save in Native FreeCAD format the doc
 #
 ###################################################################
-def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
+def saveFCdoc(App, Gui, doc, modelName, dir, saving = True):
 
     ## Save to disk in native format
     App.ActiveDocument=None
@@ -601,7 +601,8 @@ def saveFCdoc(App, Gui, doc, modelName,dir, saving = True):
     Gui.SendMsgToActiveView("Save")
     App.getDocument(doc.Name).save()
     try:
-        os.remove(outdir+os.sep+modelName+'.FCStd1') #removing backup file
+        for file in glob.glob(os.path.join(outdir+os.sep, f"{modelName}.*.FCBak")):
+            os.remove(file)
     except Exception as exp:
         FreeCAD.Console.PrintWarning("Error while trying to remove backup file in saveFCdoc:")
         FreeCAD.Console.PrintWarning('{:s}\n'.format(str(exp)))
@@ -696,7 +697,7 @@ def runGeometryCheck(App, Gui, step_path, log,
         log.write('\t- Union check:    [    FAIL    ]\n')
         geometry_error_container.append(NotUnionedError(modelName))
         #stop
-    if FC_majorV == 0 and FC_minorV >= 17:
+    if (FC_majorV == 0 and FC_minorV >= 17) or FC_majorV > 0:
         if docu.Objects == 0:
             FreeCAD.Console.PrintError('Step import seems to fail. No objects to check\n')
         for o in docu.Objects:

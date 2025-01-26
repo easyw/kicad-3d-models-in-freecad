@@ -33,7 +33,7 @@
 #****************************************************************************
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 from math import sqrt
 
@@ -224,7 +224,7 @@ class dip_socket_turned_pin (PartBase):
         return pins.union(pins.rotate((0,0,0), (0,0,1), 180))
 
     def make(self):
-        show(self.make_body())
-        show(self.make_pins())
+        show_object(self.make_body())
+        show_object(self.make_pins())
 
 ## EOF ##

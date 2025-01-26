@@ -53,7 +53,7 @@ ___ver___ = "1.3.9 14/02/2017"
 # thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -118,7 +118,7 @@ try:
     from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -310,23 +310,23 @@ def make_gw(params):
     if cc1!=0:
         case = cq.Workplane(cq.Plane.XY()).workplane(offset=A1).moveTo(-D1_b/2., -E1_b/2.+(cc1-(D1-D1_b)/4.))
         case = crect(case, D1_b, E1_b, cc1-(D1-D1_b)/4., cc-(D1-D1_b)/4.)  # bottom edges
-        #show(case)
+        #show_object(case)
         case = case.pushPoints([(0,0)]).workplane(offset=A2_b).moveTo(-D1/2, -E1/2+cc1)
         case = crect(case, D1, E1, cc1, cc)     # center (lower) outer edges
-        #show(case)
+        #show_object(case)
         case = case.pushPoints([(0,0)]).workplane(offset=c).moveTo(-D1/2,-E1/2+cc1)
         case = crect(case, D1,E1,cc1, cc)       # center (upper) outer edges
-        #show(case)
+        #show_object(case)
         #case=cq.Workplane(cq.Plane.XY()).workplane(offset=c).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
         case=case.pushPoints([(0,0)]).workplane(offset=0).moveTo(-D1_t1/2,-E1_t1/2+cc1-(D1-D1_t1)/4.)
         case = crect(case, D1_t1,E1_t1, cc1-(D1-D1_t1)/4., cc-(D1-D1_t1)/4.) # center (upper) inner edges
-        #show(case)
+        #show_object(case)
         #stop
         cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = case.pushPoints([(0,0)]).workplane(offset=A2_t).moveTo(-D1_t2/2,-E1_t2/2+cc1_t)
         #cc1_t = cc1-(D1-D1_t2)/4. # this one is defined because we use it later
         case = crect(case, D1_t2,E1_t2, cc1_t, cc-(D1-D1_t2)/4.) # top edges
-        #show(case)
+        #show_object(case)
         if ef!=0:
             case = case.loft(ruled=True).faces(">Z").fillet(ef)
         else:
@@ -370,11 +370,11 @@ def make_gw(params):
     #result = cadquery.Workplane("XY").rect(rectangle_width, rectangle_length).revolve(angle_degrees,(-5,-5),(-5,5), False)
     
     ## color_attr=(255,255,255,0)
-    ## show(pinmark, color_attr)
+    ## show_object(pinmark, color_attr)
     ##sphere = cq.Workplane("XY", (-D1_t2/2+fp_d+fp_r, -E1_t2/2+fp_d+fp_r, sphere_z)). \
     ##         sphere(sphere_r)
     # color_attr=(255,255,255,0)
-    # show(sphere, color_attr)
+    # show_object(sphere, color_attr)
     #case = case.cut(sphere)
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
@@ -524,9 +524,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         body, pins, mark = make_gw(all_params[variant])
 
-        show(body)
-        show(pins)
-        show(mark)
+        show_object(body)
+        show_object(pins)
+        show_object(mark)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)

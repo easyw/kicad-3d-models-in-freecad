@@ -65,12 +65,12 @@ class LICENCE_Info():
 
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 from collections import namedtuple
 import FreeCAD
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 
 from c_rect_tht_param import *
@@ -144,8 +144,8 @@ def generate_part(params):
         body = body.translate((F/2,0,0))
         leads = leads.translate((F/2,0,0))
     
-    #show(body)
-    #show(leads)
+    #show_object(body)
+    #show_object(leads)
     #stop
     return (body, leads) #body, pins
 
@@ -155,5 +155,5 @@ if "module" in __name__:
     body, pins= generate_part(all_params[variant]) #body, base, mark, pins, top
 
 
-    show(body)
-    show(pins)
+    show_object(body)
+    show_object(pins)

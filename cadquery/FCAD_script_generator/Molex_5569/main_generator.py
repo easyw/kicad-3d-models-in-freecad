@@ -13,7 +13,7 @@ scriptdir = os.path.dirname (os.path.realpath(__file__))
 sys.path.append(scriptdir)
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 # import cq_parameters
 from cq_parameters import all_params_molex_5569
@@ -189,13 +189,13 @@ for variant in variants:
     Gui.ActiveDocument = Gui.getDocument(CheckedModelName)
     pins, body = MakePart(all_params_molex_5569[variant])
 
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)
 
 # pairs = 3
 
 # result = MakePinPairs(pairs)
-# show(result)
+# show_object(result)
 
 # body = MakeBody(pairs)
-# show(body)
+# show_object(body)

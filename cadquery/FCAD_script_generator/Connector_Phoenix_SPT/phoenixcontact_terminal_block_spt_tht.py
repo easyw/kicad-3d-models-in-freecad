@@ -58,7 +58,7 @@ if FreeCAD.GuiUp:
 try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
 except Exception as e:
     if QtGui is not None:
         reply = QtGui.QMessageBox.information(None, "Info ...", "Missing CadQuery 0.3.0 or later Module!\r\n\r\nhttps://github.com/jmwright/cadquery-freecad-module/wiki\n")
@@ -222,13 +222,13 @@ def generate_package3d(params, part_params, mpn):
     body_color_key = "green body"
     body_color = shaderColors.named_colors[body_color_key].getDiffuseFloat()
     body = generate_body(params, part_params)
-    show(body, body_color + (0,))
+    show_object(body, body_color + (0,))
     
     # Generate pins
     pins_color_key = "metal grey pins"
     pins_color = shaderColors.named_colors[pins_color_key].getDiffuseFloat()
     pins = generate_pins(params, part_params)
-    show(pins, pins_color + (0,))
+    show_object(pins, pins_color + (0,))
     
     # Finalize
     doc = FreeCAD.ActiveDocument

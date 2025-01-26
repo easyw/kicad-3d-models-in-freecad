@@ -24,7 +24,7 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
     checkRequirements
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 # Licence information of the generated models.
 #################################################################################################
@@ -92,8 +92,8 @@ def MakeConnector(name, params):
     for x in range(params["pins"]):
         pins_union = pins_union.union(pin.translate((x*params["pitch"], 0, 0)))
 
-    show(body)
-    show(pins_union)
+    show_object(body)
+    show_object(pins_union)
 
     doc = FreeCAD.ActiveDocument
     objs = GetListOfObjects(FreeCAD, doc)

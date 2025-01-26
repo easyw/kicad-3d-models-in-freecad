@@ -77,7 +77,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -90,7 +90,7 @@ except: # catch *all* exceptions
 
 checkRequirements(cq)
 
-from Helpers import show
+from CQGui.display import show_object
 import Part as FreeCADPart
 
 class Polyline:

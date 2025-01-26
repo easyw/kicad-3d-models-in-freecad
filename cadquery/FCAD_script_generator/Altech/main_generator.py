@@ -52,7 +52,7 @@ __Comment__ = 'make Altech connectors 3D models exported to STEP and VRML for Ki
 ___ver___ = "1.3.4 18/06/2020"
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from collections import namedtuple
 
 import math
@@ -113,7 +113,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -299,8 +299,8 @@ def make_3D_model(models_dir, variant, pinnumber):
     if all_params[variant].serie == 'AK300':
         case = make_case_AK300(all_params[variant], pinnumber)
         pins = make_pins_AK300(all_params[variant], pinnumber)
-        show(case)
-        show(pins)
+        show_object(case)
+        show_object(pins)
         #
         #
         modelfileName = modelfileName + all_params[variant].manufacture + '_' + all_params[variant].serie
@@ -311,7 +311,7 @@ def make_3D_model(models_dir, variant, pinnumber):
         FreeCAD.Console.PrintMessage("\r\nSerie %s does not exist, skipping'\r\n" % all_params[variant].serie)
         return
     
-    #show(pinmark)
+    #show_object(pinmark)
     #stop
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)

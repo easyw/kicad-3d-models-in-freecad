@@ -53,7 +53,7 @@ ___ver___ = "1.0.5 25/Feb/2017"
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 
 import argparse
 global save_memory
@@ -117,7 +117,7 @@ try:
     from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -229,7 +229,7 @@ def make_qfn(params):
     case_bot= make_plg(case_bot, cw, cl, cce, cce)
     case_bot = case_bot.extrude(c-A1-0.01)
     case_bot = case_bot.translate((0,0,A1))
-    ##show(case_bot)
+    ##show_object(case_bot)
         
     case = cq.Workplane("XY").workplane(offset=A1)
     #case = make_plg(case, cw, cl, cce, cce)
@@ -252,7 +252,7 @@ def make_qfn(params):
         case = case.edges(BS((-D1/2, -E1/2, c+0.001), (D1/2, E1/2, A+0.001))).fillet(ef)
         #case = case.edges(BS((-D1/2, -E1/2, c+0.001), (D1/2, E1/2, A+0.001+A1/2))).fillet(ef)
     case = case.translate((0,0,c-A1-0.01))
-    ##show(case)
+    ##show_object(case)
     ##if params.molded is not None:
     ##    Gui.SendMsgToActiveView("ViewFit")
     ##    Gui.activeDocument().activeView().viewFront()
@@ -263,7 +263,7 @@ def make_qfn(params):
     #stop
     #case=case.union(case_bot)
     
-    ##show(case)
+    ##show_object(case)
     ##stop
     #######################################################################
     
@@ -274,7 +274,7 @@ def make_qfn(params):
     #     case.edges("|X").fillet(0.1)
     #     case.edges("|Y").fillet(0.1)
     #     case.edges("|Z").fillet(0.1)
-    # show(case)
+    # show_object(case)
     # 
     # case_top = make_plg(cq.Workplane("XY"),9,7,0.5,0.5)
     # case_top = case_top.extrude(0.4)
@@ -283,14 +283,14 @@ def make_qfn(params):
     # #.workplane(offset=1.2).rect(0.75,0.5).loft(combine=True)
     # case_top2= case_top.faces(">Z").workplane(offset=1.2).make_plg(case_top.faces(">Z").workplane(offset=0),6,4,0.2,0.2).loft(combine=True)
     # 
-    # show(case_top)
-    # show(case_top2)
+    # show_object(case_top)
+    # show_object(case_top2)
     # 
     # stop
     # case_top = make_plg(cq.Workplane("XY"),9,7,0.5,0.5)
     # case_top = case_top.extrude(0.4)
     # # case_top = case_top.faces(">Z").workplane(offset=0.5)       #workplane is offset from the object surface
-    # show(case_top)
+    # show_object(case_top)
     # stop
     # 
     # case = cq.Workplane("XY").box(D, E, A2)  #NO margin, pins don't emerge
@@ -318,8 +318,8 @@ def make_qfn(params):
     #stop
     if (color_pin_mark==False) and (place_pinMark==True):
         case = case.cut(pinmark)
-    # show(pinmark)
-    # show(case)
+    # show_object(pinmark)
+    # show_object(case)
     # stop
     
     if sq: #square pins
@@ -401,7 +401,7 @@ def make_qfn(params):
         merged_pins = merged_pins.union(p)
     pins = merged_pins
 
-    #show(pins)
+    #show_object(pins)
     #sleep
     # extract pins from case
     #case = case.cut(pins)
@@ -468,10 +468,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case_bot, case, pins, pinmark = make_qfn(all_params[variant])
 
-        show(case_bot)
-        show(case)
-        show(pins)
-        show(pinmark)
+        show_object(case_bot)
+        show_object(case)
+        show_object(pins)
+        show_object(pinmark)
         #stop
         
         doc = FreeCAD.ActiveDocument

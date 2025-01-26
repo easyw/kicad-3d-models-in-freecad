@@ -145,18 +145,18 @@ class cq_minicircuit():
         self.set_rotation(modelID)
         FreeCAD.Console.PrintMessage('make_3D_model 2 \r\n')
         case_top = self.make_top(modelID)
-        show(case_top)
+        show_object(case_top)
         FreeCAD.Console.PrintMessage('make_3D_model 3 \r\n')
         case = self.make_body(modelID)
-        show(case)
+        show_object(case)
 
         FreeCAD.Console.PrintMessage('make_3D_model 4 \r\n')
         pins = self.make_pin(modelID)
-        show(pins)
+        show_object(pins)
 
         FreeCAD.Console.PrintMessage('make_3D_model 5 \r\n')
         npth_pins = self.make_npth_pin(modelID)
-        show(npth_pins)
+        show_object(npth_pins)
 
         FreeCAD.Console.PrintMessage('make_3D_model 6 \r\n')
         doc = FreeCAD.ActiveDocument

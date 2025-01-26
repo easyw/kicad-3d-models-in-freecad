@@ -52,7 +52,7 @@ __Comment__ = 'make THT potentiometers exported to STEP and VRML for Kicad StepU
 ___ver___ = "2.0.0 29/01/2018"
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 global save_memory
@@ -130,7 +130,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -436,10 +436,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
             pinmark_color = shaderColors.named_colors[pinmark_color_key].getDiffuseFloat()
                 
 
-        show(base)
-        show(top)
-        show(pins)
-        show(pinmark)
+        show_object(base)
+        show_object(top)
+        show_object(pins)
+        show_object(pinmark)
    
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

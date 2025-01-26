@@ -256,12 +256,12 @@ class cq_dsub():
         self.set_translate(params)
         self.set_rotation(params)
         case_top = self.make_top_DSUB(params)
-        show(case_top)
+        show_object(case_top)
         case = self.make_case_DSUB(params)
-        show(case)
+        show_object(case)
 
         pins = self.make_pin(params)
-        show(pins)
+        show_object(pins)
 
         npth_pins = self.make_npth_pins(params)
         
@@ -292,7 +292,7 @@ class cq_dsub():
                 col_pin[:-1]:pin_color_key,
             }
         else:
-            show(npth_pins)
+            show_object(npth_pins)
 
             doc = FreeCAD.ActiveDocument
             objs=GetListOfObjects(FreeCAD, doc)

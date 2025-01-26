@@ -56,7 +56,7 @@ check_Model = False
 # thanks to Frank Severinsen Shack for including vrml materials
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -113,7 +113,7 @@ from cq_cad_tools import FuseObjs_wColors, GetListOfObjects, restore_Main_Tools,
 try:
     FreeCADGui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
 except Exception as e: # catch *all* exceptions
     FreeCAD.Console.PrintMessage(e);FreeCAD.Console.PrintMessage('\n')
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -234,10 +234,10 @@ def make_radial_smd(params):
 
         body.cut(cim)
 
-    #show(body)
-    #show(base)
-    #show(cim)
-    #show(pins)
+    #show_object(body)
+    #show_object(base)
+    #show_object(cim)
+    #show_object(pins)
     #sleep
 
     return (body, base, cim, pins)
@@ -292,10 +292,10 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         body, base, mark, pins = make_radial_smd(all_params[variant])
 
-        show(body)
-        show(base)
-        show(pins)
-        show(mark)
+        show_object(body)
+        show_object(base)
+        show_object(pins)
+        show_object(mark)
         
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)

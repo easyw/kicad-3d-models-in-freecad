@@ -156,7 +156,7 @@ def generate(**kwargs):
 # opend from within freecad
 if "module" in __name__:
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
 
     ext_thread = {
       'od': 'M3',
@@ -183,7 +183,7 @@ if "module" in __name__:
     #     h=3,
     #     ext_thread=ext_thread
     # )
-    show(body)
+    show_object(body)
 
 if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
     sys.path.append("../_tools")
@@ -201,7 +201,7 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
     #    from Gui.Command import *
         Gui.activateWorkbench("CadQueryWorkbench")
         import cadquery as cq
-        from Helpers import show
+        from CQGui.display import show_object
         # CadQuery Gui
     except Exception as e: # catch *all* exceptions
         print(e)
@@ -309,7 +309,7 @@ if __name__ == "__main__" or __name__ == "wuerth_smt_spacer":
                             )
 
         color_i = colors[0] + (0,)
-        show(cq_obj_data, color_i)
+        show_object(cq_obj_data, color_i)
 
         doc = FreeCAD.ActiveDocument
         doc.Label = ModelName

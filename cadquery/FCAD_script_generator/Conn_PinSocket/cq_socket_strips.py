@@ -34,7 +34,7 @@
 # 2017-11-25
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 ## base parametes & model
 import cq_base_model
@@ -169,8 +169,8 @@ class socket_strip (PartBase):
         return pins
 
     def make(self):        
-        show(self._make_body())
-        show(self._make_pins())
+        show_object(self._make_body())
+        show_object(self._make_pins())
 
 class angled_socket_strip (socket_strip):
 

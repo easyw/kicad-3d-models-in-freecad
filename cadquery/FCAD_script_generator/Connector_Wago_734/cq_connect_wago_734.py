@@ -50,7 +50,7 @@ import collections
 from collections import namedtuple
 
 import cadquery as cq
-from Helpers import show
+from CQGui.display import show_object
 
 import FreeCAD, Draft, FreeCADGui
 import ImportGui
@@ -342,8 +342,8 @@ class cqMakerWagoConn734 ():
         
         case = self.makePlasticCase()
         pins = self.make_pins()
-        show(case)
-        show(pins)
+        show_object(case)
+        show_object(pins)
      
         doc = FreeCAD.ActiveDocument
         objs = GetListOfObjects(FreeCAD, doc)
@@ -352,7 +352,7 @@ class cqMakerWagoConn734 ():
         body_color = shaderColors.named_colors[self.body_color_key].getDiffuseFloat()
         pin_color = shaderColors.named_colors[self.pin_color_key].getDiffuseFloat()
 
-        # must be the same order of the above show(..) calls
+        # must be the same order of the above show_object(..) calls
         Color_Objects(Gui, objs[0], body_color)
         Color_Objects(Gui, objs[1], pin_color)
 

@@ -84,10 +84,10 @@ class cq_parameters_tube_CK6418():
         case = self.make_case(self.all_params[modelName])
         pins = self.make_pins(self.all_params[modelName])
         npth_pins = self.make_npth_pins(self.all_params[modelName])
-        show(case_top)
-        show(case)
-        show(pins)
-        show(npth_pins)
+        show_object(case_top)
+        show_object(case)
+        show_object(pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

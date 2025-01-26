@@ -78,7 +78,6 @@ else:
 from cq_helpers import *
 
 import cadquery as cq
-from Helpers import show
 from collections import namedtuple
 import FreeCAD
 from conn_jst_xh_params import *
@@ -308,6 +307,7 @@ def generate_part(params):
     center_x=body_corner_x+body_lenght/2
     pins = pins.rotate((center_x,0,0),(0,0,1),180)
     body = body.rotate((center_x,0,0),(0,0,1),180)
+    # show_object(body)
     return (body, pins)
 
 
@@ -317,5 +317,5 @@ if "module" in __name__ :
     params=series_params.variant_params['side_entry']['param_generator'](3)
 
     (body, pins) = generate_part(params)
-    show(pins)
-    show(body)
+    show_object(pins)
+    show_object(body)

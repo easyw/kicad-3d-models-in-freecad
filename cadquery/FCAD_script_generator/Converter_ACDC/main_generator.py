@@ -52,7 +52,7 @@ __Comment__ = 'make DIP switch 3D models exported to STEP and VRML for Kicad Ste
 ___ver___ = "1.3.3 14/08/2015"
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -118,7 +118,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -492,10 +492,10 @@ def make_3D_model(models_dir, variant):
     if (all_params[variant].pintype == CASE_SMD_TYPE):
         pins = make_pins_smd(all_params[variant])
 
-    show(case)
-    show(casetop)
-    show(pins)
-    #show(pinmark)
+    show_object(case)
+    show_object(casetop)
+    show_object(pins)
+    #show_object(pinmark)
     #stop
     doc = FreeCAD.ActiveDocument
     objs=GetListOfObjects(FreeCAD, doc)

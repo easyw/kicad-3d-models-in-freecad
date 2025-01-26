@@ -53,7 +53,7 @@ ___ver___ = "1.0.6 18/06/2020"
 ###ToDo: QFN with ARC pad, exposed pad with chamfer
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 import math
 from math import tan, radians, sqrt
 try:
@@ -146,7 +146,7 @@ try:
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg="missing CadQuery 0.3.0 or later Module!\r\n\r\n"
@@ -434,7 +434,7 @@ def make_qfn(params):
         merged_pins = merged_pins.union(p)
     pins = merged_pins
 
-    #show(pins)
+    #show_object(pins)
     #sleep
     # extract pins from case
     case = case.cut(pins)
@@ -502,9 +502,9 @@ if __name__ == "__main__" or __name__ == "main_generator":
         Gui.ActiveDocument=Gui.getDocument(CheckedModelName)
         case, pins, pinmark = make_qfn(all_params[variant])
 
-        show(case)
-        show(pins)
-        show(pinmark)
+        show_object(case)
+        show_object(pins)
+        show_object(pinmark)
         #stop
         
         doc = FreeCAD.ActiveDocument

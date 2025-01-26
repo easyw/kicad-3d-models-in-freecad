@@ -96,7 +96,7 @@ try:
 #    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
@@ -183,23 +183,23 @@ def export_one_part(modul, variant, configuration, log, with_plug=False):
     (pins, body, insert, mount_screw, plug, plug_screws) = modul.generate_part(variant, with_plug)
 
     color_attr = body_color + (0,)
-    show(body, color_attr)
+    show_object(body, color_attr)
 
     color_attr = pins_color + (0,)
-    show(pins, color_attr)
+    show_object(pins, color_attr)
 
     if insert is not None:
         color_attr = insert_color + (0,)
-        show(insert, color_attr)
+        show_object(insert, color_attr)
     if mount_screw is not None:
         color_attr = screw_color + (0,)
-        show(mount_screw, color_attr)
+        show_object(mount_screw, color_attr)
     if plug is not None:
         color_attr = body_color + (0,)
-        show(plug, color_attr)
+        show_object(plug, color_attr)
 
         color_attr = screw_color + (0,)
-        show(plug_screws, color_attr)
+        show_object(plug_screws, color_attr)
 
     doc = FreeCAD.ActiveDocument
     doc.Label=ModelName

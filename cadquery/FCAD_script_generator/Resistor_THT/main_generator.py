@@ -57,7 +57,7 @@ check_log_file = 'check-log.md'
 global_3dpath = '../_3Dmodels/'
 
 # maui import cadquery as cq
-# maui from Helpers import show
+# maui from CQGui.display import show_object
 from math import tan, radians, sqrt
 from collections import namedtuple
 
@@ -116,7 +116,7 @@ try:
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery
     cq = cadquery
-    from Helpers import show
+    from CQGui.display import show_object
     # CadQuery Gui
 except: # catch *all* exceptions
     msg = "missing CadQuery 0.5.2 or later Module!\r\n\r\n"
@@ -303,10 +303,10 @@ def make_3D_model(models_dir, variant, n=1):
     pins = make_pins(all_params[variant], n)
     marking = make_marking(all_params[variant], n)
 
-    show(body)
-    show(pins)
+    show_object(body)
+    show_object(pins)
     if marking != None:
-        show(marking)
+        show_object(marking)
 
 
     doc = FreeCAD.ActiveDocument

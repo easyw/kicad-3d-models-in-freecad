@@ -96,9 +96,9 @@ class cq_audio_jack_ledino():
         
         if modelID == 'Jack_3_5mm_Ledino':
             case_top = self.make_top_Jack_3_5mm_Ledino(params)
-            show(case_top)
+            show_object(case_top)
             case = self.make_case_Jack_3_5mm_Ledino(params)
-            show(case)
+            show_object(case)
         else:
             FreeCAD.Console.PrintMessage('\r\n')
             FreeCAD.Console.PrintMessage('ERROR: Model ID ' + str(modelID) + ' does not exist, exiting')
@@ -106,10 +106,10 @@ class cq_audio_jack_ledino():
             sys.exit()
             
         pins = self.make_pin(params)
-        show(pins)
+        show_object(pins)
             
         npth_pins = self.make_npth_pins_dummy(params)
-        show(npth_pins)
+        show_object(npth_pins)
      
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)

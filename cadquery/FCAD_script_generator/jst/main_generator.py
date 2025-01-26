@@ -78,20 +78,18 @@ save_memory = True #reducing memory consuming for all generation params
 check_Model = True
 check_log_file = 'check-log.md'
 
+from CQGui.display import show_object
+
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
 try:
-    # Gui.SendMsgToActiveView("Run")
-#    from Gui.Command import *
     Gui.activateWorkbench("CadQueryWorkbench")
     import cadquery as cq
-    from Helpers import show
-    # CadQuery Gui
 except Exception as e: # catch *all* exceptions
     print(e)
     msg = "missing CadQuery 0.3.0 or later Module!\r\n\r\n"
-    msg += "https://github.com/jmwright/cadquery-freecad-module/wiki\n"
+    msg += "https://github.com/CadQuery/cadquery-freecad-workbench/blob/master/docs/installation.md \n"
     if QtGui is not None:
         reply = QtGui.QMessageBox.information(None,"Info ...",msg)
 
@@ -104,19 +102,16 @@ except Exception as e: # catch *all* exceptions
 from cqToolsExceptions import *
 import cq_cad_tools
 # Reload tools
-reload(cq_cad_tools)
+cq_cad_tools.reload_lib(cq_cad_tools)
 # Explicitly load all needed functions
 from cq_cad_tools import multiFuseObjs_wColors, GetListOfObjects, restore_Main_Tools, \
  exportSTEP, close_CQ_Example, saveFCdoc, z_RotateObject,\
  runGeometryCheck
 
-# Gui.SendMsgToActiveView("Run")
-#Gui.activateWorkbench("CadQueryWorkbench")
-#import FreeCADGui as Gui
-
 try:
     close_CQ_Example(App, Gui)
-except:
+except Exception as e:
+    print(f"An exception occurred: {e}")
     FreeCAD.Console.PrintMessage("can't close example.")
 
 #import FreeCAD, Draft, FreeCADGui
@@ -170,18 +165,13 @@ def export_one_part(module, variant, pincount, configuration, log):
 
 
     for i in range(len(cq_obj_data)):
+        cq_obj_data[i].val().label = ModelName + obj_suffixes[i]
         color_i = colors[i] + (0,)
-        show(cq_obj_data[i], color_i)
-
+        show_object(cq_obj_data[i], options={"color": color_i, "alpha": 0.0})
 
     doc = FreeCAD.ActiveDocument
     doc.Label = ModelName
     objs=GetListOfObjects(FreeCAD, doc)
-
-
-    for i in range(len(objs)):
-        objs[i].Label = ModelName + obj_suffixes[i]
-
 
     restore_Main_Tools()
 
@@ -217,7 +207,7 @@ def export_one_part(module, variant, pincount, configuration, log):
 
     FreeCAD.activeDocument().recompute()
 
-    saveFCdoc(App, Gui, doc, FileName, out_dir)
+    saveFCdoc(App, Gui, doc, FileName, out_dir, True)
 
     #FreeCADGui.activateWorkbench("PartWorkbench")
     if save_memory == False and check_Model==False:
@@ -235,8 +225,9 @@ def export_one_part(module, variant, pincount, configuration, log):
 def exportSeries(module, configuration, log, model_filter_regobj):
     series_definition = module.series_params
     for variant in series_definition.variant_params:
-        #print(variant)
+        print("series: " + variant)
         pinrange = series_definition.variant_params[variant]['pinrange']
+        print("pinrange: " + str(pinrange))
         for pins in pinrange:
             try:
                 if model_filter_regobj.match(str(pins)):
@@ -258,12 +249,13 @@ import conn_jst_eh_models
 import conn_jst_ph_models
 import conn_jst_xh_models
 import conn_jst_gh_models
+import conn_jst_sh_models
 
 all_series = {
     'eh':conn_jst_eh_models,
     'ph':conn_jst_ph_models,
     'xh':conn_jst_xh_models,
-    'gh':conn_jst_gh_models
+    'sh':conn_jst_sh_models
 }
 
 #########################################################################
@@ -313,7 +305,7 @@ class argparse():
             stop_on_first_error = False
 
     def print_usage(self):
-        print("Generater script for phoenix contact 3d models.")
+        print("Generater script for jst 3d models.")
         print('usage: FreeCAD main_generator.py [optional arguments and switches]')
         print('optional arguments:')
         print('\tconfig=[config file]: default:config_phoenix_KLCv3.0.yaml')
@@ -338,7 +330,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
     with open(args.config, 'r') as config_stream:
         try:
-            configuration = yaml.load(config_stream)
+            configuration = yaml.load(config_stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as exc:
             print(exc)
 
@@ -346,7 +338,7 @@ if __name__ == "__main__" or __name__ == "main_generator":
 
 
     with open(check_log_file, 'w') as log:
-        log.write('# Check report for Molex 3d model genration\n')
+        log.write('# Check report for jst 3d model generation\n')
         for typ in args.series:
             try:
                 if exportSeries(typ, configuration, log, model_filter_regobj) != 0:

@@ -136,15 +136,15 @@ class cq_keystone():
         self.set_translate(modelID)
         self.set_rotation(modelID)
         case_top = self.make_top(modelID)
-        show(case_top)
+        show_object(case_top)
         case = self.make_body(modelID)
-        show(case)
+        show_object(case)
 
         pins = self.make_pin(modelID)
-        show(pins)
+        show_object(pins)
 
         npth_pins = self.make_npth_pin(modelID)
-        show(npth_pins)
+        show_object(npth_pins)
 
         doc = FreeCAD.ActiveDocument
         objs=GetListOfObjects(FreeCAD, doc)
